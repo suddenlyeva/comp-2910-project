@@ -1,7 +1,7 @@
 let canvasWidth = 800,
     canvasHeight = 600;
 let thingsToLoad = [
-    "spritesheet.json",
+    "images/spritesheet.json",
     "images/play_button.png",
     "images/options_button.png",
 ];
