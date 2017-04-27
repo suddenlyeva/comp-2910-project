@@ -1,3 +1,5 @@
+let previousGameState; //Not sure where we want to put this
+
 function openMainMenu() {
     let menuGroup = game.group()
     let playButton = game.button(["images/play_button.png"]);
@@ -15,7 +17,7 @@ function openMainMenu() {
     };
 
     optionsButton.tap = () => {
-        game.stage.remove(menuGroup);
+		previousState = mainMenu;
         game.state = openOptionsMenu;
     };
 
@@ -23,5 +25,6 @@ function openMainMenu() {
 }
 
 function mainMenu() {
+	
 }
 
