@@ -1,7 +1,8 @@
 "use strict";
 
+let menuGroup;
 function openMainMenu() {
-    let menuGroup = game.group()
+    menuGroup = game.group()
     let playButton = game.button(["images/play_button.png"]);
     let optionsButton = game.button(["images/options_button.png"]);
     menuGroup.addChild(playButton);
@@ -21,7 +22,6 @@ function openMainMenu() {
     optionsButton.tap = () => {
 		playButton.enabled = false;
 		optionsButton.enabled = false;
-        game.stage.remove(menuGroup);
         game.state = openOptionsMenu;
     };
 
@@ -29,6 +29,8 @@ function openMainMenu() {
 }
 
 function mainMenu() {
-	
+    menuGroup.children.forEach(btn => {
+        btn.enabled = true;
+    });
 }
 

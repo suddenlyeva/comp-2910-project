@@ -11,7 +11,7 @@ function openOptionsMenu() {
 	backButton.tap = () => {
 		backButton.enabled = false;
 		game.stage.remove(optionsGroup);
-		game.state = openMainMenu;
+		game.state = mainMenu;
 	}
 	
 	game.state = optionsMenu;

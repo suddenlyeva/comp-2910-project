@@ -2,15 +2,23 @@
 
 let STAGES = [setupStage0, setupStage1, setupStage2, setupStage3, setupStage4];
 let currentStage = 0;
+let stageTimer;
 
 function setupStage0() {
     game.backgroundColor = 0x000000;
     currentStage = 0;
     console.log("stage 0");
+    let background = game.sprite("background.png");
+    stageTimer = 0;
+    
     game.state = stage0;
 }
 
 function stage0() {
+    stageTimer++;
+    if (stageTimer === 120) {
+        game.state = openStageComplete;
+    }
 }
 
 function setupStage1() {
