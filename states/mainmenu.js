@@ -9,12 +9,12 @@ function openMainMenu() {
     playButton.position.set(100, 100);
     optionsButton.position.set(100, 300);
 
-    playButton.release = () => {
+    playButton.tap = () => {
         game.stage.remove(menuGroup);
         game.state = openStageSelect;
     };
 
-    optionsButton.release = () => {
+    optionsButton.tap = () => {
         game.stage.remove(menuGroup);
         game.state = openOptionsMenu;
     };
