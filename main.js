@@ -1,3 +1,5 @@
+"use strict";
+
 let canvasWidth = 800,
     canvasHeight = 600;
 let thingsToLoad = [

@@ -1,6 +1,10 @@
+"use strict";
+
+let introCounter = 0;
 function intro() {
-	game.wait(2000,() => {
+    introCounter++;
+    if(introCounter === 120) {
         game.backgroundColor = 0x00aa00;
         game.state = openMainMenu;
-	});
+    }
 }

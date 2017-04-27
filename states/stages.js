@@ -1,3 +1,5 @@
+"use strict";
+
 let STAGES = [setupStage0, setupStage1, setupStage2, setupStage3, setupStage4];
 let currentStage = 0;
 

@@ -1,3 +1,5 @@
+"use strict";
+
 function openStageSelect() {
     game.backgroundColor = 0x005555;
 
@@ -10,7 +12,10 @@ function openStageSelect() {
         stageBtns[i].interact = true;
 
         stageBtns[i].tap = () => {
-            game.stage.remove(stageGroup);
+			for(let btn in stageBtns) {
+				stageBtns[btn].enabled = false;
+			}
+            game.remove(stageGroup);
             game.state = STAGES[i];
         };
     }
