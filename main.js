@@ -1,21 +1,22 @@
 var canvasWidth = 800,
     canvasHeight = 600;
-var thingsToLoad = ["spritesheet.json"];
+var thingsToLoad = [
+    "spritesheet.json",
+    "images/play_button.png",
+    "images/options_button.png",
+];
 var game = hexi(canvasWidth, canvasHeight, setup, thingsToLoad, load);
 game.start();
-var counter = 0;
 
 function load() {
 }
 
 function setup() {
+    game.backgroundColor = 0xaa0000;
     game.state = intro;
 }
 
 // States
-function mainMenu() {
-}
-
 function optionsMenu() {
 }
 
