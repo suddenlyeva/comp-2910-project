@@ -8,7 +8,7 @@ function openOptionsMenu() {
 	
 	backButton.tap = () => {
 		game.stage.remove(optionsGroup);
-		game.state = previousGameState;
+		game.state = openMainMenu;
 	}
 	
 	game.state = optionsMenu;
