@@ -1,4 +1,4 @@
-var introCounter = 0;
+let introCounter = 0;
 
 function intro() {
     introCounter++;

@@ -1,7 +1,7 @@
 function openMainMenu() {
-    var menuGroup = game.group()
-    var playButton = game.button(["images/play_button.png"]);
-    var optionsButton = game.button(["images/options_button.png"]);
+    let menuGroup = game.group()
+    let playButton = game.button(["images/play_button.png"]);
+    let optionsButton = game.button(["images/options_button.png"]);
     menuGroup.addChild(playButton);
     menuGroup.addChild(optionsButton);
     game.stage.addChild(menuGroup);

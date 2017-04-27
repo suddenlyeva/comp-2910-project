@@ -1,11 +1,11 @@
-var canvasWidth = 800,
+let canvasWidth = 800,
     canvasHeight = 600;
-var thingsToLoad = [
+let thingsToLoad = [
     "spritesheet.json",
     "images/play_button.png",
     "images/options_button.png",
 ];
-var game = hexi(canvasWidth, canvasHeight, setup, thingsToLoad, load);
+let game = hexi(canvasWidth, canvasHeight, setup, thingsToLoad, load);
 game.start();
 
 function load() {

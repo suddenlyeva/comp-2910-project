@@ -1,5 +1,5 @@
-var STAGES = [setupStage0, setupStage1, setupStage2, setupStage3, setupStage4];
-var currentStage = 0;
+let STAGES = [setupStage0, setupStage1, setupStage2, setupStage3, setupStage4];
+let currentStage = 0;
 
 function setupStage0() {
     game.backgroundColor = 0x000000;
