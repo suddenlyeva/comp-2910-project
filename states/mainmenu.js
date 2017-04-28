@@ -1,36 +1,38 @@
 "use strict";
 
-let menuGroup;
-function openMainMenu() {
-    menuGroup = game.group()
-    let playButton = game.button(["images/play_button.png"]);
-    let optionsButton = game.button(["images/options_button.png"]);
-    menuGroup.addChild(playButton);
-    menuGroup.addChild(optionsButton);
-    game.stage.addChild(menuGroup);
+let mainMenu = new GameState(game);
 
-    playButton.position.set(100, 100);
-    optionsButton.position.set(100, 300);
+mainMenu.initialize = () => {
+        let playButton = game.button(["images/play_button.png"]);
+        let optionsButton = game.button(["images/options_button.png"]);
+        mainMenu.buttons.addChild(playButton);
+        mainMenu.buttons.addChild(optionsButton);
+        game.stage.addChild(mainMenu.scene);
 
-    playButton.tap = () => {
-		playButton.enabled = false;
-		optionsButton.enabled = false;
-        game.stage.remove(menuGroup);
-        game.state = openStageSelect;
-    };
+        playButton.position.set(100, 100);
+        optionsButton.position.set(100, 300);
 
-    optionsButton.tap = () => {
-		playButton.enabled = false;
-		optionsButton.enabled = false;
-        game.state = openOptionsMenu;
-    };
+        playButton.tap = () => {
+            mainMenu.disableButtons();
+            mainMenu.scene.visible = false;
+            game.state = openStageSelect;
+        };
 
-    game.state = mainMenu;
-}
+        optionsButton.tap = () => {
+            mainMenu.disableButtons();
+            game.state = openOptionsMenu;
+        };
+        
+        mainMenu.initialized = true;
+};
 
-function mainMenu() {
-    menuGroup.children.forEach(btn => {
-        btn.enabled = true;
-    });
-}
+mainMenu.open = () => {
+    if(!mainMenu.initialized) {
+        mainMenu.initialize();
+    }
+    
+    mainMenu.scene.visible = true;
+    mainMenu.enableButtons();
+    game.state = mainMenu.run();
+};
 
