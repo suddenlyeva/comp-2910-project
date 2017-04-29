@@ -11,12 +11,10 @@ function openMainMenu() {
         let playButton = game.button(["images/play_button.png"]);
         let optionsButton = game.button(["images/options_button.png"]);
         
-        // Add Buttons to scene
+        // Add to scene
         mainMenuScene = game.group();
         mainMenuScene.buttons = groupButtons(playButton, optionsButton);
         mainMenuScene.addChild(mainMenuScene.buttons);
-        
-        game.stage.addChild(mainMenuScene);
 
         // Position Buttons
         playButton.position.set(100, 100);
@@ -36,7 +34,7 @@ function openMainMenu() {
         };
     }
 
-    // Every Time Opened
+    // Every time opened
     game.backgroundColor = 0x00aa00;
     mainMenuScene.buttons.enable();
     mainMenuScene.visible = true;
