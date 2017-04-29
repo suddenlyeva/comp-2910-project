@@ -28,7 +28,7 @@ function openStageComplete() {
         game.stage.putCenter(stageCompleteScene);
         backButton.x += 50;
         
-        // Continue button moves to main menu
+        // Continue button moves to next stage
         continueButton.tap = () => {
             stageCompleteScene.visible = false;
             stageCompleteScene.buttons.disable();
