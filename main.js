@@ -14,6 +14,5 @@ function load() {
 }
 
 function setup() {
-    game.backgroundColor = 0xaa0000;
-    game.state = intro;
+    game.state = openIntro;
 }

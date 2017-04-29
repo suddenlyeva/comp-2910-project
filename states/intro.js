@@ -1,10 +1,21 @@
 "use strict";
 
-let introCounter = 0;
-function intro() {
-    introCounter++;
-    if(introCounter === 120) {
-        game.backgroundColor = 0x00aa00;
-        game.state = mainMenu.open;
+let introScene;
+
+function openIntro() {
+    
+    if(introScene == null) {
+        introScene = game.group();
     }
+    
+    introScene.frames = 0;
+    game.backgroundColor = 0xaa0000;
+    game.state = intro;
 }
+
+function intro() {
+    introScene.frames++;
+    if(introScene.frames === 120) {
+        game.state = openMainMenu;
+    }
+};

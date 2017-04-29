@@ -1,38 +1,50 @@
 "use strict";
 
-let mainMenu = new GameState(game);
+let mainMenuScene;
 
-mainMenu.initialize = () => {
+function openMainMenu() {
+    
+    // First Initialize Only
+    if(mainMenuScene == null) {
+        
+        // Make Buttons
         let playButton = game.button(["images/play_button.png"]);
         let optionsButton = game.button(["images/options_button.png"]);
-        mainMenu.buttons.addChild(playButton);
-        mainMenu.buttons.addChild(optionsButton);
-        game.stage.addChild(mainMenu.scene);
+        
+        // Add Buttons to scene
+        mainMenuScene = game.group();
+        mainMenuScene.buttons = groupButtons(playButton, optionsButton);
+        mainMenuScene.addChild(mainMenuScene.buttons);
+        
+        game.stage.addChild(mainMenuScene);
 
+        // Position Buttons
         playButton.position.set(100, 100);
         optionsButton.position.set(100, 300);
-
+        
+        // Play button moves to stage select
         playButton.tap = () => {
-            mainMenu.disableButtons();
-            mainMenu.scene.visible = false;
+            mainMenuScene.buttons.disable();
+            mainMenuScene.visible = false;
             game.state = openStageSelect;
         };
-
+        
+        // Options button opens an options panel
         optionsButton.tap = () => {
-            mainMenu.disableButtons();
+            mainMenuScene.buttons.disable();
             game.state = openOptionsMenu;
         };
-        
-        mainMenu.initialized = true;
-};
-
-mainMenu.open = () => {
-    if(!mainMenu.initialized) {
-        mainMenu.initialize();
     }
-    
-    mainMenu.scene.visible = true;
-    mainMenu.enableButtons();
-    game.state = mainMenu.run();
-};
 
+    // Every Time Opened
+    game.backgroundColor = 0x00aa00;
+    mainMenuScene.buttons.enable();
+    mainMenuScene.visible = true;
+
+    game.state = mainMenu;
+}
+
+// Update loop
+function mainMenu() {
+    
+}
