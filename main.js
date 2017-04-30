@@ -6,6 +6,7 @@ let thingsToLoad = [
     "images/spritesheet.json",
     "images/play_button.png",
     "images/options_button.png",
+    "images/rc.jpg"
 ];
 
 let renderer = PIXI.autoDetectRenderer(canvasWidth, canvasHeight);
@@ -22,9 +23,6 @@ PIXI.loader
     .on("progress", showLoadingProgress)
     .add(thingsToLoad)
     .load(setup);
-
-// the progress bar will not be used anywhere else
-loadingProgressBar.destroy();
 
 function setup() {
     STATE = openIntro;
