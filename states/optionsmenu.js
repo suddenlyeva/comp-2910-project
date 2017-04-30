@@ -3,38 +3,42 @@
 let optionsMenuScene;
 
 function openOptionsMenu() {
-    
+
     // First Initialize Only
     if(optionsMenuScene == null) {
-        
+        let width = 200,
+            height = 400;
+
         // Make Panel and Buttons
-        let optionsPanel = game.rectangle(200,400,"grey");
-        let backButton = game.circle(50,"red");
-        backButton.interact = true;
-        
+        let optionsPanel = new PIXI.Graphics(); // game.rectangle(200,400,"grey");
+        optionsPanel.lineStyle(1, 0, 1);
+        optionsPanel.beginFill(0xcecfe2);
+        optionsPanel.drawRect(0, 0, width, height);
+        optionsPanel.endFill();
+        let backButton = makeSimpleButton(20, 20, "X", 0xf00e46);
+
         // Add to scene
-        optionsMenuScene = game.group();
-        optionsMenuScene.buttons = groupButtons(backButton);
+        optionsMenuScene = new PIXI.Container();
         optionsMenuScene.addChild(optionsPanel);
-        optionsMenuScene.addChild(optionsMenuScene.buttons);
-        
-        game.stage.addChild(optionsMenuScene);
-        
+        optionsMenuScene.addChild(backButton);
+
         // Position stuff
-        game.stage.putCenter(optionsMenuScene);
-        
+        backButton.position.set(10, 10);
+        optionsMenuScene.position.set(
+            canvasWidth / 2 - width / 2,
+            canvasHeight / 2 - height / 2);
+
+        SCENE.addChild(optionsMenuScene);
+
         // Back button moves to main menu
-        backButton.tap = () => {
+        backButton.on("pointertap", () => {
             optionsMenuScene.visible = false;
-            optionsMenuScene.buttons.disable();
-            game.state = openMainMenu;
-        }
+        });
     }
-    
+
     // Every time opened
     optionsMenuScene.visible = true;
-    optionsMenuScene.buttons.enable();
-	game.state = optionsMenu;
+	STATE = optionsMenu;
 }
 
 function optionsMenu() {

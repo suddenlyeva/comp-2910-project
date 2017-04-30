@@ -3,19 +3,20 @@
 let introScene;
 
 function openIntro() {
-    
+
     if(introScene == null) {
-        introScene = game.group();
+        introScene = new PIXI.Container();
     }
-    
+
     introScene.frames = 0;
-    game.backgroundColor = 0xaa0000;
-    game.state = intro;
+    renderer.backgroundColor = 0xaa0000;
+    SCENE = introScene;
+    STATE = intro;
 }
 
 function intro() {
     introScene.frames++;
     if(introScene.frames === 120) {
-        game.state = openMainMenu;
+        STATE = openMainMenu;
     }
 };

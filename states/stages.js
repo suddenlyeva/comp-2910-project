@@ -4,89 +4,114 @@
 
 let STAGES = [setupStage0, setupStage1, setupStage2, setupStage3, setupStage4];
 let currentStage = 0;
-let stageTimer;
+let stageTimer = 0;
 
 function setupStage0() {
-    game.backgroundColor = 0x000000;
+    renderer.backgroundColor = 0x000000;
     currentStage = 0;
     console.log("stage 0");
-    let background = game.sprite("background.png");
+    let bgTexture = PIXI.utils.TextureCache["background.png"];
+    let background = new PIXI.Sprite(bgTexture);
+    let stageScene = new PIXI.Container();
+    stageScene.addChild(background);
     stageTimer = 0;
-    
-    game.state = stage0;
+
+    SCENE = stageScene;
+    STATE = stage0;
 }
 
 function stage0() {
     stageTimer++;
     if (stageTimer === 120) {
-        game.state = openStageComplete;
+        STATE = openStageComplete;
     }
 }
 
 function setupStage1() {
-    game.backgroundColor = 0x330000;
+    renderer.backgroundColor = 0x330000;
     currentStage = 1;
     console.log("stage 1");
-    let background = game.sprite("background.png");
+
+    let bgTexture = PIXI.utils.TextureCache["background.png"];
+    let background = new PIXI.Sprite(bgTexture);
+    let stageScene = new PIXI.Container();
+    stageScene.addChild(background);
     stageTimer = 0;
-    game.state = stage1;
+
+    SCENE = stageScene;
+    STATE = stage1;
 }
 
 function stage1() {
     stageTimer++;
     if (stageTimer === 120) {
-        game.state = openStageComplete;
+        STATE = openStageComplete;
     }
 }
 
 function setupStage2() {
-    game.backgroundColor = 0x660000;
+    renderer.backgroundColor = 0x660000;
     currentStage = 2;
     console.log("stage 2");
-    let background = game.sprite("background.png");
+
+    let bgTexture = PIXI.utils.TextureCache["background.png"];
+    let background = new PIXI.Sprite(bgTexture);
+    let stageScene = new PIXI.Container();
+    stageScene.addChild(background);
     stageTimer = 0;
-    
-    game.state = stage2;
+
+    SCENE = stageScene;
+    STATE = stage2;
 }
 
 function stage2() {
     stageTimer++;
     if (stageTimer === 120) {
-        game.state = openStageComplete;
+        STATE = openStageComplete;
     }
 }
 
 function setupStage3() {
-    game.backgroundColor = 0x990000;
+    renderer.backgroundColor = 0x990000;
     currentStage = 3;
     console.log("stage 3");
-    let background = game.sprite("background.png");
+
+    let bgTexture = PIXI.utils.TextureCache["background.png"];
+    let background = new PIXI.Sprite(bgTexture);
+    let stageScene = new PIXI.Container();
+    stageScene.addChild(background);
     stageTimer = 0;
-    
-    game.state = stage3;
+
+    SCENE = stageScene;
+    STATE = stage3;
 }
 
 function stage3() {
     stageTimer++;
     if (stageTimer === 120) {
-        game.state = openStageComplete;
+        STATE = openStageComplete;
     }
 }
 
 function setupStage4() {
-    game.backgroundColor = 0xcc0000;
+    renderer.backgroundColor = 0xcc0000;
     currentStage = 4;
     console.log("stage 4");
-    let background = game.sprite("background.png");
+
+    let bgTexture = PIXI.utils.TextureCache["background.png"];
+    let background = new PIXI.Sprite(bgTexture);
+    let stageScene = new PIXI.Container();
+    stageScene.addChild(background);
     stageTimer = 0;
-    
-    game.state = stage4;
+
+    SCENE = stageScene;
+    STATE = stage4;
 }
 
 function stage4() {
     stageTimer++;
     if (stageTimer === 120) {
-        game.state = openStageComplete;
+        STATE = openStageComplete;
     }
 }
 

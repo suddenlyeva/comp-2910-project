@@ -5,43 +5,55 @@
 let stageCompleteScene;
 
 function openStageComplete() {
-    
+
     // First Initialize Only
     if(stageCompleteScene == null) {
-        
+        let width = 200,
+            height = 400;
+
         // Make Panel and Buttons
-        let panel = game.rectangle(200,400,"grey");
-        let backButton = game.circle(50,"red");
-        let continueButton = game.circle(50,"green");
-        backButton.interact = true;
-        continueButton.interact = true;
-        
+        let panel = new PIXI.Graphics();
+        panel.lineStyle(1, 0, 1);
+        panel.beginFill(0xcecfe2);
+        panel.drawRect(0, 0, width, height);
+        panel.endFill();
+        let continueButton = makeSimpleButton(100, 50, "Continue", 0x00d27f);
+        let backButton = makeSimpleButton(50, 50, "Back", 0xaa3355);
+
         // Add to scene
-        stageCompleteScene = game.group();
-        stageCompleteScene.buttons = groupButtons(backButton,continueButton);
+        stageCompleteScene = new PIXI.Container();
         stageCompleteScene.addChild(panel);
-        stageCompleteScene.addChild(stageCompleteScene.buttons);
-        
-        game.stage.addChild(stageCompleteScene);
-        
+        stageCompleteScene.addChild(backButton);
+        stageCompleteScene.addChild(continueButton);
+
         // Position stuff
-        game.stage.putCenter(stageCompleteScene);
-        backButton.x += 50;
-        
+        continueButton.position.set(10, 10);
+        backButton.position.set(continueButton.width + 20, 10);
+        stageCompleteScene.position.set(
+            canvasWidth / 2 - width / 2,
+            canvasHeight / 2 - height / 2);
+
         // Continue button moves to next stage
-        continueButton.tap = () => {
+        continueButton.on("pointertap", () => {
             stageCompleteScene.visible = false;
-            stageCompleteScene.buttons.disable();
+            SCENE.removeChild(stageCompleteScene);
             nextStage();
-            game.state = STAGES[currentStage];
-        }
+            STATE = STAGES[currentStage];
+        });
+
+        // Back button takes you to the main menu
+        backButton.on("pointertap", () => {
+            SCENE.removeChild(stageCompleteScene);
+            STATE = openMainMenu;
+        });
     }
-    
+
     // Every time opened
     stageCompleteScene.visible = true;
-    stageCompleteScene.buttons.enable();
-
-	game.state = stageComplete;
+    // using addChild and remove because there are
+    // multiple scenes that use this scene
+    SCENE.addChild(stageCompleteScene);
+	STATE = stageComplete;
 }
 
 function stageComplete() {

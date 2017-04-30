@@ -3,46 +3,37 @@
 let mainMenuScene;
 
 function openMainMenu() {
-    
+
     // First Initialize Only
     if(mainMenuScene == null) {
-        
+
         // Make Buttons
-        let playButton = game.button(["images/play_button.png"]);
-        let optionsButton = game.button(["images/options_button.png"]);
-        
+        let playButton = makeSimpleButton(100, 50, "Play", 0xb3ecec);
+        let optionsButton = makeSimpleButton(100, 50, "Options", 0x94b8b8);
+
         // Add to scene
-        mainMenuScene = game.group();
-        mainMenuScene.buttons = groupButtons(playButton, optionsButton);
-        mainMenuScene.addChild(mainMenuScene.buttons);
+        mainMenuScene = new PIXI.Container();
+        mainMenuScene.addChild(playButton);
+        mainMenuScene.addChild(optionsButton);
 
         // Position Buttons
-        playButton.position.set(100, 100);
-        optionsButton.position.set(100, 300);
-        
+        playButton.position.set(150, 200);
+        optionsButton.position.set(150, 300);
+
         // Play button moves to stage select
-        playButton.tap = () => {
-            mainMenuScene.buttons.disable();
-            mainMenuScene.visible = false;
-            game.state = openStageSelect;
-        };
-        
+        playButton.on("pointertap", () => { STATE = openStageSelect; });
+
         // Options button opens an options panel
-        optionsButton.tap = () => {
-            mainMenuScene.buttons.disable();
-            game.state = openOptionsMenu;
-        };
+        optionsButton.on("pointertap", () => { STATE = openOptionsMenu; });
     }
 
     // Every time opened
-    game.backgroundColor = 0x00aa00;
-    mainMenuScene.buttons.enable();
-    mainMenuScene.visible = true;
-
-    game.state = mainMenu;
+    renderer.backgroundColor = 0x00d27f;
+    SCENE = mainMenuScene;
+    STATE = mainMenu;
 }
 
 // Update loop
 function mainMenu() {
-    
+
 }

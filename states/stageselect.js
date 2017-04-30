@@ -6,43 +6,40 @@ function openStageSelect() {
 
     // First initialize only
     if(stageSelectScene == null) {
-        
+
         // Declare an array of buttons
         let stageBtns = [];
-        
+
         // Make scene groups
-        stageSelectScene = game.group();
-        stageSelectScene.buttons = groupButtons();
-        stageSelectScene.addChild(stageSelectScene.buttons);
-        game.stage.addChild(stageSelectScene);
-        
+        stageSelectScene = new PIXI.Container();
+
         // Initialize buttons
         for(let i = 0; i < STAGES.length; i++) {
-            
+
             // Create
-            stageBtns.push(game.circle(50, "blue"));
-            stageBtns[i].interact = true;
-            
+            stageBtns.push(makeSimpleButton(100, 50, "Stage " + i, 0xffdfba));
+
             // Add to group
-            stageSelectScene.buttons.addChild(stageBtns[i]);
-            
+            stageSelectScene.addChild(stageBtns[i]);
+
             // Position
-            stageBtns[i].position.set(300, i * 60 + 60);
+            stageBtns[i].position.set(i * 120 + 60, 100);
 
             // Set behaviour
-            stageBtns[i].tap = () => {
-                stageSelectScene.visible = false;
-                stageSelectScene.buttons.disable();
-                game.state = STAGES[i];
-            };
+            stageBtns[i].on("pointertap", () => { STATE = STAGES[i]; });
         }
+
+        let backToMainMenu = makeSimpleButton(200, 50, "Back to Main Menu", 0xb3ecec);
+        backToMainMenu.position.set(550, 500);
+        backToMainMenu.on("pointertap", () => { STATE = openMainMenu; });
+        stageSelectScene.addChild(backToMainMenu);
     }
-    
+
     // Every time opened
-    game.backgroundColor = 0x005555;
-    stageSelectScene.buttons.enable();
-    
-    game.state = stageSelect;
+    renderer.backgroundColor = 0x97ffff;
+
+    SCENE = stageSelectScene;
+    STATE = stageSelect;
 }
 
 function stageSelect() {

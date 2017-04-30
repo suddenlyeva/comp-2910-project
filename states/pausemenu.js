@@ -1,7 +1,7 @@
 "use strict";
 
 function openPauseMenu() {
-    game.state = pauseMenu;
+    STATE = pauseMenu;
 }
 
 function pauseMenu() {
