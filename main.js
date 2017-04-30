@@ -5,8 +5,7 @@ let canvasWidth = 800,
 let thingsToLoad = [
     "images/spritesheet.json",
     "images/play_button.png",
-    "images/options_button.png",
-    "images/rc.jpg"
+    "images/options_button.png"
 ];
 
 let renderer = PIXI.autoDetectRenderer(canvasWidth, canvasHeight);
