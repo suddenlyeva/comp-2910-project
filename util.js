@@ -53,30 +53,17 @@ function makeLoadingBar(x, y, width, height, padding, bgColor, fgColor) {
     return loadingBar;
 }
 
-// Groups buttons together for mass toggling
-function groupButtons() {
-    // Create group
-    let buttons = game.group();
-
-    // Add all arguments to group
-    for(let btn in arguments) {
-        buttons.addChild(arguments[btn]);
-    }
-
-    // Toggle On
-    buttons.enable = () => {
-        buttons.children.forEach(btn => {
-            btn.enabled = true;
-        })
-    };
-
-    // Toggle Off
-    buttons.disable = () => {
-        buttons.children.forEach(btn => {
-            btn.enabled = false;
-        })
-    };
-
-    // Returns a storeable reference
-    return buttons;
+// Point to box collision
+function testHitRectangle(pointObj, rectObj) {
+    let xPoint = pointObj.x;
+    let yPoint = pointObj.y;
+    let xMin = rectObj.x - rectObj.width/2;
+    let xMax = rectObj.x + rectObj.width/2;
+    let yMin = rectObj.y - rectObj.height/2;
+    let yMax = rectObj.y + rectObj.height/2;
+    
+    return (xMin < xPoint && xPoint < xMax) && (yMin < yPoint && yPoint < yMax);
 }
+
+
+
