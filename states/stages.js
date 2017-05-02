@@ -37,12 +37,13 @@ function setupStage0() {
 	// -------------------
 	
 	let apples = [];
+	let BELT_SPEED = 1;
 	
 	for (let i = 0; i < 20; i++) {
 		apples[i] = makeTestApple();
 	}
 	
-	makeConveyorBelt(apples);
+	stageScene.conveyorBelt = new ConveyorBelt(apples, BELT_SPEED);
 	
 	// -------------------
 	// End Test code
@@ -59,6 +60,7 @@ function stage0() {
         STATE = openStageComplete;
     }
 	*/
+	stageScene.conveyorBelt.update();
 }
 
 function setupStage1() {

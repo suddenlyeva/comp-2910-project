@@ -1,6 +1,6 @@
 "use strict";
 
-function makeConveyorBelt(items, speed) {
+function ConveyorBelt(items, speed) {
 	
 	// Some temp constant controls
 	let SCENE_HEIGHT_PX = 480;
@@ -9,29 +9,32 @@ function makeConveyorBelt(items, speed) {
 	
 	
 	// Create Object from array
-    let conveyorBelt = items;
+    this.items = items;
     
 	// Position items
-	for(let i in items) {
+	for(let i in this.items) {
 		
 		// To bottom of screen
-		items[i].y = SCENE_HEIGHT_PX - SPRITE_SIZE_PX;
+		this.items[i].y = SCENE_HEIGHT_PX - SPRITE_SIZE_PX;
 		
 		// To almost right of screen
-		items[i].x = SCENE_WIDTH_PX - SPRITE_SIZE_PX * 2;
+		this.items[i].x = SCENE_WIDTH_PX - SPRITE_SIZE_PX * 2;
 		
 		// Flow left
-		items[i].x -= SPRITE_SIZE_PX * i;
+		this.items[i].x -= SPRITE_SIZE_PX * i;
 	}
 	
     // We will need to draw/animate the belt but it's in the same position all the time.
     
     // Data that is different for each belt
-    conveyorBelt.speed = speed;
+    this.speed = speed;
     
     // Behaviours
-    conveyorBelt.update = function() {
+    this.update = () => {
         // Move belt forwards
+		for (let i in this.items) {
+			this.items[i].x += this.speed;
+		}
         // Check for items removed from array
         // Check for items placed into array
         
@@ -39,7 +42,6 @@ function makeConveyorBelt(items, speed) {
             // if true, drop the last item and waste
             // then, we move all ites one index forwards and shift the belt object back one position (in terms of hitbox)
     }
-    
 }
 
 function makeTestApple() {
