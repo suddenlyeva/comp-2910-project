@@ -6,14 +6,18 @@ function ConveyorBelt(items, speed) {
     let SCENE_HEIGHT_PX = 480;
     let SCENE_WIDTH_PX = 640;
     let SPRITE_SIZE_PX = 32;
-    let CONVEYOR_END = items.length - 1;
-
+    let ARRAY_MIN_SIZE = 20;
 
     // Define Properties
     this.items = [];
     this.speed = speed;
     this.deltaX = 0;
-
+    
+    this.lastIndex = items.length - 1;
+    if (this.lastIndex < ARRAY_MIN_SIZE) {
+        this.lastIndex = ARRAY_MIN_SIZE;
+    }
+    
     // Define Behaviours
     this.update = () => {
 
@@ -36,7 +40,7 @@ function ConveyorBelt(items, speed) {
             this.items.shift();
 
             // Add a blank to the end
-            this.addItemAtIndex(makeTestBlank(), CONVEYOR_END);
+            this.addItemAtIndex(makeTestBlank(), this.lastIndex);
 
             // Reset Delta
             this.deltaX = 0;
@@ -71,6 +75,10 @@ function ConveyorBelt(items, speed) {
         this.addItemAtIndex(items[i], i);
     }
 
+    // Fill empty array spots
+    for(let i = this.items.length; i <= ARRAY_MIN_SIZE; i++) {
+        this.addItemAtIndex(makeTestBlank(), i);
+    }
 }
 
 // ------------------------------- //
@@ -90,7 +98,7 @@ function makeTestBlank() {
         PIXI.loader.resources["images/spritesheet.json"].textures["testblank.png"]
     );
     stageScene.addChild(blank);
-    blank.alpha = 0;
+    blank.alpha = 0.1;
     return blank;
 }
 
@@ -101,7 +109,7 @@ function setupConveyorTest() {
     let apples = [];
     let BELT_SPEED = 1;
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 6; i++) {
         apples.push(makeTestApple());
         apples.push(makeTestBlank());
     }
