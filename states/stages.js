@@ -29,18 +29,26 @@ function setupStage0() {
     renderer.backgroundColor = 0x000000;
     currentStage = 0;
     console.log("stage 0");
-
+	
     stageInit();
 
+	// Test code
+	
+	makeTestApple();
+	
+	// End Test code
+	
     SCENE = stageScene;
     STATE = stage0;
 }
 
 function stage0() {
+	/*
     stageTimer++;
     if (stageTimer === 120) {
         STATE = openStageComplete;
     }
+	*/
 }
 
 function setupStage1() {

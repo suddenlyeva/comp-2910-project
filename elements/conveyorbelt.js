@@ -20,3 +20,13 @@ function makeConveyorBelt(itemTypes, speed) {
     }
     
 }
+
+function makeTestApple() {
+	let apple = new PIXI.Sprite(
+		PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"]
+	);
+	stageScene.addChild(apple);
+	apple.x = 100;
+	apple.y = 100;
+	return apple;
+}
