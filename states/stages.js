@@ -29,39 +29,18 @@ function setupStage0() {
     renderer.backgroundColor = 0x000000;
     currentStage = 0;
     console.log("stage 0");
-    
+
     stageInit();
-    
-    // -------------------
-    // Test code
-    // -------------------
-    
-    let apples = [];
-    let BELT_SPEED = 1;
-    
-    for (let i = 0; i < 10; i++) {
-        apples.push(makeTestApple());
-        apples.push(makeTestBlank());
-    }
-    
-    stageScene.conveyorBelt = new ConveyorBelt(apples, BELT_SPEED);
-    
-    // -------------------
-    // End Test code
-    // -------------------
-    
+
     SCENE = stageScene;
     STATE = stage0;
 }
 
 function stage0() {
-    /*
     stageTimer++;
     if (stageTimer === 120) {
         STATE = openStageComplete;
     }
-    */
-    stageScene.conveyorBelt.update();
 }
 
 function setupStage1() {

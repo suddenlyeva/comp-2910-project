@@ -24,6 +24,9 @@ function openMainMenu() {
         playButton.on("pointertap", () => {
             SCENE.removeChild(optionsMenuScene);
             STATE = openStageSelect;
+
+            // Test Code
+            //STATE = setupConveyorTest;
         });
 
         // Options button opens an options panel
