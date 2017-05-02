@@ -5,16 +5,32 @@
 let STAGES = [setupStage0, setupStage1, setupStage2, setupStage3, setupStage4];
 let currentStage = 0;
 let stageTimer = 0;
+let stageScene;
+
+function stageInit() {
+    stageTimer = 0;
+
+    let bgTexture = PIXI.utils.TextureCache["background.png"];
+    let background = new PIXI.Sprite(bgTexture);
+
+    let pauseButton = makeSimpleButton(100, 50, "Pause", 0x94b8b8);
+    pauseButton.position.set(canvasWidth - 150, 100);
+    pauseButton.on("pointertap", () => {
+        stateBuffer = STATE;
+        STATE = openPauseMenu;
+    });
+
+    stageScene = new PIXI.Container()
+    stageScene.addChild(background);
+    stageScene.addChild(pauseButton);
+}
 
 function setupStage0() {
     renderer.backgroundColor = 0x000000;
     currentStage = 0;
     console.log("stage 0");
-    let bgTexture = PIXI.utils.TextureCache["background.png"];
-    let background = new PIXI.Sprite(bgTexture);
-    let stageScene = new PIXI.Container();
-    stageScene.addChild(background);
-    stageTimer = 0;
+
+    stageInit();
 
     SCENE = stageScene;
     STATE = stage0;
@@ -32,11 +48,7 @@ function setupStage1() {
     currentStage = 1;
     console.log("stage 1");
 
-    let bgTexture = PIXI.utils.TextureCache["background.png"];
-    let background = new PIXI.Sprite(bgTexture);
-    let stageScene = new PIXI.Container();
-    stageScene.addChild(background);
-    stageTimer = 0;
+    stageInit();
 
     SCENE = stageScene;
     STATE = stage1;
@@ -54,11 +66,7 @@ function setupStage2() {
     currentStage = 2;
     console.log("stage 2");
 
-    let bgTexture = PIXI.utils.TextureCache["background.png"];
-    let background = new PIXI.Sprite(bgTexture);
-    let stageScene = new PIXI.Container();
-    stageScene.addChild(background);
-    stageTimer = 0;
+    stageInit();
 
     SCENE = stageScene;
     STATE = stage2;
@@ -76,11 +84,7 @@ function setupStage3() {
     currentStage = 3;
     console.log("stage 3");
 
-    let bgTexture = PIXI.utils.TextureCache["background.png"];
-    let background = new PIXI.Sprite(bgTexture);
-    let stageScene = new PIXI.Container();
-    stageScene.addChild(background);
-    stageTimer = 0;
+    stageInit();
 
     SCENE = stageScene;
     STATE = stage3;
@@ -98,11 +102,7 @@ function setupStage4() {
     currentStage = 4;
     console.log("stage 4");
 
-    let bgTexture = PIXI.utils.TextureCache["background.png"];
-    let background = new PIXI.Sprite(bgTexture);
-    let stageScene = new PIXI.Container();
-    stageScene.addChild(background);
-    stageTimer = 0;
+    stageInit();
 
     SCENE = stageScene;
     STATE = stage4;

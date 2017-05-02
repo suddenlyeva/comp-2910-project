@@ -27,7 +27,10 @@ function openMainMenu() {
         });
 
         // Options button opens an options panel
-        optionsButton.on("pointertap", () => { STATE = openOptionsMenu; });
+        optionsButton.on("pointertap", () => {
+            // STATE = openOptionsMenu;
+            openOptionsMenu();
+        });
     }
 
     // Every time opened

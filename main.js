@@ -11,7 +11,7 @@ renderer.backgroundColor = 0x096c74;
 document.body.appendChild(renderer.view);
 
 let SCENE = new PIXI.Container();
-let STATE;
+let STATE, stateBuffer;
 
 let loadingProgressBar = makeLoadingBar(100, 250, 600, 100, 10, 0, 0x00d27f);
 SCENE.addChild(loadingProgressBar);

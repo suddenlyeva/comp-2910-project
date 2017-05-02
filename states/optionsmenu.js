@@ -15,7 +15,7 @@ function openOptionsMenu() {
         optionsPanel.beginFill(0xcecfe2);
         optionsPanel.drawRect(0, 0, width, height);
         optionsPanel.endFill();
-        let backButton = makeSimpleButton(20, 20, "X", 0xf00e46);
+        let backButton = makeSimpleButton(30, 30, "X", 0xf00e46);
 
         // Add to scene
         optionsMenuScene = new PIXI.Container();
@@ -36,8 +36,9 @@ function openOptionsMenu() {
 
     // Every time opened
     SCENE.addChild(optionsMenuScene);
-    STATE = optionsMenu;
+    // STATE = optionsMenu;
 }
 
-function optionsMenu() {
-}
+// function optionsMenu() {
+//
+// }
