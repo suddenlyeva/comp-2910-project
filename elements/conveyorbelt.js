@@ -1,67 +1,89 @@
 "use strict";
 
 function ConveyorBelt(items, speed) {
-	
-	// Constants
-	let SCENE_HEIGHT_PX = 480;
-	let SCENE_WIDTH_PX = 640;
-	let SPRITE_SIZE_PX = 32;
-	
-	
-	// Define Properties
-    this.items = items;
+    
+    // Define Constants
+    let SCENE_HEIGHT_PX = 480;
+    let SCENE_WIDTH_PX = 640;
+    let SPRITE_SIZE_PX = 32;
+    let CONVEYOR_END = items.length - 1;
+    
+    
+    // Define Properties
+    this.items = [];
     this.speed = speed;
-	this.deltaX = 0;
+    this.deltaX = 0;
     
-	// Position items
-	for(let i in this.items) {
-		
-		// To bottom of screen
-		this.items[i].y = SCENE_HEIGHT_PX - SPRITE_SIZE_PX;
-		
-		// To almost right of screen
-		this.items[i].x = SCENE_WIDTH_PX - SPRITE_SIZE_PX * 2;
-		
-		// Flow left
-		this.items[i].x -= SPRITE_SIZE_PX * i;
-	}
-    
-    // Behaviours
+    // Define Behaviours
     this.update = () => {
-		
-		// Ticker for Scheduling
-		this.deltaX += speed;
-		
+        
         // Move belt forwards
-		for (let i in this.items) {
-			this.items[i].x += this.speed;
-		}
-		
-		// When last item reaches trash can:
-		if(this.deltaX >= SPRITE_SIZE_PX) {
-			
-			// Move everything to the left one sprite
-			for (let i in this.items) {
-				this.items[i].x -= SPRITE_SIZE_PX;
-			}
-			
-			// Reset Delta
-			this.deltaX = 0;
-		}
-		
+        for (let i in this.items) {
+            this.items[i].x += this.speed;
+        }
+        
+        // Track change in X
+        this.deltaX += speed;
+        
+        // When last item reaches trash can:
+        if(this.deltaX >= SPRITE_SIZE_PX) {
+            
+            // Remove first item
+            stageScene.removeChild(this.items[0]);
+            
+            // Shift Indices
+            this.items.shift();
+            
+            // Add a blank to the end
+            this.addItemAtIndex(makeTestBlank(), CONVEYOR_END);
+            
+            // Reset Delta
+            this.deltaX = 0;
+        }
+    
         // Check for items removed from array
         // Check for items placed into array
-        
-        // Check if end of conveyor is over trash
-            // if true, drop the last item and waste
-            // then, we move all ites one index forwards and shift the belt object back one position (in terms of hitbox)
     }
+    
+    // Adds an item to the array
+    this.addItemAtIndex = (item, index) => {
+        
+        // Position
+        // At bottom of screen
+        item.y = SCENE_HEIGHT_PX - SPRITE_SIZE_PX;
+        
+        // Normalize to near bottom right corner
+        item.x = SCENE_WIDTH_PX - SPRITE_SIZE_PX * 2;
+        
+        // Shift left by index
+        item.x -= SPRITE_SIZE_PX * index;
+        
+        // Copy in
+        this.items[index] = item;
+    }
+    
+    // Finish Constructor
+    
+    // Populate array
+    for(let i in items) {
+        this.addItemAtIndex(items[i], i);
+    }
+    
 }
 
 function makeTestApple() {
-	let apple = new PIXI.Sprite(
-		PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"]
-	);
-	stageScene.addChild(apple);
-	return apple;
+    let apple = new PIXI.Sprite(
+        PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"]
+    );
+    stageScene.addChild(apple);
+    return apple;
+}
+
+function makeTestBlank() {
+    let blank = new PIXI.Sprite(
+        PIXI.loader.resources["images/spritesheet.json"].textures["testblank.png"]
+    );
+    stageScene.addChild(blank);
+    blank.alpha = 0.2;
+    return blank;
 }
