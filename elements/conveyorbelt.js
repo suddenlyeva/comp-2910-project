@@ -25,8 +25,6 @@ function ConveyorBelt(items, speed) {
 		// Flow left
 		this.items[i].x -= SPRITE_SIZE_PX * i;
 	}
-	
-    // We will need to draw/animate the belt but it's in the same position all the time.
     
     // Behaviours
     this.update = () => {
