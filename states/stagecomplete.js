@@ -53,7 +53,7 @@ function openStageComplete() {
     // using addChild and remove because there are
     // multiple scenes that use this scene
     SCENE.addChild(stageCompleteScene);
-	STATE = stageComplete;
+    STATE = stageComplete;
 }
 
 function stageComplete() {

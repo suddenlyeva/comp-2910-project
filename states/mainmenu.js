@@ -21,7 +21,10 @@ function openMainMenu() {
         optionsButton.position.set(150, 300);
 
         // Play button moves to stage select
-        playButton.on("pointertap", () => { STATE = openStageSelect; });
+        playButton.on("pointertap", () => {
+            SCENE.removeChild(optionsMenuScene);
+            STATE = openStageSelect;
+        });
 
         // Options button opens an options panel
         optionsButton.on("pointertap", () => { STATE = openOptionsMenu; });

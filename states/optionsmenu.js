@@ -10,7 +10,7 @@ function openOptionsMenu() {
             height = 400;
 
         // Make Panel and Buttons
-        let optionsPanel = new PIXI.Graphics(); // game.rectangle(200,400,"grey");
+        let optionsPanel = new PIXI.Graphics();
         optionsPanel.lineStyle(1, 0, 1);
         optionsPanel.beginFill(0xcecfe2);
         optionsPanel.drawRect(0, 0, width, height);
@@ -28,17 +28,15 @@ function openOptionsMenu() {
             canvasWidth / 2 - width / 2,
             canvasHeight / 2 - height / 2);
 
-        SCENE.addChild(optionsMenuScene);
-
         // Back button moves to main menu
         backButton.on("pointertap", () => {
-            optionsMenuScene.visible = false;
+            SCENE.removeChild(optionsMenuScene);
         });
     }
 
     // Every time opened
-    optionsMenuScene.visible = true;
-	STATE = optionsMenu;
+    SCENE.addChild(optionsMenuScene);
+    STATE = optionsMenu;
 }
 
 function optionsMenu() {
