@@ -31,12 +31,22 @@ function setupStage0() {
     console.log("stage 0");
 	
     stageInit();
-
+	
+	// -------------------
 	// Test code
+	// -------------------
 	
-	makeTestApple();
+	let apples = [];
 	
+	for (let i = 0; i < 20; i++) {
+		apples[i] = makeTestApple();
+	}
+	
+	makeConveyorBelt(apples);
+	
+	// -------------------
 	// End Test code
+	// -------------------
 	
     SCENE = stageScene;
     STATE = stage0;
