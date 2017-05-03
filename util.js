@@ -8,10 +8,9 @@
 function makeSimpleButton(width, height, text, color, textSize = 20, borderWidth = 2) {
     let btnCont = new PIXI.Container();
     let btn = new PIXI.Graphics();
-    let txt = new PIXI.Text(
-        text,
-        { fontFamily: FONT_FAMILY, fontSize: textSize, fill: "black" }
-    );
+    let txt = new PIXI.Text(text, {
+        fontFamily: FONT_FAMILY, fontSize: textSize, fill: "black"
+    });
 
     btn.lineStyle(borderWidth, 0x000000, 1);
     btn.beginFill(color);

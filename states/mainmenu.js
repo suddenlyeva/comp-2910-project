@@ -7,13 +7,24 @@ function MainMenu() {
 
     // TODO: Make Background
     this.background = new PIXI.Container();
+    this.bgTri = new PIXI.Graphics();
+    this.bgTri.beginFill();
+
+    this.bgTri.endFill();
 
     // Make Buttons
-    this.playButton = makeSimpleButton(100, 50, "Play", 0xb3ecec);
-    this.optionsButton = makeSimpleButton(100, 50, "Options", 0x94b8b8);
+    this.distFromEdge = 200;
+    this.buttonWidth = RENDERER.width / 2 - this.distFromEdge - 20; // 20 between buttons
+    this.buttonHeight = RENDERER.height / 2;
+    this.playButton = makeSimpleButton(this.buttonWidth, this.buttonHeight,
+        "Play", 0xb3ecec, this.buttonHeight / 4);
+    this.optionsButton = makeSimpleButton(this.buttonWidth, this.buttonHeight,
+        "Options", 0x94b8b8, this.buttonHeight / 4);
 
-    this.playButton.position.set(150, 200);
-    this.optionsButton.position.set(150, 300);
+    this.playButton.position.set(this.distFromEdge,
+        RENDERER.height / 2 - this.playButton.height / 2);
+    this.optionsButton.position.set(RENDERER.width - this.optionsButton.width - this.distFromEdge,
+        RENDERER.height / 2 - this.optionsButton.height / 2);
 
     // Play button moves to stage select
     this.playButton.on("pointertap", function () {
