@@ -60,7 +60,7 @@ function ConveyorBelt(items, speed) {
         item.y = SCENE_HEIGHT_PX - SPRITE_HALF_PX;
 
         // Normalize to near bottom right corner
-        item.x = SCENE_WIDTH_PX - SPRITE_SIZE_PX - SPRITE_HALF_PX;
+        item.x = SCENE_WIDTH_PX + this.deltaX - SPRITE_SIZE_PX - SPRITE_HALF_PX;
 
         // Shift left by index
         item.x -= SPRITE_SIZE_PX * index;
@@ -84,7 +84,7 @@ function ConveyorBelt(items, speed) {
     }
 
     // Fill empty array spots
-    for(let i = this.items.length; i <= ARRAY_MIN_SIZE; i++) {
+    for(let i = this.items.length; i < ARRAY_MIN_SIZE; i++) {
         this.addItemAtIndex(makeTestBlank(), i);
     }
 }
