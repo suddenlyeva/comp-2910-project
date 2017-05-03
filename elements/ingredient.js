@@ -19,13 +19,6 @@ function makeItem(type, x, y) {
     let item = new PIXI.Sprite(
         ITEM_TEXTURES[type]
     );
-    // Test for blank object
-    if(type == BLANK) {
-        item.isBlank = true;
-    }
-    else {
-        item.isBlank = false;
-    }
 
     // Data that needs to be tracked every frame
     item.x = x;
@@ -51,7 +44,8 @@ function makeItem(type, x, y) {
         
         console.log("waste");
         // Replace the texture with wasted item later
-        item.texture = PIXI.loader.resources["images/spritesheet.json"].textures["banana.png"];
+        item.visible = false;
+
     };
     item.addToProcessor = function() {
         // Adjust the processor and delete the item.
@@ -59,8 +53,6 @@ function makeItem(type, x, y) {
         console.log("Added to processor");
         // Delete processed ingredients and move it to unseen postion -> search other logic
         stageScene.removeChild(item);
-        item.x = 10000;
-        item.y = 10000;
     };
     item.addToConveyor = function() {
         // Add item to the conveyor
@@ -68,7 +60,7 @@ function makeItem(type, x, y) {
         console.log("Added to conveyor");
         console.log(conveyorBeltRec.width);
         console.log(conveyorBeltRec.height);
-        conveyorBelt.addItemAtIndex(item, conveyorBelt.getIndexFromX(item.x));
+        conveyorBelt.addItemAtX(item, item.x);
     };
 
     item.onDragStart = function(event) {
@@ -76,18 +68,18 @@ function makeItem(type, x, y) {
         item.data = event.data;
         item.alpha = 0.5;
         item.dragging = true;
-        if (item.y > 440) {
-            conveyorBelt.addItemAtIndex(makeItem(BLANK), conveyorBelt.getIndexFromX(item.x));
+        if (conveyorBelt.collidesWithPoint(item.x, item.y)) {
+            conveyorBelt.addItemAtX(makeItem(BLANK), item.x);
         }
     }
     item.onDragEnd = function() {
-        if(testHitRectangle(item, processor) && item.dragging) {
+        if(testHitRectangle(item, processor)) {
             // addToProcessor on drop collision
             this.addToProcessor();
-        } else if(testHitRectangle(item, conveyorBeltRec) && item.dragging) {
+        } else if(conveyorBelt.collidesWithPoint(item.x, item.y) && item.dragging) {
             // addToConveyor on drop collision
             item.addToConveyor();
-        } else {
+        } else if(item.type != BLANK) {
             // Waste on drop collision
             item.waste();
         }
@@ -108,9 +100,14 @@ function makeItem(type, x, y) {
     // Drag and drop
     item.on("pointerdown", item.onDragStart)
         .on("pointerup", item.onDragEnd)
-        .on("pointerupoutside", item.onDragEnd)
         .on("pointermove", item.onDragMove);
     
-    stageScene.addChild(item);
+    if (item.type == BLANK) {
+        stageScene.addChildAt(item, 1);
+    }
+    else {
+        stageScene.addChild(item);
+    }
+
     return item;
 }
