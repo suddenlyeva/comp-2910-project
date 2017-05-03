@@ -71,7 +71,16 @@ function ConveyorBelt(itemTypes, speed) {
     this.getIndexFromX = (x) => {
         return Math.floor((SCENE_WIDTH_PX + this.deltaX - x) / SPRITE_SIZE_PX) - 1;
     }
-
+    
+    // Returns an item based on index
+    this.getItemAtX = (x) => {
+        return this.items[getIndexFromX(x)];
+    }
+    
+    // Adds an item based on an x position
+    this.addItemAtX = (x) => {
+        this.addItemAtIndex(this.getIndexFromX(x));
+    }
     
     // Finish Constructor
 
