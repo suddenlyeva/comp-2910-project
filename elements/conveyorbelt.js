@@ -83,7 +83,7 @@ function ConveyorBelt(itemTypes, speed) {
     
     // Point Collision
     this.collidesWithPoint = (x,y) => {
-        return (0 < x && x < SCENE_WIDTH_PX - SPRITE_SIZE_PX) && (SCENE_HEIGHT - SPRITE_SIZE_PX < y && y < SCENE_HEIGHT_PX)
+        return (0 < x && x < SCENE_WIDTH_PX - SPRITE_SIZE_PX) && (SCENE_HEIGHT_PX - SPRITE_SIZE_PX < y && y < SCENE_HEIGHT_PX)
     }
     
     // Finish Constructor
