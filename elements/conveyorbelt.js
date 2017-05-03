@@ -52,7 +52,7 @@ function ConveyorBelt(itemArray, speed) {
     // Adds an item to the array
     this.addItemAtIndex = (item, index) => {
         
-        if(this.items[index] != null) {
+        if(this.items[index].isBlank) {
             stageScene.removeChild(this.items[index]);
         }
 
@@ -110,6 +110,7 @@ function makeTestBlank() {
     let blank = new PIXI.Sprite(
         PIXI.loader.resources["images/spritesheet.json"].textures["testblank.png"]
     );
+    blank.isBlank = true;
     blank.anchor.set(0.5);
     stageScene.addChild(blank);
     blank.alpha = 0.1;
