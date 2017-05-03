@@ -28,31 +28,26 @@ function StageComplete() {
         RENDERER.height / 2 - this.height / 2);
 
     // Continue button moves to next stage
-    this.continueButton.on("pointertap", function() {
+    this.continueButton.on("pointertap", () => {
         this.scene.parent.removeChild(this.scene);
         nextStage();
         STATE = STAGES[currentStage];
-    }.bind(this));
+    });
 
     // Back button takes you to the main menu
-    this.backButton.on("pointertap", function() {
+    this.backButton.on("pointertap", () => {
         this.scene.parent.removeChild(this.scene);
-        openStageSelect();
-    }.bind(this));
+        StageSelect.open();
+    });
 
-    this.update = function() {};
+    this.update = () => {};
 }
 
-let stageCompleteScene;
-
-function openStageComplete() {
-
-    // First Initialize Only
-    if(stageCompleteScene == null) {
-        stageCompleteScene = new StageComplete();
+StageComplete.open() {
+    if(StageComplete.instance == null) {
+        StageComplete.instance = new StageComplete();
     }
 
-    // Every time opened
-    SCENE.addChild(stageCompleteScene.scene);
-    STATE = stageCompleteScene.update;
+    SCENE.addChild(StageComplete.instance.scene);
+    STATE = StageComplete.instance.update;
 }

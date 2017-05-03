@@ -15,9 +15,7 @@ function stageInit() {
 
     let pauseButton = makeSimpleButton(100, 50, "Pause", 0x94b8b8);
     pauseButton.position.set(CANVAS_WIDTH - 150, 100);
-    pauseButton.on("pointertap", () => {
-        openPauseMenu();
-    });
+    pauseButton.on("pointertap", PauseMenu.open);
 
     stageScene = new PIXI.Container()
     stageScene.addChild(background);
