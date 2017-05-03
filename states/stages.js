@@ -129,22 +129,19 @@ function ingredientTest() {
     let apples = [];
     let BELT_SPEED = 1.3;
 
-    for (let i = 0; i < 12; i+=2) {
-        apples.push(makeItem(APPLE));
-        apples.push(makeItem(BLANK));
-        stageScene.addChild(apples[i]);
-        stageScene.addChild(apples[i+1]);
+    for (let i = 0; i < 6; i++) {
+        apples.push(APPLE);
+        apples.push(BLANK);
     }
 
     conveyorBelt = new ConveyorBelt(apples, BELT_SPEED);
     conveyorBeltRec = new PIXI.Rectangle(0, (480-32), 1280, 64);
 
-    apple1 = makeItem("apple.png", 100, 100);
+    apple1 = makeItem(APPLE, 100, 100);
     banana = makeItem("banana.png", 150, 150);
     processor = makeItem("table.png",200, 200);
     conveyor = makeItem("table.png",300, 300);
 
-    stageScene.addChild(apple1);
     stageScene.addChild(banana);
     stageScene.addChild(processor);
     stageScene.addChild(conveyor);

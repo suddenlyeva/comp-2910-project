@@ -1,6 +1,6 @@
 "use strict";
 
-function ConveyorBelt(itemArray, speed) {
+function ConveyorBelt(itemTypes, speed) {
 
     // Define Constants
     let SCENE_HEIGHT_PX = 480;
@@ -14,7 +14,7 @@ function ConveyorBelt(itemArray, speed) {
     this.speed = speed;
     this.deltaX = 0;
     
-    this.lastIndex = itemArray.length + ARRAY_MIN_SIZE - 1;
+    this.lastIndex = itemTypes.length + ARRAY_MIN_SIZE - 1;
     
     // Define Behaviours
     this.update = () => {
@@ -41,17 +41,14 @@ function ConveyorBelt(itemArray, speed) {
             this.deltaX -= SPRITE_SIZE_PX;
             
             // Add a blank to the end
-            this.addItemAtIndex(makeTestBlank(), this.lastIndex);
+            this.addItemAtIndex(makeItem(BLANK), this.lastIndex);
         }
-        
-        // TODO: Needs ingredient hookup
-        // Check for items removed from array
-        // Check for items placed into array
     }
 
     // Adds an item to the array
     this.addItemAtIndex = (item, index) => {
         
+        // Remove previous blank
         if(this.items[index] != null && this.items[index].isBlank) {
             stageScene.removeChild(this.items[index]);
         }
@@ -80,17 +77,14 @@ function ConveyorBelt(itemArray, speed) {
 
     // Pad array
     for(let i = 0; i < ARRAY_MIN_SIZE; i++) {
-        console.log(i);
-        this.addItemAtIndex(makeTestBlank(), i);
+        this.addItemAtIndex(makeItem(BLANK), i);
+        
     }
     
     // Fill out rest of conveyor
-    for(let i = 0; i < itemArray.length; i++) {
-        console.log(i + ARRAY_MIN_SIZE);
-        this.addItemAtIndex(itemArray[i], i + ARRAY_MIN_SIZE);
+    for(let i = 0; i < itemTypes.length; i++) {
+        this.addItemAtIndex(makeItem(itemTypes[i]), i + ARRAY_MIN_SIZE);
     }
-
-    // Fill empty array spots
 }
 
 // ------------------------------- //
