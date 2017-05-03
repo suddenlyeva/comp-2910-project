@@ -129,9 +129,11 @@ function ingredientTest() {
     let apples = [];
     let BELT_SPEED = 1.3;
 
-    for (let i = 0; i < 6; i++) {
-        apples.push(makeTestApple());
+    for (let i = 0; i < 12; i+=2) {
+        apples.push(makeItem("apple.png", 0, 0));
         apples.push(makeTestBlank());
+        stageScene.addChild(apples[i]);
+        stageScene.addChild(apples[i+1]);
     }
 
     conveyorBelt = new ConveyorBelt(apples, BELT_SPEED);
