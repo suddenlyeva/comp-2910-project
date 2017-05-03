@@ -49,7 +49,11 @@ function Processor(recipeOrder) //the Recipe this Processor will produce
 		
 		
 		// Two possible ways to pull list
-		this.requiredIngredients = [recipeOrder.getIngredentsList()]; // Pulls list of item array?
+		for(let i = 0; i < recipeOrder.getIngredientSize(); ++i)
+		{
+			this.requiredIngredients.push(recipeOrder.getIngredentsList); 
+		}
+		this.requiredIngredients = recipeOrder.getIngredentsList(); // Pulls list of item array?
 		this.requiredIngredients = recipeOrder;
 		
 		this.numIngredients = requiredIngredients.length;	// Assigns total number of ingredients
