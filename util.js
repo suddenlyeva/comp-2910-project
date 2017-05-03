@@ -5,15 +5,14 @@
 // simple rectangular button
 // use this until we have "real" buttons
 // font properties and line style are fixed
-function makeSimpleButton(width, height, text, color) {
+function makeSimpleButton(width, height, text, color, textSize = 20, borderWidth = 2) {
     let btnCont = new PIXI.Container();
     let btn = new PIXI.Graphics();
-    let txt = new PIXI.Text(
-        text,
-        { fontFamily: "Arial", fontSize: 20, fill: "black" }
-    );
+    let txt = new PIXI.Text(text, {
+        fontFamily: FONT_FAMILY, fontSize: textSize, fill: "black"
+    });
 
-    btn.lineStyle(2, 0, 1);
+    btn.lineStyle(borderWidth, 0x000000, 1);
     btn.beginFill(color);
     btn.drawRect(0, 0, width, height);
     btn.endFill();
@@ -21,17 +20,15 @@ function makeSimpleButton(width, height, text, color) {
     btnCont.addChild(btn);
     btnCont.addChild(txt);
 
-    txt.position.set(width / 2 - txt.width / 2, height / 2 - 10);
+    txt.position.set(width / 2 - txt.width / 2, height / 2 - textSize / 2);
 
     btnCont.interactive = true;
     btnCont.buttonMode = true;
     return btnCont;
 }
 
-function makeLoadingBar(x, y, width, height, padding, bgColor, fgColor) {
+function makeLoadingBar(width, height, padding, bgColor, fgColor) {
     let loadingBar = new PIXI.Container();
-
-    loadingBar.position.set(x, y);
 
     let bgLoading = new PIXI.Graphics();
     bgLoading.beginFill(bgColor);
@@ -48,7 +45,7 @@ function makeLoadingBar(x, y, width, height, padding, bgColor, fgColor) {
     loadingBar.addChild(fgLoading);
 
     // let user control fgLoading width through scale
-    loadingBar.fgXScale = (scale) => { fgLoading.scale.x = scale; };
+    loadingBar.xScale = function(s) { fgLoading.scale.x = s; };
 
     return loadingBar;
 }
@@ -64,6 +61,3 @@ function testHitRectangle(pointObj, rectObj) {
     
     return (xMin < xPoint && xPoint < xMax) && (yMin < yPoint && yPoint < yMax);
 }
-
-
-

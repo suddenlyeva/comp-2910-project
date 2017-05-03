@@ -1,19 +1,23 @@
 "use strict";
 
-let canvasWidth = 800,
-    canvasHeight = 600;
+let CANVAS_WIDTH = 1280,
+    CANVAS_HEIGHT = 720;
+let FONT_FAMILY = "JMH-HarryDicksonOne";
 let thingsToLoad = [
     "images/spritesheet.json"
 ];
 
-let renderer = PIXI.autoDetectRenderer(canvasWidth, canvasHeight);
-renderer.backgroundColor = 0x096c74;
-document.body.appendChild(renderer.view);
+let RENDERER = PIXI.autoDetectRenderer(CANVAS_WIDTH, CANVAS_HEIGHT);
+RENDERER.backgroundColor = 0x95d5f5;
+document.body.appendChild(RENDERER.view);
 
 let SCENE = new PIXI.Container();
-let STATE, stateBuffer;
+let STATE;
 
-let loadingProgressBar = makeLoadingBar(100, 250, 600, 100, 10, 0, 0x00d27f);
+let loadingProgressBar = makeLoadingBar(
+    RENDERER.width / 1.5, RENDERER.height / 6, 10, 0, 0x00d27f);
+loadingProgressBar.position.set(RENDERER.width / 2 - loadingProgressBar.width / 2,
+    RENDERER.height / 2 - loadingProgressBar.height / 2);
 SCENE.addChild(loadingProgressBar);
 
 PIXI.loader
@@ -22,18 +26,18 @@ PIXI.loader
     .load(setup);
 
 function setup() {
-    STATE = openIntro;
+    openIntro();
     gameLoop();
 }
 
 function gameLoop() {
     requestAnimationFrame(gameLoop);
     STATE();
-    renderer.render(SCENE);
+    RENDERER.render(SCENE);
 }
 
 function showLoadingProgress(loader, resource) {
     console.log("loading: " + resource.url);
-    loadingProgressBar.fgXScale(loader.progress / 100);
-    renderer.render(SCENE);
+    loadingProgressBar.xScale(loader.progress / 100);
+    RENDERER.render(SCENE);
 }
