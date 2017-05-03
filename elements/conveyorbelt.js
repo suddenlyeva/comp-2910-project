@@ -1,6 +1,6 @@
 "use strict";
 
-function ConveyorBelt(items, speed) {
+function ConveyorBelt(itemArray, speed) {
 
     // Define Constants
     let SCENE_HEIGHT_PX = 480;
@@ -14,10 +14,7 @@ function ConveyorBelt(items, speed) {
     this.speed = speed;
     this.deltaX = 0;
     
-    this.lastIndex = items.length - 1;
-    if (this.lastIndex < ARRAY_MIN_SIZE) {
-        this.lastIndex = ARRAY_MIN_SIZE;
-    }
+    this.lastIndex = itemArray.length + ARRAY_MIN_SIZE - 1;
     
     // Define Behaviours
     this.update = () => {
@@ -40,11 +37,11 @@ function ConveyorBelt(items, speed) {
             // Shift Indices
             this.items.shift();
 
+            // Reset Delta
+            this.deltaX -= SPRITE_SIZE_PX;
+            
             // Add a blank to the end
             this.addItemAtIndex(makeTestBlank(), this.lastIndex);
-
-            // Reset Delta
-            this.deltaX = 0;
         }
         
         // TODO: Needs ingredient hookup
@@ -71,22 +68,25 @@ function ConveyorBelt(items, speed) {
     
     // Returns an index based on an X position
     this.getIndexFromX = (x) => {
-        console.log(x);
         return Math.floor((SCENE_WIDTH_PX + this.deltaX - x) / SPRITE_SIZE_PX) - 1;
     }
 
     
     // Finish Constructor
 
-    // Populate array
-    for(let i in items) {
-        this.addItemAtIndex(items[i], i);
+    // Pad array
+    for(let i = 0; i < ARRAY_MIN_SIZE; i++) {
+        console.log(i);
+        this.addItemAtIndex(makeTestBlank(), i);
+    }
+    
+    // Fill out rest of conveyor
+    for(let i = 0; i < itemArray.length; i++) {
+        console.log(i + ARRAY_MIN_SIZE);
+        this.addItemAtIndex(itemArray[i], i + ARRAY_MIN_SIZE);
     }
 
     // Fill empty array spots
-    for(let i = this.items.length; i < ARRAY_MIN_SIZE; i++) {
-        this.addItemAtIndex(makeTestBlank(), i);
-    }
 }
 
 // ------------------------------- //
@@ -117,7 +117,7 @@ function setupConveyorTest() {
     stageInit();
 
     let apples = [];
-    let BELT_SPEED = 1;
+    let BELT_SPEED = 1.3;
 
     for (let i = 0; i < 6; i++) {
         apples.push(makeTestApple());
