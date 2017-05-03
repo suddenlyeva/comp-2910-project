@@ -7,7 +7,7 @@ let thingsToLoad = [
 ];
 
 let RENDERER = PIXI.autoDetectRenderer(CANVAS_WIDTH, CANVAS_HEIGHT);
-RENDERER.backgroundColor = 0x096c74;
+RENDERER.backgroundColor = 0x95d5f5;
 document.body.appendChild(RENDERER.view);
 
 let SCENE = new PIXI.Container();
