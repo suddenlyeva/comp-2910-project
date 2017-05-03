@@ -7,11 +7,9 @@ function Intro() {
     this.scene.interactive = true;
     this.scene.on("pointertap", function() { openMainMenu(); });
 
-    this.fontFamily = "JMH-HarryDicksonOne";
-
     // Define and style text
     this.txtFood = new PIXI.Text("FOOD", {
-        fontFamily: this.fontFamily, fontSize: 128, fill: 0x00ad5e,
+        fontFamily: FONT_FAMILY, fontSize: 128, fill: 0x00ad5e,
         dropShadow: true, dropShadowAngle: 7 * Math.PI / 12, dropShadowDistance: 10,
         fontWeight: "bold", stroke: 0xFFFFFF, strokeThickness: 7
     });
@@ -24,12 +22,12 @@ function Intro() {
     this.txtZero.style.strokeThickness = 4;
 
     this.txtClick = new PIXI.Text("Click anywhere to continue...", {
-        fontFamily: this.fontFamily, fontSize: 48, fill: 0xbd00ff,
+        fontFamily: FONT_FAMILY, fontSize: 48, fill: 0xbd00ff,
         fontWeight: "bold", stroke: 0xFFFFFF, strokeThickness: 7
     });
 
     this.txtTeam19 = new PIXI.Text("By team19", {
-        fontFamily: this.fontFamily, fontSize: 32, fill: 0x333333, strokeThickness: 1
+        fontFamily: FONT_FAMILY, fontSize: 32, fill: 0x333333, strokeThickness: 1
     });
 
     // Position text

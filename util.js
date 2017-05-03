@@ -5,15 +5,15 @@
 // simple rectangular button
 // use this until we have "real" buttons
 // font properties and line style are fixed
-function makeSimpleButton(width, height, text, color) {
+function makeSimpleButton(width, height, text, color, textSize = 20, borderWidth = 2) {
     let btnCont = new PIXI.Container();
     let btn = new PIXI.Graphics();
     let txt = new PIXI.Text(
         text,
-        { fontFamily: "Arial", fontSize: 20, fill: "black" }
+        { fontFamily: FONT_FAMILY, fontSize: textSize, fill: "black" }
     );
 
-    btn.lineStyle(2, 0, 1);
+    btn.lineStyle(borderWidth, 0x000000, 1);
     btn.beginFill(color);
     btn.drawRect(0, 0, width, height);
     btn.endFill();
@@ -21,7 +21,7 @@ function makeSimpleButton(width, height, text, color) {
     btnCont.addChild(btn);
     btnCont.addChild(txt);
 
-    txt.position.set(width / 2 - txt.width / 2, height / 2 - 10);
+    txt.position.set(width / 2 - txt.width / 2, height / 2 - textSize / 2);
 
     btnCont.interactive = true;
     btnCont.buttonMode = true;
