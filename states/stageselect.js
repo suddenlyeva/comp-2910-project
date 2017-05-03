@@ -33,8 +33,6 @@ function StageSelect() {
 }
 
 StageSelect.open = () => {
-
-    // First initialize only
     if(StageSelect.instance == null) {
         StageSelect.instance = new StageSelect();
     }
