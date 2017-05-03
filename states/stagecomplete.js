@@ -30,8 +30,8 @@ function openStageComplete() {
         continueButton.position.set(10, 10);
         backButton.position.set(continueButton.width + 20, 10);
         stageCompleteScene.position.set(
-            canvasWidth / 2 - width / 2,
-            canvasHeight / 2 - height / 2);
+            CANVAS_WIDTH / 2 - width / 2,
+            CANVAS_HEIGHT / 2 - height / 2);
 
         // Continue button moves to next stage
         continueButton.on("pointertap", () => {

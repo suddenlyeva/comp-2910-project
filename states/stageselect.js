@@ -36,7 +36,7 @@ function openStageSelect() {
     }
 
     // Every time opened
-    renderer.backgroundColor = 0x97ffff;
+    RENDERER.backgroundColor = 0x97ffff;
 
     SCENE = stageSelectScene;
     STATE = stageSelect;

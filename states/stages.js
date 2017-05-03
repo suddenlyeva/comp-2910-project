@@ -14,10 +14,9 @@ function stageInit() {
     let background = new PIXI.Sprite(bgTexture);
 
     let pauseButton = makeSimpleButton(100, 50, "Pause", 0x94b8b8);
-    pauseButton.position.set(canvasWidth - 150, 100);
+    pauseButton.position.set(CANVAS_WIDTH - 150, 100);
     pauseButton.on("pointertap", () => {
-        stateBuffer = STATE;
-        STATE = openPauseMenu;
+        openPauseMenu();
     });
 
     stageScene = new PIXI.Container()
@@ -26,7 +25,7 @@ function stageInit() {
 }
 
 function setupStage0() {
-    renderer.backgroundColor = 0x000000;
+    RENDERER.backgroundColor = 0x000000;
     currentStage = 0;
     console.log("stage 0");
 
@@ -44,7 +43,7 @@ function stage0() {
 }
 
 function setupStage1() {
-    renderer.backgroundColor = 0x330000;
+    RENDERER.backgroundColor = 0x330000;
     currentStage = 1;
     console.log("stage 1");
 
@@ -62,7 +61,7 @@ function stage1() {
 }
 
 function setupStage2() {
-    renderer.backgroundColor = 0x660000;
+    RENDERER.backgroundColor = 0x660000;
     currentStage = 2;
     console.log("stage 2");
 
@@ -80,7 +79,7 @@ function stage2() {
 }
 
 function setupStage3() {
-    renderer.backgroundColor = 0x990000;
+    RENDERER.backgroundColor = 0x990000;
     currentStage = 3;
     console.log("stage 3");
 
@@ -98,7 +97,7 @@ function stage3() {
 }
 
 function setupStage4() {
-    renderer.backgroundColor = 0xcc0000;
+    RENDERER.backgroundColor = 0xcc0000;
     currentStage = 4;
     console.log("stage 4");
 

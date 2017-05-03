@@ -2,44 +2,43 @@
 
 let mainMenuScene;
 
-function openMainMenu() {
+function MainMenu() {
+    this.scene = new PIXI.Container();
 
-    // First Initialize Only
-    if(mainMenuScene == null) {
+    // TODO: Make Background
+    this.background = new PIXI.Container();
 
-        // Make Buttons
-        let playButton = makeSimpleButton(100, 50, "Play", 0xb3ecec);
-        let optionsButton = makeSimpleButton(100, 50, "Options", 0x94b8b8);
+    // Make Buttons
+    this.playButton = makeSimpleButton(100, 50, "Play", 0xb3ecec);
+    this.optionsButton = makeSimpleButton(100, 50, "Options", 0x94b8b8);
 
-        // Add to scene
-        mainMenuScene = new PIXI.Container();
-        mainMenuScene.addChild(playButton);
-        mainMenuScene.addChild(optionsButton);
+    this.playButton.position.set(150, 200);
+    this.optionsButton.position.set(150, 300);
 
-        // Position Buttons
-        playButton.position.set(150, 200);
-        optionsButton.position.set(150, 300);
+    // Play button moves to stage select
+    this.playButton.on("pointertap", function () {
+        closeOptionsMenu();
+        openStageSelect();
+    });
 
-        // Play button moves to stage select
-        playButton.on("pointertap", () => {
-            SCENE.removeChild(optionsMenuScene);
-            STATE = openStageSelect;
-        });
+    // Options button opens an options panel
+    this.optionsButton.on("pointertap", openOptionsMenu);
 
-        // Options button opens an options panel
-        optionsButton.on("pointertap", () => {
-            // STATE = openOptionsMenu;
-            openOptionsMenu();
-        });
-    }
+    // Add to scene
+    this.scene.addChild(this.background);
+    this.scene.addChild(this.playButton);
+    this.scene.addChild(this.optionsButton);
 
-    // Every time opened
-    renderer.backgroundColor = 0x00d27f;
-    SCENE = mainMenuScene;
-    STATE = mainMenu;
+    // Update function to be called by the main game loop
+    this.update = function() {};
 }
 
-// Update loop
-function mainMenu() {
+function openMainMenu() {
+    if(mainMenuScene == null) {
+        mainMenuScene = new MainMenu();
+    }
 
+    RENDERER.backgroundColor = 0x00d27f;
+    SCENE = mainMenuScene.scene;
+    STATE = mainMenuScene.update;
 }
