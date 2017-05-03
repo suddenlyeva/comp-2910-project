@@ -34,6 +34,6 @@ function gameLoop() {
 
 function showLoadingProgress(loader, resource) {
     console.log("loading: " + resource.url);
-    loadingProgressBar.fgXScale(loader.progress / 100);
+    loadingProgressBar.xScale(loader.progress / 100);
     RENDERER.render(SCENE);
 }
