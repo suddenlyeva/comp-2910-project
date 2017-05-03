@@ -3,6 +3,11 @@
 // let some kind of enum for ingredients?
 
 function makeItem(type, x, y) {
+    // Define Constants
+    let SCENE_HEIGHT_PX = 480;
+    let SCENE_WIDTH_PX = 640;
+    let SPRITE_SIZE_PX = 32;
+    let SPRITE_HALF_PX = SPRITE_SIZE_PX/2;
     
     // TODO: getTextureFromType -> textureStr
     // the argument of textures should be replaced with textureStr after implementing index
@@ -52,6 +57,9 @@ function makeItem(type, x, y) {
         // Add item to the conveyor
         // Call conveyor add function later
         console.log("Added to conveyor");
+        console.log(conveyorBeltRec.width);
+        console.log(conveyorBeltRec.height);
+        conveyorBelt.addItemAtIndex(this, conveyorBelt.getIndexFromX(this.x));
     };
 
     item.onDragStart = function(event) {
@@ -63,7 +71,7 @@ function makeItem(type, x, y) {
         if(testHitRectangle(this, processor) && this.dragging) {
             // addToProcessor on drop collision
             this.addToProcessor();
-        } else if(testHitRectangle(this, conveyor) && this.dragging) {
+        } else if(testHitRectangle(this, conveyorBeltRec) && this.dragging) {
             // addToConveyor on drop collision
             this.addToConveyor();
         } else if(testHitRectangle(this, banana) && this.dragging) {

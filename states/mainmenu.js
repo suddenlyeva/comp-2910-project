@@ -18,7 +18,9 @@ function MainMenu() {
     // Play button moves to stage select
     this.playButton.on("pointertap", function () {
         closeOptionsMenu();
-        openStageSelect();
+        // openStageSelect();
+        // Test Code
+        STATE = ingredientTest;
     });
 
     // Options button opens an options panel

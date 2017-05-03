@@ -7,7 +7,7 @@ let currentStage = 0;
 let stageTimer = 0;
 let stageScene;
 // Discuss about where to declare later
-let background, apple, banana, processor, conveyor;
+let background, apple1, banana, processor, conveyor, conveyorBelt, conveyorBeltRec;
 
 function stageInit() {
     stageTimer = 0;
@@ -121,18 +121,28 @@ function nextStage() {
 }
 
 function ingredientTest() {
-    renderer.backgroundColor = 0x000000;
     currentStage = 0;
     console.log("stage 0");
 
     stageInit();
 
-    apple = makeItem("apple.png", 100, 100);
+    let apples = [];
+    let BELT_SPEED = 1.3;
+
+    for (let i = 0; i < 6; i++) {
+        apples.push(makeTestApple());
+        apples.push(makeTestBlank());
+    }
+
+    conveyorBelt = new ConveyorBelt(apples, BELT_SPEED);
+    conveyorBeltRec = new PIXI.Rectangle(0, (480-32), 1280, 64);
+
+    apple1 = makeItem("apple.png", 100, 100);
     banana = makeItem("banana.png", 150, 150);
     processor = makeItem("table.png",200, 200);
     conveyor = makeItem("table.png",300, 300);
 
-    stageScene.addChild(apple);
+    stageScene.addChild(apple1);
     stageScene.addChild(banana);
     stageScene.addChild(processor);
     stageScene.addChild(conveyor);
@@ -142,8 +152,9 @@ function ingredientTest() {
 
 }
 function ingredientTestStage() {
-    apple.update();
+    apple1.update();
     banana.update();
     processor.update(); 
     conveyor.update(); 
+    conveyorBelt.update();
 }
