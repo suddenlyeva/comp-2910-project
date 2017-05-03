@@ -130,8 +130,8 @@ function ingredientTest() {
     let BELT_SPEED = 1.3;
 
     for (let i = 0; i < 12; i+=2) {
-        apples.push(makeItem("apple.png", 0, 0));
-        apples.push(makeTestBlank());
+        apples.push(makeItem(APPLE));
+        apples.push(makeItem(BLANK));
         stageScene.addChild(apples[i]);
         stageScene.addChild(apples[i+1]);
     }

@@ -1,12 +1,7 @@
 "use strict";
-
 // let some kind of enum for ingredients?
 let BLANK = 0;
 let APPLE = 1;
-
-let ITEM_TEXTURES = [];
-let ITEM_TEXTURES[BLANK] = PIXI.loader.resources["images/spritesheet.json"].textures["testblank.png"];
-let ITEM_TEXTURES[APPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"];
 
 function makeItem(type, x, y) {
     // Define Constants
@@ -14,7 +9,12 @@ function makeItem(type, x, y) {
     let SCENE_WIDTH_PX = 640;
     let SPRITE_SIZE_PX = 32;
     let SPRITE_HALF_PX = SPRITE_SIZE_PX/2;
-    
+
+    //Texture dictionary
+    let ITEM_TEXTURES = [];
+    ITEM_TEXTURES[BLANK] = PIXI.loader.resources["images/spritesheet.json"].textures["testblank.png"];
+    ITEM_TEXTURES[APPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"];
+
     // TODO: getTextureFromType -> textureStr
     // the argument of textures should be replaced with textureStr after implementing index
     let item = new PIXI.Sprite(
@@ -23,10 +23,10 @@ function makeItem(type, x, y) {
     
     // Test for blank object
     if(type = BLANK) {
-        this.isBlank = true;
+        item.isBlank = true;
     }
     else {
-        this.isBLank = false;
+        item.isBlank = false;
     }
 
     // Data that needs to be tracked every frame
