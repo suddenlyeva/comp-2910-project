@@ -43,7 +43,7 @@ function StageComplete() {
     this.update = () => {};
 }
 
-StageComplete.open() {
+StageComplete.open = () => {
     if(StageComplete.instance == null) {
         StageComplete.instance = new StageComplete();
     }

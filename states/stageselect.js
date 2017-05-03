@@ -1,12 +1,22 @@
 "use strict";
 
 function StageSelect() {
-    // Declare an array of buttons
-    this.stageBtns = [];
 
-    // Make scene groups
     this.scene = new PIXI.Container();
 
+    // Make background
+    this.background = new PIXI.Container();
+    this.bgFill = new PIXI.Graphics();
+    this.bgFill.beginFill(0x5d32ea);
+    this.bgFill.drawRect(0, 0, RENDERER.width, RENDERER.height);
+    this.bgFill.endFill();
+
+    this.background.addChild(this.bgFill);
+
+    this.scene.addChild(this.background);
+
+    // Declare an array of buttons
+    this.stageBtns = [];
     // Initialize buttons
     for(let i = 0; i < STAGES.length; i++) {
 

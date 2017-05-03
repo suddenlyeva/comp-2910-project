@@ -38,7 +38,8 @@ function PauseMenu() {
     this.optionsButton.position.set(150, 300);
 
     // Play button moves to stage select
-    this.resumeButton.on("pointertap", this.unpause);
+    // Requres "this" context to operate so we use () => {}
+    this.resumeButton.on("pointertap", () => { this.unpause() });
 
     // Options button opens an options panel
     this.optionsButton.on("pointertap", OptionsMenu.open);

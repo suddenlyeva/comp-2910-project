@@ -36,7 +36,7 @@ function setupStage0() {
 function stage0() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
@@ -54,7 +54,7 @@ function setupStage1() {
 function stage1() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
@@ -72,7 +72,7 @@ function setupStage2() {
 function stage2() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
@@ -90,7 +90,7 @@ function setupStage3() {
 function stage3() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
@@ -108,7 +108,7 @@ function setupStage4() {
 function stage4() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
