@@ -32,7 +32,7 @@ function ConveyorBelt(itemTypes, speed) {
 
             // Remove first item
             // TODO: replace with waste()
-            stageScene.removeChild(this.items[0]);
+            this.items[0].waste();
 
             // Shift Indices
             this.items.shift();
@@ -49,7 +49,7 @@ function ConveyorBelt(itemTypes, speed) {
     this.addItemAtIndex = (item, index) => {
         
         // Remove previous blank
-        if(this.items[index] != null && this.items[index].isBlank) {
+        if(this.items[index] != null && this.items[index].type == BLANK) {
             stageScene.removeChild(this.items[index]);
         }
 
