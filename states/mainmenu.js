@@ -23,7 +23,8 @@ function openMainMenu() {
         // Play button moves to stage select
         playButton.on("pointertap", () => {
             SCENE.removeChild(optionsMenuScene);
-            STATE = openStageSelect;
+            // Test Code
+            STATE = ingredientTest;
         });
 
         // Options button opens an options panel

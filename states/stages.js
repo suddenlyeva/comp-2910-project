@@ -6,6 +6,8 @@ let STAGES = [setupStage0, setupStage1, setupStage2, setupStage3, setupStage4];
 let currentStage = 0;
 let stageTimer = 0;
 let stageScene;
+// Discuss about where to declare later
+let background, apple, banana, processor, conveyor;
 
 function stageInit() {
     stageTimer = 0;
@@ -117,4 +119,32 @@ function stage4() {
 
 function nextStage() {
     currentStage = currentStage === STAGES.length - 1 ? 0 : currentStage + 1;
+}
+
+function ingredientTest() {
+    renderer.backgroundColor = 0x000000;
+    currentStage = 0;
+    console.log("stage 0");
+
+    stageInit();
+
+    apple = makeItem("apple.png", 100, 100);
+    banana = makeItem("banana.png", 150, 150);
+    processor = makeItem("table.png",200, 200);
+    conveyor = makeItem("table.png",300, 300);
+
+    stageScene.addChild(apple);
+    stageScene.addChild(banana);
+    stageScene.addChild(processor);
+    stageScene.addChild(conveyor);
+
+    SCENE = stageScene;
+    STATE = ingredientTestStage;
+
+}
+function ingredientTestStage() {
+    apple.update();
+    banana.update();
+    processor.update(); 
+    conveyor.update(); 
 }
