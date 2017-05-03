@@ -1,7 +1,5 @@
 "use strict";
 
-let mainMenuScene;
-
 function MainMenu() {
     this.scene = new PIXI.Container();
 
@@ -45,12 +43,12 @@ function MainMenu() {
 
     // Play button moves to stage select
     this.playButton.on("pointertap", function () {
-        closeOptionsMenu();
-        openStageSelect();
+        OptionsMenu.close();
+        StageSelect.open();
     });
 
     // Options button opens an options panel
-    this.optionsButton.on("pointertap", openOptionsMenu);
+    this.optionsButton.on("pointertap", OptionsMenu.open);
 
     // Add to scene
     this.scene.addChild(this.background);
@@ -58,14 +56,14 @@ function MainMenu() {
     this.scene.addChild(this.optionsButton);
 
     // Update function to be called by the main game loop
-    this.update = function() {};
+    this.update = function() {}.bind(this);
 }
 
-function openMainMenu() {
-    if(mainMenuScene == null) {
-        mainMenuScene = new MainMenu();
+MainMenu.open = function() {
+    if(MainMenu.instance == null) {
+        MainMenu.instance = new MainMenu();
     }
 
-    SCENE = mainMenuScene.scene;
-    STATE = mainMenuScene.update;
+    SCENE = MainMenu.instance.scene;
+    STATE = MainMenu.instance.update;
 }

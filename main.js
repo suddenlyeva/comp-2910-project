@@ -26,7 +26,7 @@ PIXI.loader
     .load(setup);
 
 function setup() {
-    openIntro();
+    Intro.open();
     gameLoop();
 }
 

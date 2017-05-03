@@ -26,29 +26,21 @@ function OptionsMenu() {
 
     // Back button moves to main menu
     // bind(this) is used to give the function context (which is the current object)
-    this.closeButton.on("pointertap", function() { this.close() }.bind(this)); 
-
-    this.close = function() {
-        if(this.scene.parent != null) {
-            this.scene.parent.removeChild(this.scene);
-        }
-    };
+    this.closeButton.on("pointertap", OptionsMenu.close); 
 }
 
-let optionsMenuScene;
-
-function openOptionsMenu() {
-    if(optionsMenuScene == null) {
-        optionsMenuScene = new OptionsMenu();
+OptionsMenu.open = () => {
+    if(OptionsMenu.instance == null) {
+        OptionsMenu.instance = new OptionsMenu();
     }
 
     // console.log(SCENE.children.length);
     // only adds one options menu no matter how many times it's called
-    SCENE.addChild(optionsMenuScene.scene);
-}
+    SCENE.addChild(OptionsMenu.instance.scene);
+};
 
-function closeOptionsMenu() {
-    if(optionsMenuScene != null) {
-        optionsMenuScene.close();
+OptionsMenu.close = () => {
+    if(OptionsMenu.instance != null && OptionsMenu.instance.scene.parent != null) {
+        OptionsMenu.instance.scene.parent.removeChild(OptionsMenu.instance.scene);
     }
-}
+};

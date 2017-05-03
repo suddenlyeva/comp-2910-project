@@ -1,11 +1,9 @@
 "use strict";
 
-let introScene;
-
 function Intro() {
     this.scene = new PIXI.Container();
     this.scene.interactive = true;
-    this.scene.on("pointertap", function() { openMainMenu(); });
+    this.scene.on("pointertap", MainMenu.open);
 
     // Define and style text
     this.txtFood = new PIXI.Text("FOOD", {
@@ -58,7 +56,7 @@ function Intro() {
     this.flashFreq = 0.03;
     this.counter = 0;
 
-    this.update = function() {
+    this.update = () => {
         if(this.txtFood.alpha < 1) {
             this.txtFood.alpha += this.appearSpeed;
         } else if(this.txtFactory.alpha < 1) {
@@ -69,15 +67,15 @@ function Intro() {
             this.txtPress.alpha = Math.pow(Math.sin(this.counter), 4);
             this.counter = (this.counter + this.flashFreq) % Math.PI;
         }
-    }.bind(this);
+    };
 }
 
-function openIntro() {
+Intro.open = () => {
 
-    if(introScene == null) {
-        introScene = new Intro();
+    if(Intro.instance == null) {
+        Intro.instance = new Intro();
     }
 
-    SCENE = introScene.scene;
-    STATE = introScene.update;
+    SCENE = Intro.instance.scene;
+    STATE = Intro.instance.update;
 }
