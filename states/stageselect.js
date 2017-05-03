@@ -25,25 +25,20 @@ function StageSelect() {
 
     this.backToMainMenu = makeSimpleButton(200, 50, "Back to Main Menu", 0xb3ecec);
     this.backToMainMenu.position.set(550, 500);
-    this.backToMainMenu.on("pointertap", openMainMenu);
+    this.backToMainMenu.on("pointertap", MainMenu.open);
 
     this.scene.addChild(this.backToMainMenu);
 
-    this.update = function() {};
+    this.update = () => {};
 }
 
-let stageSelectScene;
-
-function openStageSelect() {
+StageSelect.open = () => {
 
     // First initialize only
-    if(stageSelectScene == null) {
-        stageSelectScene = new StageSelect();
+    if(StageSelect.instance == null) {
+        StageSelect.instance = new StageSelect();
     }
 
-    // Every time opened
-    RENDERER.backgroundColor = 0x97ffff;
-
-    SCENE = stageSelectScene.scene;
-    STATE = stageSelectScene.update;
+    SCENE = StageSelect.instance.scene;
+    STATE = StageSelect.instance.update;
 }
