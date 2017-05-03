@@ -27,10 +27,8 @@ function makeSimpleButton(width, height, text, color, textSize = 20, borderWidth
     return btnCont;
 }
 
-function makeLoadingBar(x, y, width, height, padding, bgColor, fgColor) {
+function makeLoadingBar(width, height, padding, bgColor, fgColor) {
     let loadingBar = new PIXI.Container();
-
-    loadingBar.position.set(x, y);
 
     let bgLoading = new PIXI.Graphics();
     bgLoading.beginFill(bgColor);
