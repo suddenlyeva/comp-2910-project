@@ -48,7 +48,7 @@ function makeLoadingBar(x, y, width, height, padding, bgColor, fgColor) {
     loadingBar.addChild(fgLoading);
 
     // let user control fgLoading width through scale
-    loadingBar.fgXScale = (scale) => { fgLoading.scale.x = scale; };
+    loadingBar.xScale = function(s) { fgLoading.scale.x = s; };
 
     return loadingBar;
 }
@@ -64,6 +64,3 @@ function testHitRectangle(pointObj, rectObj) {
     
     return (xMin < xPoint && xPoint < xMax) && (yMin < yPoint && yPoint < yMax);
 }
-
-
-
