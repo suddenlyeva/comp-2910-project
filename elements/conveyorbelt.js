@@ -47,11 +47,11 @@ function ConveyorBelt(itemTypes, speed) {
     // Adds an item to the array
     this.addItemAtIndex = (item, index) => {
         
-        // Remove previous blank
-        if(this.items[index] != null && this.items[index].type == BLANK) {
+        // Remove previous item
+        if(this.items[index] != null) {
             stageScene.removeChild(this.items[index]);
         }
-
+        
         // Position
         // At bottom of screen
         item.y = SCENE_HEIGHT_PX - SPRITE_HALF_PX;
@@ -91,7 +91,6 @@ function ConveyorBelt(itemTypes, speed) {
     // Pad array
     for(let i = 0; i < ARRAY_MIN_SIZE; i++) {
         this.addItemAtIndex(makeItem(BLANK), i);
-        
     }
     
     // Fill out rest of conveyor
