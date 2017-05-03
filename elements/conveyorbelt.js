@@ -30,8 +30,7 @@ function ConveyorBelt(itemTypes, speed) {
         // When last item reaches trash can:
         if(this.deltaX >= SPRITE_SIZE_PX) {
 
-            // Remove first item
-            // TODO: replace with waste()
+            // Waste first item
             this.items[0].waste();
 
             // Shift Indices
@@ -82,6 +81,11 @@ function ConveyorBelt(itemTypes, speed) {
         this.addItemAtIndex(item, this.getIndexFromX(x));
     }
     
+    // Point Collision
+    this.collidesWithPoint = (x,y) => {
+        return (0 < x && x < SCENE_WIDTH_PX - SPRITE_SIZE_PX) && (SCENE_HEIGHT - SPRITE_SIZE_PX < y && y < SCENE_HEIGHT_PX)
+    }
+    
     // Finish Constructor
 
     // Pad array
@@ -95,46 +99,3 @@ function ConveyorBelt(itemTypes, speed) {
         this.addItemAtIndex(makeItem(itemTypes[i]), i + ARRAY_MIN_SIZE);
     }
 }
-
-// ------------------------------- //
-// -          Test Code          - //
-// ------------------------------- //
-
-function makeTestApple() {
-    let apple = new PIXI.Sprite(
-        PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"]
-    );
-    apple.anchor.set(0.5);
-    stageScene.addChild(apple);
-    return apple;
-}
-
-function makeTestBlank() {
-    let blank = new PIXI.Sprite(
-        PIXI.loader.resources["images/spritesheet.json"].textures["testblank.png"]
-    );
-    blank.isBlank = true;
-    blank.anchor.set(0.5);
-    stageScene.addChild(blank);
-    blank.alpha = 0.1;
-    return blank;
-}
-
-function setupConveyorTest() {
-
-    stageInit();
-
-    let apples = [];
-    let BELT_SPEED = 1.3;
-
-    for (let i = 0; i < 6; i++) {
-        apples.push(makeTestApple());
-        apples.push(makeTestBlank());
-    }
-
-    let conveyorBelt = new ConveyorBelt(apples, BELT_SPEED);
-
-    SCENE = stageScene;
-    STATE = conveyorBelt.update;
-}
-
