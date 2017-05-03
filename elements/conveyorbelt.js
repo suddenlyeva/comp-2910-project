@@ -78,8 +78,8 @@ function ConveyorBelt(itemTypes, speed) {
     }
     
     // Adds an item based on an x position
-    this.addItemAtX = (x) => {
-        this.addItemAtIndex(this.getIndexFromX(x));
+    this.addItemAtX = (item, x) => {
+        this.addItemAtIndex(item, this.getIndexFromX(x));
     }
     
     // Finish Constructor
