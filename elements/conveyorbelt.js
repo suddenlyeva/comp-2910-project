@@ -6,6 +6,7 @@ function ConveyorBelt(items, speed) {
     let SCENE_HEIGHT_PX = 480;
     let SCENE_WIDTH_PX = 640;
     let SPRITE_SIZE_PX = 32;
+    let SPRITE_HALF_PX = SPRITE_SIZE_PX/2;
     let ARRAY_MIN_SIZE = 20;
 
     // Define Properties
@@ -45,7 +46,7 @@ function ConveyorBelt(items, speed) {
             // Reset Delta
             this.deltaX = 0;
         }
-
+        
         // TODO: Needs ingredient hookup
         // Check for items removed from array
         // Check for items placed into array
@@ -56,10 +57,10 @@ function ConveyorBelt(items, speed) {
 
         // Position
         // At bottom of screen
-        item.y = SCENE_HEIGHT_PX - SPRITE_SIZE_PX;
+        item.y = SCENE_HEIGHT_PX - SPRITE_HALF_PX;
 
         // Normalize to near bottom right corner
-        item.x = SCENE_WIDTH_PX - SPRITE_SIZE_PX * 2;
+        item.x = SCENE_WIDTH_PX - SPRITE_SIZE_PX - SPRITE_HALF_PX;
 
         // Shift left by index
         item.x -= SPRITE_SIZE_PX * index;
@@ -67,7 +68,14 @@ function ConveyorBelt(items, speed) {
         // Copy in
         this.items[index] = item;
     }
+    
+    // Returns an index based on an X position
+    this.getIndexFromX = (x) => {
+        console.log(x);
+        return Math.floor((SCENE_WIDTH_PX + this.deltaX - x) / SPRITE_SIZE_PX) - 1;
+    }
 
+    
     // Finish Constructor
 
     // Populate array
@@ -89,6 +97,7 @@ function makeTestApple() {
     let apple = new PIXI.Sprite(
         PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"]
     );
+    apple.anchor.set(0.5);
     stageScene.addChild(apple);
     return apple;
 }
@@ -97,6 +106,7 @@ function makeTestBlank() {
     let blank = new PIXI.Sprite(
         PIXI.loader.resources["images/spritesheet.json"].textures["testblank.png"]
     );
+    blank.anchor.set(0.5);
     stageScene.addChild(blank);
     blank.alpha = 0.1;
     return blank;
