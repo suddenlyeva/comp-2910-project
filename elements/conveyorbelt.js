@@ -47,8 +47,8 @@ function ConveyorBelt(itemTypes, speed) {
     // Adds an item to the array
     this.addItemAtIndex = (item, index) => {
         
-        // Remove previous item
-        if(this.items[index] != null) {
+        // Remove previous blank
+        if(this.items[index] != null && this.items[index].type == BLANK) {
             stageScene.removeChild(this.items[index]);
         }
         
