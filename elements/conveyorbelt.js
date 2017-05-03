@@ -51,6 +51,10 @@ function ConveyorBelt(itemArray, speed) {
 
     // Adds an item to the array
     this.addItemAtIndex = (item, index) => {
+        
+        if(this.items[index] != null) {
+            stageScene.removeChild(this.items[index]);
+        }
 
         // Position
         // At bottom of screen
