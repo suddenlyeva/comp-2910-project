@@ -42,6 +42,8 @@ function openOptionsMenu() {
         optionsMenuScene = new OptionsMenu();
     }
 
+    // console.log(SCENE.children.length);
+    // only adds one options menu no matter how many times it's called
     SCENE.addChild(optionsMenuScene.scene);
 }
 
