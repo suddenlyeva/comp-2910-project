@@ -5,21 +5,38 @@ let mainMenuScene;
 function MainMenu() {
     this.scene = new PIXI.Container();
 
-    // TODO: Make Background
+    // Make Background
     this.background = new PIXI.Container();
-    this.bgTri = new PIXI.Graphics();
-    this.bgTri.beginFill();
+    this.bgTriangle1 = new PIXI.Graphics();
+    this.bgTriangle1.beginFill(0x00ff6b);
+    this.bgTriangle1.drawPolygon([0,RENDERER.height, 0,0, RENDERER.width,0]);
+    this.bgTriangle1.endFill();
 
-    this.bgTri.endFill();
+    this.bgTriangle2 = new PIXI.Graphics();
+    this.bgTriangle2.beginFill(0x00ccff);
+    this.bgTriangle2.drawPolygon([
+        0,RENDERER.height,
+        RENDERER.width,RENDERER.height,
+        RENDERER.width,0]);
+    this.bgTriangle2.endFill();
+
+    this.bgLine = new PIXI.Graphics();
+    this.bgLine.lineStyle(8, 0x222222, 1);
+    this.bgLine.moveTo(0, RENDERER.height);
+    this.bgLine.lineTo(RENDERER.width, 0);
+
+    this.background.addChild(this.bgTriangle1);
+    this.background.addChild(this.bgTriangle2);
+    this.background.addChild(this.bgLine);
 
     // Make Buttons
     this.distFromEdge = 200;
     this.buttonWidth = RENDERER.width / 2 - this.distFromEdge - 20; // 20 between buttons
     this.buttonHeight = RENDERER.height / 2;
     this.playButton = makeSimpleButton(this.buttonWidth, this.buttonHeight,
-        "Play", 0xb3ecec, this.buttonHeight / 4);
+        "Play", 0xb3ecec, this.buttonHeight / 4, 4);
     this.optionsButton = makeSimpleButton(this.buttonWidth, this.buttonHeight,
-        "Options", 0x94b8b8, this.buttonHeight / 4);
+        "Options", 0x94b8b8, this.buttonHeight / 4, 4);
 
     this.playButton.position.set(this.distFromEdge,
         RENDERER.height / 2 - this.playButton.height / 2);
@@ -49,7 +66,6 @@ function openMainMenu() {
         mainMenuScene = new MainMenu();
     }
 
-    RENDERER.backgroundColor = 0x00d27f;
     SCENE = mainMenuScene.scene;
     STATE = mainMenuScene.update;
 }
