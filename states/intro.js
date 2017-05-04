@@ -2,8 +2,6 @@
 
 function Intro() {
     this.scene = new PIXI.Container();
-    this.scene.interactive = true;
-    this.scene.on("pointertap", MainMenu.open);
 
     // Define and style text
     this.txtFood = new PIXI.Text("FOOD", {
@@ -40,12 +38,21 @@ function Intro() {
     this.txtTeam19.position.set(RENDERER.width - this.txtTeam19.width - 10,
         RENDERER.height - this.txtTeam19.height - 10);
 
+    this.clickableArea = new PIXI.Graphics();
+    this.clickableArea.beginFill(0);
+    this.clickableArea.drawRect(0, 0, RENDERER.width, RENDERER.height);
+    this.clickableArea.endFill();
+    this.clickableArea.interactive = true;
+    this.clickableArea.alpha = 0;
+    this.clickableArea.pointertap = MainMenu.open;
+
     // Add to scene
     this.scene.addChild(this.txtFood);
     this.scene.addChild(this.txtFactory);
     this.scene.addChild(this.txtZero);
     this.scene.addChild(this.txtPress);
     this.scene.addChild(this.txtTeam19);
+    this.scene.addChild(this.clickableArea);
 
     this.txtFood.alpha = 0;
     this.txtFactory.alpha = 0;
