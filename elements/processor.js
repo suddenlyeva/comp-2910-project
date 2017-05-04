@@ -1,6 +1,6 @@
 "use strict";
 
-function Processor(recipeOrder) //the Recipe this Processor will produce 
+function Processor(recipeOrder, level) //the Recipe this Processor will produce 
 {
 
 	//-------------------------------------------------------------------------------
@@ -53,12 +53,12 @@ function Processor(recipeOrder) //the Recipe this Processor will produce
 		this.mSpriteOutput.y = (this.mPositionY);
 		
 		// Addes Tray Sprites to stage
-		stageScene.addChild(this.mSpriteProcessor);
-		stageScene.addChild(this.mSpriteOutput);
+		level.scene.addChild(this.mSpriteProcessor);
+		level.scene.addChild(this.mSpriteOutput);
 		
 		for(let i = 0; i < this.numIngredients; ++i)
 		{
-			stageScene.addChild(this.mSpriteTray[i]);
+			level.scene.addChild(this.mSpriteTray[i]);
 		}
 		
 		/*
@@ -114,6 +114,10 @@ function Processor(recipeOrder) //the Recipe this Processor will produce
 			//render clock
 			
 	}
+	
+	this.collidesWithPoint = (x,y) => {
+        return (0 < x && x < SCENE_WIDTH_PX - SPRITE_SIZE_PX) && (SCENE_HEIGHT_PX - SPRITE_SIZE_PX < y && y < SCENE_HEIGHT_PX);
+    }
 	
 	//-------------------------------------------------------------------------------
 	// On Update
