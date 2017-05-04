@@ -12,8 +12,8 @@ function PauseMenu() {
     });
 
     // Make Buttons
-    this.resumeButton = makeSimpleButton(100, 50, "Resume", 0xb3ecec, 50);
-    this.optionsButton = makeSimpleButton(100, 50, "Options", 0x94b8b8, 50);
+    this.resumeButton = makeSimpleButton(100, 50, "resume", 0xb3ecec, 50);
+    this.optionsButton = makeSimpleButton(100, 50, "options", 0x94b8b8, 50);
 
     // Make background elements and add them to the background container
     this.background = new PIXI.Container();

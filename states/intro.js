@@ -23,7 +23,7 @@ function Intro() {
     });
 
     this.txtTeam19 = new PIXI.Text("by team19", {
-        fontFamily: FONT_FAMILY, fontSize: 64, fill: 0x333333, strokeThickness: 1
+        fontFamily: FONT_FAMILY, fontSize: 64, fill: 0x333333
     });
 
     // Position text

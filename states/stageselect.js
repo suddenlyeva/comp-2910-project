@@ -21,7 +21,7 @@ function StageSelect() {
     for(let i = 0; i < STAGES.length; i++) {
 
         // Create
-        this.stageBtns.push(makeSimpleButton(100, 50, "Stage " + i, 0xffdfba, 50));
+        this.stageBtns.push(makeSimpleButton(100, 50, "stage " + i, 0xffdfba, 50));
 
         // Add to group
         this.scene.addChild(this.stageBtns[i]);
@@ -33,7 +33,7 @@ function StageSelect() {
         this.stageBtns[i].on("pointertap", STAGES[i]);
     }
 
-    this.backToMainMenu = makeSimpleButton(200, 50, "Back to Main Menu", 0xb3ecec, 50);
+    this.backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50);
     this.backToMainMenu.position.set(550, 500);
     this.backToMainMenu.on("pointertap", MainMenu.open);
 

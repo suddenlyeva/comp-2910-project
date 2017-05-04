@@ -13,8 +13,8 @@ function OptionsMenu() {
     this.panel.drawRect(0, 0, this.width, this.height);
     this.panel.endFill();
     this.closeButton = makeSimpleButton(30, 30, "X", 0xf00e46);
-    this.musicVol = makeSlider(this.panel.width - 100, 100, "Music", 50);
-    this.soundVol = makeSlider(this.panel.width - 100, 100, "Sound", 50);
+    this.musicVol = makeSlider(this.panel.width - 100, 100, "music", 50);
+    this.soundVol = makeSlider(this.panel.width - 100, 100, "sound", 50);
 
     this.panel.interactive = true;
 
