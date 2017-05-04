@@ -54,7 +54,7 @@ function makeSlider(width, height, text, handleHeight) {
     let slider = new PIXI.Container();
 
     let desc = new PIXI.Text(text, {
-        fontFamily: FONT_FAMILY, fontSize: height / 3, fill: 0x0
+        fontFamily: FONT_FAMILY, fontSize: height / 1.5, fill: 0x0
     });
 
     let line = new PIXI.Graphics();

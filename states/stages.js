@@ -15,7 +15,7 @@ function stageInit() {
     let bgTexture = PIXI.utils.TextureCache["background.png"];
     let background = new PIXI.Sprite(bgTexture);
 
-    let pauseButton = makeSimpleButton(100, 50, "Pause", 0x94b8b8);
+    let pauseButton = makeSimpleButton(100, 50, "Pause", 0x94b8b8, 50);
     pauseButton.position.set(CANVAS_WIDTH - 150, 100);
     pauseButton.on("pointertap", PauseMenu.open);
 
