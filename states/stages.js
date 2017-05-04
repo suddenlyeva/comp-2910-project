@@ -6,6 +6,8 @@ let STAGES = [setupStage0, setupStage1, setupStage2, setupStage3, setupStage4];
 let currentStage = 0;
 let stageTimer = 0;
 let stageScene;
+// Discuss about where to declare later
+let background, conveyorBelt;
 
 function stageInit() {
     stageTimer = 0;
@@ -114,4 +116,28 @@ function stage4() {
 
 function nextStage() {
     currentStage = currentStage === STAGES.length - 1 ? 0 : currentStage + 1;
+}
+
+function ingredientTest() {
+    currentStage = 0;
+    console.log("stage 0");
+
+    stageInit();
+
+    let apples = [];
+    let BELT_SPEED = 1.3;
+
+    for (let i = 0; i < 6; i++) {
+        apples.push(APPLE);
+        apples.push(BLANK);
+    }
+
+    conveyorBelt = new ConveyorBelt(apples, BELT_SPEED);
+
+    SCENE = stageScene;
+    STATE = ingredientTestStage;
+
+}
+function ingredientTestStage() {
+    conveyorBelt.update();
 }
