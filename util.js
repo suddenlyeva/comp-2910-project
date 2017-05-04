@@ -62,8 +62,6 @@ function makeSlider(width, height, text, handleHeight) {
     line.drawRect(0, 0, width / 1.2, handleHeight / 6);
     line.endFill();
     line.position.set(width / 2 - line.width / 2, height - handleHeight / 2);
-    // clicking on the line brings handle position to that point
-    line.interactive = line.buttonMode = true;
 
     let colorSound = 0x77f441,
         colorMuted = 0xff1a1a,
@@ -80,12 +78,22 @@ function makeSlider(width, height, text, handleHeight) {
     handle.tint = colorSound;
     handle.interactive = handle.buttonMode = true;
 
+    // clicking on the line brings handle position to that point
+    let lineClickable = new PIXI.Graphics();
+    lineClickable.beginFill(0x0);
+    lineClickable.drawRect(0, 0, line.width, handle.height)
+    lineClickable.endFill();
+    lineClickable.alpha = 0;
+    lineClickable.interactive = lineClickable.buttonMode = true;
+    lineClickable.position.set(line.x, handle.y);
+
     handle.pointerdown = eventData => {
         // record cursor position inside handle
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
     };
 
-    handle.pointerup = handle.pointerupoutside = line.pointerup = line.pointerupoutside =
+    handle.pointerup = handle.pointerupoutside =
+        lineClickable.pointerup = lineClickable.pointerupoutside =
         eventData => {
             handle.dragData = false;
             handle.tint = handle.x === line.x ? colorMuted : colorSound;
@@ -108,7 +116,7 @@ function makeSlider(width, height, text, handleHeight) {
         }
     };
 
-    line.pointerdown = eventData => {
+    lineClickable.pointerdown = eventData => {
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
         let xAdjusted = handle.dragData.x - handle.width / 2;
         if(xAdjusted < line.x) {
@@ -121,6 +129,7 @@ function makeSlider(width, height, text, handleHeight) {
     };
 
     slider.addChild(line);
+    slider.addChild(lineClickable);
     slider.addChild(handle);
     slider.addChild(desc);
 
