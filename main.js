@@ -29,8 +29,6 @@ PIXI.loader
     .load(setup);
 
 function setup() {
-    
-    debugger;
     Intro.open();
     gameLoop();
 }
