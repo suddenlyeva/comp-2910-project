@@ -7,21 +7,20 @@ let thingsToLoad = [
     "images/spritesheet.json"
 ];
 
+let SCENE = new PIXI.Container();
+let STATE;
+
 let RENDERER = PIXI.autoDetectRenderer(CANVAS_WIDTH, CANVAS_HEIGHT);
 RENDERER.view.style.position = "absolute";
 RENDERER.view.style.display = "block";
 RENDERER.autoResize = true;
-RENDERER.resize(window.innerWidth, window.innerHeight);
 RENDERER.backgroundColor = 0x95d5f5;
 document.body.appendChild(RENDERER.view);
 
-let SCENE = new PIXI.Container();
-let STATE;
-
 let loadingProgressBar = makeLoadingBar(
-    RENDERER.width / 1.5, RENDERER.height / 6, 10, 0, 0x00d27f);
-loadingProgressBar.position.set(RENDERER.width / 2 - loadingProgressBar.width / 2,
-    RENDERER.height / 2 - loadingProgressBar.height / 2);
+    CANVAS_WIDTH / 1.5, CANVAS_HEIGHT / 6, 10, 0, 0x00d27f);
+loadingProgressBar.position.set(CANVAS_WIDTH / 2 - loadingProgressBar.width / 2,
+    CANVAS_HEIGHT / 2 - loadingProgressBar.height / 2);
 SCENE.addChild(loadingProgressBar);
 
 PIXI.loader
@@ -30,19 +29,33 @@ PIXI.loader
     .load(setup);
 
 function setup() {
+    
+    debugger;
     Intro.open();
     gameLoop();
 }
 
 function gameLoop() {
     requestAnimationFrame(gameLoop);
-    console
+    
+    // Auto-resize everything
+    SCENE.scale.x = window.innerWidth/CANVAS_WIDTH;
+    SCENE.scale.y = window.innerHeight/CANVAS_HEIGHT;
+    RENDERER.resize(window.innerWidth, window.innerHeight);
+    
     STATE();
+    
     RENDERER.render(SCENE);
 }
 
 function showLoadingProgress(loader, resource) {
     console.log("loading: " + resource.url);
     loadingProgressBar.xScale(loader.progress / 100);
+    
+    // Resize everything
+    SCENE.scale.x = window.innerWidth/CANVAS_WIDTH;
+    SCENE.scale.y = window.innerHeight/CANVAS_HEIGHT;
+    RENDERER.resize(window.innerWidth, window.innerHeight);
+    
     RENDERER.render(SCENE);
 }
