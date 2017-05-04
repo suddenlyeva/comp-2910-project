@@ -1,6 +1,6 @@
 "use strict";
 
-function ConveyorBelt(itemTypes, speed) {
+function ConveyorBelt(itemTypes, speed, level) {
 
     // Define Constants
     let SCENE_HEIGHT_PX = 480;
@@ -36,7 +36,7 @@ function ConveyorBelt(itemTypes, speed) {
             }
             // Otherwise just remove from stage entirely.
             else {
-                stageScene.removeChild(this.items[0]);
+                level.scene.removeChild(this.items[0]);
             }
 
             // Shift Indices
@@ -46,7 +46,7 @@ function ConveyorBelt(itemTypes, speed) {
             this.deltaX -= SPRITE_SIZE_PX;
             
             // Add a blank to the end
-            this.addItemAtIndex(makeItem(BLANK), this.lastIndex);
+            this.addItemAtIndex(makeItem(BLANK, level), this.lastIndex);
         }
     }
 
@@ -55,7 +55,7 @@ function ConveyorBelt(itemTypes, speed) {
         
         // Remove previous blank
         if(this.items[index] != null && this.items[index].type == BLANK) {
-            stageScene.removeChild(this.items[index]);
+            level.scene.removeChild(this.items[index]);
         }
         
         // Position
@@ -96,11 +96,11 @@ function ConveyorBelt(itemTypes, speed) {
 
     // Pad array
     for(let i = 0; i < ARRAY_MIN_SIZE; i++) {
-        this.addItemAtIndex(makeItem(BLANK), i);
+        this.addItemAtIndex(makeItem(BLANK, level), i);
     }
     
     // Fill out rest of conveyor
     for(let i = 0; i < itemTypes.length; i++) {
-        this.addItemAtIndex(makeItem(itemTypes[i]), i + ARRAY_MIN_SIZE);
+        this.addItemAtIndex(makeItem(itemTypes[i], level), i + ARRAY_MIN_SIZE);
     }
 }

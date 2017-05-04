@@ -2,43 +2,49 @@
 
 function Intro() {
     this.scene = new PIXI.Container();
-    this.scene.interactive = true;
-    this.scene.on("pointertap", MainMenu.open);
 
     // Define and style text
     this.txtFood = new PIXI.Text("FOOD", {
-        fontFamily: FONT_FAMILY, fontSize: 128, fill: 0x00ad5e,
+        fontFamily: FONT_FAMILY, fontSize: 256, fill: 0x00ad5e,
         dropShadow: true, dropShadowAngle: 7 * Math.PI / 12, dropShadowDistance: 10,
-        fontWeight: "bold", stroke: 0xFFFFFF, strokeThickness: 7
+        stroke: 0xFFFFFF, strokeThickness: 7
     });
 
     this.txtFactory = new PIXI.Text("FACTORY", this.txtFood.style);
 
     this.txtZero = new PIXI.Text("ZERO", this.txtFood.style.clone());
-    this.txtZero.style.fontSize = 74;
+    this.txtZero.style.fontSize = 148;
     this.txtZero.style.fill = 0xff3333;
     this.txtZero.style.strokeThickness = 4;
 
-    this.txtPress = new PIXI.Text("Press anywhere to continue...", {
-        fontFamily: FONT_FAMILY, fontSize: 48, fill: 0xbd00ff,
-        fontWeight: "bold", stroke: 0xFFFFFF, strokeThickness: 7
+    this.txtPress = new PIXI.Text("press anywhere to continue...", {
+        fontFamily: FONT_FAMILY, fontSize: 96, fill: 0xbd00ff,
+        stroke: 0xFFFFFF, strokeThickness: 7
     });
 
-    this.txtTeam19 = new PIXI.Text("By team19", {
-        fontFamily: FONT_FAMILY, fontSize: 32, fill: 0x333333, strokeThickness: 1
+    this.txtTeam19 = new PIXI.Text("by team19", {
+        fontFamily: FONT_FAMILY, fontSize: 64, fill: 0x333333
     });
 
     // Position text
     // note no padding between lines
-    this.txtFood.position.set(RENDERER.width / 2 - this.txtFood.width / 2, 130);
-    this.txtFactory.position.set(RENDERER.width / 2 - this.txtFactory.width / 2,
+    this.txtFood.position.set(CANVAS_WIDTH / 2 - this.txtFood.width / 2, 0);
+    this.txtFactory.position.set(CANVAS_WIDTH / 2 - this.txtFactory.width / 2,
         this.txtFood.y + this.txtFood.height);
-    this.txtZero.position.set(RENDERER.width / 2 - this.txtZero.width / 2,
+    this.txtZero.position.set(CANVAS_WIDTH / 2 - this.txtZero.width / 2,
         this.txtFactory.y + this.txtFactory.height);
-    this.txtPress.position.set(RENDERER.width / 2 - this.txtPress.width / 2,
-        RENDERER.height - this.txtPress.height - 10);
-    this.txtTeam19.position.set(RENDERER.width - this.txtTeam19.width - 10,
-        RENDERER.height - this.txtTeam19.height - 10);
+    this.txtPress.position.set(CANVAS_WIDTH / 2 - this.txtPress.width / 2,
+        CANVAS_HEIGHT - this.txtPress.height - 10);
+    this.txtTeam19.position.set(CANVAS_WIDTH - this.txtTeam19.width - 10,
+        CANVAS_HEIGHT - this.txtTeam19.height - 10);
+
+    this.clickableArea = new PIXI.Graphics();
+    this.clickableArea.beginFill(0);
+    this.clickableArea.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    this.clickableArea.endFill();
+    this.clickableArea.interactive = true;
+    this.clickableArea.alpha = 0;
+    this.clickableArea.pointertap = MainMenu.open;
 
     // Add to scene
     this.scene.addChild(this.txtFood);
@@ -46,6 +52,7 @@ function Intro() {
     this.scene.addChild(this.txtZero);
     this.scene.addChild(this.txtPress);
     this.scene.addChild(this.txtTeam19);
+    this.scene.addChild(this.clickableArea);
 
     this.txtFood.alpha = 0;
     this.txtFactory.alpha = 0;

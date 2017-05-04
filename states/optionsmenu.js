@@ -1,8 +1,8 @@
 "use strict";
 
 function OptionsMenu() {
-    this.width = RENDERER.width / 1.5;
-    this.height = RENDERER.height / 1.5;
+    this.width = CANVAS_WIDTH / 1.5;
+    this.height = CANVAS_HEIGHT / 1.5;
 
     this.scene = new PIXI.Container();
 
@@ -13,8 +13,8 @@ function OptionsMenu() {
     this.panel.drawRect(0, 0, this.width, this.height);
     this.panel.endFill();
     this.closeButton = makeSimpleButton(30, 30, "X", 0xf00e46);
-    this.musicVol = makeSlider(this.panel.width - 100, 100, "Music", 50);
-    this.soundVol = makeSlider(this.panel.width - 100, 100, "Sound", 50);
+    this.musicVol = makeSlider(this.panel.width - 100, 100, "music", 50);
+    this.soundVol = makeSlider(this.panel.width - 100, 100, "sound", 50);
 
     this.panel.interactive = true;
 
@@ -31,8 +31,8 @@ function OptionsMenu() {
     this.musicVol.position.set(
         50, 2 * this.height / 3 - this.musicVol.height / 2);
     this.scene.position.set(
-        RENDERER.width / 2 - this.width / 2,
-        RENDERER.height / 2 - this.height / 2
+        CANVAS_WIDTH / 2 - this.width / 2,
+        CANVAS_HEIGHT / 2 - this.height / 2
     );
 
     // Back button moves to main menu

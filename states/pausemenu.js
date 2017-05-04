@@ -12,8 +12,8 @@ function PauseMenu() {
     });
 
     // Make Buttons
-    this.resumeButton = makeSimpleButton(100, 50, "Resume", 0xb3ecec);
-    this.optionsButton = makeSimpleButton(100, 50, "Options", 0x94b8b8);
+    this.resumeButton = makeSimpleButton(100, 50, "resume", 0xb3ecec, 50);
+    this.optionsButton = makeSimpleButton(100, 50, "options", 0x94b8b8, 50);
 
     // Make background elements and add them to the background container
     this.background = new PIXI.Container();
@@ -22,7 +22,7 @@ function PauseMenu() {
 
     this.bgFill = new PIXI.Graphics();
     this.bgFill.beginFill(0x6a0e1d);
-    this.bgFill.drawRect(0, 0, RENDERER.width, RENDERER.height);
+    this.bgFill.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     this.bgFill.alpha = 0.4;
     this.bgFill.endFill();
 

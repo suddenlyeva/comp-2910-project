@@ -12,8 +12,8 @@ function StageComplete() {
     this.panel.beginFill(0xcecfe2);
     this.panel.drawRect(0, 0, this.width, this.height);
     this.panel.endFill();
-    this.continueButton = makeSimpleButton(100, 50, "Continue", 0x00d27f);
-    this.backButton = makeSimpleButton(50, 50, "Back", 0xaa3355);
+    this.continueButton = makeSimpleButton(100, 50, "continue", 0x00d27f, 50);
+    this.backButton = makeSimpleButton(50, 50, "back", 0xaa3355, 50);
 
     // Add to scene
     this.scene.addChild(this.panel);
@@ -24,8 +24,8 @@ function StageComplete() {
     this.continueButton.position.set(10, 10);
     this.backButton.position.set(this.continueButton.width + 20, 10);
     this.scene.position.set(
-        RENDERER.width / 2 - this.width / 2,
-        RENDERER.height / 2 - this.height / 2);
+        CANVAS_WIDTH / 2 - this.width / 2,
+        CANVAS_HEIGHT / 2 - this.height / 2);
 
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {

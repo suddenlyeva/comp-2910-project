@@ -8,7 +8,7 @@ function StageSelect() {
     this.background = new PIXI.Container();
     this.bgFill = new PIXI.Graphics();
     this.bgFill.beginFill(0x5d32ea);
-    this.bgFill.drawRect(0, 0, RENDERER.width, RENDERER.height);
+    this.bgFill.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     this.bgFill.endFill();
 
     this.background.addChild(this.bgFill);
@@ -18,10 +18,10 @@ function StageSelect() {
     // Declare an array of buttons
     this.stageBtns = [];
     // Initialize buttons
-    for(let i = 0; i < STAGES.length; i++) {
+    for(let i = 0; i < LEVELS.length; i++) {
 
         // Create
-        this.stageBtns.push(makeSimpleButton(100, 50, "Stage " + i, 0xffdfba));
+        this.stageBtns.push(makeSimpleButton(100, 50, "stage " + i, 0xffdfba, 50));
 
         // Add to group
         this.scene.addChild(this.stageBtns[i]);
@@ -30,10 +30,12 @@ function StageSelect() {
         this.stageBtns[i].position.set(i * 120 + 60, 100);
 
         // Set behaviour
-        this.stageBtns[i].on("pointertap", STAGES[i]);
+        this.stageBtns[i].on("pointertap", function () {
+            Level.open(LEVELS[i]);
+        });
     }
 
-    this.backToMainMenu = makeSimpleButton(200, 50, "Back to Main Menu", 0xb3ecec);
+    this.backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50);
     this.backToMainMenu.position.set(550, 500);
     this.backToMainMenu.on("pointertap", MainMenu.open);
 
