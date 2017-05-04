@@ -50,6 +50,68 @@ function makeLoadingBar(width, height, padding, bgColor, fgColor) {
     return loadingBar;
 }
 
+function makeSlider(width, height, text, handleHeight) {
+    let slider = new PIXI.Container();
+
+    let desc = new PIXI.Text(text, {
+        fontFamily: FONT_FAMILY, fontSize: height / 3, fill: 0x0
+    });
+
+    let line = new PIXI.Graphics();
+    line.lineStyle(handleHeight / 6, 0x0, 1);
+    line.moveTo(0, 0);
+    line.lineTo(width / 1.2, 0);
+    line.position.set(width / 2 - line.width / 2, height - handleHeight / 2);
+
+    let colorSound = 0x77f441,
+        colorMuted = 0xff1a1a,
+        colorDrag  = 0xd7f442;
+    let handleWidth = handleHeight / 2;
+    // using handleWidth because handle.width is for some reason inaccurate
+    let endOfLine = line.x + line.width - handleWidth;
+    let handle = new PIXI.Graphics();
+    handle.lineStyle(4, 0x0, 1);
+    handle.beginFill(0xFFFFFF);
+    handle.drawRect(0, 0, handleWidth, handleHeight);
+    handle.endFill();
+    handle.position.set(endOfLine, line.y + line.height / 2 - handle.height / 2);
+    handle.tint = colorSound;
+    handle.interactive = handle.buttonMode = true;
+
+    handle.pointerdown = event => {
+        // record cursor position inside handle
+        handle.dragData = event.data.getLocalPosition(handle.parent);
+        handle.tint = colorDrag;
+    };
+
+    handle.pointerup = handle.pointerupoutside = event => {
+        handle.dragData = false;
+        handle.tint = handle.x === line.x ? colorMuted : colorSound;
+    };
+
+    handle.pointermove = event => {
+        if(handle.dragData) {
+            let newPos = event.data.getLocalPosition(handle.parent);
+            // xAdjusted is old handle.x + difference between new and old cursor position
+            let xAdjusted = handle.x + newPos.x - handle.dragData.x;
+            if(xAdjusted < line.x) {
+                handle.x = line.x;
+            } else if(xAdjusted > endOfLine) {
+                handle.x = endOfLine;
+            } else {
+                handle.x = xAdjusted;
+                handle.dragData = newPos;
+            }
+        }
+    };
+
+    slider.addChild(line);
+    slider.addChild(handle);
+    slider.addChild(desc);
+
+    return slider;
+}
+
 // Point to box collision
 function testHitRectangle(pointObj, rectObj) {
     let xPoint = pointObj.x;
