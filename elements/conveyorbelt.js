@@ -1,6 +1,6 @@
 "use strict";
 
-function ConveyorBelt(itemArray, speed) {
+function ConveyorBelt(itemTypes, speed) {
 
     // Define Constants
     let SCENE_HEIGHT_PX = 480;
@@ -14,7 +14,7 @@ function ConveyorBelt(itemArray, speed) {
     this.speed = speed;
     this.deltaX = 0;
     
-    this.lastIndex = itemArray.length + ARRAY_MIN_SIZE - 1;
+    this.lastIndex = itemTypes.length + ARRAY_MIN_SIZE - 1;
     
     // Define Behaviours
     this.update = () => {
@@ -30,9 +30,14 @@ function ConveyorBelt(itemArray, speed) {
         // When last item reaches trash can:
         if(this.deltaX >= SPRITE_SIZE_PX) {
 
-            // Remove first item
-            // TODO: replace with waste()
-            stageScene.removeChild(this.items[0]);
+            // Waste first item if not a blank
+            if (this.items[0].type != BLANK) {
+                this.items[0].waste();
+            }
+            // Otherwise just remove from stage entirely.
+            else {
+                stageScene.removeChild(this.items[0]);
+            }
 
             // Shift Indices
             this.items.shift();
@@ -41,17 +46,18 @@ function ConveyorBelt(itemArray, speed) {
             this.deltaX -= SPRITE_SIZE_PX;
             
             // Add a blank to the end
-            this.addItemAtIndex(makeTestBlank(), this.lastIndex);
+            this.addItemAtIndex(makeItem(BLANK), this.lastIndex);
         }
-        
-        // TODO: Needs ingredient hookup
-        // Check for items removed from array
-        // Check for items placed into array
     }
 
     // Adds an item to the array
     this.addItemAtIndex = (item, index) => {
-
+        
+        // Remove previous blank
+        if(this.items[index] != null && this.items[index].type == BLANK) {
+            stageScene.removeChild(this.items[index]);
+        }
+        
         // Position
         // At bottom of screen
         item.y = SCENE_HEIGHT_PX - SPRITE_HALF_PX;
@@ -70,63 +76,31 @@ function ConveyorBelt(itemArray, speed) {
     this.getIndexFromX = (x) => {
         return Math.floor((SCENE_WIDTH_PX + this.deltaX - x) / SPRITE_SIZE_PX) - 1;
     }
-
+    
+    // Returns an item based on index
+    this.getItemAtX = (x) => {
+        return this.items[this.getIndexFromX(x)];
+    }
+    
+    // Adds an item based on an x position
+    this.addItemAtX = (item, x) => {
+        this.addItemAtIndex(item, this.getIndexFromX(x));
+    }
+    
+    // Point Collision
+    this.collidesWithPoint = (x,y) => {
+        return (0 < x && x < SCENE_WIDTH_PX - SPRITE_SIZE_PX) && (SCENE_HEIGHT_PX - SPRITE_SIZE_PX < y && y < SCENE_HEIGHT_PX);
+    }
     
     // Finish Constructor
 
     // Pad array
     for(let i = 0; i < ARRAY_MIN_SIZE; i++) {
-        console.log(i);
-        this.addItemAtIndex(makeTestBlank(), i);
+        this.addItemAtIndex(makeItem(BLANK), i);
     }
     
     // Fill out rest of conveyor
-    for(let i = 0; i < itemArray.length; i++) {
-        console.log(i + ARRAY_MIN_SIZE);
-        this.addItemAtIndex(itemArray[i], i + ARRAY_MIN_SIZE);
+    for(let i = 0; i < itemTypes.length; i++) {
+        this.addItemAtIndex(makeItem(itemTypes[i]), i + ARRAY_MIN_SIZE);
     }
-
-    // Fill empty array spots
 }
-
-// ------------------------------- //
-// -          Test Code          - //
-// ------------------------------- //
-
-function makeTestApple() {
-    let apple = new PIXI.Sprite(
-        PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"]
-    );
-    apple.anchor.set(0.5);
-    stageScene.addChild(apple);
-    return apple;
-}
-
-function makeTestBlank() {
-    let blank = new PIXI.Sprite(
-        PIXI.loader.resources["images/spritesheet.json"].textures["testblank.png"]
-    );
-    blank.anchor.set(0.5);
-    stageScene.addChild(blank);
-    blank.alpha = 0.1;
-    return blank;
-}
-
-function setupConveyorTest() {
-
-    stageInit();
-
-    let apples = [];
-    let BELT_SPEED = 1.3;
-
-    for (let i = 0; i < 6; i++) {
-        apples.push(makeTestApple());
-        apples.push(makeTestBlank());
-    }
-
-    let conveyorBelt = new ConveyorBelt(apples, BELT_SPEED);
-
-    SCENE = stageScene;
-    STATE = conveyorBelt.update;
-}
-

@@ -1,12 +1,22 @@
 "use strict";
 
 function StageSelect() {
-    // Declare an array of buttons
-    this.stageBtns = [];
 
-    // Make scene groups
     this.scene = new PIXI.Container();
 
+    // Make background
+    this.background = new PIXI.Container();
+    this.bgFill = new PIXI.Graphics();
+    this.bgFill.beginFill(0x5d32ea);
+    this.bgFill.drawRect(0, 0, RENDERER.width, RENDERER.height);
+    this.bgFill.endFill();
+
+    this.background.addChild(this.bgFill);
+
+    this.scene.addChild(this.background);
+
+    // Declare an array of buttons
+    this.stageBtns = [];
     // Initialize buttons
     for(let i = 0; i < STAGES.length; i++) {
 
@@ -25,25 +35,18 @@ function StageSelect() {
 
     this.backToMainMenu = makeSimpleButton(200, 50, "Back to Main Menu", 0xb3ecec);
     this.backToMainMenu.position.set(550, 500);
-    this.backToMainMenu.on("pointertap", openMainMenu);
+    this.backToMainMenu.on("pointertap", MainMenu.open);
 
     this.scene.addChild(this.backToMainMenu);
 
-    this.update = function() {};
+    this.update = () => {};
 }
 
-let stageSelectScene;
-
-function openStageSelect() {
-
-    // First initialize only
-    if(stageSelectScene == null) {
-        stageSelectScene = new StageSelect();
+StageSelect.open = () => {
+    if(StageSelect.instance == null) {
+        StageSelect.instance = new StageSelect();
     }
 
-    // Every time opened
-    RENDERER.backgroundColor = 0x97ffff;
-
-    SCENE = stageSelectScene.scene;
-    STATE = stageSelectScene.update;
+    SCENE = StageSelect.instance.scene;
+    STATE = StageSelect.instance.update;
 }

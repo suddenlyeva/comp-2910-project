@@ -1,16 +1,15 @@
 "use strict";
 
 function PauseMenu() {
-
     this.scene = new PIXI.Container();
     // holds the state before the pause
     this.stateBuffer;
 
     // pause the game when scene gets added
-    this.scene.on("added", function() {
+    this.scene.on("added", () => {
         this.stateBuffer = STATE;
         STATE = this.update;
-    }.bind(this));
+    });
 
     // Make Buttons
     this.resumeButton = makeSimpleButton(100, 50, "Resume", 0xb3ecec);
@@ -39,30 +38,26 @@ function PauseMenu() {
     this.optionsButton.position.set(150, 300);
 
     // Play button moves to stage select
-    this.resumeButton.on("pointertap", function() {
-        this.unpause();
-    }.bind(this));
+    // Requres "this" context to operate so we use () => {}
+    this.resumeButton.on("pointertap", () => { this.unpause() });
 
     // Options button opens an options panel
-    this.optionsButton.on("pointertap", function() {
-        openOptionsMenu();
-    });
+    this.optionsButton.on("pointertap", OptionsMenu.open);
 
     this.update = function() {};
 
     this.unpause = function() {
         STATE = this.stateBuffer;
-        closeOptionsMenu();
+        OptionsMenu.close();
         this.scene.parent.removeChild(this.scene);
     };
 }
 
-let pauseScene;
-function openPauseMenu() {
-    if(pauseScene == null) {
-        pauseScene = new PauseMenu();
+PauseMenu.open = () => {
+    if(PauseMenu.instance == null) {
+        PauseMenu.instance = new PauseMenu();
     }
 
-    SCENE.addChild(pauseScene.scene);
+    SCENE.addChild(PauseMenu.instance.scene);
 }
 

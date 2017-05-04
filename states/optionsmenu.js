@@ -1,8 +1,8 @@
 "use strict";
 
 function OptionsMenu() {
-    this.width = 200;
-    this.height = 400;
+    this.width = RENDERER.width / 1.5;
+    this.height = RENDERER.height / 1.5;
 
     this.scene = new PIXI.Container();
 
@@ -13,12 +13,23 @@ function OptionsMenu() {
     this.panel.drawRect(0, 0, this.width, this.height);
     this.panel.endFill();
     this.closeButton = makeSimpleButton(30, 30, "X", 0xf00e46);
+    this.musicVol = makeSlider(this.panel.width - 100, 100, "Music", 50);
+    this.soundVol = makeSlider(this.panel.width - 100, 100, "Sound", 50);
+
+    this.panel.interactive = true;
 
     // Add to scene
     this.scene.addChild(this.panel);
     this.scene.addChild(this.closeButton);
+    this.scene.addChild(this.soundVol);
+    this.scene.addChild(this.musicVol);
 
-    this.closeButton.position.set(10, 10);
+    this.closeButton.position.set(
+        this.panel.width - this.closeButton.width - 10, 10);
+    this.soundVol.position.set(
+        50, this.height / 3 - this.musicVol.height / 2);
+    this.musicVol.position.set(
+        50, 2 * this.height / 3 - this.musicVol.height / 2);
     this.scene.position.set(
         RENDERER.width / 2 - this.width / 2,
         RENDERER.height / 2 - this.height / 2
@@ -26,29 +37,21 @@ function OptionsMenu() {
 
     // Back button moves to main menu
     // bind(this) is used to give the function context (which is the current object)
-    this.closeButton.on("pointertap", function() { this.close() }.bind(this)); 
-
-    this.close = function() {
-        if(this.scene.parent != null) {
-            this.scene.parent.removeChild(this.scene);
-        }
-    };
+    this.closeButton.on("pointertap", OptionsMenu.close); 
 }
 
-let optionsMenuScene;
-
-function openOptionsMenu() {
-    if(optionsMenuScene == null) {
-        optionsMenuScene = new OptionsMenu();
+OptionsMenu.open = () => {
+    if(OptionsMenu.instance == null) {
+        OptionsMenu.instance = new OptionsMenu();
     }
 
     // console.log(SCENE.children.length);
     // only adds one options menu no matter how many times it's called
-    SCENE.addChild(optionsMenuScene.scene);
-}
+    SCENE.addChild(OptionsMenu.instance.scene);
+};
 
-function closeOptionsMenu() {
-    if(optionsMenuScene != null) {
-        optionsMenuScene.close();
+OptionsMenu.close = () => {
+    if(OptionsMenu.instance != null && OptionsMenu.instance.scene.parent != null) {
+        OptionsMenu.instance.scene.parent.removeChild(OptionsMenu.instance.scene);
     }
-}
+};

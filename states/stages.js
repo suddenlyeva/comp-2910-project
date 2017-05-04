@@ -6,6 +6,8 @@ let STAGES = [setupStage0, setupStage1, setupStage2, setupStage3, setupStage4];
 let currentStage = 0;
 let stageTimer = 0;
 let stageScene;
+// Discuss about where to declare later
+let background, conveyorBelt;
 
 function stageInit() {
     stageTimer = 0;
@@ -15,9 +17,7 @@ function stageInit() {
 
     let pauseButton = makeSimpleButton(100, 50, "Pause", 0x94b8b8);
     pauseButton.position.set(CANVAS_WIDTH - 150, 100);
-    pauseButton.on("pointertap", () => {
-        openPauseMenu();
-    });
+    pauseButton.on("pointertap", PauseMenu.open);
 
     stageScene = new PIXI.Container()
     stageScene.addChild(background);
@@ -38,7 +38,7 @@ function setupStage0() {
 function stage0() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
@@ -56,7 +56,7 @@ function setupStage1() {
 function stage1() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
@@ -74,7 +74,7 @@ function setupStage2() {
 function stage2() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
@@ -92,7 +92,7 @@ function setupStage3() {
 function stage3() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
@@ -110,10 +110,34 @@ function setupStage4() {
 function stage4() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
 function nextStage() {
     currentStage = currentStage === STAGES.length - 1 ? 0 : currentStage + 1;
+}
+
+function ingredientTest() {
+    currentStage = 0;
+    console.log("stage 0");
+
+    stageInit();
+
+    let apples = [];
+    let BELT_SPEED = 1.3;
+
+    for (let i = 0; i < 6; i++) {
+        apples.push(APPLE);
+        apples.push(BLANK);
+    }
+
+    conveyorBelt = new ConveyorBelt(apples, BELT_SPEED);
+
+    SCENE = stageScene;
+    STATE = ingredientTestStage;
+
+}
+function ingredientTestStage() {
+    conveyorBelt.update();
 }
