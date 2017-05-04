@@ -1,6 +1,6 @@
 "use strict";
 
-function ConveyorBelt(itemTypes, speed) {
+function ConveyorBelt(itemTypes, speed, level) {
 
     // Define Constants
     let SCENE_HEIGHT_PX = 480;
@@ -36,7 +36,7 @@ function ConveyorBelt(itemTypes, speed) {
             }
             // Otherwise just remove from stage entirely.
             else {
-                stageScene.removeChild(this.items[0]);
+                level.scene.removeChild(this.items[0]);
             }
 
             // Shift Indices
@@ -55,7 +55,7 @@ function ConveyorBelt(itemTypes, speed) {
         
         // Remove previous blank
         if(this.items[index] != null && this.items[index].type == BLANK) {
-            stageScene.removeChild(this.items[index]);
+            level.scene.removeChild(this.items[index]);
         }
         
         // Position
