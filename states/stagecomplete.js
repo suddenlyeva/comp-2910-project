@@ -12,8 +12,8 @@ function StageComplete() {
     this.panel.beginFill(0xcecfe2);
     this.panel.drawRect(0, 0, this.width, this.height);
     this.panel.endFill();
-    this.continueButton = makeSimpleButton(100, 50, "continue", 0x00d27f);
-    this.backButton = makeSimpleButton(50, 50, "back", 0xaa3355);
+    this.continueButton = makeSimpleButton(100, 50, "continue", 0x00d27f, 50);
+    this.backButton = makeSimpleButton(50, 50, "back", 0xaa3355, 50);
 
     // Add to scene
     this.scene.addChild(this.panel);
