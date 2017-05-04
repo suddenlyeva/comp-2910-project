@@ -53,12 +53,6 @@ function makeLoadingBar(width, height, padding, bgColor, fgColor) {
 function makeSlider(width, height, text, handleHeight, handleColor) {
     let slider = new PIXI.Container();
 
-    let background = new PIXI.Graphics();
-    background.beginFill(0xffffff);
-    background.drawRect(0, 0, width, height);
-    background.endFill();
-    // background.visible = false;
-
     let desc = new PIXI.Text(text, {
         fontFamily: FONT_FAMILY, fontSize: height / 3, fill: 0x0
     });
@@ -72,7 +66,7 @@ function makeSlider(width, height, text, handleHeight, handleColor) {
     let handle = new PIXI.Graphics();
     handle.lineStyle(2, 0x0, 1);
     handle.beginFill(handleColor);
-    handle.drawRect(line.x, line.y + handleHeight / 2, handleWidth, handleHeight);
+    handle.drawRect(line.x, height - handleHeight, handleWidth, handleHeight);
     handle.endFill();
     handle.interactive = handle.buttonMode = true;
 
@@ -104,7 +98,6 @@ function makeSlider(width, height, text, handleHeight, handleColor) {
         }
     };
 
-    slider.addChild(background);
     slider.addChild(line);
     slider.addChild(handle);
     slider.addChild(desc);
