@@ -17,9 +17,7 @@ function stageInit() {
 
     let pauseButton = makeSimpleButton(100, 50, "Pause", 0x94b8b8);
     pauseButton.position.set(CANVAS_WIDTH - 150, 100);
-    pauseButton.on("pointertap", () => {
-        openPauseMenu();
-    });
+    pauseButton.on("pointertap", PauseMenu.open);
 
     stageScene = new PIXI.Container()
     stageScene.addChild(background);
@@ -40,7 +38,7 @@ function setupStage0() {
 function stage0() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
@@ -58,7 +56,7 @@ function setupStage1() {
 function stage1() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
@@ -76,7 +74,7 @@ function setupStage2() {
 function stage2() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
@@ -94,7 +92,7 @@ function setupStage3() {
 function stage3() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
@@ -112,7 +110,7 @@ function setupStage4() {
 function stage4() {
     stageTimer++;
     if (stageTimer === 120) {
-        STATE = openStageComplete;
+        StageComplete.open();
     }
 }
 
