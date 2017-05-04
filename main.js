@@ -8,6 +8,7 @@ let thingsToLoad = [
 ];
 
 let SCENE = new PIXI.Container();
+let previousScene;
 let STATE;
 
 let RENDERER = PIXI.autoDetectRenderer(CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -41,7 +42,7 @@ function setup() {
 function gameLoop() {
     requestAnimationFrame(gameLoop);
     
-    if(WINDOW_RESIZED) {
+    if(WINDOW_RESIZED || SCENE !== previousScene) {
         // Auto-resize everything
         SCENE.scale.x = window.innerWidth/CANVAS_WIDTH;
         SCENE.scale.y = window.innerHeight/CANVAS_HEIGHT;
@@ -50,6 +51,8 @@ function gameLoop() {
     }
     
     STATE();
+    
+    previousScene = SCENE;
     
     RENDERER.render(SCENE);
 }
