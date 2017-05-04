@@ -46,7 +46,7 @@ function ConveyorBelt(itemTypes, speed, level) {
             this.deltaX -= SPRITE_SIZE_PX;
             
             // Add a blank to the end
-            this.addItemAtIndex(makeItem(BLANK), this.lastIndex);
+            this.addItemAtIndex(makeItem(BLANK, level), this.lastIndex);
         }
     }
 
@@ -96,11 +96,11 @@ function ConveyorBelt(itemTypes, speed, level) {
 
     // Pad array
     for(let i = 0; i < ARRAY_MIN_SIZE; i++) {
-        this.addItemAtIndex(makeItem(BLANK), i);
+        this.addItemAtIndex(makeItem(BLANK, level), i);
     }
     
     // Fill out rest of conveyor
     for(let i = 0; i < itemTypes.length; i++) {
-        this.addItemAtIndex(makeItem(itemTypes[i]), i + ARRAY_MIN_SIZE);
+        this.addItemAtIndex(makeItem(itemTypes[i], level), i + ARRAY_MIN_SIZE);
     }
 }
