@@ -17,6 +17,11 @@ RENDERER.autoResize = true;
 RENDERER.backgroundColor = 0x95d5f5;
 document.body.appendChild(RENDERER.view);
 
+let WINDOW_RESIZED = true;
+window.addEventListener('resize', function(){
+    WINDOW_RESIZED = true;
+}, true);
+
 let loadingProgressBar = makeLoadingBar(
     CANVAS_WIDTH / 1.5, CANVAS_HEIGHT / 6, 10, 0, 0x00d27f);
 loadingProgressBar.position.set(CANVAS_WIDTH / 2 - loadingProgressBar.width / 2,
@@ -36,10 +41,13 @@ function setup() {
 function gameLoop() {
     requestAnimationFrame(gameLoop);
     
-    // Auto-resize everything
-    SCENE.scale.x = window.innerWidth/CANVAS_WIDTH;
-    SCENE.scale.y = window.innerHeight/CANVAS_HEIGHT;
-    RENDERER.resize(window.innerWidth, window.innerHeight);
+    if(WINDOW_RESIZED) {
+        // Auto-resize everything
+        SCENE.scale.x = window.innerWidth/CANVAS_WIDTH;
+        SCENE.scale.y = window.innerHeight/CANVAS_HEIGHT;
+        RENDERER.resize(window.innerWidth, window.innerHeight);
+        WINDOW_RESIZED = false;
+    }
     
     STATE();
     
