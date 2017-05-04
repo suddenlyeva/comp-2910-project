@@ -4,7 +4,7 @@ let BLANK = 0;
 let APPLE = 1;
 let BANANA = 2;
 
-function makeItem(type, x, y) {
+function makeItem(type, level) {
     // Define Constants
     let SCENE_HEIGHT_PX = 480;
     let SCENE_WIDTH_PX = 640;
@@ -21,10 +21,8 @@ function makeItem(type, x, y) {
     let item = new PIXI.Sprite(
         ITEM_TEXTURES[type]
     );
-
+    
     // Data that needs to be tracked every frame
-    item.x = x;
-    item.y = y;
     item.dragging = false;
     
     // Data that is different for each ingredient
@@ -47,8 +45,8 @@ function makeItem(type, x, y) {
         item.data = event.data;
         item.alpha = 0.5;
         item.dragging = true;
-        if (conveyorBelt.collidesWithPoint(item.x, item.y)) {
-            conveyorBelt.addItemAtX(makeItem(BLANK), item.x);
+        if (level.conveyorBelt.collidesWithPoint(item.x, item.y)) {
+            level.conveyorBelt.addItemAtX(makeItem(BLANK, level), item.x);
         }
     };
     
@@ -56,8 +54,8 @@ function makeItem(type, x, y) {
         
         if (item.dragging) {
             // addToConveyor if on conveyor
-            if (conveyorBelt.collidesWithPoint(item.x, item.y) && conveyorBelt.getItemAtX(item.x).type == BLANK) {
-                conveyorBelt.addItemAtX(item, item.x);
+            if (level.conveyorBelt.collidesWithPoint(item.x, item.y) && level.conveyorBelt.getItemAtX(item.x).type == BLANK) {
+                level.conveyorBelt.addItemAtX(item, item.x);
             }
             // else waste
             else {
@@ -87,10 +85,10 @@ function makeItem(type, x, y) {
     
     // Z-Layer Control, 1 is just over background.
     if (item.type == BLANK) {
-        stageScene.addChildAt(item, 1);
+        level.scene.addChildAt(item, 1);
     }
     else {
-        stageScene.addChild(item);
+        level.scene.addChild(item);
     }
 
     return item;
