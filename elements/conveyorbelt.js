@@ -73,7 +73,7 @@ function ConveyorBelt(itemTypes, speed) {
     
     // Returns an item based on index
     this.getItemAtX = (x) => {
-        return this.items[getIndexFromX(x)];
+        return this.items[this.getIndexFromX(x)];
     }
     
     // Adds an item based on an x position

@@ -135,25 +135,11 @@ function ingredientTest() {
     }
 
     conveyorBelt = new ConveyorBelt(apples, BELT_SPEED);
-    conveyorBeltRec = new PIXI.Rectangle(0, (480-32), 1280, 64);
-
-    apple1 = makeItem(APPLE, 100, 100);
-    banana = makeItem("banana.png", 150, 150);
-    processor = makeItem("table.png",200, 200);
-    conveyor = makeItem("table.png",300, 300);
-
-    stageScene.addChild(banana);
-    stageScene.addChild(processor);
-    stageScene.addChild(conveyor);
 
     SCENE = stageScene;
     STATE = ingredientTestStage;
 
 }
 function ingredientTestStage() {
-    apple1.update();
-    banana.update();
-    processor.update(); 
-    conveyor.update(); 
     conveyorBelt.update();
 }
