@@ -8,6 +8,7 @@ let stageTimer = 0;
 let stageScene;
 // Discuss about where to declare later
 let background, conveyorBelt;
+let gProcessor;
 
 function stageInit() {
     stageTimer = 0;
@@ -25,21 +26,46 @@ function stageInit() {
 }
 
 function setupStage0() {
-    RENDERER.backgroundColor = 0x000000;
     currentStage = 0;
     console.log("stage 0");
-
+	
     stageInit();
+	
+	
+	var tempRecipe = new Recipe([1,2,3,4],APPLE);
+	var tempRecipe2 = new Recipe([1,2,3],APPLE);
+	
+	gProcessor = new Processor(tempRecipe);
+	gProcessor.OnTestInit();
+	
+	
+	var gPro2 = new Processor(tempRecipe2);
+	gPro2.SetPosition(100, 300);
+	gPro2.Spawn();
+	
+	
+	// working
+	gProcessor.SetPosition(100,200);
+	gProcessor.Spawn();
+	
+    let apples = [];
+    let BELT_SPEED = 1.3;
+
+    for (let i = 0; i < 6; i++) {
+        apples.push(APPLE);
+        apples.push(BLANK);
+    }
+
+    conveyorBelt = new ConveyorBelt(apples, BELT_SPEED);
 
     SCENE = stageScene;
-    STATE = stage0;
+    STATE = ingredientTestStage;
+
 }
 
 function stage0() {
-    stageTimer++;
-    if (stageTimer === 120) {
-        StageComplete.open();
-    }
+
+	conveyorBelt.update();
 }
 
 function setupStage1() {
@@ -55,6 +81,7 @@ function setupStage1() {
 
 function stage1() {
     stageTimer++;
+	
     if (stageTimer === 120) {
         StageComplete.open();
     }
@@ -119,23 +146,6 @@ function nextStage() {
 }
 
 function ingredientTest() {
-    currentStage = 0;
-    console.log("stage 0");
-
-    stageInit();
-
-    let apples = [];
-    let BELT_SPEED = 1.3;
-
-    for (let i = 0; i < 6; i++) {
-        apples.push(APPLE);
-        apples.push(BLANK);
-    }
-
-    conveyorBelt = new ConveyorBelt(apples, BELT_SPEED);
-
-    SCENE = stageScene;
-    STATE = ingredientTestStage;
 
 }
 function ingredientTestStage() {
