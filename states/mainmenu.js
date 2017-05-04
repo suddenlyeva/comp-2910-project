@@ -32,9 +32,9 @@ function MainMenu() {
     this.buttonWidth = RENDERER.width / 2 - this.distFromEdge - 20; // 20 between buttons
     this.buttonHeight = RENDERER.height / 2;
     this.playButton = makeSimpleButton(this.buttonWidth, this.buttonHeight,
-        "Play", 0xb3ecec, this.buttonHeight / 2, 4);
+        "play", 0xb3ecec, this.buttonHeight / 2, 4);
     this.optionsButton = makeSimpleButton(this.buttonWidth, this.buttonHeight,
-        "Options", 0x94b8b8, this.buttonHeight / 2, 4);
+        "options", 0x94b8b8, this.buttonHeight / 2, 4);
 
     this.playButton.position.set(this.distFromEdge,
         RENDERER.height / 2 - this.playButton.height / 2);

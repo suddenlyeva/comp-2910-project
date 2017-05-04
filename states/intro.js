@@ -17,12 +17,12 @@ function Intro() {
     this.txtZero.style.fill = 0xff3333;
     this.txtZero.style.strokeThickness = 4;
 
-    this.txtPress = new PIXI.Text("Press anywhere to continue...", {
+    this.txtPress = new PIXI.Text("press anywhere to continue...", {
         fontFamily: FONT_FAMILY, fontSize: 96, fill: 0xbd00ff,
         stroke: 0xFFFFFF, strokeThickness: 7
     });
 
-    this.txtTeam19 = new PIXI.Text("By team19", {
+    this.txtTeam19 = new PIXI.Text("by team19", {
         fontFamily: FONT_FAMILY, fontSize: 64, fill: 0x333333, strokeThickness: 1
     });
 
