@@ -2,43 +2,66 @@
 
 function Processor(recipeOrder) //the Recipe this Processor will produce 
 {
-	//-------------------------------------------------------------------------------
-	
-	//-------------------------------------------------------------------------------
-	
-	//-------------------------------------------------------------------------------
-	// Object Variables
-	//-------------------------------------------------------------------------------
-	this.mSprite; 					// Sprite Variable
-	this.requiredIngredients = [];	// array of required items
-	this.numIngredients;			// Total Number of Ingredients
-	this.recipeProgress = []; 		// An array of booleans to check if each seperate ingredients are placed
-	this.mPosition;
-	
-	this.totalProcessTime = 60; 		// total time it takes for an item to process
-	this.processTimer = 0; 				// Current process duration	
-	this.timerCircle;					// Drawing Circle
-	
-	// Sprite Variables
-	this.contentBlock = [];		// Array of contentBlocks (sprites?)
-	this.maxWidth = 300; 	// Max width of 300 pixels
-	
-	
-	this.isCollidable = true;	// This object is collidable
-	
-	
-	// 0 = loading items
-	// 1 = processing
-	this.processorState = 0; 
 
 	//-------------------------------------------------------------------------------
 	// Project handler functions
 	//-------------------------------------------------------------------------------
+	this.OnTestInit  = () => {
+		console.log(recipeOrder.GetListCount());
+		// console.log("Hi");
+		
+	}
 	
-	// On create 
+	//-------------------------------------------------------------------------------
+	// Sets Position of the Compressor
+	this.SetPosition = (x,y) => {
+		this.mPositionX = x;
+		this.mPositionY = y;
+	}
+	
+	//-------------------------------------------------------------------------------
+	// On create / Init
 	// Variable assignment
-	this.OnSetup : function() 
-	{
+	this.Spawn = () => {	
+	
+		// Variable Assignments
+		
+		// !!Testing Enviorment!
+		this.numIngredients = recipeOrder.GetListCount();
+	
+	
+		//  --- Sprite related Init  ---
+	
+		// Sprite Handler should be placed here
+		this.mSpriteProcessor = PIXI.Sprite.fromImage('images/RTS_Crate.png');
+		
+		// Should be defined later
+		this.mSpriteProcessor.x = this.mPositionX;
+		this.mSpriteProcessor.y = this.mPositionY;
+
+		for(let i = 0; i < this.numIngredients; ++i)
+		{
+			// Unsafe (no sprite manager to initilize sprite with set position
+			this.mSpriteTray[i] = (PIXI.Sprite.fromImage('images/RTS_Crate2.png'));
+			this.mSpriteTray[i].x = (this.mPositionX + 64 + (32 * (i))); // offsets the pos based off index
+			this.mSpriteTray[i].y = (this.mPositionY + 32);
+		}
+		
+		// Last Tray is the Processor output
+		this.mSpriteOutput = PIXI.Sprite.fromImage('images/RTS_Crate.png');
+		this.mSpriteOutput.x = (this.mPositionX + 64 + (32 * (this.numIngredients))); //array starts at 0
+		this.mSpriteOutput.y = (this.mPositionY);
+		
+		// Addes Tray Sprites to stage
+		stageScene.addChild(this.mSpriteProcessor);
+		stageScene.addChild(this.mSpriteOutput);
+		
+		for(let i = 0; i < this.numIngredients; ++i)
+		{
+			stageScene.addChild(this.mSpriteTray[i]);
+		}
+		
+		/*
 		this.mSprite = spriteManager.getSprite("Processor");  // example
 	
 		// Sets Position
@@ -75,15 +98,11 @@ function Processor(recipeOrder) //the Recipe this Processor will produce
 		{
 			
 			//contentBlock[i] = new Sprite(x,y);
-			contentBlock.push(/*new Sprite(x,y)*/);
+			//contentBlock.push(new Sprite(x,y));
 		}
-		
-		
-		
-		
-		
+	*/
 	}
-	
+	/**
 	//-------------------------------------------------------------------------------
 	// On draw
 	this.OnRender : function()
@@ -183,22 +202,39 @@ function Processor(recipeOrder) //the Recipe this Processor will produce
 	}
 	
 	//-------------------------------------------------------------------------------
-
-}
-
-// Position class handler
-function Position(x1,y1)
-{
-	this.x = x1;
-	this.y = y1;
+	return this;
+	*/
 	
-	this.getX : function() { return x;}
-	this.getY : function() { return y;}
+	//-------------------------------------------------------------------------------
+	// Object Variables
+	//-------------------------------------------------------------------------------
 	
-	this.movePos : function(x1, y1) 
-	{ 
-		x += x1; 
-		y += y1;
-	}
+	// Sprites
+	this.mSpriteProcessor; 					// Sprite Variable
+	this.mSpriteTray = [];
+	this.mSpriteOutput; 			// This Sprite will not be have a bounding box
 	
-}
+	
+	// Position
+	this.mPositionX;
+	this.mPositionY;
+	
+	
+	// Ingredients
+	this.requiredIngredients = [];		// Array of required items
+	this.numIngredients;				// Total Number of Ingredients
+	this.recipeProgress = []; 			// An array of booleans to check if each seperate ingredients are placed
+	this.mPosition;
+	
+	// Processing Variables
+	this.totalProcessTime = 60; 		// total time it takes for an item to process
+	this.processTimer = 0; 				// Current process duration	
+	this.timerCircle;					// Drawing Circle
+	
+	// Object Variables
+	this.isCollidable = true;			// This object is collidable
+	this.processorState = 0; 
+	// 0 = loading items
+	// 1 = processing
+	
+}	// End of Class
