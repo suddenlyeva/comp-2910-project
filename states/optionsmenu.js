@@ -13,15 +13,19 @@ function OptionsMenu() {
     this.panel.drawRect(0, 0, this.width, this.height);
     this.panel.endFill();
     this.closeButton = makeSimpleButton(30, 30, "X", 0xf00e46);
+    this.musicVol = makeSlider(this.panel.width - 100, 100, "Music", 50, 0xd7f442);
 
     this.panel.interactive = true;
 
     // Add to scene
     this.scene.addChild(this.panel);
     this.scene.addChild(this.closeButton);
+    this.scene.addChild(this.musicVol);
 
     this.closeButton.position.set(
         this.panel.width - this.closeButton.width - 10, 10);
+    this.musicVol.position.set(
+        50, this.height / 3 - this.musicVol.height);
     this.scene.position.set(
         RENDERER.width / 2 - this.width / 2,
         RENDERER.height / 2 - this.height / 2

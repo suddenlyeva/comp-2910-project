@@ -50,6 +50,57 @@ function makeLoadingBar(width, height, padding, bgColor, fgColor) {
     return loadingBar;
 }
 
+function makeSlider(width, height, text, handleHeight, handleColor) {
+    let slider = new PIXI.Container();
+
+    let background = new PIXI.Graphics();
+    background.beginFill(0xffffff);
+    background.drawRect(0, 0, width, height);
+    background.endFill();
+    // background.visible = false;
+
+    let desc = new PIXI.Text(text, {
+        fontFamily: FONT_FAMILY, fontSize: height / 3, fill: 0x0
+    });
+
+    let line = new PIXI.Graphics();
+    line.lineStyle(handleHeight / 6, 0x0, 1);
+    line.moveTo(0, height - handleHeight / 2);
+    line.lineTo(width, height - handleHeight / 2);
+
+    let handle = new PIXI.Graphics();
+    handle.lineStyle(2, 0x0, 1);
+    handle.beginFill(handleColor);
+    handle.drawRect(0, height - handleHeight, handleHeight / 2, handleHeight);
+    handle.endFill();
+    handle.interactive = handle.buttonMode = true;
+
+    handle.on("pointerdown", event => {
+        handle.dragged = true;
+        handle.tint = 0x77f441;
+    });
+
+    handle.pointerup = handle.pointerupoutside = event => {
+        handle.dragged = false;
+        handle.tint = 0xFFFFFF;
+    };
+
+    handle.pointermove = event => {
+        if(handle.dragged) {
+            let newPos = event.data.getLocalPosition(handle.parent);
+            handle.x = newPos.x;
+            handle.y = newPos.y;
+        }
+    };
+
+    slider.addChild(background);
+    slider.addChild(line);
+    slider.addChild(handle);
+    slider.addChild(desc);
+
+    return slider;
+}
+
 // Point to box collision
 function testHitRectangle(pointObj, rectObj) {
     let xPoint = pointObj.x;
