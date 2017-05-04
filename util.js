@@ -59,15 +59,17 @@ function makeSlider(width, height, text, handleHeight, handleColor) {
 
     let line = new PIXI.Graphics();
     line.lineStyle(handleHeight / 6, 0x0, 1);
-    line.moveTo(0,     height - handleHeight / 2);
-    line.lineTo(width, height - handleHeight / 2);
+    line.moveTo(0, 0);
+    line.lineTo(width / 1.2, 0);
+    line.position.set(width / 2 - line.width / 2, height - handleHeight / 2);
 
     let handleWidth = handleHeight / 2;
     let handle = new PIXI.Graphics();
-    handle.lineStyle(2, 0x0, 1);
+    handle.lineStyle(4, 0x0, 1);
     handle.beginFill(handleColor);
-    handle.drawRect(line.x, height - handleHeight, handleWidth, handleHeight);
+    handle.drawRect(0, 0, handleWidth, handleHeight);
     handle.endFill();
+    handle.position.set(line.x, line.y + line.height / 2 - handle.height / 2);
     handle.interactive = handle.buttonMode = true;
 
     handle.pointerdown = event => {
@@ -84,13 +86,14 @@ function makeSlider(width, height, text, handleHeight, handleColor) {
     handle.pointermove = event => {
         if(handle.dragData) {
             let newPos = event.data.getLocalPosition(handle.parent);
-            // old handle.x + difference between new and old cursor position
+            // xAdjusted is old handle.x + difference between new and old cursor position
             let xAdjusted = handle.x + newPos.x - handle.dragData.x;
+            // using handleWidth because handle.width is for some reason inaccurate
+            let endOfLine = line.x + line.width - handleWidth;
             if(xAdjusted < line.x) {
                 handle.x = line.x;
-                // using handleWidth because handle.width is for some reason inaccurate
-            } else if(xAdjusted > line.width - handleWidth) {
-                handle.x = line.width - handleWidth;
+            } else if(xAdjusted > endOfLine) {
+                handle.x = endOfLine;
             } else {
                 handle.x = xAdjusted;
                 handle.dragData = newPos;
