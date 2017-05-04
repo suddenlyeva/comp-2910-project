@@ -30,8 +30,14 @@ function ConveyorBelt(itemTypes, speed) {
         // When last item reaches trash can:
         if(this.deltaX >= SPRITE_SIZE_PX) {
 
-            // Waste first item
-            this.items[0].waste();
+            // Waste first item if not a blank
+            if (this.items[0].type != BLANK) {
+                this.items[0].waste();
+            }
+            // Otherwise just remove from stage entirely.
+            else {
+                stageScene.removeChild(this.items[0]);
+            }
 
             // Shift Indices
             this.items.shift();
