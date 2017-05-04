@@ -1,55 +1,32 @@
+"use strict";
 
-function Level(levelNumber, conveyorItems, conveyorSpeed, processors) {
+// JSON
+let LEVELS = [
+    {id: 0,
+        conveyorBelt: {
+            items: [APPLE, BLANK, BLANK, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
+            speed: 0.8
+        },
+        processors: []
+    }
+];
+
+function Level(data) {
     this.scene = new PIXI.Container();
     this.background = new PIXI.Sprite(PIXI.utils.TextureCache["background.png"]);
     this.scene.addChild(this.background);
-    this.levelNumber = levelNumber;
-    this.processors = processors;
-    this.conveyorBelt = new ConveyorBelt(conveyorItems, conveyorSpeed, this);
+    this.levelNumber = data.id;
+    this.processors = data.processors;
+    this.conveyorBelt = new ConveyorBelt(data.conveyorBelt.items, data.conveyorBelt.speed, this);
     this.update = () => {
         this.conveyorBelt.update();
     };
 }
 
-Level.open = () => {
-    
-    let ITEMS = [
-    APPLE,
-    BLANK,
-    BLANK,
-    APPLE,
-    BLANK,
-    APPLE,
-    APPLE,
-    BLANK,
-    BLANK,
-    APPLE,
-    BLANK,
-    APPLE,
-    APPLE,
-    BLANK,
-    BLANK,
-    APPLE,
-    BLANK,
-    APPLE,
-    APPLE,
-    BLANK,
-    BLANK,
-    APPLE,
-    BLANK,
-    APPLE,
-    APPLE,
-    BLANK,
-    BLANK,
-    APPLE,
-    BLANK,
-    APPLE
-    ];
-    
-    let CONVEYOR_SPEED = 0.8;
+Level.open = (data) => {
     
     if(Level.instance == null) {
-        Level.instance = new Level(0, ITEMS, CONVEYOR_SPEED);
+        Level.instance = new Level(data);
     }
 
     SCENE = Level.instance.scene;
