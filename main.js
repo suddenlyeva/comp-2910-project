@@ -8,6 +8,10 @@ let thingsToLoad = [
 ];
 
 let RENDERER = PIXI.autoDetectRenderer(CANVAS_WIDTH, CANVAS_HEIGHT);
+RENDERER.view.style.position = "absolute";
+RENDERER.view.style.display = "block";
+RENDERER.autoResize = true;
+RENDERER.resize(window.innerWidth, window.innerHeight);
 RENDERER.backgroundColor = 0x95d5f5;
 document.body.appendChild(RENDERER.view);
 
@@ -32,6 +36,7 @@ function setup() {
 
 function gameLoop() {
     requestAnimationFrame(gameLoop);
+    console
     STATE();
     RENDERER.render(SCENE);
 }
