@@ -22,7 +22,7 @@ function PauseMenu() {
 
     this.bgFill = new PIXI.Graphics();
     this.bgFill.beginFill(0x6a0e1d);
-    this.bgFill.drawRect(0, 0, RENDERER.width, RENDERER.height);
+    this.bgFill.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     this.bgFill.alpha = 0.4;
     this.bgFill.endFill();
 

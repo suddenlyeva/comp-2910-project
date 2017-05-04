@@ -28,19 +28,19 @@ function Intro() {
 
     // Position text
     // note no padding between lines
-    this.txtFood.position.set(RENDERER.width / 2 - this.txtFood.width / 2, 0);
-    this.txtFactory.position.set(RENDERER.width / 2 - this.txtFactory.width / 2,
+    this.txtFood.position.set(CANVAS_WIDTH / 2 - this.txtFood.width / 2, 0);
+    this.txtFactory.position.set(CANVAS_WIDTH / 2 - this.txtFactory.width / 2,
         this.txtFood.y + this.txtFood.height);
-    this.txtZero.position.set(RENDERER.width / 2 - this.txtZero.width / 2,
+    this.txtZero.position.set(CANVAS_WIDTH / 2 - this.txtZero.width / 2,
         this.txtFactory.y + this.txtFactory.height);
-    this.txtPress.position.set(RENDERER.width / 2 - this.txtPress.width / 2,
-        RENDERER.height - this.txtPress.height - 10);
-    this.txtTeam19.position.set(RENDERER.width - this.txtTeam19.width - 10,
-        RENDERER.height - this.txtTeam19.height - 10);
+    this.txtPress.position.set(CANVAS_WIDTH / 2 - this.txtPress.width / 2,
+        CANVAS_HEIGHT - this.txtPress.height - 10);
+    this.txtTeam19.position.set(CANVAS_WIDTH - this.txtTeam19.width - 10,
+        CANVAS_HEIGHT - this.txtTeam19.height - 10);
 
     this.clickableArea = new PIXI.Graphics();
     this.clickableArea.beginFill(0);
-    this.clickableArea.drawRect(0, 0, RENDERER.width, RENDERER.height);
+    this.clickableArea.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     this.clickableArea.endFill();
     this.clickableArea.interactive = true;
     this.clickableArea.alpha = 0;
