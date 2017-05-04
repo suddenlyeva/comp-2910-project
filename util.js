@@ -58,10 +58,12 @@ function makeSlider(width, height, text, handleHeight) {
     });
 
     let line = new PIXI.Graphics();
-    line.lineStyle(handleHeight / 6, 0x0, 1);
-    line.moveTo(0, 0);
-    line.lineTo(width / 1.2, 0);
+    line.beginFill(0x0);
+    line.drawRect(0, 0, width / 1.2, handleHeight / 6);
+    line.endFill();
     line.position.set(width / 2 - line.width / 2, height - handleHeight / 2);
+    // clicking on the line brings handle position to that point
+    line.interactive = line.buttonMode = true;
 
     let colorSound = 0x77f441,
         colorMuted = 0xff1a1a,
@@ -78,20 +80,21 @@ function makeSlider(width, height, text, handleHeight) {
     handle.tint = colorSound;
     handle.interactive = handle.buttonMode = true;
 
-    handle.pointerdown = event => {
+    handle.pointerdown = eventData => {
         // record cursor position inside handle
-        handle.dragData = event.data.getLocalPosition(handle.parent);
-        handle.tint = colorDrag;
+        handle.dragData = eventData.data.getLocalPosition(handle.parent);
     };
 
-    handle.pointerup = handle.pointerupoutside = event => {
-        handle.dragData = false;
-        handle.tint = handle.x === line.x ? colorMuted : colorSound;
-    };
+    handle.pointerup = handle.pointerupoutside = line.pointerup = line.pointerupoutside =
+        eventData => {
+            handle.dragData = false;
+            handle.tint = handle.x === line.x ? colorMuted : colorSound;
+        };
 
-    handle.pointermove = event => {
+    handle.pointermove = eventData => {
         if(handle.dragData) {
-            let newPos = event.data.getLocalPosition(handle.parent);
+            handle.tint = colorDrag;
+            let newPos = eventData.data.getLocalPosition(handle.parent);
             // xAdjusted is old handle.x + difference between new and old cursor position
             let xAdjusted = handle.x + newPos.x - handle.dragData.x;
             if(xAdjusted < line.x) {
@@ -102,6 +105,18 @@ function makeSlider(width, height, text, handleHeight) {
                 handle.x = xAdjusted;
                 handle.dragData = newPos;
             }
+        }
+    };
+
+    line.pointerdown = eventData => {
+        handle.dragData = eventData.data.getLocalPosition(handle.parent);
+        let xAdjusted = handle.dragData.x - handle.width / 2;
+        if(xAdjusted < line.x) {
+            handle.x = line.x;
+        } else if(xAdjusted > endOfLine) {
+            handle.x = endOfLine;
+        } else {
+            handle.x = xAdjusted;
         }
     };
 
@@ -120,6 +135,6 @@ function testHitRectangle(pointObj, rectObj) {
     let xMax = rectObj.x + rectObj.width/2;
     let yMin = rectObj.y - rectObj.height/2;
     let yMax = rectObj.y + rectObj.height/2;
-    
+
     return (xMin < xPoint && xPoint < xMax) && (yMin < yPoint && yPoint < yMax);
 }
