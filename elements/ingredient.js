@@ -85,6 +85,7 @@ function makeItem(type, x, y) {
         .on('pointerupoutside', item.onDragEnd)
         .on('pointermove', item.onDragMove);
     
+    // Z-Layer Control, 1 is just over background.
     if (item.type == BLANK) {
         stageScene.addChildAt(item, 1);
     }

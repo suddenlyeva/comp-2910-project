@@ -7,7 +7,7 @@ let currentStage = 0;
 let stageTimer = 0;
 let stageScene;
 // Discuss about where to declare later
-let background, apple1, banana, processor, conveyor, conveyorBelt, conveyorBeltRec;
+let background, conveyorBelt;
 
 function stageInit() {
     stageTimer = 0;
