@@ -1,25 +1,21 @@
 "use strict";
 
+let TILES = 64;
+
 // JSON
 let LEVELS = [
     {id: 0,
         name: "tutorial",
         conveyorBelt: {
-            items: [APPLE, BANANA, BANANA, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
-            speed: 0.8
+            items: [BLANK,APPLE],
+            speed: 1.0
         },
         processors: [
             {
-                recipe: [APPLE, BANANA, BANANA, APPLE],
-                result: BANANA,
-                x: 256,
-                y: 128
-            },
-            {
-                recipe: [APPLE, APPLE],
-                result: BANANA,
-                x: 256,
-                y: 384
+                recipe: [APPLE],
+                result: APPLE_SLICE,
+                x: 7*TILES,
+                y: 4*TILES
             }
 		]
     }/*,
