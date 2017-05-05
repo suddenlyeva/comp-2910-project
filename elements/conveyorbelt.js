@@ -3,9 +3,7 @@
 function ConveyorBelt(itemTypes, speed, level) {
 
     // Define Constants
-    let SCENE_HEIGHT_PX = 480;
-    let SCENE_WIDTH_PX = 640;
-    let SPRITE_SIZE_PX = 32;
+    let SPRITE_SIZE_PX = 64;
     let SPRITE_HALF_PX = SPRITE_SIZE_PX/2;
     let ARRAY_MIN_SIZE = 20;
 
@@ -60,10 +58,10 @@ function ConveyorBelt(itemTypes, speed, level) {
         
         // Position
         // At bottom of screen
-        item.y = SCENE_HEIGHT_PX - SPRITE_HALF_PX;
+        item.y = CANVAS_HEIGHT - SPRITE_HALF_PX;
 
         // Normalize to near bottom right corner
-        item.x = SCENE_WIDTH_PX + this.deltaX - SPRITE_SIZE_PX - SPRITE_HALF_PX;
+        item.x = CANVAS_WIDTH + this.deltaX - SPRITE_SIZE_PX - SPRITE_HALF_PX;
 
         // Shift left by index
         item.x -= SPRITE_SIZE_PX * index;
@@ -74,7 +72,7 @@ function ConveyorBelt(itemTypes, speed, level) {
     
     // Returns an index based on an X position
     this.getIndexFromX = (x) => {
-        return Math.floor((SCENE_WIDTH_PX + this.deltaX - x) / SPRITE_SIZE_PX) - 1;
+        return Math.floor((CANVAS_WIDTH + this.deltaX - x) / SPRITE_SIZE_PX) - 1;
     }
     
     // Returns an item based on index
@@ -89,7 +87,7 @@ function ConveyorBelt(itemTypes, speed, level) {
     
     // Point Collision
     this.collidesWithPoint = (x,y) => {
-        return (0 < x && x < SCENE_WIDTH_PX - SPRITE_SIZE_PX) && (SCENE_HEIGHT_PX - SPRITE_SIZE_PX < y && y < SCENE_HEIGHT_PX);
+        return (0 < x && x < CANVAS_WIDTH - SPRITE_SIZE_PX) && (CANVAS_HEIGHT - SPRITE_SIZE_PX < y && y < CANVAS_HEIGHT);
     }
     
     // Finish Constructor
