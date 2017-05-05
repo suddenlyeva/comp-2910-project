@@ -22,7 +22,7 @@ let LEVELS = [
                 y: 300
             }
 		]
-    },
+    }/*,
     {id: 1,
         name: "pen pineapple apple pen",
         conveyorBelt: {
@@ -30,7 +30,7 @@ let LEVELS = [
             speed: 1.2
         },
         processors: []
-    }
+    }*/
 ];
 
 function Level(data) {
