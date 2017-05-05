@@ -5,13 +5,13 @@ let LEVELS = [
     {id: 0,
         name: "tutorial",
         conveyorBelt: {
-            items: [APPLE, BLANK, BLANK, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
+            items: [APPLE, BANANA, BANANA, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
             speed: 0.8
         },
         processors: [
             {
-                items: [1, 2, 3, 4],
-                result: APPLE,
+                items: [1, 2, 2, 1],
+                result: BANANA,
                 x: 100,
                 y: 200
             }

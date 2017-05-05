@@ -6,18 +6,13 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	//-------------------------------------------------------------------------------
 	// Project handler functions
 	//-------------------------------------------------------------------------------
-	this.OnTestInit  = () => {
-		console.log(recipeOrder.GetListCount());
-		// console.log("Hi");
-		
-	}
 	
 	//-------------------------------------------------------------------------------
 	// Sets Position of the Compressor
 	this.SetPosition = (x,y) => {
 		this.mPositionX = x;
 		this.mPositionY = y;
-	}
+	};
 	
 	//-------------------------------------------------------------------------------
 	// On create / Init
@@ -27,13 +22,6 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		// Variable Assignments
 		this.requiredIngredients = recipeOrder.GetList();
 		this.numIngredients = recipeOrder.GetListCount();
-		console.log("Number of Ingredients = " + this.numIngredients);
-		
-
-		for(let i = 0; i < this.numIngredients; ++i) // Forcefully initiates them to false
-		{
-
-		}
 
 	
 		//  --- Sprite related Init  ---
@@ -78,11 +66,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		level.scene.addChild(this.mSpriteOutput);
 		
 	
-	}
-	
-	// ~ Both collision can all be in one function with a return boolean in a manager
-	// The Worlds see's all items and tells which item is touch what.
-	
+	};
 	
 	//-------------------------------------------------------------------------------
 	// Collision pass for ingredients Item's center x and y
@@ -93,18 +77,11 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		let boundingboxUpperLimitX = boundingboxX + (this.spriteSize * this.numIngredients); //top right
 		let boundingboxUpperLimitY = boundingboxY + 32; //bottom
 		
-		console.log( x > boundingboxX
-			&& x < boundingboxUpperLimitX);
-			
-		
-		console.log( y > boundingboxY				// Top Left
-		&& y < boundingboxUpperLimitY);					// Top Left 
-		
         return ( boundingboxX < x 			// Bottom Left
 		&& x < (boundingboxUpperLimitX)	// Bottom Right
 		&& y > boundingboxY 					// Top Left
 		&& y < boundingboxUpperLimitY);	// Top Right
-    }
+    };
 	
 	//-------------------------------------------------------------------------------
 	// Passes Ingredient Object to Processor
@@ -116,18 +93,34 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 				this.requiredIngredients[i].alpha = 1;
 				this.recipeProgress[i] = true;
 				
-				level.removeChild (droppedIngredient);
+				level.scene.removeChild(droppedIngredient);
 				break;
 			}
 		}
-	}
+	};
 	
 	//-------------------------------------------------------------------------------
 	// On Update
-	this.Update = () => 
-	{
+	this.update = () => {
+		if(this.bRecipeCompletion())
+		{
+			let output = makeItem(recipeOrder.GetOutput(), level);
+			output.x = this.spriteSize + this.mSpriteOutput.x;
+			output.y = this.spriteSize + this.mSpriteOutput.y;
+		}
 		// Does Nothing
-	}
+	};
+	
+	//-------------------------------------------------------------------------------
+	// Checks if all the required Recipe Ingredients are added
+	this.bRecipeCompletion = () => {
+		for (let i = 0; i < this.numIngredients; ++i)
+		{
+			if(this.recipeProgress[i] == false)
+				return false;
+		}
+		return true;
+	};
 	
 	/**
 	//-------------------------------------------------------------------------------
@@ -179,18 +172,6 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	//-------------------------------------------------------------------------------
 	
 	//-------------------------------------------------------------------------------
-	// External addTo()
-	this.addIngredient = (item) => {
-		for(let i = 0; i < numIngredients; ++i)
-		{
-			if(requiredIngredients[i] == item.getName()) //item.getType?
-			{
-				recipeProgress[i] = true;
-			}
-		}
-	}
-	
-	//-------------------------------------------------------------------------------
 	// Updates the timer
 	
 	this.timerUpdate : function()
@@ -200,38 +181,11 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			processTimer += deltaTime;
 		}
 	}
-	
-	//-------------------------------------------------------------------------------
-	// Checks if dragged item is an item on the recipe
-	this.itemCheck(droppedObj)
-	{
-		for(let i = 0; i < numIngredients; ++i)
-		{
-			
-			if(requiredIngredients[i] === droppedObj.getName())
-			{
-				requiredIngredients[i] = true; // if found flip to true 
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	//-------------------------------------------------------------------------------
-	// Checks if all the required Recipe Ingredients are added
-	this.bRecipeCompletion : function()
-	{
-		for (let i = 0; i < numIngredients; ++i)
-		{
-			if(requiredIngredients[i] === false)
-				return false;
-		}
-		return true;
-	}
-	
-	//-------------------------------------------------------------------------------
-	return this;
 	*/
+	
+	
+	//-------------------------------------------------------------------------------
+
 	
 	//-------------------------------------------------------------------------------
 	// Object Variables
