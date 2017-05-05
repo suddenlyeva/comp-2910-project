@@ -107,6 +107,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			let output = makeItem(recipeOrder.GetOutput(), level);
 			output.x = this.spriteSize + this.mSpriteOutput.x;
 			output.y = this.spriteSize + this.mSpriteOutput.y;
+			
+			this.reset();
 		}
 		// Does Nothing
 	};
@@ -119,9 +121,17 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			if(this.recipeProgress[i] == false)
 				return false;
 		}
+		
 		return true;
 	};
 	
+	
+	this.reset = () => {
+		for(let i = 0; i < this.numIngredients; ++i)
+		{
+			this.recipeProgress[i] = false;
+		}
+	}
 	/**
 	//-------------------------------------------------------------------------------
 	// On draw
@@ -210,7 +220,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.mPosition;
 	
 	// Processing Variables
-	this.totalProcessTime = 60; 		// total time it takes for an item to process
+	this.totalProcessTime = 5; 			// total time it takes for an item to process
 	this.processTimer = 0; 				// Current process duration	
 	this.timerCircle;					// Drawing Circle
 	
