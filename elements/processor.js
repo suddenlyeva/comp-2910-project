@@ -130,6 +130,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		for(let i = 0; i < this.numIngredients; ++i)
 		{
 			this.recipeProgress[i] = false;
+			this.requiredIngredients[i].alpha = this.alpha;
 		}
 	}
 	/**
