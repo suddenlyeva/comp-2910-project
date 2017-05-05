@@ -27,7 +27,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		//  --- Sprite related Init  ---
 	
 		// Sprite Handler should be placed here
-		this.mSpriteProcessor = PIXI.Sprite.fromImage('images/RTS_Crate.png');
+		this.mSpriteProcessor = new PIXI.Sprite(
+			PIXI.loader.resources["images/spritesheet.json"].textures["input.png"]
+		);
 		
 		// Should be defined later
 		this.mSpriteProcessor.x = this.mPositionX;
@@ -39,7 +41,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			// Unsafe (no sprite manager to initilize sprite with set position
 			
 			// Spawns Processor's Tray sprites
-			this.mSpriteTray[i] = (PIXI.Sprite.fromImage('images/RTS_Crate2.png'));
+			this.mSpriteTray[i] = ( new PIXI.Sprite(
+				PIXI.loader.resources["images/spritesheet.json"].textures["recipe-waiting.png"]
+			));
 			this.mSpriteTray[i].x = (this.mPositionX + (this.spriteSize*2) + (this.spriteSize * (i))); // offsets the pos based off index
 			this.mSpriteTray[i].y = (this.mPositionY + this.spriteSize);
 			
@@ -57,7 +61,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		}
 		
 		// Last Tray is the Processor output
-		this.mSpriteOutput = PIXI.Sprite.fromImage('images/RTS_Crate.png');
+		this.mSpriteOutput = new PIXI.Sprite(
+			PIXI.loader.resources["images/spritesheet.json"].textures["output.png"]
+		);
 		this.mSpriteOutput.x = (this.mPositionX + (this.spriteSize*2) + (this.spriteSize * (this.numIngredients))); //array starts at 0
 		this.mSpriteOutput.y = (this.mPositionY);
 		
@@ -72,15 +78,22 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	// Collision pass for ingredients Item's center x and y
 	this.collidesWithPoint = (x,y) => {
 		
-		let boundingboxX = this.mPositionX + 64; // top left
-		let boundingboxY = this.mPositionY + 32; 	 // top 
-		let boundingboxUpperLimitX = boundingboxX + (this.spriteSize * this.numIngredients); //top right
-		let boundingboxUpperLimitY = boundingboxY + 32; //bottom
+		// Input Box
+		let inputLeft = this.mPositionX;
+		let inputRight = this.mPositionX + this.spriteSize*2;
+		let inputTop = this.mPositionY;
+		let inputBottom = this.mPositionY + this.spriteSize*2;
 		
-        return ( boundingboxX < x 			// Bottom Left
-		&& x < (boundingboxUpperLimitX)	// Bottom Right
-		&& y > boundingboxY 					// Top Left
-		&& y < boundingboxUpperLimitY);	// Top Right
+		// Recipe Boxes
+		let boundingboxX = this.mPositionX + this.spriteSize*2; // top left
+		let boundingboxY = this.mPositionY + this.spriteSize; 	 // top 
+		let boundingboxUpperLimitX = boundingboxX + (this.spriteSize * this.numIngredients); //top right
+		let boundingboxUpperLimitY = boundingboxY + this.spriteSize; //bottom
+		
+        return 	( inputLeft < x && x < inputRight && inputTop < y && y < inputBottom) ||
+		
+				( boundingboxX < x && x < boundingboxUpperLimitX && 
+				  boundingboxY < y && y < boundingboxUpperLimitY);
     };
 	
 	//-------------------------------------------------------------------------------
@@ -92,6 +105,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			{
 				this.requiredIngredients[i].alpha = 1;
 				this.recipeProgress[i] = true;
+				this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
 				
 				level.scene.removeChild(droppedIngredient);
 				break;
@@ -131,6 +145,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		{
 			this.recipeProgress[i] = false;
 			this.requiredIngredients[i].alpha = this.alpha;
+			this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-waiting.png"];
 		}
 	}
 	/**
@@ -207,7 +222,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.mSpriteTray = [];
 	this.mSpriteOutput; 			// This Sprite will not be have a bounding box
 	
-	this.spriteSize = 32;
+	this.spriteSize = 64;
 	this.spriteSizeHalf = this.spriteSize / 2;
 	
 	// Position

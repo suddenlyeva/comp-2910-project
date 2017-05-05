@@ -1,18 +1,15 @@
 "use strict";
 // let some kind of enum for ingredients?
 let BLANK = 0;
-let APPLE = 1;
-let BANANA = 2;
+let SPLAT = 1;
+let APPLE = 2;
+let BANANA = 3;
 
 function makeItem(type, level) {
-    // Define Constants
-    let SCENE_HEIGHT_PX = 480;
-    let SCENE_WIDTH_PX = 640;
-    let SPRITE_SIZE_PX = 32;
-    let SPRITE_HALF_PX = SPRITE_SIZE_PX/2;
 
     //Texture dictionary
     let ITEM_TEXTURES = [];
+    ITEM_TEXTURES[SPLAT] = PIXI.loader.resources["images/spritesheet.json"].textures["splat.png"];
     ITEM_TEXTURES[BLANK] = PIXI.loader.resources["images/spritesheet.json"].textures["testblank.png"];
     ITEM_TEXTURES[APPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"];
     ITEM_TEXTURES[BANANA] = PIXI.loader.resources["images/spritesheet.json"].textures["banana.png"];
@@ -29,20 +26,17 @@ function makeItem(type, level) {
     item.type = type;
     
     // Behaviours that we need the object to do
-    item.interactive = true;
+    item.interactive = item.type > SPLAT; // Kind of hacky, index non interactive items to less than SPLAT
     item.buttonMode = true;
     item.anchor.set(0.5);
     
 	
-    item.waste = function() {
-        item.texture = ITEM_TEXTURES[BANANA];
-    };
-    
-    item.addToProcessor = function() {
-        // TODO
+    item.waste = () => {
+        item.texture = ITEM_TEXTURES[SPLAT];
+		item.interactive = false;
     };
 
-    item.onDragStart = function(event) {
+    item.onDragStart = (event) => {
         item.data = event.data;
         item.alpha = 0.5;
         item.dragging = true;
@@ -51,7 +45,7 @@ function makeItem(type, level) {
         }
     };
     
-    item.onDragEnd = function(event) {
+    item.onDragEnd = (event) => {
         
         if (item.dragging) {
             // addToConveyor if on conveyor
@@ -74,7 +68,7 @@ function makeItem(type, level) {
         item.data = null;
     };
     
-    item.onDragMove = function() {
+    item.onDragMove = () => {
         if(item.dragging) {
             // Track x and y
             let newPosition = item.data.getLocalPosition(item.parent);

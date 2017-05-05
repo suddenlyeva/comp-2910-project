@@ -12,14 +12,14 @@ let LEVELS = [
             {
                 recipe: [APPLE, BANANA, BANANA, APPLE],
                 result: BANANA,
-                x: 100,
-                y: 200
+                x: 256,
+                y: 128
             },
             {
                 recipe: [APPLE, APPLE],
                 result: BANANA,
-                x: 100,
-                y: 300
+                x: 256,
+                y: 384
             }
 		]
     },
