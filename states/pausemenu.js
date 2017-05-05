@@ -44,9 +44,9 @@ function PauseMenu() {
     // Options button opens an options panel
     this.optionsButton.on("pointertap", OptionsMenu.open);
 
-    this.update = function() {};
+    this.update = () => {};
 
-    this.unpause = function() {
+    this.unpause = () => {
         STATE = this.stateBuffer;
         OptionsMenu.close();
         this.scene.parent.removeChild(this.scene);
