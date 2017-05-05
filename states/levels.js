@@ -10,14 +10,21 @@ let LEVELS = [
         },
         processors: [
             {
-                items: [1, 2, 2, 1],
+                recipe: [APPLE, BANANA, BANANA, APPLE],
                 result: BANANA,
                 x: 100,
                 y: 200
+            },
+            {
+                recipe: [APPLE, APPLE],
+                result: BANANA,
+                x: 100,
+                y: 300
             }
 		]
     },
     {id: 1,
+        name: "pen pineapple apple pen",
         conveyorBelt: {
             items: [APPLE, BLANK, BLANK, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
             speed: 1.2
@@ -43,7 +50,7 @@ function Level(data) {
 	this.processors = [];
 	for (let i in data.processors) {
 		this.processors.push(
-            new Processor(new Recipe(data.processors[i].items, data.processors[i].result),this)
+            new Processor(new Recipe(data.processors[i].recipe, data.processors[i].result),this)
 		);
         this.processors[i].SetPosition(data.processors[i].x, data.processors[i].y);
         this.processors[i].Spawn();
