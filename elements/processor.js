@@ -105,6 +105,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			{
 				this.requiredIngredients[i].alpha = 1;
 				this.recipeProgress[i] = true;
+				this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
 				
 				level.scene.removeChild(droppedIngredient);
 				break;
@@ -144,6 +145,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		{
 			this.recipeProgress[i] = false;
 			this.requiredIngredients[i].alpha = this.alpha;
+			this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-waiting.png"];
 		}
 	}
 	/**
