@@ -3,7 +3,8 @@
 let BLANK = 0;
 let SPLAT = 1;
 let APPLE = 2;
-let BANANA = 3;
+let APPLE_SLICE = 3;
+let BANANA = 4;
 
 function makeItem(type, level) {
 
@@ -12,6 +13,7 @@ function makeItem(type, level) {
     ITEM_TEXTURES[SPLAT] = PIXI.loader.resources["images/spritesheet.json"].textures["splat.png"];
     ITEM_TEXTURES[BLANK] = PIXI.loader.resources["images/spritesheet.json"].textures["testblank.png"];
     ITEM_TEXTURES[APPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"];
+    ITEM_TEXTURES[APPLE_SLICE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple-slice.png"];
     ITEM_TEXTURES[BANANA] = PIXI.loader.resources["images/spritesheet.json"].textures["banana.png"];
     
     // the argument of textures should be replaced with textureStr after implementing index

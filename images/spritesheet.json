@@ -1,8 +1,16 @@
 {"frames": {
 
-"apple.png":
+"apple-slice.png":
 {
 	"frame": {"x":288,"y":0,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"apple.png":
+{
+	"frame": {"x":416,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -26,7 +34,7 @@
 },
 "input.png":
 {
-	"frame": {"x":640,"y":0,"w":128,"h":128},
+	"frame": {"x":576,"y":0,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -34,7 +42,7 @@
 },
 "output.png":
 {
-	"frame": {"x":768,"y":0,"w":128,"h":128},
+	"frame": {"x":832,"y":0,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -74,7 +82,7 @@
 },
 "splat.png":
 {
-	"frame": {"x":512,"y":0,"w":128,"h":128},
+	"frame": {"x":704,"y":0,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -82,7 +90,7 @@
 },
 "table.png":
 {
-	"frame": {"x":416,"y":0,"w":96,"h":67},
+	"frame": {"x":480,"y":0,"w":96,"h":67},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":67},
@@ -103,6 +111,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1280,"h":896},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:1b5194b215c3786b39592e8b365d69db:afc82a81237a1852d80c0b5f9205c798:729adc6043343cfda41c447ce8f464d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:178eb7595657a76c5a2f1abbc1c4050b:2a93cef8063329450d6044b57ce28e88:729adc6043343cfda41c447ce8f464d6$"
 }
 }
