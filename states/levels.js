@@ -8,11 +8,13 @@ let LEVELS = [
             items: [APPLE, BLANK, BLANK, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
             speed: 0.8
         },
-        recipes: [
-		{
-			items: [1, 2, 3, 4],
-			result: APPLE
-		}
+        processors: [
+            {
+                items: [1, 2, 3, 4],
+                result: APPLE,
+                x: 100,
+                y: 200
+            }
 		]
     },
     {id: 1,
@@ -39,19 +41,22 @@ function Level(data) {
     this.levelNumber = data.id;
     this.name = data.name;
 	this.processors = [];
-	for (let i in data.recipes) {
-		this.processors.push(new Processor(
-		new Recipe(data.recipes[i].items, data.recipes[i].result),
-		this)
+	for (let i in data.processors) {
+		this.processors.push(
+            new Processor(new Recipe(data.processors[i].items, data.processors[i].result),this)
 		);
+        this.processors[i].SetPosition(data.processors[i].x, data.processors[i].y);
+        this.processors[i].Spawn();
 	}
-	// TEST CODE
-	this.processors[0].SetPosition(100,200);
-	this.processors[0].Spawn();
 	
     this.conveyorBelt = new ConveyorBelt(data.conveyorBelt.items, data.conveyorBelt.speed, this);
     this.update = () => {
         this.conveyorBelt.update();
+        /*
+        for (let i in this.processors) {
+            this.processors[i].update();
+        }
+        */
     };
 }
 
