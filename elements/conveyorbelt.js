@@ -9,6 +9,7 @@ function ConveyorBelt(itemTypes, speed, level) {
 
     // Define Properties
     this.items = [];
+    this.belt = new PIXI.Container();
     this.speed = speed;
     this.deltaX = 0;
     
@@ -16,18 +17,23 @@ function ConveyorBelt(itemTypes, speed, level) {
     
     // Define Behaviours
     this.update = () => {
-
+        
         // Move belt forwards
+        
+        this.belt.x += this.speed;
         for (let i in this.items) {
             this.items[i].x += this.speed;
         }
 
         // Track change in X
-        this.deltaX += speed;
+        this.deltaX += this.speed;
 
         // When last item reaches trash can:
         if(this.deltaX >= SPRITE_SIZE_PX) {
-
+            
+            // Move belt backwards
+            this.belt.x -= SPRITE_SIZE_PX;
+            
             // Waste first item if not a blank
             if (this.items[0].type != BLANK) {
                 this.items[0].waste();
@@ -92,10 +98,20 @@ function ConveyorBelt(itemTypes, speed, level) {
     
     // Finish Constructor
 
-    // Pad array
+    // Pad array and construct belt
     for(let i = 0; i < ARRAY_MIN_SIZE; i++) {
         this.addItemAtIndex(makeItem(BLANK, level), i);
+        
+        let beltTile = makeItem(BLANK, level);
+        beltTile.y = CANVAS_HEIGHT - SPRITE_HALF_PX;
+        beltTile.x = CANVAS_WIDTH - SPRITE_SIZE_PX - SPRITE_HALF_PX;
+        beltTile.x -= SPRITE_SIZE_PX * i;
+        console.log(beltTile);
+        this.belt.addChild(beltTile);
     }
+    
+    // Add belt background
+    level.scene.addChild(this.belt);
     
     // Fill out rest of conveyor
     for(let i = 0; i < itemTypes.length; i++) {
