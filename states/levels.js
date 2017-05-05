@@ -52,11 +52,9 @@ function Level(data) {
     this.conveyorBelt = new ConveyorBelt(data.conveyorBelt.items, data.conveyorBelt.speed, this);
     this.update = () => {
         this.conveyorBelt.update();
-        /*
         for (let i in this.processors) {
             this.processors[i].update();
         }
-        */
     };
 }
 
