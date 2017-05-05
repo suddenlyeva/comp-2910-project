@@ -9,7 +9,7 @@ function OptionsMenu() {
     // Make Panel and Buttons
     this.panel = new PIXI.Graphics();
     this.panel.lineStyle(1, 0, 1);
-    this.panel.beginFill(0xcecfe2);
+    this.panel.beginFill(0xfff3ad);
     this.panel.drawRect(0, 0, this.width, this.height);
     this.panel.endFill();
     this.closeButton = makeSimpleButton(30, 30, "X", 0xf00e46);
