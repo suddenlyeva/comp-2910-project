@@ -5,14 +5,11 @@ let LEVELS = [
     {id: 0,
         name: "tutorial",
         conveyorBelt: {
-            items: [APPLE, BLANK, BLANK, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
+            items: [APPLE, BANANA, BLANK, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
             speed: 0.8
         },
         recipes: [
-		{
-			items: [1, 2, 3, 4],
-			result: APPLE
-		}
+		{ items: [APPLE, BANANA, BANANA, APPLE], result: BANANA }
 		]
     },
     {id: 1,
@@ -52,6 +49,7 @@ function Level(data) {
     this.conveyorBelt = new ConveyorBelt(data.conveyorBelt.items, data.conveyorBelt.speed, this);
     this.update = () => {
         this.conveyorBelt.update();
+		this.processors[0].update();
     };
 }
 

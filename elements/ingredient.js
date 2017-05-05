@@ -33,6 +33,7 @@ function makeItem(type, level) {
     item.buttonMode = true;
     item.anchor.set(0.5);
     
+	
     item.waste = function() {
         item.texture = ITEM_TEXTURES[BANANA];
     };
@@ -57,8 +58,14 @@ function makeItem(type, level) {
             if (level.conveyorBelt.collidesWithPoint(item.x, item.y) && level.conveyorBelt.getItemAtX(item.x).type == BLANK) {
                 level.conveyorBelt.addItemAtX(item, item.x);
             }
-            // else waste
             else {
+                // Check collision with processors
+                for (let i in level.processors) {
+                    if (level.processors[i].collidesWithPoint(item.x, item.y)) {
+                        level.processors[i].addItem(item);
+                    }
+                }
+                // else waste
                 item.waste();
             }
         }

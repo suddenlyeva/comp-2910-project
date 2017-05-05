@@ -25,10 +25,16 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.Spawn = () => {	
 	
 		// Variable Assignments
-		
-		// !!Testing Enviorment!
+		this.requiredIngredients = recipeOrder.GetList();
 		this.numIngredients = recipeOrder.GetListCount();
-	
+		console.log("Number of Ingredients = " + this.numIngredients);
+		
+
+		for(let i = 0; i < this.numIngredients; ++i) // Forcefully initiates them to false
+		{
+
+		}
+
 	
 		//  --- Sprite related Init  ---
 	
@@ -38,70 +44,91 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		// Should be defined later
 		this.mSpriteProcessor.x = this.mPositionX;
 		this.mSpriteProcessor.y = this.mPositionY;
-
+		
+		// Rendering Processing Trays
 		for(let i = 0; i < this.numIngredients; ++i)
 		{
 			// Unsafe (no sprite manager to initilize sprite with set position
+			
+			// Spawns Processor's Tray sprites
 			this.mSpriteTray[i] = (PIXI.Sprite.fromImage('images/RTS_Crate2.png'));
-			this.mSpriteTray[i].x = (this.mPositionX + 64 + (32 * (i))); // offsets the pos based off index
-			this.mSpriteTray[i].y = (this.mPositionY + 32);
+			this.mSpriteTray[i].x = (this.mPositionX + (this.spriteSize*2) + (this.spriteSize * (i))); // offsets the pos based off index
+			this.mSpriteTray[i].y = (this.mPositionY + this.spriteSize);
+			
+			level.scene.addChild(this.mSpriteTray[i]);		// Pushes this to the scene, Explicit because apple's render function is called on init
+
+			// Spawns the Ingredients ontop of the tray
+			this.requiredIngredients[i] = new makeItem(recipeOrder.GetList()[i], level);	// Pushes new Item on the list
+			this.requiredIngredients[i].interactive = false;								// Not Pressable
+			this.requiredIngredients[i].alpha = this.alpha;									// Sets the transparancy
+			
+			this.requiredIngredients[i].x = this.mSpriteTray[i].x + (this.spriteSizeHalf);	// Spawns to the center of the tray
+			this.requiredIngredients[i].y = this.mSpriteTray[i].y + (this.spriteSizeHalf);
+			this.recipeProgress[i] = false; // Forcefully sets to not completed
+			
 		}
 		
 		// Last Tray is the Processor output
 		this.mSpriteOutput = PIXI.Sprite.fromImage('images/RTS_Crate.png');
-		this.mSpriteOutput.x = (this.mPositionX + 64 + (32 * (this.numIngredients))); //array starts at 0
+		this.mSpriteOutput.x = (this.mPositionX + (this.spriteSize*2) + (this.spriteSize * (this.numIngredients))); //array starts at 0
 		this.mSpriteOutput.y = (this.mPositionY);
 		
 		// Addes Tray Sprites to stage
 		level.scene.addChild(this.mSpriteProcessor);
 		level.scene.addChild(this.mSpriteOutput);
 		
+	
+	}
+	
+	// ~ Both collision can all be in one function with a return boolean in a manager
+	// The Worlds see's all items and tells which item is touch what.
+	
+	
+	//-------------------------------------------------------------------------------
+	// Collision pass for ingredients Item's center x and y
+	this.collidesWithPoint = (x,y) => {
+		
+		let boundingboxX = this.mPositionX + 64; // top left
+		let boundingboxY = this.mPositionY + 32; 	 // top 
+		let boundingboxUpperLimitX = boundingboxX + (this.spriteSize * this.numIngredients); //top right
+		let boundingboxUpperLimitY = boundingboxY + 32; //bottom
+		
+		console.log( x > boundingboxX
+			&& x < boundingboxUpperLimitX);
+			
+		
+		console.log( y > boundingboxY				// Top Left
+		&& y < boundingboxUpperLimitY);					// Top Left 
+		
+        return ( boundingboxX < x 			// Bottom Left
+		&& x < (boundingboxUpperLimitX)	// Bottom Right
+		&& y > boundingboxY 					// Top Left
+		&& y < boundingboxUpperLimitY);	// Top Right
+    }
+	
+	//-------------------------------------------------------------------------------
+	// Passes Ingredient Object to Processor
+	this.addItem = (droppedIngredient) => {
 		for(let i = 0; i < this.numIngredients; ++i)
 		{
-			level.scene.addChild(this.mSpriteTray[i]);
+			if(droppedIngredient.type == this.requiredIngredients[i].type && !this.recipeProgress[i])
+			{
+				this.requiredIngredients[i].alpha = 1;
+				this.recipeProgress[i] = true;
+				
+				level.removeChild (droppedIngredient);
+				break;
+			}
 		}
-		
-		/*
-		this.mSprite = spriteManager.getSprite("Processor");  // example
-	
-		// Sets Position
-		this.mPosition = new Position(0,0);
-		this.boundingBox = new BoundingBox();	// No spritemanager to handle collision checks between all sprites.
-		
-		// load all the sprites for the ingredients
-		
-		
-		// Two possible ways to pull list
-		for(let i = 0; i < recipeOrder.getIngredientSize(); ++i)
-		{
-			this.requiredIngredients.push(recipeOrder.getIngredentsList); 
-		}
-		this.requiredIngredients = recipeOrder.getIngredentsList(); // Pulls list of item array?
-		this.requiredIngredients = recipeOrder;
-		
-		this.numIngredients = requiredIngredients.length;	// Assigns total number of ingredients
-		
-		this.recipeProgress = new Array(numIngredients);
-		
-		for(var i = 0; i < requiredIngredients.length; ++i) // Forcefully initiates them to false
-		{
-			recipeProgress[i] = false;
-		}
-		
-		// Processor Boxes ----
-		
-		// Depending on the size of the recipe, the content block must be of a set width
-		let boxWidth = maxWidth / numIngredients;
-		
-		// creates # of processor container for each ingredients
-		for(let i = 0; i < numIngredients; ++i)
-		{
-			
-			//contentBlock[i] = new Sprite(x,y);
-			//contentBlock.push(new Sprite(x,y));
-		}
-	*/
 	}
+	
+	//-------------------------------------------------------------------------------
+	// On Update
+	this.Update = () => 
+	{
+		// Does Nothing
+	}
+	
 	/**
 	//-------------------------------------------------------------------------------
 	// On draw
@@ -114,14 +141,11 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			//render clock
 			
 	}
-	
-	this.collidesWithPoint = (x,y) => {
-        return (0 < x && x < SCENE_WIDTH_PX - SPRITE_SIZE_PX) && (SCENE_HEIGHT_PX - SPRITE_SIZE_PX < y && y < SCENE_HEIGHT_PX);
-    }
+
 	
 	//-------------------------------------------------------------------------------
 	// On Update
-	this.OnUpdate : function() 
+	this.Update : function() 
 	{
 		
 		if(!bRecipeCompletion)
@@ -218,11 +242,12 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.mSpriteTray = [];
 	this.mSpriteOutput; 			// This Sprite will not be have a bounding box
 	
+	this.spriteSize = 32;
+	this.spriteSizeHalf = this.spriteSize / 2;
 	
 	// Position
 	this.mPositionX;
 	this.mPositionY;
-	
 	
 	// Ingredients
 	this.requiredIngredients = [];		// Array of required items
@@ -238,6 +263,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	// Object Variables
 	this.isCollidable = true;			// This object is collidable
 	this.processorState = 0; 
+	
+	this.alpha = 0.5;
 	// 0 = loading items
 	// 1 = processing
 	
