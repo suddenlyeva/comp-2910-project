@@ -5,12 +5,26 @@ let LEVELS = [
     {id: 0,
         name: "tutorial",
         conveyorBelt: {
-            items: [APPLE, BLANK, BLANK, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
+            items: [APPLE, BANANA, BANANA, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
             speed: 0.8
         },
-        processors: []
+        processors: [
+            {
+                recipe: [APPLE, BANANA, BANANA, APPLE],
+                result: BANANA,
+                x: 100,
+                y: 200
+            },
+            {
+                recipe: [APPLE, APPLE],
+                result: BANANA,
+                x: 100,
+                y: 300
+            }
+		]
     },
     {id: 1,
+        name: "pen pineapple apple pen",
         conveyorBelt: {
             items: [APPLE, BLANK, BLANK, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
             speed: 1.2
@@ -33,10 +47,21 @@ function Level(data) {
     
     this.levelNumber = data.id;
     this.name = data.name;
-    this.processors = data.processors;
+	this.processors = [];
+	for (let i in data.processors) {
+		this.processors.push(
+            new Processor(new Recipe(data.processors[i].recipe, data.processors[i].result),this)
+		);
+        this.processors[i].SetPosition(data.processors[i].x, data.processors[i].y);
+        this.processors[i].Spawn();
+	}
+	
     this.conveyorBelt = new ConveyorBelt(data.conveyorBelt.items, data.conveyorBelt.speed, this);
     this.update = () => {
         this.conveyorBelt.update();
+        for (let i in this.processors) {
+            this.processors[i].update();
+        }
     };
 }
 
