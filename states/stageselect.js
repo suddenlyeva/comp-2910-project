@@ -21,13 +21,19 @@ function StageSelect() {
     for(let i = 0; i < LEVELS.length; i++) {
 
         // Create
-        this.stageBtns.push(makeSimpleButton(100, 50, "stage " + i, 0xffdfba, 50));
+        //this.stageBtns.push(makeSimpleButton(100, 50, "stage " + i, 0xffdfba, 50));
+        this.stageBtns.push(makeSimpleButton(750, 450, "stage " + i, 0xffdfba, 150));
 
         // Add to group
         this.scene.addChild(this.stageBtns[i]);
 
         // Position
-        this.stageBtns[i].position.set(i * 120 + 60, 100);
+        //this.stageBtns[i].position.set(i * 120 + 60, 100);
+        this.stageBtns[i].position.set(CANVAS_WIDTH/2 - 375, CANVAS_HEIGHT/2 - 225);
+        
+        //
+        // TODO: Build rest of stage select auto placement
+        //
 
         // Set behaviour
         this.stageBtns[i].on("pointertap", function () {
@@ -36,7 +42,7 @@ function StageSelect() {
     }
 
     this.backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50);
-    this.backToMainMenu.position.set(550, 500);
+    this.backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
     this.backToMainMenu.on("pointertap", MainMenu.open);
 
     this.scene.addChild(this.backToMainMenu);
