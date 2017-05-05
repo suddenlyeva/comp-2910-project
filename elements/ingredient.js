@@ -1,9 +1,9 @@
 "use strict";
 // let some kind of enum for ingredients?
-let SPLAT = -1;
 let BLANK = 0;
-let APPLE = 1;
-let BANANA = 2;
+let SPLAT = 1;
+let APPLE = 2;
+let BANANA = 3;
 
 function makeItem(type, level) {
 
@@ -26,17 +26,17 @@ function makeItem(type, level) {
     item.type = type;
     
     // Behaviours that we need the object to do
-    item.interactive = item.type > BLANK;
+    item.interactive = item.type > SPLAT; // Kind of hacky, index non interactive items to less than SPLAT
     item.buttonMode = true;
     item.anchor.set(0.5);
     
 	
-    item.waste = function() {
+    item.waste = () => {
         item.texture = ITEM_TEXTURES[SPLAT];
-		this.interactive = false;
+		item.interactive = false;
     };
 
-    item.onDragStart = function(event) {
+    item.onDragStart = (event) => {
         item.data = event.data;
         item.alpha = 0.5;
         item.dragging = true;
@@ -45,7 +45,7 @@ function makeItem(type, level) {
         }
     };
     
-    item.onDragEnd = function(event) {
+    item.onDragEnd = (event) => {
         
         if (item.dragging) {
             // addToConveyor if on conveyor
@@ -68,7 +68,7 @@ function makeItem(type, level) {
         item.data = null;
     };
     
-    item.onDragMove = function() {
+    item.onDragMove = () => {
         if(item.dragging) {
             // Track x and y
             let newPosition = item.data.getLocalPosition(item.parent);
