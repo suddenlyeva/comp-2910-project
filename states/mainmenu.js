@@ -56,7 +56,7 @@ function MainMenu() {
     this.scene.addChild(this.optionsButton);
 
     // Update function to be called by the main game loop
-    this.update = function() {}.bind(this);
+    this.update = () => {};
 }
 
 MainMenu.open = function() {
