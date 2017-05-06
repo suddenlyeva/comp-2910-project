@@ -49,19 +49,23 @@ function PauseMenu() {
         STATE = this.stateBuffer;
         this.cleanUp();
     };
-    this.resetButton.pointertap = () => {};
+    this.resetButton.pointertap = () => {
+        this.cleanUp();
+        // TODO:
+        // Level.open(CURRENT_LEVEL);
+    };
     this.optionsButton.pointertap = OptionsMenu.open;
     this.mainMenuButton.pointertap = () => {
         this.cleanUp();
         MainMenu.open();
     };
 
-    this.update = () => {};
-
     this.cleanUp = () => {
         OptionsMenu.close();
         this.scene.parent.removeChild(this.scene);
     };
+
+    this.update = () => {};
 }
 
 PauseMenu.open = () => {
