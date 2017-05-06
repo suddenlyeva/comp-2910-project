@@ -20,7 +20,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.Spawn = () => {	
 	
 		// Variable Assignments
-		this.requiredIngredients = recipeOrder.GetList();
+		this.requiredIngredients = [];
 		this.numIngredients = recipeOrder.GetListCount();
 
 	
@@ -50,7 +50,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			level.scene.addChild(this.mSpriteTray[i]);		// Pushes this to the scene, Explicit because apple's render function is called on init
 
 			// Spawns the Ingredients ontop of the tray
-			this.requiredIngredients[i] = new makeItem(recipeOrder.GetList()[i], level);	// Pushes new Item on the list
+			this.requiredIngredients[i] = makeItem(recipeOrder.GetList()[i], level);	// Pushes new Item on the list
 			this.requiredIngredients[i].interactive = false;								// Not Pressable
 			this.requiredIngredients[i].alpha = this.alpha;									// Sets the transparancy
 			
