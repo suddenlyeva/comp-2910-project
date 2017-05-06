@@ -14,6 +14,8 @@ function PauseMenu() {
     // Make Buttons
     this.resumeButton = makeSimpleButton(100, 50, "resume", 0xb3ecec, 50);
     this.optionsButton = makeSimpleButton(100, 50, "options", 0x94b8b8, 50);
+    this.mainMenuButton = makeSimpleButton(100, 50, "main menu", 0xfff3ad, 50);
+    this.resetButton = makeSimpleButton(100, 50, "reset", 0xfff3ad, 50);
 
     // Make background elements and add them to the background container
     this.background = new PIXI.Container();
@@ -31,23 +33,32 @@ function PauseMenu() {
     // Add to scene
     this.scene.addChild(this.background);
     this.scene.addChild(this.resumeButton);
+    this.scene.addChild(this.resetButton);
     this.scene.addChild(this.optionsButton);
+    this.scene.addChild(this.mainMenuButton);
 
     // Position Buttons
     this.resumeButton.position.set(150, 200);
+    this.resetButton.position.set(300, 200);
     this.optionsButton.position.set(150, 300);
+    this.mainMenuButton.position.set(300, 300);
 
     // Play button moves to stage select
     // Requres "this" context to operate so we use () => {}
-    this.resumeButton.on("pointertap", () => { this.unpause() });
-
-    // Options button opens an options panel
-    this.optionsButton.on("pointertap", OptionsMenu.open);
+    this.resumeButton.pointertap = () => {
+        STATE = this.stateBuffer;
+        this.cleanUp();
+    };
+    this.resetButton.pointertap = () => {};
+    this.optionsButton.pointertap = OptionsMenu.open;
+    this.mainMenuButton.pointertap = () => {
+        this.cleanUp();
+        MainMenu.open();
+    };
 
     this.update = () => {};
 
-    this.unpause = () => {
-        STATE = this.stateBuffer;
+    this.cleanUp = () => {
         OptionsMenu.close();
         this.scene.parent.removeChild(this.scene);
     };
