@@ -2,6 +2,7 @@
 
 // JSON
 let LEVELS = [
+    // current reset button implementation requires id to be equal to index
     {id: 0,
         name: "tutorial",
         conveyorBelt: {
@@ -66,10 +67,8 @@ function Level(data) {
 }
 
 Level.open = (data) => {
-    
-    if(Level.instance == null) {
-        Level.instance = new Level(data);
-    }
+    // create new instance every time to prevent saving progress
+    Level.instance = new Level(data);
 
     SCENE = Level.instance.scene;
     STATE = Level.instance.update;

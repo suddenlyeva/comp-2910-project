@@ -10,7 +10,7 @@ function Recipe(itemTypes, resultType) {
 	
 	
 	// Returns the Number of Ingredients in Recipe
-	this.GetListCount = () => { return itemTypes.length; }
+	this.GetListCount = () => { return this.recipe.length; }
 	this.GetList = () => { return this.recipe; }
 	this.GetOutput = () => { return this.result; }
 

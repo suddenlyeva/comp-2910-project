@@ -50,9 +50,8 @@ function PauseMenu() {
         this.cleanUp();
     };
     this.resetButton.pointertap = () => {
-        this.cleanUp();
-        // TODO:
-        // Level.open(CURRENT_LEVEL);
+        // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
+        Level.open(LEVELS[Level.instance.levelNumber]);
     };
     this.optionsButton.pointertap = OptionsMenu.open;
     this.mainMenuButton.pointertap = () => {
