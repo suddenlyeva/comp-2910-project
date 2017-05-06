@@ -55,7 +55,7 @@ function PauseMenu() {
     };
     this.optionsButton.pointertap = OptionsMenu.open;
     this.mainMenuButton.pointertap = () => {
-        this.cleanUp();
+        // this.cleanUp(); // also not needed
         MainMenu.open();
     };
 
