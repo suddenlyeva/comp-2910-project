@@ -50,53 +50,49 @@ function makeLoadingBar(width, height, padding, bgColor, fgColor) {
     return loadingBar;
 }
 
-function makeSlider(width, height, text, handleHeight) {
-    let slider = new PIXI.Container();
-
-    let desc = new PIXI.Text(text, {
-        fontFamily: FONT_FAMILY, fontSize: height / 1.5, fill: 0x0
-    });
-
-    let line = new PIXI.Graphics();
-    line.beginFill(0x0);
-    line.drawRect(0, 0, width / 1.2, handleHeight / 6);
-    line.endFill();
-    line.position.set(width / 2 - line.width / 2, height - handleHeight / 2);
+function makeSlider(width, height, sliderThickness = height / 6, handleWidth = height / 2) {
+    let sliderObj = new PIXI.Container();
 
     let colorSound = 0x77f441,
         colorMuted = 0xff1a1a,
         colorDrag  = 0xd7f442;
-    let handleWidth = handleHeight / 2;
     // using handleWidth because handle.width is for some reason inaccurate
-    let endOfLine = line.x + line.width - handleWidth;
+    let endOfSlider = width - handleWidth;
+
     let handle = new PIXI.Graphics();
     handle.lineStyle(4, 0x0, 1);
     handle.beginFill(0xFFFFFF);
-    handle.drawRect(0, 0, handleWidth, handleHeight);
+    handle.drawRect(0, 0, handleWidth, height);
     handle.endFill();
-    handle.position.set(endOfLine, line.y + line.height / 2 - handle.height / 2);
+    handle.x = endOfSlider;
     handle.tint = colorSound;
     handle.interactive = handle.buttonMode = true;
 
-    // clicking on the line brings handle position to that point
-    let lineClickable = new PIXI.Graphics();
-    lineClickable.beginFill(0x0);
-    lineClickable.drawRect(0, 0, line.width, handle.height)
-    lineClickable.endFill();
-    lineClickable.alpha = 0;
-    lineClickable.interactive = lineClickable.buttonMode = true;
-    lineClickable.position.set(line.x, handle.y);
+    let slider = new PIXI.Graphics();
+    slider.beginFill(0x0);
+    slider.drawRect(0, 0, width, sliderThickness);
+    slider.endFill();
+    slider.y = height / 2 - slider.height / 2;
+
+    // clicking on the slider brings handle position to that point
+    let clickableArea = new PIXI.Graphics();
+    clickableArea.beginFill(0x0);
+    clickableArea.drawRect(0, 0, width, height)
+    clickableArea.endFill();
+    clickableArea.alpha = 0;
+    clickableArea.interactive = clickableArea.buttonMode = true;
 
     handle.pointerdown = eventData => {
         // record cursor position inside handle
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
+        handle.tint = colorDrag;
     };
 
     handle.pointerup = handle.pointerupoutside =
-        lineClickable.pointerup = lineClickable.pointerupoutside =
+        clickableArea.pointerup = clickableArea.pointerupoutside =
         eventData => {
             handle.dragData = false;
-            handle.tint = handle.x === line.x ? colorMuted : colorSound;
+            handle.tint = handle.x === slider.x ? colorMuted : colorSound;
         };
 
     handle.pointermove = eventData => {
@@ -105,10 +101,10 @@ function makeSlider(width, height, text, handleHeight) {
             let newPos = eventData.data.getLocalPosition(handle.parent);
             // xAdjusted is old handle.x + difference between new and old cursor position
             let xAdjusted = handle.x + newPos.x - handle.dragData.x;
-            if(xAdjusted < line.x) {
-                handle.x = line.x;
-            } else if(xAdjusted > endOfLine) {
-                handle.x = endOfLine;
+            if(xAdjusted < slider.x) {
+                handle.x = slider.x;
+            } else if(xAdjusted > endOfSlider) {
+                handle.x = endOfSlider;
             } else {
                 handle.x = xAdjusted;
                 handle.dragData = newPos;
@@ -116,24 +112,23 @@ function makeSlider(width, height, text, handleHeight) {
         }
     };
 
-    lineClickable.pointerdown = eventData => {
+    clickableArea.pointerdown = eventData => {
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
         let xAdjusted = handle.dragData.x - handle.width / 2;
-        if(xAdjusted < line.x) {
-            handle.x = line.x;
-        } else if(xAdjusted > endOfLine) {
-            handle.x = endOfLine;
+        if(xAdjusted < slider.x) {
+            handle.x = slider.x;
+        } else if(xAdjusted > endOfSlider) {
+            handle.x = endOfSlider;
         } else {
             handle.x = xAdjusted;
         }
     };
 
-    slider.addChild(line);
-    slider.addChild(lineClickable);
-    slider.addChild(handle);
-    slider.addChild(desc);
+    sliderObj.addChild(slider);
+    sliderObj.addChild(clickableArea);
+    sliderObj.addChild(handle);
 
-    return slider;
+    return sliderObj;
 }
 
 // Point to box collision
