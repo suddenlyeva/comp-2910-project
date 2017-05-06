@@ -12,7 +12,7 @@ function OptionsMenu() {
     this.panel.beginFill(0xfff3ad);
     this.panel.drawRect(0, 0, this.width, this.height);
     this.panel.endFill();
-    this.okButton = makeSimpleButton(30, 30, "ok", 0xf00e46);
+    this.okButton = makeSimpleButton(150, 90, "ok", 0xf00e46, 120);
 
     this.txtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 200, fill: 0x0
@@ -33,7 +33,7 @@ function OptionsMenu() {
     this.scene.addChild(this.musicVol);
 
     this.okButton.position.set(
-        this.width);
+        this.width / 2 - this.okButton.width / 2, this.height - this.okButton.height - 20);
     this.soundVol.position.set(
         this.width / 2.7, this.height / 4 - this.musicVol.height / 2);
     this.soundTxt.position.set(
