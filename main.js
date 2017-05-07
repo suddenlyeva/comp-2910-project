@@ -45,7 +45,7 @@ function gameLoop() {
     if(WINDOW_RESIZED || SCENE !== previousScene) {
         // Auto-resize everything
         sceneResize(0.15);
-        RENDERER.resize(SCENE.width, SCENE.height);
+        RENDERER.resize(window.innerWidth, window.innerHeight);
         WINDOW_RESIZED = false;
     }
     
