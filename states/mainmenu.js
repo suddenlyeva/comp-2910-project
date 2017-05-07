@@ -42,7 +42,7 @@ function MainMenu() {
         CANVAS_HEIGHT / 2 - this.optionsButton.height / 2);
 
     // Play button moves to stage select
-    this.playButton.on("pointertap", function () {
+    this.playButton.on("pointertap", () => {
         OptionsMenu.close();
         StageSelect.open();
     });
@@ -56,10 +56,10 @@ function MainMenu() {
     this.scene.addChild(this.optionsButton);
 
     // Update function to be called by the main game loop
-    this.update = function() {}.bind(this);
+    this.update = () => {};
 }
 
-MainMenu.open = function() {
+MainMenu.open = () => {
     if(MainMenu.instance == null) {
         MainMenu.instance = new MainMenu();
     }
