@@ -35,11 +35,8 @@ function makeItem(type, level) {
 	
     item.waste = () => {
 		level.completionData.waste++;
-		console.log("Wasted items: " + level.completionData.waste);
         item.texture = ITEM_TEXTURES[SPLAT];
 		item.interactive = false;
-		
-		//level.isComplete = level.checkForCompletion();
     };
 
     item.onDragStart = (event) => {

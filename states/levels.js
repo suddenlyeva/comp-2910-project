@@ -5,12 +5,13 @@ let TILES_PX = 64;
 // JSON
 let LEVELS = [
     // current reset button implementation requires id to be equal to index
-    {id: 0,
-        name: "tutorial",
+    {id: 0, name: "tutorial",
+		
         conveyorBelt: {
-            items: [BLANK,APPLE],
+            items: [APPLE],
             speed: 1.0
         },
+		
         processors: [
             {
                 recipe: [APPLE],
@@ -18,14 +19,17 @@ let LEVELS = [
                 x: 7*TILES_PX,
                 y: 4*TILES_PX
             }
-		]
+		],
+		
+		finalItems: [APPLE_SLICE]
     },
-    {id: 1,
-        name: "apple apple banana",
+    {id: 1, name: "apple apple banana",
+	
         conveyorBelt: {
             items: [APPLE, BLANK, APPLE, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
             speed: 1.2
         },
+		
         processors: [
             {
                 recipe: [APPLE, APPLE],
@@ -33,7 +37,9 @@ let LEVELS = [
                 x: 7*TILES_PX,
                 y: 4*TILES_PX
             }
-		]
+		],
+		
+		finalItems: [BANANA]
     }
 ];
 
@@ -54,6 +60,7 @@ function Level(data) {
 	// Identifiers
     this.levelNumber = data.id;
     this.name = data.name;
+	this.finalItem;
 	
 	// Load processors
 	this.processors = [];
@@ -72,11 +79,24 @@ function Level(data) {
 	this.isComplete = false;
 	this.timeOut = 300;
 	
+	// Passed to stage complete menu
 	this.completionData = {
 		waste: 0,
 		itemsComplete: []
 	};
 	
+	// Check if an item is the level's final item.
+	this.isFinalItem = (itemType) => {
+		for (let i in data.finalItems) {
+			if (itemType == data.finalItems[i]) {
+				return true;
+			}
+		}
+		
+		return false;
+	};
+	
+	// Checks if the level is over
 	this.checkForCompletion = () => {
 		for (let i in this.conveyorBelt.items) {
 			if (this.conveyorBelt.items[i].type != BLANK) {
