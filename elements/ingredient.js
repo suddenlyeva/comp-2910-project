@@ -11,7 +11,7 @@ function makeItem(type, level) {
     //Texture dictionary
     let ITEM_TEXTURES = [];
     ITEM_TEXTURES[SPLAT] = PIXI.loader.resources["images/spritesheet.json"].textures["splat.png"];
-    ITEM_TEXTURES[BLANK] = PIXI.loader.resources["images/spritesheet.json"].textures["testblank.png"];
+    ITEM_TEXTURES[BLANK] = PIXI.loader.resources["images/spritesheet.json"].textures["blank.png"];
     ITEM_TEXTURES[APPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"];
     ITEM_TEXTURES[APPLE_SLICE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple-slice.png"];
     ITEM_TEXTURES[BANANA] = PIXI.loader.resources["images/spritesheet.json"].textures["banana.png"];

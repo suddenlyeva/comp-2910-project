@@ -5,7 +5,7 @@ function ConveyorBelt(itemTypes, speed, level) {
     // Define Constants
     let SPRITE_SIZE_PX = 64;
     let SPRITE_HALF_PX = SPRITE_SIZE_PX/2;
-    let ARRAY_MIN_SIZE = 20;
+    let ARRAY_MIN_SIZE = 21;
 
     // Define Properties
     this.items = [];
@@ -102,8 +102,11 @@ function ConveyorBelt(itemTypes, speed, level) {
     for(let i = 0; i < ARRAY_MIN_SIZE; i++) {
         this.addItemAtIndex(makeItem(BLANK, level), i);
         
-        let beltTile = makeItem(BLANK, level);
-        beltTile.y = CANVAS_HEIGHT - SPRITE_HALF_PX;
+        let beltTile = new PIXI.Sprite(
+			PIXI.loader.resources["images/spritesheet.json"].textures["conveyor-belt.png"]
+		);
+		
+        beltTile.y = CANVAS_HEIGHT - SPRITE_SIZE_PX;
         beltTile.x = CANVAS_WIDTH - SPRITE_SIZE_PX - SPRITE_HALF_PX;
         beltTile.x -= SPRITE_SIZE_PX * i;
         this.belt.addChild(beltTile);
