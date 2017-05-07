@@ -31,19 +31,24 @@ let LEVELS = [
 ];
 
 function Level(data) {
+	// Declare scene
     this.scene = new PIXI.Container();
     
+	// Add background
     this.background = new PIXI.Sprite(PIXI.utils.TextureCache["background.png"]);
     this.scene.addChild(this.background);
     
-    
+	// Add Pause Button
     this.pauseButton = makeSimpleButton(100, 50, "pause", 0x94b8b8, 50);
     this.pauseButton.position.set(CANVAS_WIDTH - 150, 100);
     this.pauseButton.on("pointertap", PauseMenu.open);
     this.scene.addChild(this.pauseButton);
     
+	// Identifiers
     this.levelNumber = data.id;
     this.name = data.name;
+	
+	// Load processors
 	this.processors = [];
 	for (let i in data.processors) {
 		this.processors.push(
@@ -53,12 +58,35 @@ function Level(data) {
         this.processors[i].Spawn();
 	}
 	
+	// Load Conveyor Belt
     this.conveyorBelt = new ConveyorBelt(data.conveyorBelt.items, data.conveyorBelt.speed, this);
+	
+	// Completion trackers
+	this.isComplete = false;
+	this.timeOut = 300;
+	
+	this.checkForCompletion = () => {
+		for (let i in this.conveyorBelt.items) {
+			if (this.conveyorBelt.items[i].type != BLANK) {
+				return false;
+			}
+		}
+		return true;
+	};
+	
     this.update = () => {
         this.conveyorBelt.update();
         for (let i in this.processors) {
             this.processors[i].update();
         }
+		
+		if(this.isComplete) {
+			this.timeOut--;
+			if (this.timeOut == 0) {
+				StageComplete.open();
+			}
+		}
+		
     };
 }
 

@@ -64,7 +64,10 @@ function makeItem(type, level) {
                 // else waste
                 item.waste();
             }
+		
+			level.isComplete = level.checkForCompletion();
         }
+		
         item.alpha = 1;
         item.dragging = false;
         item.data = null;

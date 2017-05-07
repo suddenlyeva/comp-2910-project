@@ -106,7 +106,6 @@ function ConveyorBelt(itemTypes, speed, level) {
         beltTile.y = CANVAS_HEIGHT - SPRITE_HALF_PX;
         beltTile.x = CANVAS_WIDTH - SPRITE_SIZE_PX - SPRITE_HALF_PX;
         beltTile.x -= SPRITE_SIZE_PX * i;
-        console.log(beltTile);
         this.belt.addChild(beltTile);
     }
     
