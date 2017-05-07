@@ -144,7 +144,16 @@ function testHitRectangle(pointObj, rectObj) {
 }
 
 function sceneResize() {
-        SCENE.scale.x = window.innerWidth/CANVAS_WIDTH;
-        SCENE.scale.y = window.innerHeight/CANVAS_HEIGHT;
-        RENDERER.resize(window.innerWidth, window.innerHeight);
+    let targetAspectRatio = CANVAS_WIDTH / CANVAS_HEIGHT,
+        currentAspectRatio = window.innerWidth / window.innerHeight;
+
+    SCENE.scale.x = SCENE.scale.y =
+        targetAspectRatio < currentAspectRatio ?
+        window.innerHeight / CANVAS_HEIGHT :
+        window.innerWidth  / CANVAS_WIDTH;
+    // SCENE.scale.y = window.innerHeight/CANVAS_HEIGHT;
+    RENDERER.resize(SCENE.width, SCENE.height);
+    console.log(window.innerHeight);
+    console.log(SCENE.scale.y);
+    console.log(RENDERER.height);
 }
