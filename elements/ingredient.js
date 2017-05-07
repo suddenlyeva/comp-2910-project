@@ -34,8 +34,12 @@ function makeItem(type, level) {
     
 	
     item.waste = () => {
+		level.completionData.waste++;
+		console.log("Wasted items: " + level.completionData.waste);
         item.texture = ITEM_TEXTURES[SPLAT];
 		item.interactive = false;
+		
+		level.isComplete = level.checkForCompletion();
     };
 
     item.onDragStart = (event) => {
@@ -55,14 +59,18 @@ function makeItem(type, level) {
                 level.conveyorBelt.addItemAtX(item, item.x);
             }
             else {
+				let addedToProcessor = false;
                 // Check collision with processors
                 for (let i in level.processors) {
                     if (level.processors[i].collidesWithPoint(item.x, item.y)) {
                         level.processors[i].addItem(item);
+						addedToProcessor = true;
                     }
                 }
                 // else waste
-                item.waste();
+				if(!addedToProcessor) {
+					item.waste();
+				}
             }
 		
 			level.isComplete = level.checkForCompletion();

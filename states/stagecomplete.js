@@ -1,6 +1,6 @@
 "use strict";
 
-function StageComplete() {
+function StageComplete(data) {
     this.width  = 200;
     this.height = 400;
 
@@ -49,9 +49,9 @@ function StageComplete() {
     this.update = () => {};
 }
 
-StageComplete.open = () => {
+StageComplete.open = (completionData) => {
     if(StageComplete.instance == null) {
-        StageComplete.instance = new StageComplete();
+        StageComplete.instance = new StageComplete(completionData);
     }
 
     SCENE.addChild(StageComplete.instance.scene);

@@ -72,6 +72,11 @@ function Level(data) {
 	this.isComplete = false;
 	this.timeOut = 300;
 	
+	this.completionData = {
+		waste: 0,
+		itemsComplete: []
+	};
+	
 	this.checkForCompletion = () => {
 		for (let i in this.conveyorBelt.items) {
 			if (this.conveyorBelt.items[i].type != BLANK) {
@@ -90,7 +95,7 @@ function Level(data) {
 		if(this.isComplete) {
 			this.timeOut--;
 			if (this.timeOut == 0) {
-				StageComplete.open();
+				StageComplete.open(this.completionData);
 			}
 		}
 		
