@@ -58,9 +58,8 @@ function Level(data) {
     this.scene.addChild(this.pauseButton);
     
 	// Identifiers
-    this.levelNumber = data.id;
+    this.id = data.id;
     this.name = data.name;
-	this.finalItem;
 	
 	// Load processors
 	this.processors = [];

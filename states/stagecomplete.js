@@ -29,7 +29,7 @@ function StageComplete(data) {
 
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {
-		let next = Level.instance.levelNumber + 1;
+		let next = Level.instance.id + 1;
         this.scene.parent.removeChild(this.scene);
 		if (next >= LEVELS.length) {
 			Credits.open();
