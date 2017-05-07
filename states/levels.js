@@ -1,6 +1,6 @@
 "use strict";
 
-let TILES = 64;
+let TILES_PX = 64;
 
 // JSON
 let LEVELS = [
@@ -14,8 +14,8 @@ let LEVELS = [
             {
                 recipe: [APPLE],
                 result: APPLE_SLICE,
-                x: 7*TILES,
-                y: 4*TILES
+                x: 7*TILES_PX,
+                y: 4*TILES_PX
             }
 		]
     }/*,
