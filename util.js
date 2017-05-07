@@ -143,17 +143,24 @@ function testHitRectangle(pointObj, rectObj) {
     return (xMin < xPoint && xPoint < xMax) && (yMin < yPoint && yPoint < yMax);
 }
 
-function sceneResize() {
-    let targetAspectRatio = CANVAS_WIDTH / CANVAS_HEIGHT,
+function sceneResize(stretchThreshold = 0) {
+    // stretchThreshold - how much scene dimensions can deviate from the desired aspect ratio
+    // 0.2 means the scene can be stretched by a maximum of 20% vertically or horizontally
+    let targetAspectRatio  = CANVAS_WIDTH / CANVAS_HEIGHT,
         currentAspectRatio = window.innerWidth / window.innerHeight;
 
-    SCENE.scale.x = SCENE.scale.y =
-        targetAspectRatio < currentAspectRatio ?
-        window.innerHeight / CANVAS_HEIGHT :
-        window.innerWidth  / CANVAS_WIDTH;
-    // SCENE.scale.y = window.innerHeight/CANVAS_HEIGHT;
-    RENDERER.resize(SCENE.width, SCENE.height);
-    console.log(window.innerHeight);
-    console.log(SCENE.scale.y);
-    console.log(RENDERER.height);
+    if(targetAspectRatio < currentAspectRatio) {
+        SCENE.scale.y = window.innerHeight / CANVAS_HEIGHT;
+        SCENE.scale.x = SCENE.scale.y * (1 +
+                Math.min(1 - (CANVAS_WIDTH * SCENE.scale.y) / window.innerWidth,
+                         stretchThreshold));
+    } else {
+        SCENE.scale.x = window.innerWidth / CANVAS_WIDTH;
+        SCENE.scale.y = SCENE.scale.x * (1 +
+            Math.min(1 - (CANVAS_HEIGHT * SCENE.scale.x) / window.innerHeight,
+                     stretchThreshold));
+    }
+
+    // using SCENE.scale.x = SCENE.scale.y = ... average performance ~1.27
+    // all in one formula (...CANVAS_WIDTH * SCENE.scale.[xy]...) average performance ~0.034
 }
