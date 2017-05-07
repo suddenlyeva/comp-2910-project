@@ -1,7 +1,7 @@
 "use strict";
 
 function OptionsMenu() {
-    this.width = CANVAS_WIDTH / 1.5;
+    this.width  = CANVAS_WIDTH  / 1.5;
     this.height = CANVAS_HEIGHT / 1.5;
 
     this.scene = new PIXI.Container();
@@ -42,7 +42,7 @@ function OptionsMenu() {
         this.soundVol.x, this.height / 1.8 - this.musicVol.height / 2);
     this.musicTxt.position.set(this.soundTxt.x, this.height / 1.8 - this.soundTxt.height / 2);
     this.scene.position.set(
-        CANVAS_WIDTH / 2 - this.width / 2,
+        CANVAS_WIDTH  / 2 - this.width  / 2,
         CANVAS_HEIGHT / 2 - this.height / 2
     );
 

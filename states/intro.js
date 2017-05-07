@@ -39,11 +39,10 @@ function Intro() {
         CANVAS_HEIGHT - this.txtTeam19.height - 10);
 
     this.clickableArea = new PIXI.Graphics();
-    this.clickableArea.beginFill(0);
+    this.clickableArea.beginFill(0, 0);
     this.clickableArea.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     this.clickableArea.endFill();
     this.clickableArea.interactive = true;
-    this.clickableArea.alpha = 0;
     this.clickableArea.pointertap = MainMenu.open;
 
     // Add to scene

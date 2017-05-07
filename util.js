@@ -76,10 +76,9 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
 
     // clicking on the slider brings handle position to that point
     let clickableArea = new PIXI.Graphics();
-    clickableArea.beginFill(0x0);
+    clickableArea.beginFill(0, 0);
     clickableArea.drawRect(0, 0, width, height)
     clickableArea.endFill();
-    clickableArea.alpha = 0;
     clickableArea.interactive = clickableArea.buttonMode = true;
 
     handle.pointerdown = eventData => {
