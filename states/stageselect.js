@@ -21,15 +21,15 @@ function StageSelect() {
     for(let i = 0; i < LEVELS.length; i++) {
 
         // Create
-        //this.stageBtns.push(makeSimpleButton(100, 50, "stage " + i, 0xffdfba, 50));
-        this.stageBtns.push(makeSimpleButton(750, 450, "stage " + i, 0xffdfba, 150));
+        this.stageBtns.push(makeSimpleButton(100, 50, "stage " + i, 0xffdfba, 50));
+        //this.stageBtns.push(makeSimpleButton(750, 450, "stage " + i, 0xffdfba, 150));
 
         // Add to group
         this.scene.addChild(this.stageBtns[i]);
 
         // Position
-        //this.stageBtns[i].position.set(i * 120 + 60, 100);
-        this.stageBtns[i].position.set(CANVAS_WIDTH/2 - 375, CANVAS_HEIGHT/2 - 225);
+        this.stageBtns[i].position.set(i * 120 + 60, 100);
+        //this.stageBtns[i].position.set(CANVAS_WIDTH/2 - 375, CANVAS_HEIGHT/2 - 225);
         
         //
         // TODO: Build rest of stage select auto placement

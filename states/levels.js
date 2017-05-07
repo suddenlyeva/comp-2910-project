@@ -19,15 +19,22 @@ let LEVELS = [
                 y: 4*TILES_PX
             }
 		]
-    }/*,
+    },
     {id: 1,
-        name: "pen pineapple apple pen",
+        name: "apple apple banana",
         conveyorBelt: {
-            items: [APPLE, BLANK, BLANK, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
+            items: [APPLE, BLANK, APPLE, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
             speed: 1.2
         },
-        processors: []
-    }*/
+        processors: [
+            {
+                recipe: [APPLE, APPLE],
+                result: BANANA,
+                x: 7*TILES_PX,
+                y: 4*TILES_PX
+            }
+		]
+    }
 ];
 
 function Level(data) {
