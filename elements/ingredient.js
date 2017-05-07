@@ -39,7 +39,7 @@ function makeItem(type, level) {
         item.texture = ITEM_TEXTURES[SPLAT];
 		item.interactive = false;
 		
-		level.isComplete = level.checkForCompletion();
+		//level.isComplete = level.checkForCompletion();
     };
 
     item.onDragStart = (event) => {

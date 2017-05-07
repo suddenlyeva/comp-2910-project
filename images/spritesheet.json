@@ -50,7 +50,7 @@
 },
 "input.png":
 {
-	"frame": {"x":661,"y":1,"w":128,"h":128},
+	"frame": {"x":866,"y":1,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -58,7 +58,7 @@
 },
 "output.png":
 {
-	"frame": {"x":921,"y":1,"w":128,"h":128},
+	"frame": {"x":996,"y":1,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -98,7 +98,7 @@
 },
 "splat.png":
 {
-	"frame": {"x":791,"y":1,"w":128,"h":128},
+	"frame": {"x":736,"y":1,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -106,11 +106,19 @@
 },
 "table.png":
 {
-	"frame": {"x":563,"y":1,"w":96,"h":67},
+	"frame": {"x":638,"y":1,"w":96,"h":67},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":67},
 	"sourceSize": {"w":96,"h":67}
+},
+"trash-pit.png":
+{
+	"frame": {"x":563,"y":1,"w":73,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":73,"h":64},
+	"sourceSize": {"w":73,"h":64}
 }},
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
@@ -119,6 +127,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1282,"h":900},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:26525f7f3a3d0afc3c307fcee366fe4f:322eeeb5fd1e4845465ad615ea4df6f6:729adc6043343cfda41c447ce8f464d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:9b8c0d2fee83f61aa0cb08fd174be5b0:64625b26b01abff40c1f7199f944ecf1:729adc6043343cfda41c447ce8f464d6$"
 }
 }

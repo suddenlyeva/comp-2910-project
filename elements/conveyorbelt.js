@@ -51,6 +51,9 @@ function ConveyorBelt(itemTypes, speed, level) {
             
             // Add a blank to the end
             this.addItemAtIndex(makeItem(BLANK, level), this.lastIndex);
+			
+			// Check for level completion
+			level.isComplete = level.checkForCompletion();
         }
     }
 
@@ -111,10 +114,20 @@ function ConveyorBelt(itemTypes, speed, level) {
         beltTile.x -= SPRITE_SIZE_PX * i;
         this.belt.addChild(beltTile);
     }
-    
+	
+	// Trash Pit
+	let trashPit = new PIXI.Sprite(
+			PIXI.loader.resources["images/spritesheet.json"].textures["trash-pit.png"]
+	);
+	trashPit.y = CANVAS_HEIGHT - SPRITE_SIZE_PX;
+	trashPit.x = CANVAS_WIDTH - trashPit.width;
+	
     // Add belt background
     level.scene.addChild(this.belt);
     
+    // Add trash pit
+    level.scene.addChild(trashPit);
+	
     // Fill out rest of conveyor
     for(let i = 0; i < itemTypes.length; i++) {
         this.addItemAtIndex(makeItem(itemTypes[i], level), i + ARRAY_MIN_SIZE);
