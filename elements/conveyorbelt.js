@@ -36,24 +36,25 @@ function ConveyorBelt(itemTypes, speed, level) {
             
             // Waste first item if not a blank
             if (this.items[0].type != BLANK) {
+				
                 this.items[0].waste();
+				this.items.shift();
+				
+				// Check for level completion
+				level.isComplete = level.checkForCompletion();
+				
             }
             // Otherwise just remove from stage entirely.
-            else {
+            else {	
                 level.scene.removeChild(this.items[0]);
+				this.items.shift();
             }
-
-            // Shift Indices
-            this.items.shift();
 
             // Reset Delta
             this.deltaX -= SPRITE_SIZE_PX;
             
             // Add a blank to the end
             this.addItemAtIndex(makeItem(BLANK, level), this.lastIndex);
-			
-			// Check for level completion
-			level.isComplete = level.checkForCompletion();
         }
     }
 
