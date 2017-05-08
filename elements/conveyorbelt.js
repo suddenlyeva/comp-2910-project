@@ -5,7 +5,7 @@ function ConveyorBelt(itemTypes, speed, level) {
     // Define Constants
     let SPRITE_SIZE_PX = 64;
     let SPRITE_HALF_PX = SPRITE_SIZE_PX/2;
-    let ARRAY_MIN_SIZE = 20;
+    let ARRAY_MIN_SIZE = 21;
 
     // Define Properties
     this.items = [];
@@ -51,6 +51,9 @@ function ConveyorBelt(itemTypes, speed, level) {
             
             // Add a blank to the end
             this.addItemAtIndex(makeItem(BLANK, level), this.lastIndex);
+			
+			// Check for level completion
+			level.isComplete = level.checkForCompletion();
         }
     }
 
@@ -102,17 +105,29 @@ function ConveyorBelt(itemTypes, speed, level) {
     for(let i = 0; i < ARRAY_MIN_SIZE; i++) {
         this.addItemAtIndex(makeItem(BLANK, level), i);
         
-        let beltTile = makeItem(BLANK, level);
-        beltTile.y = CANVAS_HEIGHT - SPRITE_HALF_PX;
+        let beltTile = new PIXI.Sprite(
+			PIXI.loader.resources["images/spritesheet.json"].textures["conveyor-belt.png"]
+		);
+		
+        beltTile.y = CANVAS_HEIGHT - SPRITE_SIZE_PX;
         beltTile.x = CANVAS_WIDTH - SPRITE_SIZE_PX - SPRITE_HALF_PX;
         beltTile.x -= SPRITE_SIZE_PX * i;
-        console.log(beltTile);
         this.belt.addChild(beltTile);
     }
-    
+	
+	// Trash Pit
+	let trashPit = new PIXI.Sprite(
+			PIXI.loader.resources["images/spritesheet.json"].textures["trash-pit.png"]
+	);
+	trashPit.y = CANVAS_HEIGHT - SPRITE_SIZE_PX;
+	trashPit.x = CANVAS_WIDTH - trashPit.width;
+	
     // Add belt background
     level.scene.addChild(this.belt);
     
+    // Add trash pit
+    level.scene.addChild(trashPit);
+	
     // Fill out rest of conveyor
     for(let i = 0; i < itemTypes.length; i++) {
         this.addItemAtIndex(makeItem(itemTypes[i], level), i + ARRAY_MIN_SIZE);

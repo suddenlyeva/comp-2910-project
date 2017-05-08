@@ -3,15 +3,17 @@
 let BLANK = 0;
 let SPLAT = 1;
 let APPLE = 2;
-let BANANA = 3;
+let APPLE_SLICE = 3;
+let BANANA = 4;
 
 function makeItem(type, level) {
 
     //Texture dictionary
     let ITEM_TEXTURES = [];
     ITEM_TEXTURES[SPLAT] = PIXI.loader.resources["images/spritesheet.json"].textures["splat.png"];
-    ITEM_TEXTURES[BLANK] = PIXI.loader.resources["images/spritesheet.json"].textures["testblank.png"];
+    ITEM_TEXTURES[BLANK] = PIXI.loader.resources["images/spritesheet.json"].textures["blank.png"];
     ITEM_TEXTURES[APPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"];
+    ITEM_TEXTURES[APPLE_SLICE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple-slice.png"];
     ITEM_TEXTURES[BANANA] = PIXI.loader.resources["images/spritesheet.json"].textures["banana.png"];
     
     // the argument of textures should be replaced with textureStr after implementing index
@@ -32,6 +34,7 @@ function makeItem(type, level) {
     
 	
     item.waste = () => {
+		level.completionData.waste++;
         item.texture = ITEM_TEXTURES[SPLAT];
 		item.interactive = false;
     };
@@ -53,16 +56,23 @@ function makeItem(type, level) {
                 level.conveyorBelt.addItemAtX(item, item.x);
             }
             else {
+				let addedToProcessor = false;
                 // Check collision with processors
                 for (let i in level.processors) {
                     if (level.processors[i].collidesWithPoint(item.x, item.y)) {
                         level.processors[i].addItem(item);
+						addedToProcessor = true;
                     }
                 }
                 // else waste
-                item.waste();
+				if(!addedToProcessor) {
+					item.waste();
+				}
             }
+		
+			level.isComplete = level.checkForCompletion();
         }
+		
         item.alpha = 1;
         item.dragging = false;
         item.data = null;

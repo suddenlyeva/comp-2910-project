@@ -119,8 +119,15 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		if(this.bRecipeCompletion())
 		{
 			let output = makeItem(recipeOrder.GetOutput(), level);
+			level.completionData.itemsComplete.push(recipeOrder.GetOutput());
 			output.x = this.spriteSize + this.mSpriteOutput.x;
 			output.y = this.spriteSize + this.mSpriteOutput.y;
+			
+			// If it's one of the level's final items, disable it from interaction
+			if (level.isFinalItem(output.type)) {
+				output.interactive = false;
+				//TODO: Fancy animations and stuff
+			}
 			
 			this.reset();
 		}

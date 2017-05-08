@@ -1,53 +1,67 @@
 "use strict";
 
+let TILES_PX = 64;
+
 // JSON
 let LEVELS = [
     // current reset button implementation requires id to be equal to index
-    {id: 0,
-        name: "tutorial",
+    {id: 0, name: "tutorial",
+		
         conveyorBelt: {
-            items: [APPLE, BANANA, BANANA, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
-            speed: 0.8
+            items: [APPLE],
+            speed: 1.0
         },
+		
         processors: [
             {
-                recipe: [APPLE, BANANA, BANANA, APPLE],
-                result: BANANA,
-                x: 256,
-                y: 128
-            },
+                recipe: [APPLE],
+                result: APPLE_SLICE,
+                x: 7*TILES_PX,
+                y: 4*TILES_PX
+            }
+		],
+		
+		finalItems: [APPLE_SLICE]
+    },
+    {id: 1, name: "apple apple banana",
+	
+        conveyorBelt: {
+            items: [APPLE, BLANK, APPLE, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
+            speed: 1.2
+        },
+		
+        processors: [
             {
                 recipe: [APPLE, APPLE],
                 result: BANANA,
-                x: 256,
-                y: 384
+                x: 7*TILES_PX,
+                y: 4*TILES_PX
             }
-		]
-    }/*,
-    {id: 1,
-        name: "pen pineapple apple pen",
-        conveyorBelt: {
-            items: [APPLE, BLANK, BLANK, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
-            speed: 1.2
-        },
-        processors: []
-    }*/
+		],
+		
+		finalItems: [BANANA]
+    }
 ];
 
 function Level(data) {
+	// Declare scene
     this.scene = new PIXI.Container();
     
+	// Add background
     this.background = new PIXI.Sprite(PIXI.utils.TextureCache["background.png"]);
     this.scene.addChild(this.background);
     
-    
+	// Add Pause Button
     this.pauseButton = makeSimpleButton(100, 50, "pause", 0x94b8b8, 50);
     this.pauseButton.position.set(CANVAS_WIDTH - 150, 100);
     this.pauseButton.on("pointertap", PauseMenu.open);
     this.scene.addChild(this.pauseButton);
     
-    this.levelNumber = data.id;
+	// Identifiers
+    this.id = data.id;
     this.name = data.name;
+	
+	// Load processors
 	this.processors = [];
 	for (let i in data.processors) {
 		this.processors.push(
@@ -57,12 +71,53 @@ function Level(data) {
         this.processors[i].Spawn();
 	}
 	
+	// Load Conveyor Belt
     this.conveyorBelt = new ConveyorBelt(data.conveyorBelt.items, data.conveyorBelt.speed, this);
+	
+	// Completion trackers
+	this.isComplete = false;
+	this.timeOut = 300;
+	
+	// Passed to stage complete menu
+	this.completionData = {
+		waste: 0,
+		itemsComplete: []
+	};
+	
+	// Check if an item is the level's final item.
+	this.isFinalItem = (itemType) => {
+		for (let i in data.finalItems) {
+			if (itemType == data.finalItems[i]) {
+				return true;
+			}
+		}
+		
+		return false;
+	};
+	
+	// Checks if the level is over
+	this.checkForCompletion = () => {
+		for (let i in this.conveyorBelt.items) {
+			if (this.conveyorBelt.items[i].type != BLANK) {
+				return false;
+			}
+		}
+		return true;
+	};
+	
     this.update = () => {
         this.conveyorBelt.update();
         for (let i in this.processors) {
             this.processors[i].update();
         }
+		
+		if(this.isComplete) {
+			this.timeOut--;
+			if (this.timeOut == 0) {
+				StageComplete.open(this.completionData);
+			}
+		}
+		
     };
 }
 

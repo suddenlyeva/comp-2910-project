@@ -1,6 +1,6 @@
 "use strict";
 
-function StageComplete() {
+function StageComplete(data) {
     this.width  = 200;
     this.height = 400;
 
@@ -29,9 +29,15 @@ function StageComplete() {
 
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {
+		let next = Level.instance.id + 1;
         this.scene.parent.removeChild(this.scene);
-        nextStage();
-        STATE = STAGES[currentStage];
+		if (next >= LEVELS.length) {
+			Credits.open();
+		}
+		else {
+			Level.open(LEVELS[next]);
+		}
+		;
     });
 
     // Back button takes you to the main menu
@@ -43,9 +49,9 @@ function StageComplete() {
     this.update = () => {};
 }
 
-StageComplete.open = () => {
+StageComplete.open = (completionData) => {
     if(StageComplete.instance == null) {
-        StageComplete.instance = new StageComplete();
+        StageComplete.instance = new StageComplete(completionData);
     }
 
     SCENE.addChild(StageComplete.instance.scene);
