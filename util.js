@@ -151,16 +151,17 @@ function sceneResize(stretchThreshold = 0) {
     if(targetAspectRatio < currentAspectRatio) {
         SCENE.scale.y = window.innerHeight / CANVAS_HEIGHT;
         SCENE.scale.x = SCENE.scale.y * (1 +
-                Math.min(1 - (CANVAS_WIDTH * SCENE.scale.y) / window.innerWidth,
-                         stretchThreshold));
+            Math.min(1 - (CANVAS_WIDTH * SCENE.scale.y) / window.innerWidth,
+                stretchThreshold));
     } else {
         SCENE.scale.x = window.innerWidth / CANVAS_WIDTH;
         SCENE.scale.y = SCENE.scale.x * (1 +
             Math.min(1 - (CANVAS_HEIGHT * SCENE.scale.x) / window.innerHeight,
-                     stretchThreshold));
+                stretchThreshold));
     }
 
     // using SCENE.scale.x = SCENE.scale.y = ... average performance ~1.27
+    // using variable (let extraWidth = 1 - (CANVAS_WIDTH *...) average performance ~0.066
     // all in one formula (...CANVAS_WIDTH * SCENE.scale.[xy]...) average performance ~0.034
 }
 
