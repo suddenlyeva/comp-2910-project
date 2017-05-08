@@ -35,11 +35,13 @@ function MainMenu() {
         "play", 0xb3ecec, this.buttonHeight / 2, 4);
     this.optionsButton = makeSimpleButton(this.buttonWidth, this.buttonHeight,
         "options", 0x94b8b8, this.buttonHeight / 2, 4);
+    this.fullScreenButton = makeSimpleButton(100, 50, "full screen", 0x94b8b8, 50);
 
     this.playButton.position.set(this.distFromEdge,
         CANVAS_HEIGHT / 2 - this.playButton.height / 2);
     this.optionsButton.position.set(CANVAS_WIDTH - this.optionsButton.width - this.distFromEdge,
         CANVAS_HEIGHT / 2 - this.optionsButton.height / 2);
+    this.fullScreenButton.position.set(CANVAS_WIDTH - 150, CANVAS_HEIGHT - 100);
 
     // Play button moves to stage select
     this.playButton.on("pointertap", () => {
@@ -50,10 +52,13 @@ function MainMenu() {
     // Options button opens an options panel
     this.optionsButton.on("pointertap", OptionsMenu.open);
 
+    this.fullScreenButton.pointertap = toggleFullScreen;
+
     // Add to scene
     this.scene.addChild(this.background);
     this.scene.addChild(this.playButton);
     this.scene.addChild(this.optionsButton);
+    this.scene.addChild(this.fullScreenButton);
 
     // Update function to be called by the main game loop
     this.update = () => {};
