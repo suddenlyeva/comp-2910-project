@@ -9,7 +9,7 @@ let LEVELS = [
 		
         conveyorBelt: {
             items: [APPLE],
-            speed: 1.0
+            speed: 1.2
         },
 		
         processors: [
@@ -76,7 +76,7 @@ function Level(data) {
 	
 	// Completion trackers
 	this.isComplete = false;
-	this.timeOut = 300;
+	this.timeOut = 120;
 	
 	// Passed to stage complete menu
 	this.completionData = {
@@ -112,8 +112,8 @@ function Level(data) {
         }
 		
 		if(this.isComplete) {
-			this.timeOut--;
-			if (this.timeOut == 0) {
+			this.timeOut -= TICKER.deltaTime;
+			if (this.timeOut <= 0) {
 				StageComplete.open(this.completionData);
 			}
 		}

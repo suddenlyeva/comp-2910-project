@@ -18,15 +18,18 @@ function ConveyorBelt(itemTypes, speed, level) {
     // Define Behaviours
     this.update = () => {
         
+		// Speed this frame
+		let frameSpeed = this.speed * TICKER.deltaTime;
+		
         // Move belt forwards
         
-        this.belt.x += this.speed;
+        this.belt.x += frameSpeed;
         for (let i in this.items) {
-            this.items[i].x += this.speed;
+            this.items[i].x += frameSpeed;
         }
 
         // Track change in X
-        this.deltaX += this.speed;
+        this.deltaX += frameSpeed;
 
         // When last item reaches trash can:
         if(this.deltaX >= SPRITE_SIZE_PX) {
