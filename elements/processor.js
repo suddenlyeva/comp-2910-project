@@ -111,9 +111,10 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 				this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
 				
 				level.scene.removeChild(droppedIngredient);
-				break;
+				return true;
 			}
 		}
+        return false;
 	};
 	
 	//-------------------------------------------------------------------------------
@@ -182,6 +183,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.SpawnOutput = () => {
 			this.mOutputItem = makeItem(recipeOrder.GetOutput(), level);
 			level.completionData.itemsComplete.push(recipeOrder.GetOutput());
+            
 			this.mOutputItem.x = TILES_PX + this.mSpriteOutput.x;
 			this.mOutputItem.y = TILES_PX + this.mSpriteOutput.y;
 			
@@ -215,7 +217,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		
 		// Resets the Whole Processor's Alpha
 		// Makes them Clickable
-		this.SetInteract(true);
+        
+		// this.SetInteract(true);
 		
 		// Resets Tray Ingredient's Alpha, and Progress
 		for(let i = 0; i < this.numIngredients; ++i)
