@@ -131,7 +131,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			this.currentState = this.ProcessorState.Finished;
 			
 		}
-		else if(this.currentState === this.ProcessorState.Finished && this.bIsDone){
+		else if(this.currentState === this.ProcessorState.Finished && this.bReset){
 			this.currentState = this.ProcessorState.Feeding;
 		}	
 	};
@@ -166,15 +166,12 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			}break;
 			case (this.ProcessorState.Finished): {	// Spawning/Item Check State
 				if(!this.bIsFinishedSpawning) {
-					
-					this.SpawnOutput();		
-					this.SetInteract(false);
-					
+					this.SpawnOutput();
 					this.bIsFinishedSpawning = true;
 					}
 				else if(this.isOutputIsEmpty()){
 					this.ResetProcessorState();
-					this.bIsDone = true;
+					this.bReset = true;		// State Flag
 				}
 			}break;
 		}
@@ -233,13 +230,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		
 	};
 	
-	//-------------------------------------------------------------------------------
-	// Sets the Alpha and Interaction State of the Processor's Sprites
-	this.SetInteract = (bool) => {
-		
-	}; 
-	
-	
+
 	//-------------------------------------------------------------------------------
 	// Timer Update
 	this.timer = () => {
@@ -258,6 +249,11 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	
 	
 	/**
+	
+		//-------------------------------------------------------------------------------
+	// Sets the Alpha and Interaction State of the Processor's Sprites
+	// this.SetInteract = (bool) => {}; 
+	
 	//-------------------------------------------------------------------------------
 	// On draw
 	this.OnRender : function()
@@ -304,10 +300,11 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.isCollidable = true;			// This object is collidable
 	this.currentState;
 	this.mScore = 0;
-	this.mOutputItem;
-	this.bIsDone = false;
+	this.mOutputItem;					// Local Variable that holds the output object
 	
-	this.bIsFinishedSpawning = false;
+	this.bReset = false;				// for Processor is completed, Reset Flag 
+	
+	this.bIsFinishedSpawning = false;	// Flag for item has finished Spawning
 	
 	this.ProcessorState = { Feeding : 0, Processing : 1, Finished : 2 };
 	
