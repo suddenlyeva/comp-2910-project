@@ -11,7 +11,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	// Sets Position of the Compressor
 	this.SetPosition = (x,y) => {
 		this.mPositionX = x;
-		this.mPositionY = y;
+		this.mPositionY = y + TOPBAR_PX; // Normalize for, maybe move somewhere else.
 	};
 	
 	//-------------------------------------------------------------------------------
