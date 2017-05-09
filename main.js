@@ -1,7 +1,7 @@
 "use strict";
 
 let CANVAS_WIDTH = 1280,
-    CANVAS_HEIGHT = 768;
+    CANVAS_HEIGHT = 720;
 let FONT_FAMILY = "JMH-HarryDicksonOne";
 let thingsToLoad = [
     "images/spritesheet.json"
