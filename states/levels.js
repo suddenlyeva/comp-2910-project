@@ -53,14 +53,12 @@ function Level(data) {
 	this.background.y += TILES_PX;
     
 	// Add Pause Button
-    // this.pauseButton = makeSimpleButton(100, 50, "pause", 0x94b8b8, 50);
-    // this.pauseButton.position.set(CANVAS_WIDTH - 120, 15);
-    // this.pauseButton.on("pointertap", PauseMenu.open);
-    // this.scene.addChild(this.pauseButton);
     this.pauseButton = new PIXI.Sprite(PIXI.utils.TextureCache["pause-on.png"]);
+    this.pauseButton.position.set(CANVAS_WIDTH - TILES_PX, 0);
+    this.pauseButton.interactive = true;
+    this.pauseButton.buttonMode = true;
     this.pauseButton.on("pointertap", PauseMenu.open);
     this.scene.addChild(this.pauseButton);
-    // this.pauseButton.y += TILES_PX;
 
 	// Identifiers
     this.id = data.id;
