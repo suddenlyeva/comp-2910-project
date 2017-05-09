@@ -44,8 +44,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			this.mSpriteTray[i] = ( new PIXI.Sprite(
 				PIXI.loader.resources["images/spritesheet.json"].textures["recipe-waiting.png"]
 			));
-			this.mSpriteTray[i].x = (this.mPositionX + (this.spriteSize*2) + (this.spriteSize * (i))); // offsets the pos based off index
-			this.mSpriteTray[i].y = (this.mPositionY + this.spriteSize);
+			this.mSpriteTray[i].x = (this.mPositionX + (TILES_PX*2) + (TILES_PX * (i))); // offsets the pos based off index
+			this.mSpriteTray[i].y = (this.mPositionY + TILES_PX);
 			
 			level.scene.addChild(this.mSpriteTray[i]);		// Pushes this to the scene, Explicit because apple's render function is called on init
 
@@ -64,7 +64,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		this.mSpriteOutput = new PIXI.Sprite(
 			PIXI.loader.resources["images/spritesheet.json"].textures["output.png"]
 		);
-		this.mSpriteOutput.x = (this.mPositionX + (this.spriteSize*2) + (this.spriteSize * (this.numIngredients))); //array starts at 0
+		this.mSpriteOutput.x = (this.mPositionX + (TILES_PX*2) + (TILES_PX * (this.numIngredients))); //array starts at 0
 		this.mSpriteOutput.y = (this.mPositionY);
 		
 		// Addes Tray Sprites to stage
@@ -82,15 +82,15 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		
 		// Input Box
 		let inputLeft = this.mPositionX;
-		let inputRight = this.mPositionX + this.spriteSize*2;
+		let inputRight = this.mPositionX + TILES_PX*2;
 		let inputTop = this.mPositionY;
-		let inputBottom = this.mPositionY + this.spriteSize*2;
+		let inputBottom = this.mPositionY + TILES_PX*2;
 		
 		// Recipe Boxes
-		let boundingboxX = this.mPositionX + this.spriteSize*2; // top left
-		let boundingboxY = this.mPositionY + this.spriteSize; 	 // top 
-		let boundingboxUpperLimitX = boundingboxX + (this.spriteSize * this.numIngredients); //top right
-		let boundingboxUpperLimitY = boundingboxY + this.spriteSize; //bottom
+		let boundingboxX = this.mPositionX + TILES_PX*2; // top left
+		let boundingboxY = this.mPositionY + TILES_PX; 	 // top 
+		let boundingboxUpperLimitX = boundingboxX + (TILES_PX * this.numIngredients); //top right
+		let boundingboxUpperLimitY = boundingboxY + TILES_PX; //bottom
 		
         return 	( inputLeft < x && x < inputRight && inputTop < y && y < inputBottom) ||
 		
@@ -182,8 +182,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.SpawnOutput = () => {
 			this.mOutputItem = makeItem(recipeOrder.GetOutput(), level);
 			level.completionData.itemsComplete.push(recipeOrder.GetOutput());
-			this.mOutputItem.x = this.spriteSize + this.mSpriteOutput.x;
-			this.mOutputItem.y = this.spriteSize + this.mSpriteOutput.y;
+			this.mOutputItem.x = TILES_PX + this.mSpriteOutput.x;
+			this.mOutputItem.y = TILES_PX + this.mSpriteOutput.y;
 			
 	};
 	
@@ -278,8 +278,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.mSpriteTray = [];
 	this.mSpriteOutput; 			// This Sprite will not be have a bounding box
 	
-	this.spriteSize = 64;
-	this.spriteSizeHalf = this.spriteSize / 2;
+	this.spriteSizeHalf = TILES_PX / 2;
 	
 	// Position
 	this.mPositionX;
