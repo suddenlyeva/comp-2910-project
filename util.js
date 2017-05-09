@@ -157,10 +157,6 @@ function sceneResize(stretchThreshold = 0) {
         SCENE.scale.y = Math.min(SCENE.scale.x * (1 + stretchThreshold),
             window.innerHeight / CANVAS_HEIGHT);
     }
-
-    // using SCENE.scale.x = SCENE.scale.y = ... average performance ~1.27
-    // using variable (let extraWidth = 1 - (CANVAS_WIDTH *...) average performance ~0.066
-    // all in one formula (...CANVAS_WIDTH * SCENE.scale.[xy]...) average performance ~0.034
 }
 
 function toggleFullScreen() {
