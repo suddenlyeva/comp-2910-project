@@ -4,7 +4,8 @@ let CANVAS_WIDTH = 1280,
     CANVAS_HEIGHT = 720;
 let FONT_FAMILY = "JMH-HarryDicksonOne";
 let thingsToLoad = [
-    "images/spritesheet.json"
+    "images/spritesheet.json",
+    "images/foodfalllogo.jpg"
 ];
 
 let SCENE = new PIXI.Container();

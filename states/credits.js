@@ -38,10 +38,7 @@ function Credits() {
 
     this.affiliateButton.position.set((CANVAS_WIDTH / 2) - 170, (CANVAS_HEIGHT / 2) + 200);
 
-    this.affiliateButton.pointertap = () => {
-
-        Affiliate.open();
-    }
+    this.affiliateButton.pointertap = Affiliate.open;
 
     // Add to scene
     this.scene.addChild(this.txtThankYou);
