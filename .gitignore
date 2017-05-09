@@ -2,5 +2,9 @@
 Thumbs.db
 *.swp
 *.tps
+<<<<<<< HEAD
+.idea
+=======
 .idea
 
+>>>>>>> 65d66234b02f245c6d58d74b9f50cbdb1e5eb8a9
