@@ -3,8 +3,7 @@
 function ConveyorBelt(itemTypes, speed, level) {
 
     // Define Constants
-    let SPRITE_SIZE_PX = 64;
-    let SPRITE_HALF_PX = SPRITE_SIZE_PX/2;
+    let SPRITE_HALF_PX = TILES_PX/2;
     let ARRAY_MIN_SIZE = 21;
 
     // Define Properties
@@ -32,10 +31,10 @@ function ConveyorBelt(itemTypes, speed, level) {
         this.deltaX += frameSpeed;
 
         // When last item reaches trash can:
-        if(this.deltaX >= SPRITE_SIZE_PX) {
+        if(this.deltaX >= TILES_PX) {
             
             // Move belt backwards
-            this.belt.x -= SPRITE_SIZE_PX;
+            this.belt.x -= TILES_PX;
             
             // Waste first item if not a blank
             if (this.items[0].type != BLANK) {
@@ -54,7 +53,7 @@ function ConveyorBelt(itemTypes, speed, level) {
             }
 
             // Reset Delta
-            this.deltaX -= SPRITE_SIZE_PX;
+            this.deltaX -= TILES_PX;
             
             // Add a blank to the end
             this.addItemAtIndex(makeItem(BLANK, level), this.lastIndex);
@@ -74,10 +73,10 @@ function ConveyorBelt(itemTypes, speed, level) {
         item.y = CANVAS_HEIGHT - SPRITE_HALF_PX;
 
         // Normalize to near bottom right corner
-        item.x = CANVAS_WIDTH + this.deltaX - SPRITE_SIZE_PX - SPRITE_HALF_PX;
+        item.x = CANVAS_WIDTH + this.deltaX - TILES_PX - SPRITE_HALF_PX;
 
         // Shift left by index
-        item.x -= SPRITE_SIZE_PX * index;
+        item.x -= TILES_PX * index;
 
         // Copy in
         this.items[index] = item;
@@ -85,7 +84,7 @@ function ConveyorBelt(itemTypes, speed, level) {
     
     // Returns an index based on an X position
     this.getIndexFromX = (x) => {
-        return Math.floor((CANVAS_WIDTH + this.deltaX - x) / SPRITE_SIZE_PX) - 1;
+        return Math.floor((CANVAS_WIDTH + this.deltaX - x) / TILES_PX) - 1;
     }
     
     // Returns an item based on index
@@ -100,7 +99,7 @@ function ConveyorBelt(itemTypes, speed, level) {
     
     // Point Collision
     this.collidesWithPoint = (x,y) => {
-        return (0 < x && x < CANVAS_WIDTH - SPRITE_SIZE_PX) && (CANVAS_HEIGHT - SPRITE_SIZE_PX < y && y < CANVAS_HEIGHT);
+        return (0 < x && x < CANVAS_WIDTH - TILES_PX) && (CANVAS_HEIGHT - TILES_PX < y && y < CANVAS_HEIGHT);
     }
     
     // Finish Constructor
@@ -113,9 +112,9 @@ function ConveyorBelt(itemTypes, speed, level) {
 			PIXI.loader.resources["images/spritesheet.json"].textures["conveyor-belt.png"]
 		);
 		
-        beltTile.y = CANVAS_HEIGHT - SPRITE_SIZE_PX;
-        beltTile.x = CANVAS_WIDTH - SPRITE_SIZE_PX - SPRITE_HALF_PX;
-        beltTile.x -= SPRITE_SIZE_PX * i;
+        beltTile.y = CANVAS_HEIGHT - TILES_PX;
+        beltTile.x = CANVAS_WIDTH - TILES_PX - SPRITE_HALF_PX;
+        beltTile.x -= TILES_PX * i;
         this.belt.addChild(beltTile);
     }
 	
@@ -123,7 +122,7 @@ function ConveyorBelt(itemTypes, speed, level) {
 	let trashPit = new PIXI.Sprite(
 			PIXI.loader.resources["images/spritesheet.json"].textures["trash-pit.png"]
 	);
-	trashPit.y = CANVAS_HEIGHT - SPRITE_SIZE_PX;
+	trashPit.y = CANVAS_HEIGHT - TILES_PX;
 	trashPit.x = CANVAS_WIDTH - trashPit.width;
 	
     // Add belt background
