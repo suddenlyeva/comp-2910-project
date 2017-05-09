@@ -25,7 +25,7 @@ function Affiliate() {
 
     //Race to Zero
     this.raceToZeroLogo = new PIXI.Sprite(PIXI.loader.resources["images/racetozerologo.png"].texture);
-    this.raceToZeroLogo.position.set(0, 100)
+    this.raceToZeroLogo.position.set(0, 250)
     this.raceToZeroLogo.interactive = this.raceToZeroLogo.buttonMode = true;
 
     this.raceToZeroLogo.pointertap = () => {
@@ -33,6 +33,8 @@ function Affiliate() {
         window.location.href = "";
 
     };
+
+    //Captain Plan-it
 
 
 
