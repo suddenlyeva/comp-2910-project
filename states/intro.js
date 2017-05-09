@@ -64,14 +64,14 @@ function Intro() {
 
     this.update = () => {
         if(this.txtFood.alpha < 1) {
-            this.txtFood.alpha += this.appearSpeed;
+            this.txtFood.alpha += this.appearSpeed * TICKER.deltaTime;
         } else if(this.txtFactory.alpha < 1) {
-            this.txtFactory.alpha += this.appearSpeed;
+            this.txtFactory.alpha += this.appearSpeed * TICKER.deltaTime;
         } else if(this.txtZero.alpha < 1) {
-            this.txtZero.alpha += this.appearSpeed;
+            this.txtZero.alpha += this.appearSpeed * TICKER.deltaTime;
         } else {
             this.txtPress.alpha = Math.pow(Math.sin(this.counter), 4);
-            this.counter = (this.counter + this.flashFreq) % Math.PI;
+            this.counter = (this.counter + this.flashFreq * TICKER.deltaTime) % Math.PI;
         }
     };
 }
