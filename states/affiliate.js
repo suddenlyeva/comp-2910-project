@@ -23,9 +23,23 @@ function Affiliate() {
     };
 
 
+    //Race to Zero
+    this.raceToZeroLogo = new PIXI.Sprite(PIXI.loader.resources["images/racetozerologo.png"].texture);
+    this.raceToZeroLogo.position.set(0, 100)
+    this.raceToZeroLogo.interactive = this.raceToZeroLogo.buttonMode = true;
+
+    this.raceToZeroLogo.pointertap = () => {
+
+        window.location.href = "";
+
+    };
+
+
+
     //Add to scene
     this.scene.addChild(this.bg);
     this.scene.addChild(this.foodFallLogo);
+    this.scene.addChild(this.raceToZeroLogo);
 
 
     this.update = () => {};
