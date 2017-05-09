@@ -18,7 +18,7 @@ function Credits() {
 
     // Position text
     // note no padding between lines
-    this.txtThankYou.position.set(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+    this.txtThankYou.position.set(CANVAS_WIDTH / 2, CANVAS_HEIGHT - 500);
     this.txtTeam19.position.set(CANVAS_WIDTH - this.txtTeam19.width - 10,
         CANVAS_HEIGHT - this.txtTeam19.height - 10);
 
@@ -30,10 +30,24 @@ function Credits() {
     this.clickableArea.alpha = 0;
     this.clickableArea.pointertap = MainMenu.open;
 
+    //Create button
+
+    this.affiliateButton = makeSimpleButton(300, 100, "more games", 0xFFFF66, 100);
+
+    //Position button
+
+    this.affiliateButton.position.set((CANVAS_WIDTH / 2) - 170, (CANVAS_HEIGHT / 2) + 200);
+
+    this.affiliateButton.pointertap = () => {
+
+        Affiliate.open();
+    }
+
     // Add to scene
     this.scene.addChild(this.txtThankYou);
     this.scene.addChild(this.txtTeam19);
     this.scene.addChild(this.clickableArea);
+    this.scene.addChild(this.affiliateButton);
 
     this.txtThankYou.alpha = 0;
 
