@@ -4,7 +4,7 @@ function ConveyorBelt(itemTypes, speed, level) {
 
     // Define Constants
     let SPRITE_HALF_PX = TILES_PX/2;
-    let ARRAY_MIN_SIZE = 21;
+    let ARRAY_MIN_SIZE = 17;
 
     // Define Properties
     this.items = [];
