@@ -18,6 +18,7 @@ let RENDERER = PIXI.autoDetectRenderer({
     autoResize: true
 });
 RENDERER.backgroundColor = 0x95d5f5;
+let TICKER = new PIXI.ticker.Ticker();
 
 let WINDOW_RESIZED = true;
 window.addEventListener('resize', function(){
@@ -37,12 +38,11 @@ PIXI.loader
 
 function setup() {
     Intro.open();
-    gameLoop();
+    TICKER.add(gameLoop);
+    TICKER.start();
 }
 
 function gameLoop() {
-    requestAnimationFrame(gameLoop);
-
     if(WINDOW_RESIZED || SCENE !== previousScene) {
         // Auto-resize everything
         sceneResize(0.1);
