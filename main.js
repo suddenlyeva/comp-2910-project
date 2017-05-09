@@ -6,7 +6,8 @@ let FONT_FAMILY = "JMH-HarryDicksonOne";
 let thingsToLoad = [
     "images/spritesheet.json",
     "images/foodfalllogo.jpg",
-    "images/racetozerologo.png"
+    "images/racetozerologo.png",
+    "images/cp2.png"
 ];
 
 let SCENE = new PIXI.Container();
