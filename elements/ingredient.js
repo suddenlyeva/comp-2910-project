@@ -60,8 +60,7 @@ function makeItem(type, level) {
                 // Check collision with processors
                 for (let i in level.processors) {
                     if (level.processors[i].collidesWithPoint(item.x, item.y)) {
-                        level.processors[i].addItem(item);
-						addedToProcessor = true;
+						addedToProcessor = level.processors[i].addItem(item);
                     }
                 }
                 // else waste
