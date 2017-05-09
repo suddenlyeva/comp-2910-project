@@ -36,7 +36,7 @@ function Affiliate() {
 
     //Captain Plan-it
     this.captainPlanLogo = new PIXI.Sprite(PIXI.loader.resources["images/cp2.png"].texture);
-    this.captainPlanLogo.position.set(450, 0);
+    this.captainPlanLogo.position.set(700, 0);
     this.captainPlanLogo.interactive = this.captainPlanLogo.buttonMode = true;
 
     this.captainPlanLogo.pointertap = () => {
