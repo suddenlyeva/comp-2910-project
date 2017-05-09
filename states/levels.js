@@ -1,7 +1,6 @@
 "use strict";
 
-let TILES_PX = 64;
-let TOPBAR_PX = 80;
+let TILES_PX = 80;
 
 // JSON
 let LEVELS = [
@@ -51,7 +50,7 @@ function Level(data) {
 	// Add background
     this.background = new PIXI.Sprite(PIXI.utils.TextureCache["background.png"]);
     this.scene.addChild(this.background);
-	this.background.y += TOPBAR_PX;
+	this.background.y += TILES_PX;
     
 	// Add Pause Button
     // this.pauseButton = makeSimpleButton(100, 50, "pause", 0x94b8b8, 50);
@@ -61,7 +60,7 @@ function Level(data) {
     this.pauseButton = new PIXI.Sprite(PIXI.utils.TextureCache["pause-on.png"]);
     this.pauseButton.on("pointertap", PauseMenu.open);
     this.scene.addChild(this.pauseButton);
-    // this.pauseButton.y += TOPBAR_PX;
+    // this.pauseButton.y += TILES_PX;
 
 	// Identifiers
     this.id = data.id;

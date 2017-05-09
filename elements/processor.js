@@ -4,14 +4,14 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 {
 
 	//-------------------------------------------------------------------------------
-	// Project handler functions
+	// Memeber functions
 	//-------------------------------------------------------------------------------
 	
 	//-------------------------------------------------------------------------------
 	// Sets Position of the Compressor
 	this.SetPosition = (x,y) => {
 		this.mPositionX = x;
-		this.mPositionY = y + TOPBAR_PX; // Normalize for, maybe move somewhere else.
+		this.mPositionY = y;
 	};
 	
 	//-------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.Spawn = () => {	
 	
 		// Variable Assignments
-		this.requiredIngredients = [];
+		//this.requiredIngredients = [];
 		this.numIngredients = recipeOrder.GetListCount();
 
 	
@@ -71,7 +71,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		level.scene.addChild(this.mSpriteProcessor);
 		level.scene.addChild(this.mSpriteOutput);
 		
-	
+		
+		this.currentState = this.ProcessorState.Feeding;
+
 	};
 	
 	//-------------------------------------------------------------------------------
@@ -101,6 +103,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.addItem = (droppedIngredient) => {
 		for(let i = 0; i < this.numIngredients; ++i)
 		{
+			// ! Change to ====
 			if(droppedIngredient.type == this.requiredIngredients[i].type && !this.recipeProgress[i])
 			{
 				this.requiredIngredients[i].alpha = 1;
@@ -114,48 +117,143 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	};
 	
 	//-------------------------------------------------------------------------------
+	// State Checker, Updates state if needed
+	this.StateChanger = () => {
+		
+		// If all Item is finished and not processing
+		if(this.bRecipeCompletion() && this.currentState === this.ProcessorState.Feeding) {
+			// State Change -> Processing
+			//this.currentState = this.ProcessorState.Processing;
+			this.currentState = this.ProcessorState.Finished;
+		}
+		// If Processing and timer finished
+		else if(this.currentState === this.ProcessorState.Processing && this.bFinishedTimer()) {
+			this.currentState = this.ProcessorState.Finished;
+			
+		}
+		else if(this.currentState === this.ProcessorState.Finished && this.bReset){
+			this.currentState = this.ProcessorState.Feeding;
+		}	
+	};
+	
+	//-------------------------------------------------------------------------------
+	// Checks if the timer is finished
+	this.bFinishedTimer = () => {
+		return false;
+	};
+	
+	//-------------------------------------------------------------------------------
+	// Checks if the Outputted item has been moved
+	this.isOutputIsEmpty = () => {
+		return this.mOutputItem.dragging;
+	};
+	//-------------------------------------------------------------------------------
 	// On Update
 	this.update = () => {
-		if(this.bRecipeCompletion())
+		
+		// State Updater
+		this.StateChanger();
+			
+		// State Machine, Acts accordingly to what ever state it is in
+		switch(this.currentState)
 		{
-			let output = makeItem(recipeOrder.GetOutput(), level);
-			level.completionData.itemsComplete.push(recipeOrder.GetOutput());
-			output.x = this.spriteSize + this.mSpriteOutput.x;
-			output.y = this.spriteSize + this.mSpriteOutput.y;
-			
-			// If it's one of the level's final items, disable it from interaction
-			if (level.isFinalItem(output.type)) {
-				output.interactive = false;
-				//TODO: Fancy animations and stuff
-			}
-			
-			this.reset();
+			case (this.ProcessorState.Feeding): {	// Feeding State
+			}break;
+			case (this.ProcessorState.Processing): {	// Processing State
+					//this.timerUpdate();
+					
+					// Draw Timer
+			}break;
+			case (this.ProcessorState.Finished): {	// Spawning/Item Check State
+				if(!this.bIsFinishedSpawning) {
+					this.SpawnOutput();
+					this.bIsFinishedSpawning = true;
+					}
+				else if(this.isOutputIsEmpty()){
+					this.ResetProcessorState();
+					this.bReset = true;		// State Flag
+				}
+			}break;
 		}
-		// Does Nothing
+	};
+	
+	//---
+	// Spawns Ingredient
+	this.SpawnOutput = () => {
+			this.mOutputItem = makeItem(recipeOrder.GetOutput(), level);
+			level.completionData.itemsComplete.push(recipeOrder.GetOutput());
+			this.mOutputItem.x = this.spriteSize + this.mSpriteOutput.x;
+			this.mOutputItem.y = this.spriteSize + this.mSpriteOutput.y;
+			
+	};
+	
+	//-------------------------------------------------------------------------------
+	// Gets Score of the recipe
+	this.GetScore = () => {
+		return (this.mScore);
+	};
+	
+	//-------------------------------------------------------------------------------
+	// Sets Score
+	this.SetScore = () => {
+		//(this.mScore) = recipeOrder.GetScore();
 	};
 	
 	//-------------------------------------------------------------------------------
 	// Checks if all the required Recipe Ingredients are added
 	this.bRecipeCompletion = () => {
-		for (let i = 0; i < this.numIngredients; ++i)
-		{
+		for (let i = 0; i < this.numIngredients; ++i) {
 			if(this.recipeProgress[i] == false)
 				return false;
 		}
-		
 		return true;
 	};
 	
-	
-	this.reset = () => {
+	//-------------------------------------------------------------------------------
+	// Resets the State of Processor
+	this.ResetProcessorState = () => {
+		
+		// Resets the Whole Processor's Alpha
+		// Makes them Clickable
+		this.SetInteract(true);
+		
+		// Resets Tray Ingredient's Alpha, and Progress
 		for(let i = 0; i < this.numIngredients; ++i)
 		{
 			this.recipeProgress[i] = false;
 			this.requiredIngredients[i].alpha = this.alpha;
 			this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-waiting.png"];
 		}
-	}
+
+		this.bIsFinishedSpawning = false; 	// Resets Spawner Flag 
+		this.bIsDone = false;				// Resets State Flag
+		
+	};
+	
+
+	//-------------------------------------------------------------------------------
+	// Timer Update
+	this.timer = () => {
+		
+	};
+	
+	//-------------------------------------------------------------------------------
+	// Updates the timer
+	this.timerUpdate = () => {
+		if(this.processTimer < this.totalProcessTime)
+		{
+			this.processTimer += TICKER.deltaTime;
+		}
+	};
+	
+	
+	
 	/**
+	
+		//-------------------------------------------------------------------------------
+	// Sets the Alpha and Interaction State of the Processor's Sprites
+	// this.SetInteract = (bool) => {}; 
+	
 	//-------------------------------------------------------------------------------
 	// On draw
 	this.OnRender : function()
@@ -168,56 +266,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			
 	}
 
-	
-	//-------------------------------------------------------------------------------
-	// On Update
-	this.Update : function() 
-	{
-		
-		if(!bRecipeCompletion)
-		{
-			processState = 1;
-		}
-		switch (processState)
-		{
-			case 0: // still loading Ingredients on the tray
-			{
-				
-				// Iterates through all the items on the scene and see if one is "dropped" into the processor
-				if(itemCheck(collidedObject))
-				{
-					// Kill dropped object Item
-					// grayed out object becomes fully drawn
-				}
-					
-			}break;
-			case 1: // Processing Ingredients
-			{		
-				timerUpdate();
-				//do something related to processing
-			}break;
-		} // Switch
-		
-	}
-	
-	//-------------------------------------------------------------------------------
-	// Memeber functions
-	//-------------------------------------------------------------------------------
-	
-	//-------------------------------------------------------------------------------
-	// Updates the timer
-	
-	this.timerUpdate : function()
-	{
-		if(processTimer < totalProcessTime)
-		{
-			processTimer += deltaTime;
-		}
-	}
 	*/
-	
-	
-	//-------------------------------------------------------------------------------
 
 	
 	//-------------------------------------------------------------------------------
@@ -249,7 +298,15 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	
 	// Object Variables
 	this.isCollidable = true;			// This object is collidable
-	this.processorState = 0; 
+	this.currentState;
+	this.mScore = 0;
+	this.mOutputItem;					// Local Variable that holds the output object
+	
+	this.bReset = false;				// for Processor is completed, Reset Flag 
+	
+	this.bIsFinishedSpawning = false;	// Flag for item has finished Spawning
+	
+	this.ProcessorState = { Feeding : 0, Processing : 1, Finished : 2 };
 	
 	this.alpha = 0.5;
 	// 0 = loading items
