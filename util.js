@@ -27,27 +27,34 @@ function makeSimpleButton(width, height, text, color, textSize = 20, borderWidth
     return btnCont;
 }
 
-function makeLoadingBar(width, height, padding, bgColor, fgColor) {
-    let loadingBar = new PIXI.Container();
+function makeProgressBar(width, height, padding, bgColor, fgColor) {
+    let progressBar = new PIXI.Container();
 
-    let bgLoading = new PIXI.Graphics();
-    bgLoading.beginFill(bgColor);
-    bgLoading.drawRect(0, 0, width, height);
-    bgLoading.endFill();
+    let bgProgress = new PIXI.Graphics();
+    bgProgress.beginFill(bgColor);
+    bgProgress.drawRect(0, 0, width, height);
+    bgProgress.endFill();
 
-    let fgLoading = new PIXI.Graphics();
-    fgLoading.beginFill(fgColor);
-    fgLoading.drawRect(padding, padding, width - padding * 2, height - padding * 2);
-    fgLoading.endFill();
-    fgLoading.scale.x = 0;
+    let fgProgress = new PIXI.Graphics();
+    fgProgress.beginFill(0xFFFFFF);
+    fgProgress.tint = fgColor;
+    fgProgress.drawRect(padding, padding, width - padding * 2, height - padding * 2);
+    fgProgress.endFill();
+    fgProgress.scale.x = 0;
 
-    loadingBar.addChild(bgLoading);
-    loadingBar.addChild(fgLoading);
+    progressBar.addChild(bgProgress);
+    progressBar.addChild(fgProgress);
 
     // let user control fgLoading width through scale
-    loadingBar.xScale = function(s) { fgLoading.scale.x = s; };
+    progressBar.xScale = (s) => { fgProgress.scale.x = s; };
+    // get the current scale
+    progressBar.getScale = () => {return fgProgress.scale.x; };
+    // change the bar's color
+    progressBar.setColor = (color) => {
+        fgProgress.tint = color;
+    }
 
-    return loadingBar;
+    return progressBar;
 }
 
 function makeSlider(width, height, sliderThickness = height / 6, handleWidth = height / 2) {

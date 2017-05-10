@@ -25,7 +25,7 @@ window.addEventListener('resize', function(){
     WINDOW_RESIZED = true;
 }, true);
 
-let loadingProgressBar = makeLoadingBar(
+let loadingProgressBar = makeProgressBar(
     CANVAS_WIDTH / 1.5, CANVAS_HEIGHT / 6, 10, 0, 0x00d27f);
 loadingProgressBar.position.set(CANVAS_WIDTH / 2 - loadingProgressBar.width / 2,
     CANVAS_HEIGHT / 2 - loadingProgressBar.height / 2);

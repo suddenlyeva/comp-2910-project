@@ -35,7 +35,7 @@ function makeItem(type, level) {
 	
     item.waste = () => {
 		level.completionData.waste++;
-        level.updateConstantine();
+        level.updateWasteInfo();
         item.texture = ITEM_TEXTURES[SPLAT];
 		item.interactive = false;
     };

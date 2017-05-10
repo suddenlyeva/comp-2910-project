@@ -101,7 +101,26 @@ function Level(data) {
         PauseMenu.open(this);
     });
     this.scene.addChild(this.pauseButton);
+<<<<<<< Updated upstream
 
+=======
+    
+    // Add HP Bar
+    this.hpBar = makeProgressBar(5*TILES_PX, 60, 10, 0x222222, 0x00d27f);
+    this.hpBar.xScale(1);
+    this.hpBar.x += TILES_PX;
+    this.hpBar.y += 10;
+    this.scene.addChild(this.hpBar);
+    
+    // HP Bar Tracks Waste
+    this.hpBar.update = () => {
+        // Smoothly Scale HP
+        if ( this.hpBar.getScale() > (1 - this.completionData.waste / data.wasteLimit)) {
+            this.hpBar.xScale(this.hpBar.getScale() * 0.97 );
+        }
+    };
+    
+>>>>>>> Stashed changes
     // Add Gear
     this.gear = makeGear("m", data.conveyorBelt.speed);
     this.gear.anchor.set(0.5);
@@ -116,16 +135,22 @@ function Level(data) {
     this.constantine.position.set(TILES_PX / 2, TILES_PX / 2 - 12);
     this.scene.addChild(this.constantine);
     
-    // Change Constantine based on current waste;
+    // Change stuff as waste is tracked
     this.neutralLimit = data.wasteLimit * 0.5;
     this.sadLimit = data.wasteLimit * 0.8;
     
-    this.updateConstantine = () => {
+    this.updateWasteInfo = () => {
         if (this.completionData.waste >= this.sadLimit) {
-            this.constantine.texture = PIXI.loader.resources["images/spritesheet.json"].textures["constantine-sad.png"]
+            this.constantine.texture = PIXI.loader.resources["images/spritesheet.json"].textures["constantine-sad.png"];
+            this.hpBar.setColor(0xFF2222);
         }
         else if (this.completionData.waste >= this.neutralLimit) {
-            this.constantine.texture = PIXI.loader.resources["images/spritesheet.json"].textures["constantine-neutral.png"]
+            this.constantine.texture = PIXI.loader.resources["images/spritesheet.json"].textures["constantine-neutral.png"];
+            this.hpBar.setColor(0xFFFF22);
+        }
+        if (this.completionData.waste >= data.wasteLimit) {
+            console.log("game over");
+            this.isComplete = true;
         }
     };
     
@@ -169,11 +194,13 @@ function Level(data) {
 	
 	// Checks if the level is over
 	this.checkForCompletion = () => {
-		for (let i in this.conveyorBelt.items) {
-			if (this.conveyorBelt.items[i].type != BLANK) {
-				return false;
-			}
-		}
+        if (!this.isComplete) {
+            for (let i in this.conveyorBelt.items) {
+                if (this.conveyorBelt.items[i].type != BLANK) {
+                    return false;
+                }
+            }
+        }
 		return true;
 	};
 
@@ -197,6 +224,7 @@ function Level(data) {
             this.processors[i].update();
         }
         this.gear.update();
+        this.hpBar.update();
 		
         // Timeout on completion
 		if(this.isComplete) {
