@@ -53,11 +53,16 @@ function Level(data) {
 	this.background.y += TILES_PX;
     
 	// Add Pause Button
+    this.isPaused = false;
     this.pauseButton = new PIXI.Sprite(PIXI.utils.TextureCache["pause-on.png"]);
     this.pauseButton.position.set(CANVAS_WIDTH - TILES_PX, 0);
     this.pauseButton.interactive = true;
     this.pauseButton.buttonMode = true;
-    this.pauseButton.on("pointertap", PauseMenu.open);
+    this.pauseButton.on("pointertap", () => {
+        this.pauseButton.texture = PIXI.loader.resources["images/spritesheet.json"].textures["pause-off.png"];
+        this.isPaused = true;
+        PauseMenu.open(this);
+    });
     this.scene.addChild(this.pauseButton);
 
 	// Identifiers
@@ -120,6 +125,11 @@ function Level(data) {
 				StageComplete.open(this.completionData);
 			}
 		}
+
+		if(this.isPaused) {
+            this.pauseButton.texture = PIXI.loader.resources["images/spritesheet.json"].textures["pause-on.png"];
+            this.isPaused = false;
+        }
 		
     };
 }
