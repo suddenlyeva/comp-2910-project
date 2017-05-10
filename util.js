@@ -210,6 +210,14 @@ function makeGear(size, speed) {
     return gear;
 }
 
+function padZeroForInt(intToPad, digits) {
+    let paddedNum = "";
+    for(let i = 0; i < digits; i++) {
+        paddedNum += "0";
+    }
+    paddedNum = (paddedNum + intToPad).slice(-digits);
+    return paddedNum;
+}
 
 // function toggleFullScreen() {
 //     var doc = window.document;

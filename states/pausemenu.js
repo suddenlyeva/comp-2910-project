@@ -114,10 +114,10 @@ function PauseMenu() {
         Level.open(LEVELS[Level.instance.id]);
     };
     this.optionsButton.pointertap = OptionsMenu.open;
-    // this.mainMenuButton.pointertap = () => {
-    //     // this.cleanUp(); // also not needed
-    //     MainMenu.open();
-    // };
+    this.mainMenuButton.pointertap = () => {
+        // this.cleanUp(); // also not needed
+        MainMenu.open();
+    };
 
     this.cleanUp = () => {
         OptionsMenu.close();
