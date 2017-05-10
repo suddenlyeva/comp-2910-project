@@ -101,9 +101,6 @@ function Level(data) {
         PauseMenu.open(this);
     });
     this.scene.addChild(this.pauseButton);
-<<<<<<< Updated upstream
-
-=======
     
     // Add HP Bar
     this.hpBar = makeProgressBar(5*TILES_PX, 60, 10, 0x222222, 0x00d27f);
@@ -120,7 +117,6 @@ function Level(data) {
         }
     };
     
->>>>>>> Stashed changes
     // Add Gear
     this.gear = makeGear("m", data.conveyorBelt.speed);
     this.gear.anchor.set(0.5);
@@ -149,7 +145,6 @@ function Level(data) {
             this.hpBar.setColor(0xFFFF22);
         }
         if (this.completionData.waste >= data.wasteLimit) {
-            console.log("game over");
             this.isComplete = true;
         }
     };

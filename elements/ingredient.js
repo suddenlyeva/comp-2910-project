@@ -41,11 +41,13 @@ function makeItem(type, level) {
     };
 
     item.onDragStart = (event) => {
-        item.data = event.data;
-        item.alpha = 0.5;
-        item.dragging = true;
-        if (level.conveyorBelt.collidesWithPoint(item.x, item.y)) {
-            level.conveyorBelt.addItemAtX(makeItem(BLANK, level), item.x);
+        if(!level.isComplete) {
+            item.data = event.data;
+            item.alpha = 0.5;
+            item.dragging = true;
+            if (level.conveyorBelt.collidesWithPoint(item.x, item.y)) {
+                level.conveyorBelt.addItemAtX(makeItem(BLANK, level), item.x);
+            }
         }
     };
     
