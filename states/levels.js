@@ -75,8 +75,6 @@ function Level(data) {
         fontFamily: FONT_FAMILY, fontSize: 96, fill: 0x0
     });
     this.levelTxt = new PIXI.Text("level " + this.id + " : " + this.name, this.txtStyle);
-    // this.resetTxt.position.set(this.resetButton.x + this.resetButton.width / 2 - this.resetTxt.width / 2,
-    //     this.resetButton.y + this.resetButton.height - this.resetTxt.height / txtVAlign);
     this.levelTxt.position.set(TILES_PX * 7, 0);
     this.scene.addChild(this.levelTxt);
 
@@ -87,8 +85,6 @@ function Level(data) {
     // Add Score txt
     this.score = 0;
     this.scoreTxt = new PIXI.Text(("00000" + this.score).slice(-5), this.txtStyle);
-    // this.resetTxt.position.set(this.resetButton.x + this.resetButton.width / 2 - this.resetTxt.width / 2,
-    //     this.resetButton.y + this.resetButton.height - this.resetTxt.height / txtVAlign);
     this.scoreTxt.anchor.set(0, 0.3);
     this.scoreTxt.position.set(TILES_PX * 13, 0);
     this.scene.addChild(this.scoreTxt);
