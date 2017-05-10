@@ -26,7 +26,7 @@
 },
 "banana.png":
 {
-	"frame": {"x":1,"y":643,"w":80,"h":80},
+	"frame": {"x":1447,"y":1,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -34,7 +34,7 @@
 },
 "blank.png":
 {
-	"frame": {"x":83,"y":643,"w":80,"h":80},
+	"frame": {"x":1,"y":643,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -42,7 +42,7 @@
 },
 "conveyor-belt.png":
 {
-	"frame": {"x":165,"y":643,"w":80,"h":80},
+	"frame": {"x":83,"y":643,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -50,7 +50,7 @@
 },
 "input.png":
 {
-	"frame": {"x":247,"y":643,"w":160,"h":160},
+	"frame": {"x":165,"y":643,"w":160,"h":160},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":160,"h":160},
@@ -58,7 +58,15 @@
 },
 "menu-play.png":
 {
-	"frame": {"x":409,"y":643,"w":160,"h":160},
+	"frame": {"x":327,"y":643,"w":160,"h":160},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":160,"h":160},
+	"sourceSize": {"w":160,"h":160}
+},
+"menu-restart.png":
+{
+	"frame": {"x":489,"y":643,"w":160,"h":160},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":160,"h":160},
@@ -66,7 +74,7 @@
 },
 "output.png":
 {
-	"frame": {"x":571,"y":643,"w":160,"h":160},
+	"frame": {"x":651,"y":643,"w":160,"h":160},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":160,"h":160},
@@ -74,7 +82,7 @@
 },
 "pause-off.png":
 {
-	"frame": {"x":733,"y":643,"w":80,"h":80},
+	"frame": {"x":813,"y":643,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -82,7 +90,7 @@
 },
 "pause-on.png":
 {
-	"frame": {"x":815,"y":643,"w":80,"h":80},
+	"frame": {"x":895,"y":643,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -90,7 +98,7 @@
 },
 "recipe-correct.png":
 {
-	"frame": {"x":897,"y":643,"w":80,"h":80},
+	"frame": {"x":977,"y":643,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -98,7 +106,7 @@
 },
 "recipe-waiting.png":
 {
-	"frame": {"x":979,"y":643,"w":80,"h":80},
+	"frame": {"x":1059,"y":643,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -106,7 +114,7 @@
 },
 "RTS_Crate.png":
 {
-	"frame": {"x":1061,"y":643,"w":64,"h":64},
+	"frame": {"x":1141,"y":643,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -114,7 +122,7 @@
 },
 "RTS_Crate2.png":
 {
-	"frame": {"x":1127,"y":643,"w":32,"h":32},
+	"frame": {"x":1207,"y":643,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -122,7 +130,7 @@
 },
 "splat.png":
 {
-	"frame": {"x":1161,"y":643,"w":160,"h":160},
+	"frame": {"x":1241,"y":643,"w":160,"h":160},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":160,"h":160},
@@ -130,7 +138,7 @@
 },
 "table.png":
 {
-	"frame": {"x":1323,"y":643,"w":96,"h":67},
+	"frame": {"x":1403,"y":643,"w":96,"h":67},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":67},
@@ -138,7 +146,7 @@
 },
 "trash-pit.png":
 {
-	"frame": {"x":1421,"y":643,"w":91,"h":80},
+	"frame": {"x":1501,"y":643,"w":91,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":91,"h":80},
@@ -149,8 +157,8 @@
 	"version": "1.0",
 	"image": "spritesheet.png",
 	"format": "RGBA8888",
-	"size": {"w":1513,"h":804},
+	"size": {"w":1593,"h":804},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:fced8307c3578ec07732457e01c02e86:ae6cbe5d187ae3233a74ae249a2cdd00:729adc6043343cfda41c447ce8f464d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:b697015b64f1efd21435e0fae442ee96:2e4b713ba7162440494a492c7f91c157:729adc6043343cfda41c447ce8f464d6$"
 }
 }
