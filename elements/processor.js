@@ -241,13 +241,13 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	//-------------------------------------------------------------------------------
 	// Updates the timer
 	this.timerUpdate = () => {
-		if(this.processTimer < this.totalProcessTime && !bFinishedTimer)
+		if(this.processTimer < this.totalProcessTime && !this.bFinishedTimer)
 		{
-			this.processTimer += TICKER.deltaTime;
+			this.processTimer += 0.02;
 		}
 		else
 		{
-			bFinishedTimer = true;
+			this.bFinishedTimer = true;
 		}
 	};
 	
