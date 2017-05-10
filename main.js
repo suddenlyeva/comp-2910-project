@@ -24,6 +24,7 @@ RENDERER.backgroundColor = 0x95d5f5;
 let TICKER = new PIXI.ticker.Ticker();
 
 let WINDOW_RESIZED = true;
+let STRETCH_THRESHOLD = 0.1;
 window.addEventListener('resize', function(){
     WINDOW_RESIZED = true;
 }, true);
@@ -48,7 +49,7 @@ function setup() {
 function gameLoop() {
     if(WINDOW_RESIZED || SCENE !== previousScene) {
         // Auto-resize everything
-        sceneResize(0.1);
+        sceneResize(STRETCH_THRESHOLD);
         RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
         WINDOW_RESIZED = false;
     }
@@ -64,10 +65,8 @@ function showLoadingProgress(loader, resource) {
     console.log("loading: " + resource.url);
     loadingProgressBar.xScale(loader.progress / 100);
 
-    // Resize everything
-    SCENE.scale.x = window.innerWidth/CANVAS_WIDTH;
-    SCENE.scale.y = window.innerHeight/CANVAS_HEIGHT;
-    RENDERER.resize(window.innerWidth, window.innerHeight);
+    sceneResize(STRETCH_THRESHOLD);
+    RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
 
     RENDERER.render(SCENE);
 }
