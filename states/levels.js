@@ -48,7 +48,12 @@ function Level(data) {
     this.scene = new PIXI.Container();
     
 	// Add background
-    this.background = new PIXI.Sprite(PIXI.utils.TextureCache["background.png"]);
+    this.background = new PIXI.extras.TilingSprite(
+    PIXI.loader.resources["images/spritesheet.json"].textures["background.png"],
+    16*TILES_PX,
+    8*TILES_PX
+    );
+    
     this.scene.addChild(this.background);
 	this.background.y += TILES_PX;
     
