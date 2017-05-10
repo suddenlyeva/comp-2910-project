@@ -15,14 +15,26 @@ function Affiliate() {
         dropShadow: true, dropShadowAngle: 7 * Math.PI / 12, dropShadowDistance: 10,
         stroke: 0xFFFFFF, strokeThickness: 7});
 
+    this.gamesTxt.position.set(25, 0);
 
     //Food Fall
+
+    // Create circle container for
+    this.foodFallContainer = new PIXI.Container();
     this.foodFallCircle = new PIXI.Graphics();
-    this.foodFallCircle.beginFill();
+    this.foodFallCircle.beginFill(0);
+    this.foodFallCircle.drawCircle(200, 300, 150);
+    this.foodFallCircle.endFill();
+
+    // Create button and logo
     this.foodFallLogo = new PIXI.Sprite(PIXI.loader.resources["images/foodfalllogo.jpg"].texture);
-    this.foodFallLogo.position.set(0, 100);
     this.foodFallLogo.interactive = this.foodFallLogo.buttonMode = true;
 
+    // Add to container
+    this.foodFallContainer.addChild(this.foodFallCircle);
+    this.foodFallContainer.addChild(this.foodFallLogo);
+
+    this.foodFallLogo.position.set(100, 200);
 
     this.foodFallLogo.pointertap = () => {
 
@@ -32,8 +44,15 @@ function Affiliate() {
 
 
     //Race to Zero
+
+    this.raceToZeroContainer = new PIXI.Container();
+    this.raceToZeroCircle = new PIXI.Graphics();
+    this.raceToZeroCircle.beginFill(0);
+    this.raceToZeroCircle.drawCircle(400, 300, 150);
+    this.raceToZeroCircle.endFill();
+
     this.raceToZeroLogo = new PIXI.Sprite(PIXI.loader.resources["images/racetozerologo.png"].texture);
-    this.raceToZeroLogo.position.set(300, 100);
+    this.raceToZeroLogo.position.set(400, 100);
     this.raceToZeroLogo.interactive = this.raceToZeroLogo.buttonMode = true;
 
     this.raceToZeroLogo.pointertap = () => {
@@ -44,7 +63,7 @@ function Affiliate() {
 
     //Captain Plan-it
     this.captainPlanLogo = new PIXI.Sprite(PIXI.loader.resources["images/cp2.png"].texture);
-    this.captainPlanLogo.position.set(800, 100);
+    this.captainPlanLogo.position.set(900, 100);
     this.captainPlanLogo.interactive = this.captainPlanLogo.buttonMode = true;
 
     this.captainPlanLogo.pointertap = () => {
@@ -55,11 +74,13 @@ function Affiliate() {
 
 
 
+
+
     //Add to scene
     this.scene.addChild(this.bg);
     this.scene.addChild(this.gamesTxt);
-    this.scene.addChild(this.foodFallLogo);
-    this.scene.addChild(this.raceToZeroLogo);
+    this.scene.addChild(this.foodFallContainer);
+    this.scene.addChild(this.raceToZeroContainer);
     this.scene.addChild(this.captainPlanLogo);
 
 
