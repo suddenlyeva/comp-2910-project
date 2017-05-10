@@ -10,9 +10,17 @@ function Affiliate() {
     this.bg.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     this.bg.endFill();
 
+    //Text
+    this.gamesTxt = new PIXI.Text("games", {fontFamily: FONT_FAMILY, fontSize: 128, fill: 0x00ad5e,
+        dropShadow: true, dropShadowAngle: 7 * Math.PI / 12, dropShadowDistance: 10,
+        stroke: 0xFFFFFF, strokeThickness: 7});
+
+
     //Food Fall
+    this.foodFallCircle = new PIXI.Graphics();
+    this.foodFallCircle.beginFill();
     this.foodFallLogo = new PIXI.Sprite(PIXI.loader.resources["images/foodfalllogo.jpg"].texture);
-    this.foodFallLogo.position.set();
+    this.foodFallLogo.position.set(0, 100);
     this.foodFallLogo.interactive = this.foodFallLogo.buttonMode = true;
 
 
@@ -25,7 +33,7 @@ function Affiliate() {
 
     //Race to Zero
     this.raceToZeroLogo = new PIXI.Sprite(PIXI.loader.resources["images/racetozerologo.png"].texture);
-    this.raceToZeroLogo.position.set(200, 0);
+    this.raceToZeroLogo.position.set(300, 100);
     this.raceToZeroLogo.interactive = this.raceToZeroLogo.buttonMode = true;
 
     this.raceToZeroLogo.pointertap = () => {
@@ -36,7 +44,7 @@ function Affiliate() {
 
     //Captain Plan-it
     this.captainPlanLogo = new PIXI.Sprite(PIXI.loader.resources["images/cp2.png"].texture);
-    this.captainPlanLogo.position.set(700, 0);
+    this.captainPlanLogo.position.set(800, 100);
     this.captainPlanLogo.interactive = this.captainPlanLogo.buttonMode = true;
 
     this.captainPlanLogo.pointertap = () => {
@@ -49,9 +57,11 @@ function Affiliate() {
 
     //Add to scene
     this.scene.addChild(this.bg);
+    this.scene.addChild(this.gamesTxt);
     this.scene.addChild(this.foodFallLogo);
     this.scene.addChild(this.raceToZeroLogo);
     this.scene.addChild(this.captainPlanLogo);
+
 
 
     this.update = () => {};
