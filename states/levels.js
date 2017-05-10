@@ -6,9 +6,11 @@ let TILES_PX = 80;
 let LEVELS = [
     // current reset button implementation requires id to be equal to index
     {id: 0, name: "tutorial",
+    
+        wasteLimit: 3,
 		
         conveyorBelt: {
-            items: [APPLE],
+            items: [APPLE,BLANK,APPLE,BLANK,APPLE],
             speed: 1.2
         },
 		
@@ -25,6 +27,8 @@ let LEVELS = [
     },
     {id: 1, name: "apple apple banana",
 	
+        wasteLimit: 5,
+    
         conveyorBelt: {
             items: [APPLE, BLANK, APPLE, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
             speed: 1.2
@@ -59,7 +63,7 @@ function Level(data) {
     
 	// Add Pause Button
     this.isPaused = false;
-    this.pauseButton = new PIXI.Sprite(PIXI.utils.TextureCache["pause-on.png"]);
+    this.pauseButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["pause-on.png"]);
     this.pauseButton.position.set(CANVAS_WIDTH - TILES_PX, 0);
     this.pauseButton.interactive = true;
     this.pauseButton.buttonMode = true;
@@ -69,7 +73,27 @@ function Level(data) {
         PauseMenu.open(this);
     });
     this.scene.addChild(this.pauseButton);
-
+    
+    // Add Constantine
+    this.constantine = new PIXI.Sprite(
+        PIXI.loader.resources["images/spritesheet.json"].textures["constantine-happy.png"]
+    );
+    this.scene.addChild(this.constantine);
+    
+    // Change Constantine based on current waste;
+    this.neutralLimit = data.wasteLimit * 0.5;
+    this.sadLimit = data.wasteLimit * 0.8;
+    
+    this.updateConstantine = () => {
+        console.log   (this.neutralLimit);
+        if (this.completionData.waste >= this.sadLimit) {
+            constantine.texture = PIXI.loader.resources["images/spritesheet.json"].textures["constantine-sad.png"]
+        }
+        else if (this.completionData.waste >= this.neutralLimit) {
+            constantine.texture = PIXI.loader.resources["images/spritesheet.json"].textures["constantine-neutral.png"]
+        }
+    };
+    
 	// Identifiers
     this.id = data.id;
     this.name = data.name;
