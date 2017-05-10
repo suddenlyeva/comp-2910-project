@@ -159,6 +159,58 @@ function sceneResize(stretchThreshold = 0) {
     }
 }
 
+// Make a spinning gear
+// Sizes: "s, m, l, xl"
+function makeGear(size, speed) {
+    
+    // Constant Controls
+    let FRAMECOUNT = 12;
+    let TIMEOUT = 2;
+    
+    // Save textures
+    let frames = [];
+    for (let i = 0; i < FRAMECOUNT; i++) {
+        frames.push(
+            PIXI.loader.resources["images/spritesheet.json"].textures["gear-" + size + "-" + i + ".png"]
+        );
+    }
+    
+    // Make gear
+    let gear = new PIXI.Sprite(frames[0]);
+    
+    // Add properties
+    gear.ticker = 0;
+    gear.currentFrame = 0;
+    gear.isNextFrame = false;
+    
+    // Update
+    gear.update = () => {
+        
+        // Tick up
+        gear.ticker += speed * TICKER.deltaTime;
+        
+        // Increment frames, iterate if very fast
+        while (gear.ticker >= TIMEOUT) {
+            gear.currentFrame ++;
+            gear.ticker -= TIMEOUT;
+            gear.isNextFrame = true;
+        }
+        
+        // Reset
+        if (gear.currentFrame >= FRAMECOUNT) {
+            gear.currentFrame -= FRAMECOUNT;
+        }
+        
+        // Change Texture, check is for optimization
+        if (gear.isNextFrame) {
+            gear.texture = frames[gear.currentFrame];
+        }
+    }
+    
+    return gear;
+}
+
+
 // function toggleFullScreen() {
 //     var doc = window.document;
 //     var docEl = doc.documentElement;

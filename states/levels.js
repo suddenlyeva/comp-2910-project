@@ -53,9 +53,9 @@ function Level(data) {
     
 	// Add background
     this.background = new PIXI.extras.TilingSprite(
-    PIXI.loader.resources["images/spritesheet.json"].textures["background.png"],
-    16*TILES_PX,
-    8*TILES_PX
+        PIXI.loader.resources["images/spritesheet.json"].textures["background.png"],
+        16*TILES_PX,
+        8*TILES_PX
     );
     
     this.scene.addChild(this.background);
@@ -74,10 +74,18 @@ function Level(data) {
     });
     this.scene.addChild(this.pauseButton);
     
+    // Add Gear
+    this.gear = makeGear("m", data.conveyorBelt.speed);
+    this.gear.anchor.set(0.5);
+    this.gear.position.set(TILES_PX / 2, TILES_PX / 2);
+    this.scene.addChild(this.gear);
+    
     // Add Constantine
     this.constantine = new PIXI.Sprite(
         PIXI.loader.resources["images/spritesheet.json"].textures["constantine-happy.png"]
     );
+    this.constantine.anchor.set(0.5);
+    this.constantine.position.set(TILES_PX / 2, TILES_PX / 2 - 12);
     this.scene.addChild(this.constantine);
     
     // Change Constantine based on current waste;
@@ -87,10 +95,10 @@ function Level(data) {
     this.updateConstantine = () => {
         console.log   (this.neutralLimit);
         if (this.completionData.waste >= this.sadLimit) {
-            constantine.texture = PIXI.loader.resources["images/spritesheet.json"].textures["constantine-sad.png"]
+            this.constantine.texture = PIXI.loader.resources["images/spritesheet.json"].textures["constantine-sad.png"]
         }
         else if (this.completionData.waste >= this.neutralLimit) {
-            constantine.texture = PIXI.loader.resources["images/spritesheet.json"].textures["constantine-neutral.png"]
+            this.constantine.texture = PIXI.loader.resources["images/spritesheet.json"].textures["constantine-neutral.png"]
         }
     };
     
@@ -143,18 +151,23 @@ function Level(data) {
 	};
 	
     this.update = () => {
+        
+        // Update scene objects
         this.conveyorBelt.update();
         for (let i in this.processors) {
             this.processors[i].update();
         }
+        this.gear.update();
 		
+        // Timeout on completion
 		if(this.isComplete) {
 			this.timeOut -= TICKER.deltaTime;
 			if (this.timeOut <= 0) {
 				StageComplete.open(this.completionData);
 			}
 		}
-
+        
+        // Pause Button fix
 		if(this.isPaused) {
             this.pauseButton.texture = PIXI.loader.resources["images/spritesheet.json"].textures["pause-on.png"];
             this.isPaused = false;
