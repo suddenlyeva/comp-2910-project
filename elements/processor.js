@@ -91,11 +91,14 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		let boundingboxY = this.mPositionY + TILES_PX; 	 // top 
 		let boundingboxUpperLimitX = boundingboxX + (TILES_PX * this.numIngredients); //top right
 		let boundingboxUpperLimitY = boundingboxY + TILES_PX; //bottom
+		if(this.currentState === this.ProcessorState.Feeding) {
+			return 	( inputLeft < x && x < inputRight && inputTop < y && y < inputBottom) ||
+				( boundingboxX < x && x < boundingboxUpperLimitX && boundingboxY < y && y < boundingboxUpperLimitY);
+		}
+		// If state is not Feeding, Item's Dragged on Top will still fall
+		else
+			return false;
 		
-        return 	( inputLeft < x && x < inputRight && inputTop < y && y < inputBottom) ||
-		
-				( boundingboxX < x && x < boundingboxUpperLimitX && 
-				  boundingboxY < y && y < boundingboxUpperLimitY);
     };
 	
 	//-------------------------------------------------------------------------------
@@ -124,23 +127,17 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		// If all Item is finished and not processing
 		if(this.bRecipeCompletion() && this.currentState === this.ProcessorState.Feeding) {
 			// State Change -> Processing
-			//this.currentState = this.ProcessorState.Processing;
-			this.currentState = this.ProcessorState.Finished;
+			this.currentState = this.ProcessorState.Processing;
+			//this.currentState = this.ProcessorState.Finished;
 		}
 		// If Processing and timer finished
-		else if(this.currentState === this.ProcessorState.Processing && this.bFinishedTimer()) {
+		else if(this.currentState === this.ProcessorState.Processing && this.bFinishedTimer) {
 			this.currentState = this.ProcessorState.Finished;
 			
 		}
 		else if(this.currentState === this.ProcessorState.Finished && this.bReset){
 			this.currentState = this.ProcessorState.Feeding;
 		}	
-	};
-	
-	//-------------------------------------------------------------------------------
-	// Checks if the timer is finished
-	this.bFinishedTimer = () => {
-		return false;
 	};
 	
 	//-------------------------------------------------------------------------------
@@ -161,8 +158,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			case (this.ProcessorState.Feeding): {	// Feeding State
 			}break;
 			case (this.ProcessorState.Processing): {	// Processing State
-					//this.timerUpdate();
-					
+					this.timerUpdate();
+					console.log(this.processTimer);
 					// Draw Timer
 			}break;
 			case (this.ProcessorState.Finished): {	// Spawning/Item Check State
@@ -230,6 +227,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 
 		this.bIsFinishedSpawning = false; 	// Resets Spawner Flag 
 		this.bIsDone = false;				// Resets State Flag
+		this.bFinishedTimer = false;
 		
 	};
 	
@@ -243,17 +241,18 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	//-------------------------------------------------------------------------------
 	// Updates the timer
 	this.timerUpdate = () => {
-		if(this.processTimer < this.totalProcessTime)
+		if(this.processTimer < this.totalProcessTime && !bFinishedTimer)
 		{
 			this.processTimer += TICKER.deltaTime;
 		}
+		else
+		{
+			bFinishedTimer = true;
+		}
 	};
 	
-	
-	
 	/**
-	
-		//-------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	// Sets the Alpha and Interaction State of the Processor's Sprites
 	// this.SetInteract = (bool) => {}; 
 	
@@ -297,6 +296,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.totalProcessTime = 5; 			// total time it takes for an item to process
 	this.processTimer = 0; 				// Current process duration	
 	this.timerCircle;					// Drawing Circle
+	this.bFinishedTimer = false;
 	
 	// Object Variables
 	this.isCollidable = true;			// This object is collidable
