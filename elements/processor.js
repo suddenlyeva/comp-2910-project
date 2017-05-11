@@ -160,9 +160,11 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		{
 			case (this.ProcessorState.Feeding): {	// Feeding State
 			}break;
+			
 			case (this.ProcessorState.Processing): {	// Processing State
-					this.timerUpdate();					
+					this.Timer();				
 			}break;
+			
 			case (this.ProcessorState.Finished): {	// Spawning/Item Check State
 				if(!this.isFinishedSpawning) {
 					this.SpawnOutput();
@@ -239,35 +241,34 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 
 	//-------------------------------------------------------------------------------
 	// Timer Update
-	this.timerUpdate = () => {
+	this.Timer = () => {
 		
-		this.tickerUpdate();
-		
+		this.updateTimer();
 		let temp = Math.floor(this.processTimer);
 		
-		if(temp <= this.timerState && !this.isDrawn) {
+		if(temp <= this.timerState) {
 			level.scene.addChild(this.timerCircle[temp]);
-			
 			this.isDrawn = true;
 		}
-		else{
+		else {
 			// If the State progressed, delete the the previous image
 			level.scene.removeChild(this.timerCircle[temp]);
 			this.isDrawn = false;
+			
 		}
-		
-		if(temp >= this.totalProcessTime) {
+		this.timerState = temp;
+		//if(temp >= this.totalProcessTime) {
 			//level.scene.removeChild(this.timerCircle[temp]);
-		}
+		//}
 		
 		// Updates timers State
-		this.timerState = temp;
+		
 	};
 	
 	//-------------------------------------------------------------------------------
 	// Updates the timer
-	this.tickerUpdate = () => {
-		if(this.processTimer < this.totalProcessTime && !this.isTimerFinished) {
+	this.updateTimer = () => {
+		if(this.processTimer <= this.totalProcessTime && !this.isTimerFinished) {
 			this.processTimer += ( this.timeScale * TICKER.deltaTime);
 		}
 		else {
