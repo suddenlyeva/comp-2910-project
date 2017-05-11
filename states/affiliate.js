@@ -48,12 +48,16 @@ function Affiliate() {
     this.raceToZeroContainer = new PIXI.Container();
     this.raceToZeroCircle = new PIXI.Graphics();
     this.raceToZeroCircle.beginFill(0);
-    this.raceToZeroCircle.drawCircle(400, 300, 150);
+    this.raceToZeroCircle.drawCircle(CANVAS_WIDTH / 2, 300, 150);
     this.raceToZeroCircle.endFill();
 
     this.raceToZeroLogo = new PIXI.Sprite(PIXI.loader.resources["images/racetozerologo.png"].texture);
-    this.raceToZeroLogo.position.set(400, 100);
     this.raceToZeroLogo.interactive = this.raceToZeroLogo.buttonMode = true;
+
+    this.raceToZeroContainer.addChild(this.raceToZeroCircle);
+    this.raceToZeroContainer.addChild(this.raceToZeroLogo);
+
+    this.raceToZeroLogo.position.set(540, 250);
 
     this.raceToZeroLogo.pointertap = () => {
 
@@ -72,8 +76,10 @@ function Affiliate() {
 
     };
 
-
-
+    // Main menu button
+    this.mainMenuButton = makeSimpleButton(200, 50, "main menu", 0xFFFF66, 75);
+    this.mainMenuButton.position.set((CANVAS_WIDTH /2) - 100, CANVAS_HEIGHT - 100);
+    this.mainMenuButton.on("pointertap", MainMenu.open);
 
 
     //Add to scene
@@ -82,6 +88,7 @@ function Affiliate() {
     this.scene.addChild(this.foodFallContainer);
     this.scene.addChild(this.raceToZeroContainer);
     this.scene.addChild(this.captainPlanLogo);
+    this.scene.addChild(this.mainMenuButton);
 
 
 
