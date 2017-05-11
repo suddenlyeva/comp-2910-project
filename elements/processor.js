@@ -19,6 +19,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	// Variable assignment
 	this.Spawn = () => {	
 		
+		level.scene.addChild(this.mGears[0]);
 		// Variable Assignments
 		//this.requiredIngredients = [];
 		this.numIngredients = recipeOrder.GetListCount();
@@ -48,7 +49,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			
 			level.scene.addChild(this.mSpriteTray[i]);		// Pushes this to the scene, Explicit because apple's render function is called on init
 
-			// Spawns the Ingredients ontop of the tray
+			// Spawns Ingredient image on top of the tray
 			this.requiredIngredients[i] = makeItem(recipeOrder.GetList()[i], level);	// Pushes new Item on the list
 			this.requiredIngredients[i].interactive = false;								// Not Pressable
 			this.requiredIngredients[i].alpha = this.alpha;									// Sets the transparancy
@@ -59,26 +60,26 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			
 		}
 		
+		// -- Processor's Width and Height --
 		this.mWidth = TILES_PX + TILES_PX*2 +(this.numIngredients * (TILES_PX));
 		this.mHeight = TILES_PX;
 		
-		// Last Tray is the Processor output
+		// -- Last Tray is the Processor output --
+		this.mSpriteOutput.push(new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["output.png"]));
+		this.mSpriteOutput.push(new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["output-ready.png"]));
 		
-		this.mSpriteOutput.push (new PIXI.Sprite(
-			PIXI.loader.resources["images/spritesheet.json"].textures["output.png"]
-		));
-		this.mSpriteOutput[0].x = (this.mPositionX + (TILES_PX) + (TILES_PX * (this.numIngredients))); //array starts at 0
-		this.mSpriteOutput{0}.y = (this.mPositionY);
+		for(let i = 0; i < mSpriteOutput.length; ++i)
+		{
+			this.mSpriteOutput[i].x = (this.mPositionX + (TILES_PX) + (TILES_PX * (this.numIngredients))); //array starts at 0
+			this.mSpriteOutput[i].y = (this.mPositionY);
+		}
 		
-		
-		
-		// Addes Tray Sprites to stage
+		// -- Addes Tray Sprites to stage -- 
 		level.scene.addChild(this.mSpriteProcessor);
 		level.scene.addChild(this.mSpriteOutput[0]);
 		
-		// Centered the timer where processor is at
+		// -- Position Timer, center to where processor is at -- 
 		this.mTimer.loadTimer(TILES_PX + this.mSpriteOutput.x , TILES_PX + this.mSpriteOutput.y);
-		
 		this.currentState = this.ProcessorState.Feeding;
 
 
@@ -127,7 +128,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	
 	//-------------------------------------------------------------------------------
 	// State Checker, Updates state if needed
-	this.StateChanger = () => {
+	this.UpdateState = () => {
 		
 		// Feeding State
 		if(this.bRecipeCompletion() && this.currentState === this.ProcessorState.Feeding) {
@@ -159,9 +160,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	//-------------------------------------------------------------------------------
 	// On Update
 	this.update = () => {
-		
+		this.mGears[0].update();
 		// State Updater
-		this.StateChanger();
+		this.UpdateState();
 			
 		// State Machine, Acts accordingly to what ever state it is in
 		switch(this.currentState)
@@ -260,6 +261,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		this.isDone = false;				// State Flag
 		this.isTimerFinished = false;		// Timer Flag
 		this.isTimerSpawned = false;
+		this.mOutputState = 0;
 	};
 	
 	/**
@@ -291,11 +293,10 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.mSpriteTray = [];
 	this.mSpriteOutput = []; 			// This Sprite will not be have a bounding box
 	this.spriteSizeHalf = TILES_PX / 2;
-	
+
 	this.mGears = [];
-	this.mGears.push(makeGear("s",1));
-	
-	output-ready
+
+	//output-ready
 	
 	// Object Variables
 	this.mPositionX;
@@ -303,6 +304,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	
 	this.mWidth;
 	this.mHeight;
+	
+	this.mOutputState = 0;
 	
 	
 	this.mScore = 0;
