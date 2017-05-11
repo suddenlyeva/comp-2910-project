@@ -76,6 +76,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 
 	};
 	
+	
 	//-------------------------------------------------------------------------------
 	// Collision pass for ingredients Item's center x and y
 	this.collidesWithPoint = (x,y) => {
@@ -124,17 +125,19 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	// State Checker, Updates state if needed
 	this.StateChanger = () => {
 		
-		// If all Item is finished and not processing
+		// Feeding State
 		if(this.bRecipeCompletion() && this.currentState === this.ProcessorState.Feeding) {
 			// State Change -> Processing
 			this.currentState = this.ProcessorState.Processing;
-			//this.currentState = this.ProcessorState.Finished;
 		}
-		// If Processing and timer finished
+		
+		// Proccessing Timer State
 		else if(this.currentState === this.ProcessorState.Processing && this.isTimerFinished) {
 			this.currentState = this.ProcessorState.Finished;
 			
 		}
+		
+		// Item Spawning State
 		else if(this.currentState === this.ProcessorState.Finished && this.bReset){
 			this.currentState = this.ProcessorState.Feeding;
 		}	
@@ -159,6 +162,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		switch(this.currentState)
 		{
 			case (this.ProcessorState.Feeding): {	// Feeding State
+				if(bReset) {
+					bReset = false;
+				}
 			}break;
 			
 			case (this.ProcessorState.Processing): {	// Processing State
@@ -177,6 +183,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			}break;
 			
 			case (this.ProcessorState.Finished): {	// Spawning/Item Check State
+				
 				this.mTimer.OnKill();
 				
 				if(!this.isFinishedSpawning) {
@@ -229,7 +236,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.ResetProcessorState = () => {
 		
 		// Resets the Whole Processor's Alpha
-    
+		console.log("ResetProcessorState");
 		// Resets Tray Ingredient's Alpha, and Progress
 		for(let i = 0; i < this.numIngredients; ++i)
 		{
@@ -261,7 +268,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			//render clock
 			
 	}
-
+	
 	*/
 
 	
@@ -316,6 +323,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 
 function Timer(level) 
 {	
+	this.OnSpawn = () => {
+		level.scene.addChild(this.mCurrentSprite);
+	}; 	// Play Animation
 	//-------------------------------------------------------------------------------
 	this.Update = () => {
 		
@@ -361,14 +371,13 @@ function Timer(level)
 	};
 	//-------------------------------------------------------------------------------
 	this.Reset = () => {
-		this.processTimer = 0; 				// Resets current processing timer
-		this.currentFrame = 0;
-		this.isSpawned = false;
+			this.processTimer = 0; 
+	this.currentFrame =  0;
+	this.isTimerFinished = false;
+	this.isSpawned = false;
 	};
 	
-	this.OnSpawn = () => {
-		level.scene.addChild(this.mCurrentSprite);
-	}; 	// Play Animation
+
 	
 	this.OnKill = () => {
 		level.scene.removeChild(this.mCurrentSprite);
