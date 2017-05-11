@@ -60,18 +60,21 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		}
 		
 		this.mWidth = TILES_PX + TILES_PX*2 +(this.numIngredients * (TILES_PX));
-		
+		this.mHeight = TILES_PX;
 		
 		// Last Tray is the Processor output
-		this.mSpriteOutput = new PIXI.Sprite(
+		
+		this.mSpriteOutput.push (new PIXI.Sprite(
 			PIXI.loader.resources["images/spritesheet.json"].textures["output.png"]
-		);
-		this.mSpriteOutput.x = (this.mPositionX + (TILES_PX) + (TILES_PX * (this.numIngredients))); //array starts at 0
-		this.mSpriteOutput.y = (this.mPositionY);
+		));
+		this.mSpriteOutput[0].x = (this.mPositionX + (TILES_PX) + (TILES_PX * (this.numIngredients))); //array starts at 0
+		this.mSpriteOutput{0}.y = (this.mPositionY);
+		
+		
 		
 		// Addes Tray Sprites to stage
 		level.scene.addChild(this.mSpriteProcessor);
-		level.scene.addChild(this.mSpriteOutput);
+		level.scene.addChild(this.mSpriteOutput[0]);
 		
 		// Centered the timer where processor is at
 		this.mTimer.loadTimer(TILES_PX + this.mSpriteOutput.x , TILES_PX + this.mSpriteOutput.y);
@@ -152,6 +155,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		// we can persume he can only do one thing when dragging
 		return level.isFinalItem(this.mOutputItem.type);
 	};
+
 	//-------------------------------------------------------------------------------
 	// On Update
 	this.update = () => {
@@ -285,15 +289,26 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	// Sprites
 	this.mSpriteProcessor; 					// Sprite Variable
 	this.mSpriteTray = [];
-	this.mSpriteOutput; 			// This Sprite will not be have a bounding box
+	this.mSpriteOutput = []; 			// This Sprite will not be have a bounding box
 	this.spriteSizeHalf = TILES_PX / 2;
 	
-	// Position
+	this.mGears = [];
+	this.mGears.push(makeGear("s",1));
+	
+	output-ready
+	
+	// Object Variables
 	this.mPositionX;
 	this.mPositionY;
 	
 	this.mWidth;
-	this.mHeight = TILES_PX;
+	this.mHeight;
+	
+	
+	this.mScore = 0;
+	this.mOutputItem;					// Local Variable that holds the output object
+	
+	this.alpha = 0.5;
 	
 	// 80 is TILES_PX, defualt sprite size
 	
@@ -309,18 +324,14 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 
 	
 	// State Variables
+	this.currentState;
 	this.bReset = false;				// for Processor is completed, Reset Flag 
 	this.isFinishedSpawning = false;	// Flag for item has finished Spawning
 	this.ProcessorState = { Feeding : 0, Processing : 1, Finished : 2 };
 	
 	
 	// Object Variables
-	this.isCollidable = true;			// This object is collidable
-	this.currentState;
-	this.mScore = 0;
-	this.mOutputItem;					// Local Variable that holds the output object
 	
-	this.alpha = 0.5;
 
 }	// End of Class
 
