@@ -16,33 +16,47 @@ function StageSelect() {
     // ---------- carousel
     this.stageBtns = new PIXI.Container();
 
-    let btnWidth = CANVAS_WIDTH / 2,
-        btnHeight = CANVAS_HEIGHT / 2;
+    this.btnWidth = CANVAS_WIDTH / 2,
+    this.btnHeight = CANVAS_HEIGHT / 2;
     for(let i = 0; i < LEVELS.length; i++) {
         let btn = makeSimpleButton(
-            btnWidth, btnHeight, "stage " + i + "\npreview placeholder",
-            0xffdfba, btnHeight / 4);
-        btn.position.set(btnWidth * i, 0);
+            this.btnWidth, this.btnHeight, "stage " + i + "\npreview placeholder",
+            0xffdfba, this.btnHeight / 4);
+        btn.position.set(this.btnWidth * i, 0);
         btn.pointertap = () => {
             if(!this.stageBtns.moving)
                 Level.open(LEVELS[i]);
         };
         this.stageBtns.addChild(btn);
     }
-    this.stageBtns.position.set(CANVAS_WIDTH / 2 - btnWidth / 2, CANVAS_HEIGHT / 2 - btnHeight / 2);
+    this.stageBtns.initialX = CANVAS_WIDTH / 2 - this.btnWidth / 2;
+    this.stageBtns.position.set(CANVAS_WIDTH / 2 - this.btnWidth / 2,
+        CANVAS_HEIGHT / 2 - this.btnHeight / 2);
     this.stageBtns.interactive = this.stageBtns.buttonMode = true;
     // index of the current displayed button
     this.stageBtns.currentBtn = 0;
 
     this.stageBtns.pointerdown = eventData => {
         this.stageBtns.dragData = eventData.data.getLocalPosition(this.stageBtns.parent);
-        // store current position in xDiff, the actual difference is calculated when pointer is up
-        this.stageBtns.xDiff = this.stageBtns.x;
+        this.stageBtns.oldX = this.stageBtns.x;
     };
 
     this.stageBtns.pointerup = this.stageBtns.pointerupoutside = eventData => {
         this.stageBtns.dragData = this.stageBtns.moving = false;
-        this.stageBtns.xDiff = this.stageBtns.x - this.stageBtns.xDiff;
+        let diff = this.stageBtns.x - this.stageBtns.oldX;
+        // if scrolled more than half button width -> advance
+        if(Math.abs(diff) > this.btnWidth / 2) {
+            // +1 if moving right, -1 if moving left, 0 otherwise
+            this.stageBtns.currentBtn -= (diff > 0) - (diff < 0);
+            // check bounds
+            if(this.stageBtns.currentBtn < 0) {
+                this.stageBtns.currentBtn = 0;
+            } else if(this.stageBtns.currentBtn >= this.stageBtns.children.length) {
+                this.stageBtns.currentBtn = this.stageBtns.children.length - 1;
+            }
+        }
+        this.stageBtns.x =
+            this.stageBtns.initialX - this.stageBtns.children[this.stageBtns.currentBtn].x;
     };
 
     this.stageBtns.pointermove = eventData => {
