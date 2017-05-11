@@ -4,20 +4,35 @@ let CANVAS_WIDTH = 1280,
     CANVAS_HEIGHT = 720;
 let FONT_FAMILY = "JMH-HarryDicksonOne";
 let thingsToLoad = [
-    "images/spritesheet.json"
+    "images/spritesheet.json",
+    "images/foodfalllogo.jpg",
+    "images/racetozerologo.png",
+    "images/cp2.png"
 ];
 
-let RENDERER = PIXI.autoDetectRenderer(CANVAS_WIDTH, CANVAS_HEIGHT);
-RENDERER.backgroundColor = 0x95d5f5;
-document.body.appendChild(RENDERER.view);
-
 let SCENE = new PIXI.Container();
-let STATE;
+let STATE, previousScene;
 
-let loadingProgressBar = makeLoadingBar(
-    RENDERER.width / 1.5, RENDERER.height / 6, 10, 0, 0x00d27f);
-loadingProgressBar.position.set(RENDERER.width / 2 - loadingProgressBar.width / 2,
-    RENDERER.height / 2 - loadingProgressBar.height / 2);
+let RENDERER = PIXI.autoDetectRenderer({
+    width: CANVAS_WIDTH,
+    height: CANVAS_HEIGHT,
+    view: document.getElementById("display"),
+    transparent: false,
+    autoResize: true
+});
+RENDERER.backgroundColor = 0x95d5f5;
+let TICKER = new PIXI.ticker.Ticker();
+
+let WINDOW_RESIZED = true;
+let STRETCH_THRESHOLD = 0.1;
+window.addEventListener('resize', function(){
+    WINDOW_RESIZED = true;
+}, true);
+
+let loadingProgressBar = makeProgressBar(
+    CANVAS_WIDTH / 1.5, CANVAS_HEIGHT / 6, 10, 0, 0x00d27f);
+loadingProgressBar.position.set(CANVAS_WIDTH / 2 - loadingProgressBar.width / 2,
+    CANVAS_HEIGHT / 2 - loadingProgressBar.height / 2);
 SCENE.addChild(loadingProgressBar);
 
 PIXI.loader
@@ -27,17 +42,31 @@ PIXI.loader
 
 function setup() {
     Intro.open();
-    gameLoop();
+    TICKER.add(gameLoop);
+    TICKER.start();
 }
 
 function gameLoop() {
-    requestAnimationFrame(gameLoop);
+    if(WINDOW_RESIZED || SCENE !== previousScene) {
+        // Auto-resize everything
+        sceneResize(STRETCH_THRESHOLD);
+        RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
+        WINDOW_RESIZED = false;
+    }
+
     STATE();
+
+    previousScene = SCENE;
+
     RENDERER.render(SCENE);
 }
 
 function showLoadingProgress(loader, resource) {
     console.log("loading: " + resource.url);
     loadingProgressBar.xScale(loader.progress / 100);
+
+    sceneResize(STRETCH_THRESHOLD);
+    RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
+
     RENDERER.render(SCENE);
 }
