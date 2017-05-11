@@ -19,7 +19,7 @@ function Affiliate() {
 
     //Food Fall
 
-    // Create circle container for
+    // Create circle container
     this.foodFallContainer = new PIXI.Container();
     this.foodFallCircle = new PIXI.Graphics();
     this.foodFallCircle.beginFill(0);
@@ -43,20 +43,24 @@ function Affiliate() {
     };
 
 
-    //Race to Zero
+    // Race to Zero
 
+    // Create circle container
     this.raceToZeroContainer = new PIXI.Container();
     this.raceToZeroCircle = new PIXI.Graphics();
     this.raceToZeroCircle.beginFill(0);
     this.raceToZeroCircle.drawCircle(CANVAS_WIDTH / 2, 300, 150);
     this.raceToZeroCircle.endFill();
 
+    // Make logo as button
     this.raceToZeroLogo = new PIXI.Sprite(PIXI.loader.resources["images/racetozerologo.png"].texture);
     this.raceToZeroLogo.interactive = this.raceToZeroLogo.buttonMode = true;
 
+    // Add to container
     this.raceToZeroContainer.addChild(this.raceToZeroCircle);
     this.raceToZeroContainer.addChild(this.raceToZeroLogo);
 
+    // Set position of logo
     this.raceToZeroLogo.position.set(540, 250);
 
     this.raceToZeroLogo.pointertap = () => {
@@ -66,9 +70,24 @@ function Affiliate() {
     };
 
     //Captain Plan-it
+
+    //Create circle container
+    this.captainPlanContainer = new PIXI.Container();
+    this.captainPlanCircle = new PIXI.Graphics();
+    this.captainPlanCircle.beginFill(0);
+    this.captainPlanCircle.drawCircle(CANVAS_WIDTH - 200, 300, 150);
+    this.captainPlanCircle.endFill();
+
+    //Make logo as button
     this.captainPlanLogo = new PIXI.Sprite(PIXI.loader.resources["images/cp2.png"].texture);
-    this.captainPlanLogo.position.set(900, 100);
     this.captainPlanLogo.interactive = this.captainPlanLogo.buttonMode = true;
+
+    //Set position
+    this.captainPlanLogo.position.set(CANVAS_WIDTH - 300, 220);
+
+    //Add to container
+    this.captainPlanContainer.addChild(this.captainPlanCircle);
+    this.captainPlanContainer.addChild(this.captainPlanLogo);
 
     this.captainPlanLogo.pointertap = () => {
 
@@ -87,7 +106,7 @@ function Affiliate() {
     this.scene.addChild(this.gamesTxt);
     this.scene.addChild(this.foodFallContainer);
     this.scene.addChild(this.raceToZeroContainer);
-    this.scene.addChild(this.captainPlanLogo);
+    this.scene.addChild(this.captainPlanContainer);
     this.scene.addChild(this.mainMenuButton);
 
 
