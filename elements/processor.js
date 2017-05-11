@@ -150,7 +150,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		
 		// Because the Player is only allowed one interaction at a time, 
 		// we can persume he can only do one thing when dragging
-		return this.mOutputItem.dragging;
+		return level.isFinalItem(this.mOutputItem.type);
 	};
 	//-------------------------------------------------------------------------------
 	// On Update
@@ -205,7 +205,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		
 			this.mOutputItem = makeItem(recipeOrder.GetOutput(), level);
 			
-			if(level.isFinalItem(this.mOutputItem)) {
+			if(level.isFinalItem(this.mOutputItem.type)) {
 				
 				this.mOutputItem.interactive = false;
 				level.completionData.itemsComplete.push(recipeOrder.GetOutput());
@@ -336,8 +336,8 @@ function Timer(level)
 	// Stuffs to do on Spawn
 	this.OnSpawn = () => {
 		level.scene.addChild(this.mCurrentSprite);
-		//this.mCurrentSprite.scale.set(0.25);
-		//this.isEntering = true;
+		this.mCurrentSprite.scale.set(0.25);
+		this.isEntering = true;
 	}; 	// Play Animation
 	
 	//-------------------------------------------------------------------------------
@@ -431,15 +431,21 @@ function Timer(level)
 	this.currentFrame =  0;
 	this.isTimerFinished = false;
 	this.isSpawned = false;
+	
 	this.animationFrame = 0;
 	this.totalAnimationFrame = 10;
 	this.isEntering = false;
 	
 	this.EnteranceAnimation = () => {
 		
-		this.animationFrame += TICKER.deltaTime;
-		if(this.animationFrame <= this.totalAnimationFrame)
-			this.mCurrentSprite.scale.set(this.animationFrame);
+		this.animationFrame += TICKER.deltaTime * 0.1;
+		
+		if(this.animationFrame <= this.totalAnimationFrame) {
+			console.log(this.animationFrame);
+			// Slowly Scales back to one to 1
+			if(this.animationFrame <= 1) 
+				this.mCurrentSprite.scale.set(this.animationFrame);
+		}
 		else
 			this.isEntering = false;
 		
