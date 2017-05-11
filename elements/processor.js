@@ -44,7 +44,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 				PIXI.loader.resources["images/spritesheet.json"].textures["recipe-waiting.png"]
 			));
 			this.mSpriteTray[i].x = (this.mPositionX + (TILES_PX*2) + (TILES_PX * (i))); // offsets the pos based off index
-			this.mSpriteTray[i].y = (this.mPositionY + TILES_PX);
+			this.mSpriteTray[i].y = (this.mPositionY);
 			
 			level.scene.addChild(this.mSpriteTray[i]);		// Pushes this to the scene, Explicit because apple's render function is called on init
 
@@ -54,7 +54,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			this.requiredIngredients[i].alpha = this.alpha;									// Sets the transparancy
 			
 			this.requiredIngredients[i].x = this.mSpriteTray[i].x + (this.spriteSizeHalf);	// Spawns to the center of the tray
-			this.requiredIngredients[i].y = this.mSpriteTray[i].y + (this.spriteSizeHalf);
+			this.requiredIngredients[i].y = this.mSpriteTray[i].y + (this.spriteSizeHalf + 67);
 			this.recipeProgress[i] = false; // Forcefully sets to not completed
 			
 		}
