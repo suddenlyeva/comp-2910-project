@@ -59,7 +59,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			
 		}
 		
-		this.mWidth = this.spriteSizeHalf + TILES_PX +(this.numIngredients * (this.spriteSizeHalf));
+		this.mWidth = TILES_PX + TILES_PX*2 +(this.numIngredients * (TILES_PX));
 		
 		
 		// Last Tray is the Processor output
@@ -78,6 +78,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		
 		this.currentState = this.ProcessorState.Feeding;
 
+
 	};
 	
 	//-------------------------------------------------------------------------------
@@ -85,24 +86,21 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.collidesWithPoint = (x,y) => {
 		
 		// Input Box
-		let inputLeft = this.mPositionX;
-		let inputRight = this.mPositionX + TILES_PX*2;
-		let inputTop = this.mPositionY;
-		let inputBottom = this.mPositionY + TILES_PX*2;
+		let inputLeft = this.mPositionX; // x1
+		let inputRight = this.mPositionX + (this.mWidth - TILES_PX*2);//x2
+		let inputTop = this.mPositionY; // y1
+		let inputBottom = this.mPositionY + TILES_PX*2; //y2
 		
 		// Recipe Boxes
-		let boundingboxX = this.mPositionX + TILES_PX*2; // top left
-		let boundingboxY = this.mPositionY + TILES_PX; 	 // top 
-		let boundingboxUpperLimitX = this.mPositionX + (this.mWidth - TILES_PX); // bottom right, exluding the output box
-		let boundingboxUpperLimitY = boundingboxY + TILES_PX; //bottom
 		if(this.currentState === this.ProcessorState.Feeding) {
-			return 	( inputLeft < x && x < inputRight && inputTop < y && y < inputBottom) ||
-				( boundingboxX < x && x < boundingboxUpperLimitX && boundingboxY < y && y < boundingboxUpperLimitY);
+			return 	( inputLeft < x 
+			&& x < inputRight 
+			&& inputTop < y 
+			&& y < inputBottom);
 		}
 		// If state is not Feeding, Item's Dragged on Top will still fall
 		else
 			return false;
-		
     };
 	
 	//-------------------------------------------------------------------------------
@@ -293,6 +291,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.mWidth;
 	this.mHeight = TILES_PX;
 	
+	// 80 is TILES_PX, defualt sprite size
+	
 	// Ingredients
 	this.requiredIngredients = [];		// Array of required items
 	this.numIngredients;				// Total Number of Ingredients
@@ -331,13 +331,18 @@ function Timer(level)
 	//-------------------------------------------------------------------------------
 	// Stuffs to do on Spawn
 	this.OnSpawn = () => {
-		this.EnteranceAnimation();
+		level.scene.addChild(this.mCurrentSprite);
+		//this.mCurrentSprite.scale.set(0.25);
+		//this.isEntering = true;
 	}; 	// Play Animation
 	
 	//-------------------------------------------------------------------------------
 	// Stuffs to do on create
 	this.Update = () => {
-		
+		if(this.isEntering) {
+			this.EnteranceAnimation();
+			
+		}
 		// Don't continue ticking when timer is done.
 		if (!this.isTimerFinished) {
 			
@@ -422,9 +427,18 @@ function Timer(level)
 	this.currentFrame =  0;
 	this.isTimerFinished = false;
 	this.isSpawned = false;
+	this.animationFrame = 0;
+	this.totalAnimationFrame = 10;
+	this.isEntering = false;
 	
 	this.EnteranceAnimation = () => {
-		level.scene.addChild(this.mCurrentSprite);
+		
+		this.animationFrame += TICKER.deltaTime;
+		if(this.animationFrame <= this.totalAnimationFrame)
+			this.mCurrentSprite.scale.set(this.animationFrame);
+		else
+			this.isEntering = false;
+		
 	};
 	this.ExitAnimation = () => {
 		
