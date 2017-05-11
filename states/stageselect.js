@@ -79,16 +79,16 @@ function StageSelect() {
     this.scene.addChild(this.stageBtns);
     this.scene.addChild(this.backToMainMenu);
 
-    this.stageBtns.moveSpeed = 10;
+    this.stageBtns.deceleration = 10;
+    this.stageBtns.epsilon = 1;
 
     this.update = () => {
         if(!this.stageBtns.moving && this.stageBtns.x !== this.stageBtns.targetX) {
             let diff = this.stageBtns.x - this.stageBtns.targetX;
-            if(Math.abs(diff) < this.stageBtns.moveSpeed) {
+            if(Math.abs(diff) < this.stageBtns.epsilon) {
                 this.stageBtns.x = this.stageBtns.targetX;
             } else {
-                this.stageBtns.x +=
-                    this.stageBtns.moveSpeed * TICKER.deltaTime * (diff < 0 ? 1 : -1);
+                this.stageBtns.x -= (diff / this.stageBtns.deceleration) * TICKER.deltaTime;
             }
         }
     };
