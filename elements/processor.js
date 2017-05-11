@@ -327,11 +327,14 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 
 function Timer(level) 
 {	
+	//-------------------------------------------------------------------------------
+	// Stuffs to do on Spawn
 	this.OnSpawn = () => {
-		level.scene.addChild(this.mCurrentSprite);
+		this.EnteranceAnimation();
 	}; 	// Play Animation
 	
 	//-------------------------------------------------------------------------------
+	// Stuffs to do on create
 	this.Update = () => {
 		
 		// Don't continue ticking when timer is done.
@@ -355,6 +358,7 @@ function Timer(level)
 			}
 		}
 	};
+	
 	//-------------------------------------------------------------------------------
 	// Loads Sprite
 	this.loadTimer = (x, y) => {
@@ -367,8 +371,7 @@ function Timer(level)
 		this.mCurrentSprite = new PIXI.Sprite(this.mSpriteList[0]);
 		this.mCurrentSprite.position.set(x, y);
 		//this.mCurrentSprite.position.set(2*TILES_PX, 2*TILES_PX);
-		
-		
+
 	};
 	
 	//-------------------------------------------------------------------------------
@@ -378,6 +381,7 @@ function Timer(level)
 	};
 	
 	//-------------------------------------------------------------------------------
+	// Resets all the variables
 	this.Reset = () => {
 		
 		this.processTimer = 0; 
@@ -390,11 +394,15 @@ function Timer(level)
 		this.isSpawned = false;
 	};
 	
+	//-------------------------------------------------------------------------------
+	// Stuffs on kill
 	this.OnKill = () => {
 		level.scene.removeChild(this.mCurrentSprite);
 		this.Reset();
 	} ;	// Play Animation
 	
+	//-------------------------------------------------------------------------------
+	// Returns a boolean 
 	this.IsFinished = () => {
 		return this.isTimerFinished;
 	};
@@ -414,5 +422,8 @@ function Timer(level)
 	this.isTimerFinished = false;
 	this.isSpawned = false;
 	
-	
+	this.EnteranceAnimation = () => {
+		level.scene.addChild(this.mCurrentSprite);
+	};
+	this.Exit
 };
