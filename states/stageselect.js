@@ -23,7 +23,10 @@ function StageSelect() {
             btnWidth, btnHeight, "stage " + i + "\npreview placeholder",
             0xffdfba, btnHeight / 4);
         btn.position.set(btnWidth * i, 0);
-        btn.pointertap = () => { Level.open(LEVELS[i]); };
+        btn.pointertap = () => {
+            if(!this.stageBtns.moving)
+                Level.open(LEVELS[i]);
+        };
         this.stageBtns.addChild(btn);
     }
     this.stageBtns.position.set(CANVAS_WIDTH / 2 - btnWidth / 2, CANVAS_HEIGHT / 2 - btnHeight / 2);
@@ -34,16 +37,16 @@ function StageSelect() {
     };
 
     this.stageBtns.pointerup = this.stageBtns.pointerupoutside = eventData => {
-        this.stageBtns.dragData = false;
+        this.stageBtns.dragData = this.stageBtns.moving = false;
     };
 
     this.stageBtns.pointermove = eventData => {
         if(this.stageBtns.dragData) {
             let newPos = eventData.data.getLocalPosition(this.stageBtns.parent);
-            // xAdjusted is old this.stageBtns.x + difference between new and old cursor position
             let xAdjusted = this.stageBtns.x + newPos.x - this.stageBtns.dragData.x;
             this.stageBtns.x = xAdjusted;
             this.stageBtns.dragData = newPos;
+            this.stageBtns.moving = true;
         }
     };
 
