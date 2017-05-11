@@ -23,15 +23,14 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		//this.requiredIngredients = [];
 		this.numIngredients = recipeOrder.GetListCount();
 
-	
 		//  --- Sprite related Init  ---
 	
-		// Sprite Handler should be placed here
+		// First Box
 		this.mSpriteProcessor = new PIXI.Sprite(
 			PIXI.loader.resources["images/spritesheet.json"].textures["input.png"]
 		);
 		
-		// Should be defined later
+		// Processor's Origin
 		this.mSpriteProcessor.x = this.mPositionX;
 		this.mSpriteProcessor.y = this.mPositionY;
 		
@@ -71,6 +70,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		level.scene.addChild(this.mSpriteProcessor);
 		level.scene.addChild(this.mSpriteOutput);
 		
+		this.LoadSprites();
 		
 		this.currentState = this.ProcessorState.Feeding;
 
@@ -131,7 +131,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			//this.currentState = this.ProcessorState.Finished;
 		}
 		// If Processing and timer finished
-		else if(this.currentState === this.ProcessorState.Processing && this.bFinishedTimer) {
+		else if(this.currentState === this.ProcessorState.Processing && this.isTimerFinished) {
 			this.currentState = this.ProcessorState.Finished;
 			
 		}
@@ -142,7 +142,10 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	
 	//-------------------------------------------------------------------------------
 	// Checks if the Outputted item has been moved
-	this.isOutputIsEmpty = () => {
+	this.bOutputEmpty = () => {
+		
+		// Because the Player is only allowed one interaction at a time, 
+		// we can persume he can only do one thing when dragging
 		return this.mOutputItem.dragging;
 	};
 	//-------------------------------------------------------------------------------
@@ -158,16 +161,14 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			case (this.ProcessorState.Feeding): {	// Feeding State
 			}break;
 			case (this.ProcessorState.Processing): {	// Processing State
-					this.timerUpdate();
-					console.log(this.processTimer);
-					// Draw Timer
+					this.timerUpdate();					
 			}break;
 			case (this.ProcessorState.Finished): {	// Spawning/Item Check State
-				if(!this.bIsFinishedSpawning) {
+				if(!this.isFinishedSpawning) {
 					this.SpawnOutput();
-					this.bIsFinishedSpawning = true;
+					this.isFinishedSpawning = true;
 					}
-				else if(this.isOutputIsEmpty()){
+				else if(this.bOutputEmpty()){
 					this.ResetProcessorState();
 					this.bReset = true;		// State Flag
 				}
@@ -175,7 +176,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		}
 	};
 	
-	//---
+	//-------------------------------------------------------------------------------
 	// Spawns Ingredient
 	this.SpawnOutput = () => {
 			this.mOutputItem = makeItem(recipeOrder.GetOutput(), level);
@@ -213,10 +214,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.ResetProcessorState = () => {
 		
 		// Resets the Whole Processor's Alpha
-		// Makes them Clickable
-        
-		// this.SetInteract(true);
-		
+    
 		// Resets Tray Ingredient's Alpha, and Progress
 		for(let i = 0; i < this.numIngredients; ++i)
 		{
@@ -224,32 +222,78 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			this.requiredIngredients[i].alpha = this.alpha;
 			this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-waiting.png"];
 		}
-
-		this.bIsFinishedSpawning = false; 	// Resets Spawner Flag 
-		this.bIsDone = false;				// Resets State Flag
-		this.bFinishedTimer = false;
+		
+		// Resets Variables
+		
+		this.processTimer = 0; 				// Resets current processing timer
+		this.timerState = 0;
+		
+		// Resets Flags
+		this.isFinishedSpawning = false; 	// Spawner Flag 
+		this.isDone = false;				// State Flag
+		this.isTimerFinished = false;		// Timer Flag
+		this.isDrawn = false;
 		
 	};
 	
 
 	//-------------------------------------------------------------------------------
 	// Timer Update
-	this.timer = () => {
+	this.timerUpdate = () => {
 		
+		this.tickerUpdate();
+		
+		let temp = Math.floor(this.processTimer);
+		
+		if(temp <= this.timerState && !this.isDrawn) {
+			level.scene.addChild(this.timerCircle[temp]);
+			
+			this.isDrawn = true;
+		}
+		else{
+			// If the State progressed, delete the the previous image
+			level.scene.removeChild(this.timerCircle[temp]);
+			this.isDrawn = false;
+		}
+		
+		if(temp >= this.totalProcessTime) {
+			//level.scene.removeChild(this.timerCircle[temp]);
+		}
+		
+		// Updates timers State
+		this.timerState = temp;
 	};
 	
 	//-------------------------------------------------------------------------------
 	// Updates the timer
-	this.timerUpdate = () => {
-		if(this.processTimer < this.totalProcessTime && !this.bFinishedTimer)
-		{
-			this.processTimer += 0.02;
+	this.tickerUpdate = () => {
+		if(this.processTimer < this.totalProcessTime && !this.isTimerFinished) {
+			this.processTimer += ( this.timeScale * TICKER.deltaTime);
 		}
-		else
-		{
-			this.bFinishedTimer = true;
+		else {
+			this.isTimerFinished = true;
 		}
 	};
+	
+	this.LoadSprites = () => {
+		// Sprite for the timer
+		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi.png"]));
+		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi1.png"]));
+		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi2.png"]));		
+		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi3.png"]));
+		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi4.png"]));
+		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi5.png"]));
+		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi6.png"]));
+		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi7.png"]));
+		
+		// Pos Set for Timer
+		for(let i = 0; i < this.timerCircle.length; ++i)
+		{
+			this.timerCircle[i].x = 200;
+			this.timerCircle[i].y = 100;
+		}
+	};
+	
 	
 	/**
 	//-------------------------------------------------------------------------------
@@ -279,7 +323,6 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.mSpriteProcessor; 					// Sprite Variable
 	this.mSpriteTray = [];
 	this.mSpriteOutput; 			// This Sprite will not be have a bounding box
-	
 	this.spriteSizeHalf = TILES_PX / 2;
 	
 	// Position
@@ -292,11 +335,26 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.recipeProgress = []; 			// An array of booleans to check if each seperate ingredients are placed
 	this.mPosition;
 	
+	
+	
 	// Processing Variables
-	this.totalProcessTime = 5; 			// total time it takes for an item to process
+	this.timerCircle = [];				// Array of Circle 
+	
+	
+	// Timer Variables
+	this.totalProcessTime = 7; 			// total time it takes for an item to process
 	this.processTimer = 0; 				// Current process duration	
-	this.timerCircle;					// Drawing Circle
-	this.bFinishedTimer = false;
+	this.timeScale = 0.02;
+	this.isTimerFinished = false;
+	this.timerState =  0;
+	this.isDrawn = false;
+
+	
+	// State Variables
+	this.bReset = false;				// for Processor is completed, Reset Flag 
+	this.isFinishedSpawning = false;	// Flag for item has finished Spawning
+	this.ProcessorState = { Feeding : 0, Processing : 1, Finished : 2 };
+	
 	
 	// Object Variables
 	this.isCollidable = true;			// This object is collidable
@@ -304,11 +362,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.mScore = 0;
 	this.mOutputItem;					// Local Variable that holds the output object
 	
-	this.bReset = false;				// for Processor is completed, Reset Flag 
 	
-	this.bIsFinishedSpawning = false;	// Flag for item has finished Spawning
-	
-	this.ProcessorState = { Feeding : 0, Processing : 1, Finished : 2 };
 	
 	this.alpha = 0.5;
 	// 0 = loading items
