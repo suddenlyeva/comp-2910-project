@@ -13,7 +13,7 @@ function StageSelect() {
 
     this.background.addChild(this.bgFill);
 
-    // Declare an array of buttons
+    // ---------- carousel
     this.stageBtns = new PIXI.Container();
 
     let btnWidth = CANVAS_WIDTH / 2,
@@ -31,25 +31,31 @@ function StageSelect() {
     }
     this.stageBtns.position.set(CANVAS_WIDTH / 2 - btnWidth / 2, CANVAS_HEIGHT / 2 - btnHeight / 2);
     this.stageBtns.interactive = this.stageBtns.buttonMode = true;
+    // index of the current displayed button
+    this.stageBtns.currentBtn = 0;
 
     this.stageBtns.pointerdown = eventData => {
         this.stageBtns.dragData = eventData.data.getLocalPosition(this.stageBtns.parent);
+        // store current position in xDiff, the actual difference is calculated when pointer is up
+        this.stageBtns.xDiff = this.stageBtns.x;
     };
 
     this.stageBtns.pointerup = this.stageBtns.pointerupoutside = eventData => {
         this.stageBtns.dragData = this.stageBtns.moving = false;
+        this.stageBtns.xDiff = this.stageBtns.x - this.stageBtns.xDiff;
     };
 
     this.stageBtns.pointermove = eventData => {
         if(this.stageBtns.dragData) {
             let newPos = eventData.data.getLocalPosition(this.stageBtns.parent);
-            let xAdjusted = this.stageBtns.x + newPos.x - this.stageBtns.dragData.x;
-            this.stageBtns.x = xAdjusted;
+            let xDelta = newPos.x - this.stageBtns.dragData.x;
+            this.stageBtns.x += xDelta;
             this.stageBtns.dragData = newPos;
             this.stageBtns.moving = true;
         }
     };
 
+    // ---------------
     this.backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50);
     this.backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
     this.backToMainMenu.on("pointertap", MainMenu.open);
