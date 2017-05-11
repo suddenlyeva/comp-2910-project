@@ -70,7 +70,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		level.scene.addChild(this.mSpriteProcessor);
 		level.scene.addChild(this.mSpriteOutput);
 		
-		this.LoadSprites();
+		this.loadTimer();
 		
 		this.currentState = this.ProcessorState.Feeding;
 
@@ -162,7 +162,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			}break;
 			
 			case (this.ProcessorState.Processing): {	// Processing State
-					this.Timer();				
+					this.updateTimer();				
 			}break;
 			
 			case (this.ProcessorState.Finished): {	// Spawning/Item Check State
@@ -241,6 +241,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 
 	//-------------------------------------------------------------------------------
 	// Timer Update
+	
+	/*
 	this.Timer = () => {
 		
 		this.updateTimer();
@@ -264,35 +266,46 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		// Updates timers State
 		
 	};
+	*/
 	
 	//-------------------------------------------------------------------------------
 	// Updates the timer
 	this.updateTimer = () => {
-		if(this.processTimer <= this.totalProcessTime && !this.isTimerFinished) {
-			this.processTimer += ( this.timeScale * TICKER.deltaTime);
+		
+		// Don't continue ticking when timer is done.
+		if (!this.isTimerFinished) {
+			
+			// Increment time
+			this.processTimer += TICKER.deltaTime;
+			
+			// Check for next tick
+			if(this.processTimer >= this.timerTick) {
+				
+				this.timerCurrentFrame++; // Increment the frame
+				this.timerCircle.texture = this.timerFrames[this.timerCurrentFrame]; // Change the texture
+				this.processTimer -= this.timerTick; // Reset ticker
+			}
+			
+			// Reset on last tick
+			if(this.timerCurrentFrame == this.timerNumFrames - 1) {
+				this.isTimerFinished = true;
+				this.timerCurrentFrame = 0;
+			}
 		}
-		else {
-			this.isTimerFinished = true;
-		}
+		
 	};
 	
-	this.LoadSprites = () => {
-		// Sprite for the timer
-		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi.png"]));
-		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi1.png"]));
-		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi2.png"]));		
-		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi3.png"]));
-		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi4.png"]));
-		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi5.png"]));
-		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi6.png"]));
-		this.timerCircle.push(new PIXI.Sprite( PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi7.png"]));
+	this.loadTimer = () => {
 		
-		// Pos Set for Timer
-		for(let i = 0; i < this.timerCircle.length; ++i)
-		{
-			this.timerCircle[i].x = 200;
-			this.timerCircle[i].y = 100;
+		for (let i = 0; i < this.timerNumFrames; i++) {
+			this.timerFrames.push(
+				PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi" + i + ".png"]
+			);
 		}
+		
+		this.timerCircle = new PIXI.Sprite(this.timerFrames[0]);
+		this.timerCircle.position.set(2*TILES_PX, 2*TILES_PX);
+		level.scene.addChild(this.timerCircle);
 	};
 	
 	
@@ -339,16 +352,17 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	
 	
 	// Processing Variables
-	this.timerCircle = [];				// Array of Circle 
+	this.timerCircle;					// Array of Circle 
+	this.timerFrames = [];
 	
 	
 	// Timer Variables
-	this.totalProcessTime = 7; 			// total time it takes for an item to process
-	this.processTimer = 0; 				// Current process duration	
-	this.timeScale = 0.02;
+	this.timerNumFrames = 8;
+	this.totalProcessTime = 120; 			// total time it takes for an item to process (120 = 2 seconds)
+	this.timerTick = this.totalProcessTime / this.timerNumFrames;
+	this.processTimer = 0; 
+	this.timerCurrentFrame =  0;
 	this.isTimerFinished = false;
-	this.timerState =  0;
-	this.isDrawn = false;
 
 	
 	// State Variables
