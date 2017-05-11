@@ -76,7 +76,6 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 
 	};
 	
-	
 	//-------------------------------------------------------------------------------
 	// Collision pass for ingredients Item's center x and y
 	this.collidesWithPoint = (x,y) => {
@@ -162,8 +161,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		switch(this.currentState)
 		{
 			case (this.ProcessorState.Feeding): {	// Feeding State
-				if(bReset) {
-					bReset = false;
+				if(this.bReset) {
+					this.bReset = false;
 				}
 			}break;
 			
@@ -310,9 +309,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.mOutputItem;					// Local Variable that holds the output object
 	
 	this.alpha = 0.5;
-	// 0 = loading items
-	// 1 = processing
-	
+
 }	// End of Class
 
 
@@ -326,6 +323,7 @@ function Timer(level)
 	this.OnSpawn = () => {
 		level.scene.addChild(this.mCurrentSprite);
 	}; 	// Play Animation
+	
 	//-------------------------------------------------------------------------------
 	this.Update = () => {
 		
@@ -364,20 +362,25 @@ function Timer(level)
 		
 		
 	};
+	
 	//-------------------------------------------------------------------------------
 	this.SetPosition = (x,y) => {
 		mPosition.x = x;
 		mPosition.y = y;
 	};
+	
 	//-------------------------------------------------------------------------------
 	this.Reset = () => {
-			this.processTimer = 0; 
-	this.currentFrame =  0;
-	this.isTimerFinished = false;
-	this.isSpawned = false;
+		
+		this.processTimer = 0; 
+		this.currentFrame =  0;
+		
+		// Resets Sprite
+		this.mCurrentSprite.texture = this.mSpriteList[this.currentFrame];
+		
+		this.isTimerFinished = false;
+		this.isSpawned = false;
 	};
-	
-
 	
 	this.OnKill = () => {
 		level.scene.removeChild(this.mCurrentSprite);
