@@ -29,9 +29,18 @@ function StageSelect() {
         };
         this.stageBtns.addChild(btn);
     }
+
+    this.carouselMask = new PIXI.Graphics();
+    this.carouselMask.beginFill(0, 0);
+    this.carouselMask.drawRect(0, 0, this.btnWidth, this.btnHeight);
+    this.carouselMask.endFill();
+
+    this.stageBtns.mask = this.carouselMask;
     this.stageBtns.initialX = this.stageBtns.targetX = CANVAS_WIDTH / 2 - this.btnWidth / 2;
     this.stageBtns.position.set(CANVAS_WIDTH / 2 - this.btnWidth / 2,
         CANVAS_HEIGHT / 2 - this.btnHeight / 2);
+    // same position for mask
+    this.carouselMask.position.set(this.stageBtns.x, this.stageBtns.y);
     this.stageBtns.interactive = this.stageBtns.buttonMode = true;
     // index of the current displayed button
     this.stageBtns.currentBtn = 0;
@@ -77,6 +86,7 @@ function StageSelect() {
 
     this.scene.addChild(this.background);
     this.scene.addChild(this.stageBtns);
+    this.scene.addChild(this.carouselMask);
     this.scene.addChild(this.backToMainMenu);
 
     this.stageBtns.deceleration = 10;
