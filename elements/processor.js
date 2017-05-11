@@ -74,7 +74,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		level.scene.addChild(this.mSpriteOutput);
 		
 		// Centered the timer where processor is at
-		this.mTimer.loadTimer(this.mWidth / 2 + this.mPositionX , this.mPositionY - TILES_PX);
+		this.mTimer.loadTimer(TILES_PX + this.mSpriteOutput.x , TILES_PX + this.mSpriteOutput.y);
 		
 		this.currentState = this.ProcessorState.Feeding;
 
@@ -93,7 +93,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		// Recipe Boxes
 		let boundingboxX = this.mPositionX + TILES_PX*2; // top left
 		let boundingboxY = this.mPositionY + TILES_PX; 	 // top 
-		let boundingboxUpperLimitX = boundingboxX + (TILES_PX * this.numIngredients); //top right
+		let boundingboxUpperLimitX = this.mPositionX + (this.mWidth - TILES_PX); // bottom right, exluding the output box
 		let boundingboxUpperLimitY = boundingboxY + TILES_PX; //bottom
 		if(this.currentState === this.ProcessorState.Feeding) {
 			return 	( inputLeft < x && x < inputRight && inputTop < y && y < inputBottom) ||
@@ -204,6 +204,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	//-------------------------------------------------------------------------------
 	// Spawns Ingredient
 	this.SpawnOutput = () => {
+		
 			this.mOutputItem = makeItem(recipeOrder.GetOutput(), level);
 			level.completionData.itemsComplete.push(recipeOrder.GetOutput());
             
@@ -370,7 +371,7 @@ function Timer(level)
 		
 		this.mCurrentSprite = new PIXI.Sprite(this.mSpriteList[0]);
 		this.mCurrentSprite.position.set(x, y);
-		//this.mCurrentSprite.position.set(2*TILES_PX, 2*TILES_PX);
+		this.mCurrentSprite.anchor.set(0.5);
 
 	};
 	
@@ -425,5 +426,7 @@ function Timer(level)
 	this.EnteranceAnimation = () => {
 		level.scene.addChild(this.mCurrentSprite);
 	};
-	this.Exit
+	this.ExitAnimation = () => {
+		
+	};
 };
