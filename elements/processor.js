@@ -59,6 +59,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			
 		}
 		
+		this.mWidth = this.spriteSizeHalf + TILES_PX +(this.numIngredients * (this.spriteSizeHalf));
+		
+		
 		// Last Tray is the Processor output
 		this.mSpriteOutput = new PIXI.Sprite(
 			PIXI.loader.resources["images/spritesheet.json"].textures["output.png"]
@@ -70,7 +73,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		level.scene.addChild(this.mSpriteProcessor);
 		level.scene.addChild(this.mSpriteOutput);
 		
-		this.mTimer.loadTimer();
+		// Centered the timer where processor is at
+		this.mTimer.loadTimer(this.mWidth / 2 + this.mPositionX , this.mPositionY - TILES_PX);
 		
 		this.currentState = this.ProcessorState.Feeding;
 
@@ -285,6 +289,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.mPositionX;
 	this.mPositionY;
 	
+	this.mWidth;
+	this.mHeight = TILES_PX;
+	
 	// Ingredients
 	this.requiredIngredients = [];		// Array of required items
 	this.numIngredients;				// Total Number of Ingredients
@@ -350,7 +357,7 @@ function Timer(level)
 	};
 	//-------------------------------------------------------------------------------
 	// Loads Sprite
-	this.loadTimer = () => {
+	this.loadTimer = (x, y) => {
 		for (let i = 0; i < this.maxframe; i++) {
 			this.mSpriteList.push(
 				PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi" + i + ".png"]
@@ -358,7 +365,8 @@ function Timer(level)
 		}
 		
 		this.mCurrentSprite = new PIXI.Sprite(this.mSpriteList[0]);
-		this.mCurrentSprite.position.set(2*TILES_PX, 2*TILES_PX);
+		this.mCurrentSprite.position.set(x, y);
+		//this.mCurrentSprite.position.set(2*TILES_PX, 2*TILES_PX);
 		
 		
 	};
