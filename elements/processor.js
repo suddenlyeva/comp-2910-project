@@ -43,7 +43,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			this.mSpriteTray[i] = ( new PIXI.Sprite(
 				PIXI.loader.resources["images/spritesheet.json"].textures["recipe-waiting.png"]
 			));
-			this.mSpriteTray[i].x = (this.mPositionX + (TILES_PX*2) + (TILES_PX * (i))); // offsets the pos based off index
+			this.mSpriteTray[i].x = (this.mPositionX + (TILES_PX) + (TILES_PX * (i))); // offsets the pos based off index
 			this.mSpriteTray[i].y = (this.mPositionY);
 			
 			level.scene.addChild(this.mSpriteTray[i]);		// Pushes this to the scene, Explicit because apple's render function is called on init
@@ -63,7 +63,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		this.mSpriteOutput = new PIXI.Sprite(
 			PIXI.loader.resources["images/spritesheet.json"].textures["output.png"]
 		);
-		this.mSpriteOutput.x = (this.mPositionX + (TILES_PX*2) + (TILES_PX * (this.numIngredients))); //array starts at 0
+		this.mSpriteOutput.x = (this.mPositionX + (TILES_PX) + (TILES_PX * (this.numIngredients))); //array starts at 0
 		this.mSpriteOutput.y = (this.mPositionY);
 		
 		// Addes Tray Sprites to stage
