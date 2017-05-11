@@ -1,6 +1,8 @@
 "use strict";
 
 function PauseMenu() {
+    let txtVAlign = 6;
+
     this.scene  = new PIXI.Container();
     // holds the state before the pause
     this.stateBuffer;
@@ -13,30 +15,73 @@ function PauseMenu() {
 
     this.panel = new PIXI.Graphics();
     this.panel.lineStyle(5, 0, 1);
-    this.panel.beginFill(0xadfff3);
-    this.panel.drawRect(0, 0, 1024, 576);
+    // this.panel.width = TILES_PX * 12;
+    // this.panel.height = TILES_PX * 7;
+    this.panel.beginFill(0xf5f19c);
+    this.panel.drawRect(TILES_PX * 2, TILES_PX, CANVAS_WIDTH - TILES_PX * 4, TILES_PX * 7);
     this.panel.endFill();
 
     // Make Buttons
     this.buttons = new PIXI.Container();
     // Set dimensions of the buttons container
-    this.buttonsDimensions = new PIXI.Graphics();
-    this.buttonsDimensions.beginFill(0, 0);
-    this.buttonsDimensions.drawRect(720, 270);
-    this.buttonsDimensions.endFill();
-    this.resumeButton   = makeSimpleButton(300, 100, "resume"   , 0x66FF66, 100);
-    this.optionsButton  = makeSimpleButton(300, 100, "options"  , 0xFFFF66, 100);
-    this.mainMenuButton = makeSimpleButton(300, 100, "main menu", 0xFFFF66, 100);
-    this.resetButton    = makeSimpleButton(300, 100, "reset"    , 0xFF8866, 100);
-    this.buttons.addChild(this.buttonsDimensions);
+    // this.buttonsDimensions = new PIXI.Graphics();
+    // this.buttonsDimensions.beginFill(0, 0);
+    // this.buttonsDimensions.drawRect(CANVAS_WIDTH - TILES_PX * 4, CANVAS_HEIGHT - TILES_PX * 2);
+    // this.buttonsDimensions.endFill();
+    // console.log(this.buttonsDimensions.width);
+
+    this.resumeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-play.png"]);
+    this.resumeButton.position.set(TILES_PX * 2, TILES_PX * 2);
+    this.resumeButton.interactive = true;
+    this.resumeButton.buttonMode = true;
+
+    this.resetButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-restart.png"]);
+    this.resetButton.position.set(this.resumeButton.x + TILES_PX * 3, TILES_PX * 2);
+    this.resetButton.interactive = true;
+    this.resetButton.buttonMode = true;
+
+    this.optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
+    this.optionsButton.position.set(this.resetButton.x + TILES_PX * 3, TILES_PX * 2);
+    this.optionsButton.interactive = true;
+    this.optionsButton.buttonMode = true;
+
+    this.mainMenuButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-back.png"]);
+    this.mainMenuButton.position.set(this.panel.width / 2 - this.mainMenuButton.width / 2, TILES_PX * 5);
+    this.mainMenuButton.interactive = true;
+    this.mainMenuButton.buttonMode = true;
+
+    this.txtStyle = new PIXI.TextStyle({
+        fontFamily: FONT_FAMILY, fontSize: 200, fill: 0x0
+    });
+    this.pauseTxt = new PIXI.Text("paused", this.txtStyle);
+    this.pauseTxt.position.set(this.panel.width / 2 - this.pauseTxt.width / 2, 0);
+
+    this.txtStyle = new PIXI.TextStyle({
+        fontFamily: FONT_FAMILY, fontSize: 96, fill: 0x0
+    });
+
+    this.resumeTxt = new PIXI.Text("continue", this.txtStyle);
+    this.resumeTxt.position.set(this.resumeButton.x + this.resumeButton.width / 2 - this.resumeTxt.width / 2,
+            this.resumeButton.y + this.resumeButton.height - this.resumeTxt.height / txtVAlign);
+
+    this.resetTxt = new PIXI.Text("restart", this.txtStyle);
+    this.resetTxt.position.set(this.resetButton.x + this.resetButton.width / 2 - this.resetTxt.width / 2,
+        this.resetButton.y + this.resetButton.height - this.resetTxt.height / txtVAlign);
+
+    this.optionsTxt = new PIXI.Text("options", this.txtStyle);
+    this.optionsTxt.position.set(this.optionsButton.x + this.optionsButton.width / 2 - this.optionsTxt.width / 2,
+        this.optionsButton.y + this.optionsButton.height - this.optionsTxt.height / txtVAlign);
+
+
+    // this.buttons.addChild(this.buttonsDimensions);
     this.buttons.addChild(this.resumeButton);
     this.buttons.addChild(this.resetButton);
     this.buttons.addChild(this.optionsButton);
     this.buttons.addChild(this.mainMenuButton);
-    this.resumeButton  .position.set(0, 0);
-    this.resetButton   .position.set(this.buttons.width - this.resetButton.width, 0);
-    this.optionsButton .position.set(0, this.buttons.height - this.optionsButton.height);
-    this.mainMenuButton.position.set(this.resetButton.x, this.optionsButton.y);
+    this.buttons.addChild(this.pauseTxt);
+    this.buttons.addChild(this.resumeTxt);
+    this.buttons.addChild(this.resetTxt);
+    this.buttons.addChild(this.optionsTxt);
 
     this.bgFill = new PIXI.Graphics();
     this.bgFill.beginFill(0x6a0e1d, 0.4);
@@ -55,13 +100,11 @@ function PauseMenu() {
     this.scene.addChild(this.buttons);
 
     // Position Buttons
-    this.panel  .position.set(CANVAS_WIDTH  / 2 - this.panel  .width  / 2,
-                              CANVAS_HEIGHT / 2 - this.panel  .height / 2);
-    this.buttons.position.set(CANVAS_WIDTH  / 2 - this.buttons.width  / 2,
-                              CANVAS_HEIGHT / 2 - this.buttons.height / 2);
+    this.buttons.position.set(TILES_PX * 2, TILES_PX);
+
 
     // Play button moves to stage select
-    // Requres "this" context to operate so we use () => {}
+    // Requires "this" context to operate so we use () => {}
     this.resumeButton.pointertap = () => {
         STATE = this.stateBuffer;
         this.cleanUp();
