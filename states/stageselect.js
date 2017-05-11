@@ -29,7 +29,22 @@ function StageSelect() {
     this.stageBtns.position.set(CANVAS_WIDTH / 2 - btnWidth / 2, CANVAS_HEIGHT / 2 - btnHeight / 2);
     this.stageBtns.interactive = this.stageBtns.buttonMode = true;
 
-    this.stageBtns.pointerdown = () => {
+    this.stageBtns.pointerdown = eventData => {
+        this.stageBtns.dragData = eventData.data.getLocalPosition(this.stageBtns.parent);
+    };
+
+    this.stageBtns.pointerup = this.stageBtns.pointerupoutside = eventData => {
+        this.stageBtns.dragData = false;
+    };
+
+    this.stageBtns.pointermove = eventData => {
+        if(this.stageBtns.dragData) {
+            let newPos = eventData.data.getLocalPosition(this.stageBtns.parent);
+            // xAdjusted is old this.stageBtns.x + difference between new and old cursor position
+            let xAdjusted = this.stageBtns.x + newPos.x - this.stageBtns.dragData.x;
+            this.stageBtns.x = xAdjusted;
+            this.stageBtns.dragData = newPos;
+        }
     };
 
     this.backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50);
