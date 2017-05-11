@@ -74,7 +74,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		level.scene.addChild(this.mSpriteOutput);
 		
 		// Centered the timer where processor is at
-		this.mTimer.loadTimer(this.mWidth / 2 + this.mPositionX , this.mPositionY - TILES_PX);
+		this.mTimer.loadTimer(TILES_PX + this.mSpriteOutput.x , TILES_PX + this.mSpriteOutput.y);
 		
 		this.currentState = this.ProcessorState.Feeding;
 
@@ -366,8 +366,7 @@ function Timer(level)
 		
 		this.mCurrentSprite = new PIXI.Sprite(this.mSpriteList[0]);
 		this.mCurrentSprite.position.set(x, y);
-		//this.mCurrentSprite.position.set(2*TILES_PX, 2*TILES_PX);
-		
+		this.mCurrentSprite.anchor.set(0.5);
 		
 	};
 	
