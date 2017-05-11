@@ -204,11 +204,15 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.SpawnOutput = () => {
 		
 			this.mOutputItem = makeItem(recipeOrder.GetOutput(), level);
-			level.completionData.itemsComplete.push(recipeOrder.GetOutput());
-            
-			this.mOutputItem.x = TILES_PX + this.mSpriteOutput.x;
-			this.mOutputItem.y = TILES_PX + this.mSpriteOutput.y;
 			
+			if(level.isFinalItem(this.mOutputItem)) {
+				
+				this.mOutputItem.interactive = false;
+				level.completionData.itemsComplete.push(recipeOrder.GetOutput());
+			}
+			
+			this.mOutputItem.x = TILES_PX + this.mSpriteOutput.x;
+			this.mOutputItem.y = TILES_PX + this.mSpriteOutput.y;	
 	};
 	
 	//-------------------------------------------------------------------------------
