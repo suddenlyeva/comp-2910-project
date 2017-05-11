@@ -13,38 +13,31 @@ function StageSelect() {
 
     this.background.addChild(this.bgFill);
 
-    this.scene.addChild(this.background);
-
     // Declare an array of buttons
-    this.stageBtns = [];
-    // Initialize buttons
+    this.stageBtns = new PIXI.Container();
+
+    let btnWidth = CANVAS_WIDTH / 2,
+        btnHeight = CANVAS_HEIGHT / 2;
     for(let i = 0; i < LEVELS.length; i++) {
-
-        // Create
-        this.stageBtns.push(makeSimpleButton(100, 50, "stage " + i, 0xffdfba, 50));
-        //this.stageBtns.push(makeSimpleButton(750, 450, "stage " + i, 0xffdfba, 150));
-
-        // Add to group
-        this.scene.addChild(this.stageBtns[i]);
-
-        // Position
-        this.stageBtns[i].position.set(i * 120 + 60, 100);
-        //this.stageBtns[i].position.set(CANVAS_WIDTH/2 - 375, CANVAS_HEIGHT/2 - 225);
-        
-        //
-        // TODO: Build rest of stage select auto placement
-        //
-
-        // Set behaviour
-        this.stageBtns[i].on("pointertap", function () {
-            Level.open(LEVELS[i]);
-        });
+        let btn = makeSimpleButton(
+            btnWidth, btnHeight, "stage " + i + "\npreview placeholder",
+            0xffdfba, btnHeight / 4);
+        btn.position.set(btnWidth * i, 0);
+        btn.pointertap = () => { Level.open(LEVELS[i]); };
+        this.stageBtns.addChild(btn);
     }
+    this.stageBtns.position.set(CANVAS_WIDTH / 2 - btnWidth / 2, CANVAS_HEIGHT / 2 - btnHeight / 2);
+    this.stageBtns.interactive = this.stageBtns.buttonMode = true;
+
+    this.stageBtns.pointerdown = () => {
+    };
 
     this.backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50);
     this.backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
     this.backToMainMenu.on("pointertap", MainMenu.open);
 
+    this.scene.addChild(this.background);
+    this.scene.addChild(this.stageBtns);
     this.scene.addChild(this.backToMainMenu);
 
     this.update = () => {};
