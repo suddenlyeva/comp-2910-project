@@ -16,7 +16,7 @@ function StageSelect() {
     // ---------- carousel
     this.stageBtns = new PIXI.Container();
 
-    this.btnWidth = CANVAS_WIDTH / 2,
+    this.btnWidth = CANVAS_WIDTH / 2;
     this.btnHeight = CANVAS_HEIGHT / 2;
     for(let i = 0; i < LEVELS.length; i++) {
         let btn = makeSimpleButton(
@@ -29,12 +29,13 @@ function StageSelect() {
         };
         this.stageBtns.addChild(btn);
     }
-    this.stageBtns.initialX = CANVAS_WIDTH / 2 - this.btnWidth / 2;
+    this.stageBtns.initialX = this.stageBtns.targetX = CANVAS_WIDTH / 2 - this.btnWidth / 2;
     this.stageBtns.position.set(CANVAS_WIDTH / 2 - this.btnWidth / 2,
         CANVAS_HEIGHT / 2 - this.btnHeight / 2);
     this.stageBtns.interactive = this.stageBtns.buttonMode = true;
     // index of the current displayed button
     this.stageBtns.currentBtn = 0;
+    this.stageBtns.moving = false;
 
     this.stageBtns.pointerdown = eventData => {
         this.stageBtns.dragData = eventData.data.getLocalPosition(this.stageBtns.parent);
@@ -55,7 +56,7 @@ function StageSelect() {
                 this.stageBtns.currentBtn = this.stageBtns.children.length - 1;
             }
         }
-        this.stageBtns.x =
+        this.stageBtns.targetX =
             this.stageBtns.initialX - this.stageBtns.children[this.stageBtns.currentBtn].x;
     };
 
@@ -78,7 +79,19 @@ function StageSelect() {
     this.scene.addChild(this.stageBtns);
     this.scene.addChild(this.backToMainMenu);
 
-    this.update = () => {};
+    this.stageBtns.moveSpeed = 10;
+
+    this.update = () => {
+        if(!this.stageBtns.moving && this.stageBtns.x !== this.stageBtns.targetX) {
+            let diff = this.stageBtns.x - this.stageBtns.targetX;
+            if(Math.abs(diff) < this.stageBtns.moveSpeed) {
+                this.stageBtns.x = this.stageBtns.targetX;
+            } else {
+                this.stageBtns.x +=
+                    this.stageBtns.moveSpeed * TICKER.deltaTime * (diff < 0 ? 1 : -1);
+            }
+        }
+    };
 }
 
 StageSelect.open = () => {
