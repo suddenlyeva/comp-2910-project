@@ -71,7 +71,6 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		level.scene.addChild(this.mSpriteOutput);
 		
 		this.mTimer.loadTimer();
-		//!this.loadTimer();
 		
 		this.currentState = this.ProcessorState.Feeding;
 
@@ -163,11 +162,23 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			}break;
 			
 			case (this.ProcessorState.Processing): {	// Processing State
-					//!this.updateTimer();	
-					this.mTimer.updateTimer();
+					
+					// If Timer hasn't been spawned, spawn it.
+					if(!this.isTimerSpawned) {
+						this.mTimer.OnSpawn();
+						this.isTimerSpawned = true;
+					}
+					
+					this.mTimer.Update();
+					
+					//Check for update
+					this.isTimerFinished = this.mTimer.IsFinished();
+					
 			}break;
 			
 			case (this.ProcessorState.Finished): {	// Spawning/Item Check State
+				this.mTimer.OnKill();
+				
 				if(!this.isFinishedSpawning) {
 					this.SpawnOutput();
 					this.isFinishedSpawning = true;
@@ -226,90 +237,13 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			this.requiredIngredients[i].alpha = this.alpha;
 			this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-waiting.png"];
 		}
-		
-		/*!!
-		// Resets Variables
-		this.processTimer = 0; 				// Resets current processing timer
-		this.timerState = 0;
-		*/
+
 		// Resets Flags
 		this.isFinishedSpawning = false; 	// Spawner Flag 
 		this.isDone = false;				// State Flag
 		this.isTimerFinished = false;		// Timer Flag
-		this.isDrawn = false;
-		
+		this.isTimerSpawned = false;
 	};
-	
-
-	//-------------------------------------------------------------------------------
-	// Timer Update
-	
-	/*
-	this.Timer = () => {
-		
-		this.updateTimer();
-		let temp = Math.floor(this.processTimer);
-		
-		if(temp <= this.timerState) {
-			level.scene.addChild(this.timerCircle[temp]);
-			this.isDrawn = true;
-		}
-		else {
-			// If the State progressed, delete the the previous image
-			level.scene.removeChild(this.timerCircle[temp]);
-			this.isDrawn = false;
-			
-		}
-		this.timerState = temp;
-		//if(temp >= this.totalProcessTime) {
-			//level.scene.removeChild(this.timerCircle[temp]);
-		//}
-		
-		// Updates timers State
-		
-	};
-	
-	
-	//-------------------------------------------------------------------------------
-	// Updates the timer
-	this.updateTimer = () => {
-		
-		// Don't continue ticking when timer is done.
-		if (!this.isTimerFinished) {
-			
-			// Increment time
-			this.processTimer += TICKER.deltaTime;
-			
-			// Check for next tick
-			if(this.processTimer >= this.timerTick) {
-				
-				this.timerCurrentFrame++; // Increment the frame
-				this.timerCircle.texture = this.timerFrames[this.timerCurrentFrame]; // Change the texture
-				this.processTimer -= this.timerTick; // Reset ticker
-			}
-			
-			// Reset on last tick
-			if(this.timerCurrentFrame == this.timerNumFrames - 1) {
-				this.isTimerFinished = true;
-				this.timerCurrentFrame = 0;
-			}
-		}
-		
-	};
-	
-	this.loadTimer = () => {
-		
-		for (let i = 0; i < this.timerNumFrames; i++) {
-			this.timerFrames.push(
-				PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi" + i + ".png"]
-			);
-		}
-		
-		this.timerCircle = new PIXI.Sprite(this.timerFrames[0]);
-		this.timerCircle.position.set(2*TILES_PX, 2*TILES_PX);
-		level.scene.addChild(this.timerCircle);
-	};
-	
 	
 	/**
 	//-------------------------------------------------------------------------------
@@ -323,7 +257,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			//Stuffs to do on Draw?
 			
 			//if in processing state 
-				stage.addChild(timerCircle)
+				stage.addChild(mCurrentSprite)
 			//render clock
 			
 	}
@@ -351,23 +285,10 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.recipeProgress = []; 			// An array of booleans to check if each seperate ingredients are placed
 	this.mPosition;
 	
-	
-	
-	// Processing Variables
-	this.timerCircle;					// Array of Circle 
-	this.timerFrames = [];
-	
-	
-	// Timer Variables
+	// Timer Object
 	this.mTimer = new Timer(level);
-	
-	this.timerNumFrames = 8;
-	this.totalProcessTime = 120; 			// total time it takes for an item to process (120 = 2 seconds)
-	this.timerTick = this.totalProcessTime / this.timerNumFrames;
-	this.processTimer = 0; 
-	this.timerCurrentFrame =  0;
-	this.isTimerFinished = false;
-	
+	this.isTimerSpawned = false;
+
 	
 	// State Variables
 	this.bReset = false;				// for Processor is completed, Reset Flag 
@@ -396,7 +317,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 function Timer(level) 
 {	
 	//-------------------------------------------------------------------------------
-	this.updateTimer = () => {
+	this.Update = () => {
 		
 		// Don't continue ticking when timer is done.
 		if (!this.isTimerFinished) {
@@ -407,29 +328,31 @@ function Timer(level)
 			// Check for next tick
 			if(this.processTimer >= this.timerTick) {
 				
-				this.timerCurrentFrame++; // Increment the frame
-				this.timerCircle.texture = this.timerFrames[this.timerCurrentFrame]; // Change the texture
+				this.currentFrame++; // Increment the frame
+				this.mCurrentSprite.texture = this.mSpriteList[this.currentFrame]; // Change the texture
 				this.processTimer -= this.timerTick; // Reset ticker
 			}
 			
 			// Reset on last tick
-			if(this.timerCurrentFrame == this.timerNumFrames - 1) {
+			if(this.currentFrame == this.maxframe - 1) {
 				this.isTimerFinished = true;
-				this.timerCurrentFrame = 0;
+				this.currentFrame = 0;
 			}
 		}
 	};
 	//-------------------------------------------------------------------------------
+	// Loads Sprite
 	this.loadTimer = () => {
-		for (let i = 0; i < this.timerNumFrames; i++) {
-			this.timerFrames.push(
+		for (let i = 0; i < this.maxframe; i++) {
+			this.mSpriteList.push(
 				PIXI.loader.resources["images/spritesheet.json"].textures["stop-watch-icon-hi" + i + ".png"]
 			);
 		}
 		
-		this.timerCircle = new PIXI.Sprite(this.timerFrames[0]);
-		this.timerCircle.position.set(2*TILES_PX, 2*TILES_PX);
-		level.scene.addChild(this.timerCircle);
+		this.mCurrentSprite = new PIXI.Sprite(this.mSpriteList[0]);
+		this.mCurrentSprite.position.set(2*TILES_PX, 2*TILES_PX);
+		
+		
 	};
 	//-------------------------------------------------------------------------------
 	this.SetPosition = (x,y) => {
@@ -439,24 +362,37 @@ function Timer(level)
 	//-------------------------------------------------------------------------------
 	this.Reset = () => {
 		this.processTimer = 0; 				// Resets current processing timer
-		this.timerState = 0;
+		this.currentFrame = 0;
+		this.isSpawned = false;
 	};
 	
-	this.mSprite = [];
+	this.OnSpawn = () => {
+		level.scene.addChild(this.mCurrentSprite);
+	}; 	// Play Animation
+	
+	this.OnKill = () => {
+		level.scene.removeChild(this.mCurrentSprite);
+		this.Reset();
+	} ;	// Play Animation
+	
+	this.IsFinished = () => {
+		return this.isTimerFinished;
+	};
+	
 	this.mPosition;
 	
-	
 	// Processing Variables
-	this.timerCircle;					// Array of Circle 
-	this.timerFrames = [];
+	this.mCurrentSprite;					// Current Sprite
+	this.mSpriteList = [];					// List of Sprite
 	
 	// Timer Variables
-	this.timerNumFrames = 8;
+	this.maxframe = 8;			
 	this.totalProcessTime = 120; 			// total time it takes for an item to process (120 = 2 seconds)
-	this.timerTick = this.totalProcessTime / this.timerNumFrames;
+	this.timerTick = this.totalProcessTime / this.maxframe;
 	this.processTimer = 0; 
-	this.timerCurrentFrame =  0;
+	this.currentFrame =  0;
 	this.isTimerFinished = false;
+	this.isSpawned = false;
 	
 	
 };
