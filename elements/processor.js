@@ -236,14 +236,14 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			this.mOutputItem = makeItem(recipeOrder.GetOutput(), level);
 			level.addScore(recipeOrder.GetScore());
 			
+			this.mOutputItem.x = TILES_PX + this.mOutputSprite.x;
+			this.mOutputItem.y = TILES_PX + this.mOutputSprite.y;	
+			
 			if(level.isFinalItem(this.mOutputItem.type)) {
 				this.mOutputItem.interactive = false;
 				this.mOutputItem.fadeAway();
 				level.completionData.itemsComplete.push(recipeOrder.GetOutput());
 			}
-			
-			this.mOutputItem.x = TILES_PX + this.mOutputSprite.x;
-			this.mOutputItem.y = TILES_PX + this.mOutputSprite.y;	
 	};
 	
 	//-------------------------------------------------------------------------------
