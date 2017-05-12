@@ -234,6 +234,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.SpawnOutput = () => {
 		
 			this.mOutputItem = makeItem(recipeOrder.GetOutput(), level);
+			level.addScore(recipeOrder.GetScore());
 			
 			if(level.isFinalItem(this.mOutputItem.type)) {
 				this.mOutputItem.interactive = false;

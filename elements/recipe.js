@@ -14,6 +14,6 @@ function Recipe(itemTypes, resultType, scoreValue) {
 	this.GetListCount = () => { return this.recipe.length; }
 	this.GetList = () => { return this.recipe; }
 	this.GetOutput = () => { return this.result; }
-	this.GetScore = () => { return this.GetScore; }
+	this.GetScore = () => { return this.score; }
 
 }
