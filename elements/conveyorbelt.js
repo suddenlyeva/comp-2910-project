@@ -1,6 +1,6 @@
 "use strict";
 
-function ConveyorBelt(itemTypes, speed, level) {
+function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, states/level.js
 
     // Define Constants
     let SPRITE_HALF_PX = TILES_PX/2;
@@ -24,7 +24,7 @@ function ConveyorBelt(itemTypes, speed, level) {
         
         this.belt.x += frameSpeed;
         for (let i in this.items) {
-            this.items[i].x += frameSpeed;
+            this.items[i].x += frameSpeed;      // -> elements/ingredient.js
         }
 
         // Track change in X
@@ -39,11 +39,11 @@ function ConveyorBelt(itemTypes, speed, level) {
             // Waste first item if not a blank
             if (this.items[0].type != BLANK) {
 				
-                this.items[0].waste();
+                this.items[0].waste();          // -> elements/ingredient.js
 				this.items.shift();
 				
 				// Check for level completion
-				level.isComplete = level.checkForCompletion();
+				level.isComplete = level.checkForCompletion(); // states/levels.js
 				
             }
             // Otherwise just remove from stage entirely.
@@ -106,7 +106,7 @@ function ConveyorBelt(itemTypes, speed, level) {
 
     // Pad array and construct belt
     for(let i = 0; i < ARRAY_MIN_SIZE; i++) {
-        this.addItemAtIndex(makeItem(BLANK, level), i);
+        this.addItemAtIndex(makeItem(BLANK, level), i); // -> elements/ingredient.js
         
         let beltTile = new PIXI.Sprite(
 			PIXI.loader.resources["images/spritesheet.json"].textures["conveyor-belt.png"]
@@ -134,6 +134,6 @@ function ConveyorBelt(itemTypes, speed, level) {
 	
     // Fill out rest of conveyor
     for(let i = 0; i < itemTypes.length; i++) {
-        this.addItemAtIndex(makeItem(itemTypes[i], level), i + ARRAY_MIN_SIZE);
+        this.addItemAtIndex(makeItem(itemTypes[i], level), i + ARRAY_MIN_SIZE); // -> elements/ingredient.js
     }
 }
