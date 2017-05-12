@@ -48,6 +48,7 @@ function StageSelect() {
     // index of the current displayed button
     this.stageBtns.currentBtn = 0;
     this.stageBtns.moving = false;
+    // if moved less than 5 units, consider it a button press
     this.stageBtns.tapSensitivity = 5;
 
     this.stageBtns.pointerdown = eventData => {
@@ -67,7 +68,7 @@ function StageSelect() {
         }
         // if scrolled more than half button width -> advance
         if(diffAbs > this.btnWidth / 2) {
-            // +1 if moving right, -1 if moving left, 0 otherwise
+            // +1 if moving right, -1 if moving left, 0 if same position
             this.stageBtns.currentBtn -= (diff > 0) - (diff < 0);
             // check bounds
             if(this.stageBtns.currentBtn < 0) {
@@ -76,6 +77,7 @@ function StageSelect() {
                 this.stageBtns.currentBtn = this.stageBtns.children.length - 1;
             }
         }
+        // x position that the carousel needs to be moved to
         this.stageBtns.targetX =
             this.stageBtns.initialX - this.stageBtns.children[this.stageBtns.currentBtn].x;
     };
