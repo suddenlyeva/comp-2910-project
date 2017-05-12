@@ -52,7 +52,7 @@ PIXI.loader
 
 // Starts the game at Intro
 function setup() {
-    Intro.open(); 
+    Intro.open(); // -> states/intro.js
     TICKER.add(gameLoop);
     TICKER.start();
 }
