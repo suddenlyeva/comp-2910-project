@@ -18,6 +18,7 @@ let LEVELS = [
             {
                 recipe: [APPLE],
                 result: APPLE_SLICE,
+				score: 100,
                 x: 7*TILES_PX,
                 y: 3*TILES_PX
             }
@@ -38,6 +39,7 @@ let LEVELS = [
             {
                 recipe: [APPLE, APPLE],
                 result: BANANA,
+				score: 100,
                 x: 7*TILES_PX,
                 y: 4*TILES_PX
             }
@@ -58,18 +60,21 @@ let LEVELS = [
             {
                 recipe: [ORANGE],
                 result: ORANGE_SLICE,
+				score: 100,
                 x: 1*TILES_PX,
                 y: 2*TILES_PX
             },
             {
                 recipe: [KIWI],
                 result: KIWI_SLICE,
+				score: 100,
                 x: 7*TILES_PX,
                 y: 2*TILES_PX
             },
             {
                 recipe: [ORANGE_SLICE, KIWI_SLICE, YOGURT],
                 result: FRUIT_YOGURT,
+				score: 500,
                 x: 1*TILES_PX,
                 y: 5*TILES_PX
             }
