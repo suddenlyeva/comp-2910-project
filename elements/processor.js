@@ -131,7 +131,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			// ! Change to ====
 			if(droppedIngredient.type == this.requiredIngredients[i].type && !this.recipeProgress[i])
 			{
-				this.requiredIngredients[i].alpha = 1;
+				this.requiredIngredients[i].alpha = 0.8; //TODO: MAGIC NUMBER
 				this.recipeProgress[i] = true;
 				this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
                 
