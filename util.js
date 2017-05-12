@@ -243,15 +243,15 @@ function makeGear(size, speed) {
         }
         
         // Reset
-        if (gear.currentFrame >= timeOut) {
-            gear.currentFrame -= timeOut;
+        if (gear.currentFrame >= frameCount) {
+            gear.currentFrame -= frameCount;
         }
         
         // Change Texture, check is for optimization
         if (gear.isNextFrame) {
             gear.texture = frames[gear.currentFrame];
         }
-    }
+    };
     
     // Return to caller
     return gear;
