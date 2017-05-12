@@ -171,7 +171,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		
 		// Because the Player is only allowed one interaction at a time, 
 		// we can persume he can only do one thing when dragging
-		return level.isFinalItem(this.mOutputItem.type);
+		return level.isFinalItem(this.mOutputItem.type) || this.mOutputItem.dragging;
 	};
 
 	//-------------------------------------------------------------------------------
