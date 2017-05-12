@@ -22,6 +22,8 @@ function Credits() {
     this.txtTeam19.position.set(CANVAS_WIDTH - this.txtTeam19.width - 10,
         CANVAS_HEIGHT - this.txtTeam19.height - 10);
 
+    /* Creates a transparent area that covers the canvas in which if the user clicks
+     * anywhere on the canvas other than the button they will be sent to the main menu */
     this.clickableArea = new PIXI.Graphics();
     this.clickableArea.beginFill(0);
     this.clickableArea.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -30,13 +32,15 @@ function Credits() {
     this.clickableArea.alpha = 0;
     this.clickableArea.pointertap = MainMenu.open;
 
-    //Create button
+    // Create button to affiliate page
 
     this.affiliateButton = makeSimpleButton(300, 100, "more games", 0xFFFF66, 100); // -> util.js
 
-    //Position button
+    // Position the button
 
     this.affiliateButton.position.set((CANVAS_WIDTH / 2) - 170, (CANVAS_HEIGHT / 2) + 200);
+
+    // Opens affiliate page when the button is pressed or clicked
 
     this.affiliateButton.pointertap = Affiliate.open; // -> states/affiliate.js
 
@@ -52,6 +56,7 @@ function Credits() {
     this.flashFreq = 0.03;
     this.counter = 0;
 
+    // Update function to be called by the main game loop
     this.update = () => {
         if(this.txtThankYou.alpha < 1) {
             this.txtThankYou.alpha += this.appearSpeed;

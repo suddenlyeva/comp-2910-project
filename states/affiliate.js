@@ -14,20 +14,17 @@ function Affiliate() {
     this.bg.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     this.bg.endFill();
 
-    //Text Style
+    //-------- Text Style -------------------------
 
-    //Textstyle for the title
+    // Text style for the title
     this.textStyleTitle = new PIXI.TextStyle({fontFamily: FONT_FAMILY, fontSize: 140, fill: 0x00ad5e,
         dropShadow: true, dropShadowAngle: 7 * Math.PI / 12, dropShadowDistance: 7, dropShadowAlpha: 0.7,
         stroke: 0xFFFFFF, strokeThickness: 7});
 
-    //Text style for the affiliate name
-    this.textStyleLogo = this.textStyleTitle.clone();
-    this.textStyleLogo.fontSize = 100;
-    this.textStyleLogo.strokeThickness = 4;
-
-
-
+    // Text style for the affiliate name
+    this.textStyleAffiliateName = this.textStyleTitle.clone();
+    this.textStyleAffiliateName.fontSize = 100;
+    this.textStyleAffiliateName.strokeThickness = 4;
 
     // ------------- Food Fall ----------------------------------
 
@@ -46,7 +43,6 @@ function Affiliate() {
         window.location.href = "http://foodfall.ca/";
 
     };
-
 
     //--------------- Race to Zero ----------------------------
 
@@ -89,7 +85,7 @@ function Affiliate() {
     this.mainMenuButton.position.set((CANVAS_WIDTH /2) - 100, CANVAS_HEIGHT - 100);
     this.mainMenuButton.on("pointertap", MainMenu.open);
 
-    //Shadows for the logos
+    // Shadows for the affiliate logos
     this.shadows = new PIXI.Graphics();
     this.shadows.beginFill(0);
     this.shadows.drawRect(this.foodFallLogo.x + 7, this.foodFallLogo.y + 7,
@@ -102,16 +98,16 @@ function Affiliate() {
     this.shadows.endFill();
     this.shadows.alpha = 0.7;
 
-    // Text
+    //--------------- Text ------------------------------------
 
     // Title page text
     this.gamesTxt = new PIXI.Text("games", this.textStyleTitle);
     this.gamesTxt.position.set(25, 0);
 
-    //Logo texts
-    this.foodFallTxt = new PIXI.Text("food fall", this.textStyleLogo);
-    this.raceToZeroTxt = new PIXI.Text("race to zero", this.textStyleLogo);
-    this.captainPlanTxt = new PIXI.Text("captain plan-it", this.textStyleLogo);
+    // Affiliate name texts
+    this.foodFallTxt = new PIXI.Text("food fall", this.textStyleAffiliateName);
+    this.raceToZeroTxt = new PIXI.Text("race to zero", this.textStyleAffiliateName);
+    this.captainPlanTxt = new PIXI.Text("captain plan-it", this.textStyleAffiliateName);
 
     // Position logo texts
     this.foodFallTxt.position.set(this.foodFallLogo.x + this.foodFallLogo.width / 2 - this.foodFallTxt.width / 2,
@@ -121,7 +117,7 @@ function Affiliate() {
     this.captainPlanTxt.position.set(this.captainPlanLogo.x + this.captainPlanLogo.width / 2 - this.captainPlanTxt.width / 2
                                      + 15, this.captainPlanLogo.y + 200);
 
-    //Add to scene
+    // Add to scene
     this.scene.addChild(this.bg);
     this.scene.addChild(this.gamesTxt);
     this.scene.addChild(this.foodFallTxt);
@@ -133,14 +129,11 @@ function Affiliate() {
     this.scene.addChild(this.captainPlanLogo);
     this.scene.addChild(this.mainMenuButton);
 
-
-
-
-    // Update function
+    // Update function to be called by the main game loop
     this.update = () => {};
 }
 
-
+// Opens affiliate page used in credits and main menu pages
 Affiliate.open = () => {
 
     if(Affiliate.instance == null) {
