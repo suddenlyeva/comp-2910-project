@@ -59,14 +59,14 @@ function setup() {
 
 // Called while the game is running
 function gameLoop() {
-    
+
     // Resize the scene on window resize or scene changed
     if(WINDOW_RESIZED || SCENE !== previousScene) {
         sceneResize(STRETCH_THRESHOLD); // -> util.js
         RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
         WINDOW_RESIZED = false;
     }
-    
+
     STATE(); // Single-state update loop for easy switching
 
     previousScene = SCENE; // Reset Scene switch flag
@@ -76,15 +76,15 @@ function gameLoop() {
 
 // Called by loader before the game starts
 function showLoadingProgress(loader, resource) {
-    
+
     // Show progress
     console.log("loading: " + resource.url);
     loadingProgressBar.xScale(loader.progress / 100);
-    
+
     // Resize loading screen
     sceneResize(STRETCH_THRESHOLD);
     RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
-    
+
     // Draw loading screen
     RENDERER.render(SCENE);
 }

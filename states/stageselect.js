@@ -34,9 +34,9 @@ function StageSelect() {
 
         this.stageBtns.addChild(btn);
     }
-    
+
     // Carousel in progress
-    
+
     // this.carouselMask = new PIXI.Graphics();
     // this.carouselMask.beginFill(0, 0);
     // this.carouselMask.drawRect(0, 0, this.btnWidth, this.btnHeight);

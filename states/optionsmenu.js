@@ -2,11 +2,11 @@
 
 // Options menu overlayable
 function OptionsMenu() {
-    
+
     // Scale proportions
     this.width  = CANVAS_WIDTH  / 1.5;
     this.height = CANVAS_HEIGHT / 1.5;
-    
+
     // Create Scene
     this.scene = new PIXI.Container();
 
@@ -35,7 +35,7 @@ function OptionsMenu() {
     this.scene.addChild(this.soundVol);
     this.scene.addChild(this.musicTxt);
     this.scene.addChild(this.musicVol);
-    
+
     // Position everything
     this.okButton.position.set(
         this.width / 2 - this.okButton.width / 2, this.height - this.okButton.height - 20);
@@ -53,7 +53,7 @@ function OptionsMenu() {
 
     // Back button moves to main menu
     // bind(this) is used to give the function context (which is the current object)
-    this.okButton.on("pointertap", OptionsMenu.close); 
+    this.okButton.on("pointertap", OptionsMenu.close);
 }
 
 // Function to open. Options Menu is singleton

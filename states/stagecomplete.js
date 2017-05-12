@@ -31,15 +31,15 @@ function StageComplete(data) {
 
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {
-		let next = Level.instance.id + 1;
+        let next = Level.instance.id + 1;
         this.scene.parent.removeChild(this.scene);
-		if (next >= LEVELS.length) {
-			Credits.open(); // -> states/credits.js
-		}
-		else {
-			Level.open(LEVELS[next]); // -> states/levels.js
-		}
-		;
+        if (next >= LEVELS.length) {
+            Credits.open(); // -> states/credits.js
+        }
+        else {
+            Level.open(LEVELS[next]); // -> states/levels.js
+        }
+        ;
     });
 
     // Back button takes you to the main menu
