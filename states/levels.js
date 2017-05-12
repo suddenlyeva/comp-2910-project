@@ -18,6 +18,7 @@ let LEVELS = [
             {
                 recipe: [APPLE],
                 result: APPLE_SLICE,
+				score: 100,
                 x: 7*TILES_PX,
                 y: 3*TILES_PX
             }
@@ -38,22 +39,63 @@ let LEVELS = [
             {
                 recipe: [APPLE, APPLE],
                 result: BANANA,
+				score: 100,
                 x: 7*TILES_PX,
                 y: 4*TILES_PX
             }
 		],
 		
 		finalItems: [BANANA]
+    },
+    {id: 2, name: "fruit yogurt",
+
+        wasteLimit: 5,
+
+        conveyorBelt: {
+            items: [ORANGE, BLANK, KIWI, KIWI, BLANK, ORANGE, YOGURT, ORANGE, BLANK, BLANK, KIWI, YOGURT, BLANK, YOGURT],
+            speed: 1.5
+        },
+
+        processors: [
+            {
+                recipe: [ORANGE],
+                result: ORANGE_SLICE,
+				score: 100,
+                x: 1*TILES_PX,
+                y: 2*TILES_PX
+            },
+            {
+                recipe: [KIWI],
+                result: KIWI_SLICE,
+				score: 100,
+                x: 7*TILES_PX,
+                y: 2*TILES_PX
+            },
+            {
+                recipe: [ORANGE_SLICE, KIWI_SLICE, YOGURT],
+                result: FRUIT_YOGURT,
+				score: 500,
+                x: 1*TILES_PX,
+                y: 5*TILES_PX
+            }
+        ],
+
+        finalItems: [FRUIT_YOGURT]
     }
 ];
 
 function Level(data) {
-    // Score variable
-    let score = 0;
 
     // Identifiers
     this.id = data.id;
     this.name = data.name;
+	
+	// Passed to stage complete menu
+	this.completionData = {
+		score: 0,
+		waste: 0,
+		itemsComplete: []
+	};
 
 	// Declare scene
     this.scene = new PIXI.Container();
@@ -62,13 +104,19 @@ function Level(data) {
     this.background = new PIXI.extras.TilingSprite(
         PIXI.loader.resources["images/spritesheet.json"].textures["background.png"],
         16*TILES_PX,
-        8*TILES_PX
+        9*TILES_PX
     );
     
     this.scene.addChild(this.background);
 
     // Add topbar
-	this.background.y += TILES_PX;
+    this.topbar = new PIXI.extras.TilingSprite(
+        PIXI.loader.resources["images/spritesheet.json"].textures["topbar.png"],
+        16*TILES_PX,
+        TILES_PX
+    );
+    
+    this.scene.addChild(this.topbar);
 
     // Add Level txt
     this.txtStyle = new PIXI.TextStyle({
@@ -83,11 +131,15 @@ function Level(data) {
     });
 
     // Add Score txt
-    this.score = 0;
-    this.scoreTxt = new PIXI.Text(("00000" + this.score).slice(-5), this.txtStyle);
+    this.scoreTxt = new PIXI.Text(padZeroForInt(0, 5), this.txtStyle);
     this.scoreTxt.anchor.set(0, 0.3);
     this.scoreTxt.position.set(TILES_PX * 13, 0);
     this.scene.addChild(this.scoreTxt);
+	
+	this.addScore = (addedScore) => {
+		this.completionData.score += addedScore;
+		this.scoreTxt.text = padZeroForInt(this.completionData.score, 5);
+	};
 
     // Add Pause Button
     this.isPaused = false;
@@ -113,7 +165,7 @@ function Level(data) {
     this.hpBar.update = () => {
         // Smoothly Scale HP
         if ( this.hpBar.getScale() > (1 - this.completionData.waste / data.wasteLimit)) {
-            this.hpBar.xScale(this.hpBar.getScale() * 0.97 );
+            this.hpBar.xScale(this.hpBar.getScale() * 0.975 );
         }
     };
     
@@ -144,37 +196,24 @@ function Level(data) {
             this.constantine.texture = PIXI.loader.resources["images/spritesheet.json"].textures["constantine-neutral.png"];
             this.hpBar.setColor(0xFFFF22);
         }
-        if (this.completionData.waste >= data.wasteLimit) {
-            this.isComplete = true;
-        }
     };
-    
-	// Identifiers
-    this.id = data.id;
-    this.name = data.name;
 	
 	// Load processors
 	this.processors = [];
 	for (let i in data.processors) {
 		this.processors.push(
-            new Processor(new Recipe(data.processors[i].recipe, data.processors[i].result),this)
+            new Processor( new Recipe(data.processors[i].recipe, data.processors[i].result, data.processors[i].score), this )
 		);
         this.processors[i].SetPosition(data.processors[i].x, data.processors[i].y);
         this.processors[i].Spawn();
 	}
-	
+    
 	// Load Conveyor Belt
     this.conveyorBelt = new ConveyorBelt(data.conveyorBelt.items, data.conveyorBelt.speed, this);
 	
 	// Completion trackers
 	this.isComplete = false;
 	this.timeOut = 120;
-	
-	// Passed to stage complete menu
-	this.completionData = {
-		waste: 0,
-		itemsComplete: []
-	};
 	
 	// Check if an item is the level's final item.
 	this.isFinalItem = (itemType) => {
@@ -189,32 +228,33 @@ function Level(data) {
 	
 	// Checks if the level is over
 	this.checkForCompletion = () => {
-        if (!this.isComplete) {
-            for (let i in this.conveyorBelt.items) {
-                if (this.conveyorBelt.items[i].type != BLANK) {
-                    return false;
-                }
-            }
+		
+		// HP Check
+        if (this.completionData.waste >= data.wasteLimit) {
+            return true;
         }
+		
+		// Conveyor Check
+		for (let i in this.conveyorBelt.items) {
+			if (this.conveyorBelt.items[i].type != BLANK) {
+				return false;
+			}
+		}
+		
+		// Processor Check
+		for (let i in this.processors) {
+			if(this.processors[i].currentState > 0) { // Any active or waiting state
+				return false;
+			}
+		}
+			
 		return true;
 	};
 
-	// Getter for score
-    this.getScore = () => {
-        return this.score;
-    };
-
-    // Setter for score
-    this.addScore = (numToAdd) => {
-        this.score += numToAdd;
-    };
-
     this.update = () => {
-        
+		
         // Update scene objects
         this.conveyorBelt.update();
-        // this.scoreTxt.text = ("00000" + this.score).slice(-5);
-        this.scoreTxt.text = padZeroForInt(this.score, 5);
         for (let i in this.processors) {
             this.processors[i].update();
         }
@@ -223,7 +263,17 @@ function Level(data) {
 		
         // Timeout on completion
 		if(this.isComplete) {
-			this.timeOut -= TICKER.deltaTime;
+			
+			// Re-Authenticate
+			if (this.checkForCompletion()) {
+				
+				this.timeOut -= TICKER.deltaTime; // Tick
+				
+			} else {
+				this.timeOut = 120; // Stall if it catches a false flag.
+			}
+			
+			// Move to Stage Complete
 			if (this.timeOut <= 0) {
 				StageComplete.open(this.completionData);
 			}

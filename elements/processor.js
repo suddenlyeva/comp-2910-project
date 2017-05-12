@@ -131,10 +131,10 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			// ! Change to ====
 			if(droppedIngredient.type == this.requiredIngredients[i].type && !this.recipeProgress[i])
 			{
-				this.requiredIngredients[i].alpha = 1;
+				this.requiredIngredients[i].alpha = 0.8; //TODO: MAGIC NUMBER
 				this.recipeProgress[i] = true;
 				this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
-				
+                
 				level.scene.removeChild(droppedIngredient);
 				return true;
 			}
@@ -161,7 +161,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		// Item Spawning State
 		else if(this.currentState === this.ProcessorState.Finished && this.bReset){
 			this.currentState = this.ProcessorState.Feeding;
-		}	
+		}
+        
 	};
 	
 	//-------------------------------------------------------------------------------
@@ -170,7 +171,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		
 		// Because the Player is only allowed one interaction at a time, 
 		// we can persume he can only do one thing when dragging
-		return level.isFinalItem(this.mOutputItem.type);
+		return level.isFinalItem(this.mOutputItem.type) || this.mOutputItem.dragging;
 	};
 
 	//-------------------------------------------------------------------------------
@@ -233,15 +234,17 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.SpawnOutput = () => {
 		
 			this.mOutputItem = makeItem(recipeOrder.GetOutput(), level);
+			level.addScore(recipeOrder.GetScore());
+			
+			this.mOutputItem.x = TILES_PX + this.mOutputSprite.x;
+			this.mOutputItem.y = TILES_PX + this.mOutputSprite.y;	
 			
 			if(level.isFinalItem(this.mOutputItem.type)) {
 				// TODO: level.poof
 				this.mOutputItem.interactive = false;
+				this.mOutputItem.fadeAway();
 				level.completionData.itemsComplete.push(recipeOrder.GetOutput());
 			}
-			
-			this.mOutputItem.x = TILES_PX + this.mOutputSprite.x;
-			this.mOutputItem.y = TILES_PX + this.mOutputSprite.y;	
 	};
 	
 	//-------------------------------------------------------------------------------
@@ -470,7 +473,7 @@ function Timer(level)
 	
 	// Timer Variables
 	this.maxframe = 8;			
-	this.totalProcessTime = 120; 			// total time it takes for an item to process (120 = 2 seconds)
+	this.totalProcessTime = 180; 			// total time it takes for an item to process (3 seconds)
 	this.timerTick = this.totalProcessTime / this.maxframe;
 	this.processTimer = 0; 
 	this.currentFrame =  0;

@@ -37,11 +37,17 @@ function MainMenu() {
         "options", 0x94b8b8, this.buttonHeight / 2, 4);
     // this.fullScreenButton = makeSimpleButton(100, 50, "full screen", 0x94b8b8, 50);
 
+    this.moreGamesButton = makeSimpleButton(200, 50, "more games", 0xFFFF66, 75);
+
     this.playButton.position.set(this.distFromEdge,
         CANVAS_HEIGHT / 2 - this.playButton.height / 2);
     this.optionsButton.position.set(CANVAS_WIDTH - this.optionsButton.width - this.distFromEdge,
         CANVAS_HEIGHT / 2 - this.optionsButton.height / 2);
     // this.fullScreenButton.position.set(CANVAS_WIDTH - 150, CANVAS_HEIGHT - 100);
+
+    this.moreGamesButton.position.set((CANVAS_WIDTH / 2) - 100, CANVAS_HEIGHT - 100);
+
+
 
     // Play button moves to stage select
     this.playButton.on("pointertap", () => {
@@ -54,10 +60,15 @@ function MainMenu() {
 
     // this.fullScreenButton.pointertap = toggleFullScreen;
 
+    //more games button opens the affiliate page
+
+    this.moreGamesButton.on("pointertap", Affiliate.open);
+
     // Add to scene
     this.scene.addChild(this.background);
     this.scene.addChild(this.playButton);
     this.scene.addChild(this.optionsButton);
+    this.scene.addChild(this.moreGamesButton);
     // this.scene.addChild(this.fullScreenButton);
 
     // Update function to be called by the main game loop
