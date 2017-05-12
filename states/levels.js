@@ -202,7 +202,7 @@ function Level(data) {
 	this.processors = [];
 	for (let i in data.processors) {
 		this.processors.push(
-            new Processor(new Recipe(data.processors[i].recipe, data.processors[i].result),this)
+            new Processor( new Recipe(data.processors[i].recipe, data.processors[i].result, data.processors[i].score), this )
 		);
         this.processors[i].SetPosition(data.processors[i].x, data.processors[i].y);
         this.processors[i].Spawn();
