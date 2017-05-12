@@ -244,7 +244,7 @@ function Level(data) {
 		
 		// Processor Check
 		for (let i in this.processors) {
-			if(this.processors[i].currentState > 0) { // Any active or waiting state
+			if(this.processors[i].GetState() > 0) { // Any active or waiting state TODO: Functionify
 				return false;
 			}
 		}

@@ -3,16 +3,9 @@
 function Processor(recipeOrder, level) //the Recipe this Processor will produce 
 {
 
-	//-------------------------------------------------------------------------------
-	// Memeber functions
-	//-------------------------------------------------------------------------------
-	
-	//-------------------------------------------------------------------------------
-	// Sets Position of the Compressor
-	this.SetPosition = (x,y) => {
-		this.mPositionX = x;
-		this.mPositionY = y;
-	};
+	//================================================================================
+	// Game Functions
+	//================================================================================
 	
 	//-------------------------------------------------------------------------------
 	// On create / Init
@@ -20,26 +13,25 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.Spawn = () => {	
 		
 		// Variable Assignments
-		//this.requiredIngredients = [];
-		this.numIngredients = recipeOrder.GetListCount();
+		//this.mRequiredIngredients = [];
+		this.mNumIngredients = recipeOrder.GetListCount();
 
 		//  --- Sprite related Init  ---
-	
+
 		// First Box
 		this.mSpriteProcessor = new PIXI.Sprite(
 			PIXI.loader.resources["images/spritesheet.json"].textures["input.png"]
 		);
 		
 		// Processor's Origin
-		this.mSpriteProcessor.x = this.mPositionX;
-		this.mSpriteProcessor.y = this.mPositionY;
+		this.mSpriteProcessor.x = this.mPosition.x;
+		this.mSpriteProcessor.y = this.mPosition.y;
 		
 		// Addes to Scene
 		level.scene.addChild(this.mSpriteProcessor);
 		
-		
 		// Rendering Processing Trays
-		for(let i = 0; i < this.numIngredients; ++i)
+		for(let i = 0; i < this.mNumIngredients; ++i)
 		{
 			// Unsafe (no sprite manager to initilize sprite with set position
 			
@@ -47,10 +39,10 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			this.mSpriteTray[i] = ( new PIXI.Sprite(
 				PIXI.loader.resources["images/spritesheet.json"].textures["recipe-waiting.png"]
 			));
-			this.mSpriteTray[i].x = (this.mPositionX + (TILES_PX) + (TILES_PX * (i))); // offsets the pos based off index
-			this.mSpriteTray[i].y = (this.mPositionY);
+			this.mSpriteTray[i].x = (this.mPosition.x + (TILES_PX) + (TILES_PX * (i))); // offsets the pos based off index
+			this.mSpriteTray[i].y = (this.mPosition.y);
 			
-			//!!
+			
 			// Creates Gears Object
 			this.mGears.push(makeGear("s",1));			
 			// Sets Position
@@ -58,25 +50,24 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			this.mGears[i].y = this.mSpriteTray[i].y - 22;
 			// Pushes to Renderer
 			level.scene.addChild(this.mGears[i]);
-			//!!
 		
 			// Addes to Scene
 			level.scene.addChild(this.mSpriteTray[i]);		
 			
 			// Spawns Ingredient image on top of the tray
-			this.requiredIngredients[i] = makeItem(recipeOrder.GetList()[i], level);	// Pushes new Item on the list
-			this.requiredIngredients[i].interactive = false;								// Not Pressable
-			this.requiredIngredients[i].alpha = this.alpha;									// Sets the transparancy
+			this.mRequiredIngredients[i] = makeItem(recipeOrder.GetList()[i], level);	// Pushes new Item on the list
+			this.mRequiredIngredients[i].interactive = false;								// Not Pressable
+			this.mRequiredIngredients[i].alpha = this.alpha;									// Sets the transparancy
 			
-			this.requiredIngredients[i].x = this.mSpriteTray[i].x + (this.spriteSizeHalf);	// Spawns to the center of the tray
-			this.requiredIngredients[i].y = this.mSpriteTray[i].y + (this.spriteSizeHalf + 67);
-			this.recipeProgress[i] = false; // Forcefully sets to not completed
+			this.mRequiredIngredients[i].x = this.mSpriteTray[i].x + (this.spriteSizeHalf);	// Spawns to the center of the tray
+			this.mRequiredIngredients[i].y = this.mSpriteTray[i].y + (this.spriteSizeHalf + 67);
+			this.bRecipeProgress[i] = false; // Forcefully sets to not completed
 			
 		}
 		
 		// -- Processor's Width and Height --
 		
-		this.mWidth = TILES_PX + TILES_PX*2 +(this.numIngredients * (TILES_PX));
+		this.mWidth = TILES_PX + TILES_PX*2 +(this.mNumIngredients * (TILES_PX));
 		this.mHeight = TILES_PX;
 		
 		// -- Last Tray is the Processor output --
@@ -86,8 +77,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	
 		this.mOutputSprite = new PIXI.Sprite(this.mOutputTexture[this.mOutputState.Blue]);
 		
-		this.mOutputSprite.x = (this.mPositionX + (TILES_PX) + (TILES_PX * (this.numIngredients))); //array starts at 0
-		this.mOutputSprite.y = (this.mPositionY);
+		this.mOutputSprite.x = (this.mPosition.x + (TILES_PX) + (TILES_PX * (this.mNumIngredients))); //array starts at 0
+		this.mOutputSprite.y = (this.mPosition.y);
 
 		
 		// Adds to Scene
@@ -96,50 +87,62 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		
 		// -- Position Timer, center to where processor is at -- 
 		this.mTimer.loadTimer(TILES_PX + this.mOutputSprite.x , TILES_PX + this.mOutputSprite.y);
-		this.currentState = this.ProcessorState.Feeding;
-
+		this.mCurrentState = this.mProcessorState.Feeding;
 
 	};
 	
 	//-------------------------------------------------------------------------------
-	// Collision pass for ingredients Item's center x and y
-	this.collidesWithPoint = (x,y) => {
+	// On Update
+	this.update = () => {
 		
-		// Input Box
-		let inputLeft = this.mPositionX; // x1
-		let inputRight = this.mPositionX + (this.mWidth - TILES_PX*2);//x2
-		let inputTop = this.mPositionY; // y1
-		let inputBottom = this.mPositionY + TILES_PX*2; //y2
-		
-		// Recipe Boxes
-		if(this.currentState === this.ProcessorState.Feeding) {
-			return 	( inputLeft < x 
-			&& x < inputRight 
-			&& inputTop < y 
-			&& y < inputBottom);
-		}
-		// If state is not Feeding, Item's Dragged on Top will still fall
-		else
-			return false;
-    };
-	
-	//-------------------------------------------------------------------------------
-	// Passes Ingredient Object to Processor
-	this.addItem = (droppedIngredient) => {
-		for(let i = 0; i < this.numIngredients; ++i)
+		// State Updater
+		this.UpdateState();
+			
+		// State Machine, Acts accordingly to what ever state it is in
+		switch(this.mCurrentState)
 		{
-			// ! Change to ====
-			if(droppedIngredient.type == this.requiredIngredients[i].type && !this.recipeProgress[i])
-			{
-				this.requiredIngredients[i].alpha = 0.8; //TODO: MAGIC NUMBER
-				this.recipeProgress[i] = true;
-				this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
-                
-				level.scene.removeChild(droppedIngredient);
-				return true;
-			}
+			case (this.mProcessorState.Feeding): {	// Feeding State
+				if(this.bReset) {
+					this.bReset = false;
+				}
+			}break;
+			
+			case (this.mProcessorState.Processing): {	// Processing State
+					
+					// If Timer hasn't been spawned, spawn it.
+					if(!this.bIsTimerSpawned) {
+						this.mTimer.OnSpawn();
+						this.bIsTimerSpawned = true;
+					}
+					
+					this.mTimer.Update();
+					
+					// Spins Gears
+					for(let i = 0; i < this.mGears.length; ++i) {
+						this.mGears[i].update();
+					}
+					
+					//Check for update change
+					this.bIsTimerFinished = this.mTimer.IsFinished();
+					
+			}break;
+			
+			case (this.mProcessorState.Finished): {	// Spawning/Item Check State
+				
+				this.mTimer.OnKill();
+				
+				if(!this.bIsFinishedSpawning) {
+					this.SpawnOutput();
+					this.mOutputSprite.texture = this.mOutputTexture[this.mOutputState.Yellow];
+					this.bIsFinishedSpawning = true;
+				}
+				else if(this.bOutputEmpty()){
+					this.mOutputSprite.texture = this.mOutputTexture[this.mOutputState.Blue];
+					this.ResetProcessorState();
+					this.bReset = true;		// State Flag
+				}
+			}break;
 		}
-        return false;
 	};
 	
 	//-------------------------------------------------------------------------------
@@ -147,22 +150,43 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	this.UpdateState = () => {
 		
 		// Feeding State
-		if(this.bRecipeCompletion() && this.currentState === this.ProcessorState.Feeding) {
+		if(this.bRecipeCompletion() && this.mCurrentState === this.mProcessorState.Feeding) {
 			// State Change -> Processing
-			this.currentState = this.ProcessorState.Processing;
+			this.mCurrentState = this.mProcessorState.Processing;
 		}
 		
 		// Proccessing Timer State
-		else if(this.currentState === this.ProcessorState.Processing && this.isTimerFinished) {
-			this.currentState = this.ProcessorState.Finished;
+		else if(this.mCurrentState === this.mProcessorState.Processing && this.bIsTimerFinished) {
+			this.mCurrentState = this.mProcessorState.Finished;
 			
 		}
 		
 		// Item Spawning State
-		else if(this.currentState === this.ProcessorState.Finished && this.bReset){
-			this.currentState = this.ProcessorState.Feeding;
+		else if(this.mCurrentState === this.mProcessorState.Finished && this.bReset){
+			this.mCurrentState = this.mProcessorState.Feeding;
 		}
         
+	};
+
+	
+	//================================================================================	
+	// Acessors
+	//================================================================================
+	
+	//-------------------------------------------------------------------------------
+	// Gets Score of the recipe
+	this.GetScore = () => {
+		return (this.mScore);
+	};
+	
+	//-------------------------------------------------------------------------------
+	// Checks if all the required Recipe Ingredients are added
+	this.bRecipeCompletion = () => {
+		for (let i = 0; i < this.mNumIngredients; ++i) {
+			if(this.bRecipeProgress[i] == false)
+				return false;
+		}
+		return true;
 	};
 	
 	//-------------------------------------------------------------------------------
@@ -175,58 +199,72 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 	};
 
 	//-------------------------------------------------------------------------------
-	// On Update
-	this.update = () => {
+	// Collision pass for ingredients Item's center x and y
+	this.collidesWithPoint = (x,y) => {
 		
-		// State Updater
-		this.UpdateState();
-			
-		// State Machine, Acts accordingly to what ever state it is in
-		switch(this.currentState)
-		{
-			case (this.ProcessorState.Feeding): {	// Feeding State
-				if(this.bReset) {
-					this.bReset = false;
-				}
-			}break;
-			
-			case (this.ProcessorState.Processing): {	// Processing State
-					
-					// If Timer hasn't been spawned, spawn it.
-					if(!this.isTimerSpawned) {
-						this.mTimer.OnSpawn();
-						this.isTimerSpawned = true;
-					}
-					
-					this.mTimer.Update();
-					
-					// Spins Gears
-					for(let i = 0; i < this.mGears.length; ++i)
-					{
-						this.mGears[i].update();
-					}
-					
-					//Check for update change
-					this.isTimerFinished = this.mTimer.IsFinished();
-					
-			}break;
-			
-			case (this.ProcessorState.Finished): {	// Spawning/Item Check State
-				
-				this.mTimer.OnKill();
-				
-				if(!this.isFinishedSpawning) {
-					this.SpawnOutput();
-					this.mOutputSprite.texture = this.mOutputTexture[this.mOutputState.Green];
-					this.isFinishedSpawning = true;
-				}
-				else if(this.bOutputEmpty()){
-					this.mOutputSprite.texture = this.mOutputTexture[this.mOutputState.Blue];
-					this.ResetProcessorState();
-					this.bReset = true;		// State Flag
-				}
-			}break;
+		// Input Box
+		let inputLeft = this.mPosition.x; // x1
+		let inputRight = this.mPosition.x + (this.mWidth - TILES_PX*2);//x2
+		let inputTop = this.mPosition.y; // y1
+		let inputBottom = this.mPosition.y + TILES_PX*2; //y2
+		
+		// Recipe Boxes
+		if(this.mCurrentState === this.mProcessorState.Feeding) {
+			return 	( inputLeft < x 
+			&& x < inputRight 
+			&& inputTop < y 
+			&& y < inputBottom);
 		}
+		// If state is not Feeding, Item's Dragged on Top will still fall
+		else
+			return false;
+    };
+	
+    //-------------------------------------------------------------------------------
+    // Returns State
+    this.GetState = () => {
+        return this.mCurrentState;
+    };
+	
+	//================================================================================
+	// Mutators
+	//================================================================================
+	
+	//-------------------------------------------------------------------------------
+	// Sets Score
+	this.SetScore = () => {
+		//(this.mScore) = recipeOrder.GetScore();
+	};
+	
+	//-------------------------------------------------------------------------------
+	// Sets Position of the Compressor
+	this.SetPosition = (x,y) => {
+		this.mPosition.x = x;
+		this.mPosition.y = y;
+	};
+	
+	
+	//================================================================================
+	// Object Functions ( These should be Privated)
+	//================================================================================
+	
+	//-------------------------------------------------------------------------------
+	// Passes Ingredient Object to Processor
+	this.addItem = (droppedIngredient) => {
+		for(let i = 0; i < this.mNumIngredients; ++i)
+		{
+			// ! Change to ====
+			if(droppedIngredient.type == this.mRequiredIngredients[i].type && !this.bRecipeProgress[i])
+			{
+				this.mRequiredIngredients[i].alpha = this.itemAlpha; //TODO: MAGIC NUMBER
+				this.bRecipeProgress[i] = true;
+				this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
+                
+				level.scene.removeChild(droppedIngredient);
+				return true;
+			}
+		}
+        return false;
 	};
 	
 	//-------------------------------------------------------------------------------
@@ -240,138 +278,99 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			this.mOutputItem.y = TILES_PX + this.mOutputSprite.y;	
 			
 			if(level.isFinalItem(this.mOutputItem.type)) {
+				// TODO: level.poof
 				this.mOutputItem.interactive = false;
 				this.mOutputItem.fadeAway();
 				level.completionData.itemsComplete.push(recipeOrder.GetOutput());
 			}
 	};
 	
-	//-------------------------------------------------------------------------------
-	// Gets Score of the recipe
-	this.GetScore = () => {
-		return (this.mScore);
-	};
-	
-	//-------------------------------------------------------------------------------
-	// Sets Score
-	this.SetScore = () => {
-		//(this.mScore) = recipeOrder.GetScore();
-	};
-	
-	//-------------------------------------------------------------------------------
-	// Checks if all the required Recipe Ingredients are added
-	this.bRecipeCompletion = () => {
-		for (let i = 0; i < this.numIngredients; ++i) {
-			if(this.recipeProgress[i] == false)
-				return false;
-		}
-		return true;
-	};
-	
-	//-------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 	// Resets the State of Processor
 	this.ResetProcessorState = () => {
 		
 		// Resets the Whole Processor's Alpha
 		
 		// Resets Tray Ingredient's Alpha, and Progress
-		for(let i = 0; i < this.numIngredients; ++i)
+		for(let i = 0; i < this.mNumIngredients; ++i)
 		{
-			this.recipeProgress[i] = false;
-			this.requiredIngredients[i].alpha = this.alpha;
+			this.bRecipeProgress[i] = false;
+			this.mRequiredIngredients[i].alpha = this.alpha;
 			this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-waiting.png"];
 		}
 
 		// Resets Flags
-		this.isFinishedSpawning = false; 	// Spawner Flag 
+		this.bIsFinishedSpawning = false; 	// Spawner Flag 
 		this.isDone = false;				// State Flag
-		this.isTimerFinished = false;		// Timer Flag
-		this.isTimerSpawned = false;
+		this.bIsTimerFinished = false;		// Timer Flag
+		this.bIsTimerSpawned = false;
 	};
 	
-	/**
-	//-------------------------------------------------------------------------------
-	// Sets the Alpha and Interaction State of the Processor's Sprites
-	// this.SetInteract = (bool) => {}; 
 	
-	//-------------------------------------------------------------------------------
-	// On draw
-	this.OnRender : function()
-	{
-			//Stuffs to do on Draw?
-			
-			//if in processing state 
-				stage.addChild(mCurrentSprite)
-			//render clock
-			
-	}
 	
-	*/
-
-	
-	//-------------------------------------------------------------------------------
+	//================================================================================
 	// Object Variables
-	//-------------------------------------------------------------------------------
+	//================================================================================
 	
-	// Sprites
-	this.mSpriteProcessor; 					// Sprite Variable
-	this.mSpriteTray = [];
-	this.mOutputTexture = []; 			// This Sprite will not be have a bounding box
+	// Sprites Objects
+    this.mSpriteProcessor;		// Processor
 	
+	this.mSpriteTray = [];		// Processorr Trays
+	
+	this.mOutputTexture = []; 	// Process Output
 	this.mOutputSprite;
-	this.mGears = [];
 	
-
-	//output-ready
+	this.mGears = [];			// Gears / Cogs
+	
+	// 80 is TILES_PX, defualt sprite size
+	this.spriteSizeHalf = TILES_PX / 2;
+	
+	
+	// Enums
+	this.mOutputState = { Blue : 0, Yellow : 1};		// Output State
+	this.mProcessorState = { Feeding : 0, Processing : 1, Finished : 2 }; // Processor State
+    
 	
 	// Object Variables
-	this.mPositionX;
-	this.mPositionY;
+	this.mPosition = {x : 0, y : 0};	// Processor Position
 	
 	this.mWidth;
 	this.mHeight;
 	
-	this.mOutputState = { Blue : 0, Green : 1};
-	this.spriteSizeHalf = TILES_PX / 2;
+	this.mScore = 0;					// Game Score
+	this.alpha = 0.5;					// Item Incompleted Fade
+	this.itemAlpha = 0.8;				// Item Completed Fade
 	
-	this.mScore = 0;
+	// Ingredients / Item
+	this.mRequiredIngredients = [];		// Array of required items
+	this.mNumIngredients;				// Total Number of Ingredients
+	this.bRecipeProgress = []; 			// An array of booleans to check if each seperate ingredients are placed
 	this.mOutputItem;					// Local Variable that holds the output object
-	
-	this.alpha = 0.5;
-	
-	// 80 is TILES_PX, defualt sprite size
-	
-	// Ingredients
-	this.requiredIngredients = [];		// Array of required items
-	this.numIngredients;				// Total Number of Ingredients
-	this.recipeProgress = []; 			// An array of booleans to check if each seperate ingredients are placed
-	this.mPosition;
 	
 	// Timer Object
 	this.mTimer = new Timer(level);
-	this.isTimerSpawned = false;
+	this.bIsTimerSpawned = false;
+	this.bIsTimerFinished = false;
 
-	
 	// State Variables
-	this.currentState;
-	this.bReset = false;				// for Processor is completed, Reset Flag 
-	this.isFinishedSpawning = false;	// Flag for item has finished Spawning
-	this.ProcessorState = { Feeding : 0, Processing : 1, Finished : 2 };
+	this.mCurrentState;
+	this.bReset = false;				// for Processor is completed, Reset Flag
+	this.bIsFinishedSpawning = false;	// Flag for item has finished Spawning
 	
 	
-	// Object Variables
-	
-
 }	// End of Class
 
 
-
-//==========================================================================================
 //==========================================================================================
 //==========================================================================================
 
 function Timer(level) 
 {	
+
+    //==========================================================================================
+    // Game Functions
+    //==========================================================================================
+    
 	//-------------------------------------------------------------------------------
 	// Stuffs to do on Spawn
 	this.OnSpawn = () => {
@@ -392,14 +391,14 @@ function Timer(level)
 		if (!this.isTimerFinished) {
 			
 			// Increment time
-			this.processTimer += TICKER.deltaTime;
+			this.currentTime += TICKER.deltaTime;
 			
 			// Check for next tick
-			if(this.processTimer >= this.timerTick) {
+			if(this.currentTime >= this.maxFramePerTick) {
 				
 				this.currentFrame++; // Increment the frame
 				this.mCurrentSprite.texture = this.mSpriteList[this.currentFrame]; // Change the texture
-				this.processTimer -= this.timerTick; // Reset ticker
+				this.currentTime = 0; //-= this.maxFramePerTick; // Reset ticker
 			}
 			
 			// Reset on last tick
@@ -410,6 +409,14 @@ function Timer(level)
 		}
 	};
 	
+    //-------------------------------------------------------------------------------
+	// Stuffs on kill
+	this.OnKill = () => {
+		level.scene.removeChild(this.mCurrentSprite);
+		this.Reset();
+		this.jump = 0;
+	} ;	// Play Animation
+    
 	//-------------------------------------------------------------------------------
 	// Loads Sprite
 	this.loadTimer = (x, y) => {
@@ -426,17 +433,36 @@ function Timer(level)
 
 	};
 	
+    //==========================================================================================
+    // Accessors
+    //==========================================================================================
+    
+	//-------------------------------------------------------------------------------
+	// Returns a boolean 
+	this.IsFinished = () => {
+		return this.isTimerFinished;
+	};
+	
+    
+    //==========================================================================================
+    // Mutators
+    //==========================================================================================
+    
 	//-------------------------------------------------------------------------------
 	this.SetPosition = (x,y) => {
 		this.mPosition.x = x;
 		this.mPosition.y = y;
 	};
 	
+    //==========================================================================================
+    // Object Functions (These should be Privated)
+    //==========================================================================================
+    
 	//-------------------------------------------------------------------------------
 	// Resets all the variables
 	this.Reset = () => {
 		
-		this.processTimer = 0; 
+		this.currentTime = 0; 
 		this.currentFrame =  0;
 		
 		// Resets Sprite
@@ -451,41 +477,7 @@ function Timer(level)
 	};
 	
 	//-------------------------------------------------------------------------------
-	// Stuffs on kill
-	this.OnKill = () => {
-		level.scene.removeChild(this.mCurrentSprite);
-		this.Reset();
-		this.jump = 0;
-	} ;	// Play Animation
-	
-	//-------------------------------------------------------------------------------
-	// Returns a boolean 
-	this.IsFinished = () => {
-		return this.isTimerFinished;
-	};
-	
-	this.mPosition = {x : 0, y : 0};
-	
-	// Processing Variables
-	this.mCurrentSprite;					// Current Sprite
-	this.mSpriteList = [];					// List of Sprite
-	
-	// Timer Variables
-	this.maxframe = 8;			
-	this.totalProcessTime = 180; 			// total time it takes for an item to process (3 seconds)
-	this.timerTick = this.totalProcessTime / this.maxframe;
-	this.processTimer = 0; 
-	this.currentFrame =  0;
-	this.isTimerFinished = false;
-	this.isSpawned = false;
-	
-	this.animationFrame = 0;
-	this.totalAnimationFrame = 10;
-	this.isEntering = false;
-	
-	this.jump = 0;
-	this.scale = 0;
-	
+	// An Animation for Entry of Timer
 	this.EnteranceAnimation = () => {
 		
 		// Tick Rate
@@ -510,7 +502,43 @@ function Timer(level)
 			this.isEntering = false;
 		
 	};
+	
+	//-------------------------------------------------------------------------------
+	// An Animation of Exit of Timer
 	this.ExitAnimation = () => {
-		
+		// Empty
 	};
+	
+	//==========================================================================================
+	// Memeber Variables
+	//==========================================================================================
+	
+	
+	// Processing Variables
+	this.mCurrentSprite;					// Current Sprite
+	this.mSpriteList = [];					// List of Sprite
+	this.mPosition = {x : 0, y : 0};
+	
+	
+	// Timer Variables
+	this.maxframe = 8;			
+	this.totalProcessTime = 180; 			// total time it takes for an item to process (3 seconds)
+	
+	// Maximum amount of allowed frames in one clock handle
+	this.maxFramePerTick = this.totalProcessTime / this.maxframe; 
+	
+	this.currentTime = 0; 					
+	this.currentFrame =  0;
+	this.isTimerFinished = false;
+	this.isSpawned = false;
+	
+	
+	// Animation Variables
+	this.animationFrame = 0;
+	this.totalAnimationFrame = 10;
+	this.isEntering = false;
+	
+	this.jump = 0;
+	this.scale = 0;
+	
 };
