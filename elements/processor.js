@@ -238,6 +238,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			
 			if(level.isFinalItem(this.mOutputItem.type)) {
 				this.mOutputItem.interactive = false;
+				this.mOutputItem.fadeAway();
 				level.completionData.itemsComplete.push(recipeOrder.GetOutput());
 			}
 			
