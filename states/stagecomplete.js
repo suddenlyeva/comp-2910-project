@@ -1,5 +1,5 @@
 "use strict";
-
+// TODO: Stuff
 function StageComplete(data) {
     this.width  = 200;
     this.height = 400;
