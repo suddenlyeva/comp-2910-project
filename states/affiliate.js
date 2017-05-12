@@ -29,7 +29,7 @@ function Affiliate() {
     // ------------- Food Fall ----------------------------------
 
     // Create logo
-    this.foodFallLogo = new PIXI.Sprite(PIXI.loader.resources["images/foodfalllogo.jpg"].texture);
+    this.foodFallLogo = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["foodfalllogo.jpg"]);
 
     // Set the logo to be interactive as a button
     this.foodFallLogo.interactive = this.foodFallLogo.buttonMode = true;
@@ -47,7 +47,7 @@ function Affiliate() {
     //--------------- Race to Zero ----------------------------
 
     // Create logo
-    this.raceToZeroLogo = new PIXI.Sprite(PIXI.loader.resources["images/racetozerologo.png"].texture);
+    this.raceToZeroLogo = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["racetozerologo.png"]);
 
     // Set logo to be interactive as a button
     this.raceToZeroLogo.interactive = this.raceToZeroLogo.buttonMode = true;
@@ -65,7 +65,7 @@ function Affiliate() {
     //----------------- Captain Plan-it ----------------------------
 
     // Make logo
-    this.captainPlanLogo = new PIXI.Sprite(PIXI.loader.resources["images/cp2.png"].texture);
+    this.captainPlanLogo = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["cp2.png"]);
 
     // Set logo as interactive as a button
     this.captainPlanLogo.interactive = this.captainPlanLogo.buttonMode = true;
