@@ -23,10 +23,6 @@ function StageSelect() {
             this.btnWidth, this.btnHeight, "stage " + i + "\npreview placeholder",
             0xffdfba, this.btnHeight / 4);
         btn.position.set(this.btnWidth * i, 0);
-        btn.pointertap = () => {
-            if(!this.stageBtns.moving)
-                Level.open(LEVELS[i]);
-        };
 
         this.stageBtns.addChild(btn);
     }
@@ -46,6 +42,7 @@ function StageSelect() {
     // index of the current displayed button
     this.stageBtns.currentBtn = 0;
     this.stageBtns.moving = false;
+    this.stageBtns.tapSensitivity = 5;
 
     this.stageBtns.pointerdown = eventData => {
         this.stageBtns.dragData = eventData.data.getLocalPosition(this.stageBtns.parent);
@@ -54,9 +51,14 @@ function StageSelect() {
 
     this.stageBtns.pointerup = this.stageBtns.pointerupoutside = eventData => {
         this.stageBtns.dragData = this.stageBtns.moving = false;
-        let diff = this.stageBtns.x - this.stageBtns.oldX;
+        let diff = this.stageBtns.x - this.stageBtns.oldX,
+            diffAbs = Math.abs(diff);
+
+        if(diffAbs < this.stageBtns.tapSensitivity) {
+            Level.open(LEVELS[this.stageBtns.currentBtn]);
+        }
         // if scrolled more than half button width -> advance
-        if(Math.abs(diff) > this.btnWidth / 2) {
+        if(diffAbs > this.btnWidth / 2) {
             // +1 if moving right, -1 if moving left, 0 otherwise
             this.stageBtns.currentBtn -= (diff > 0) - (diff < 0);
             // check bounds
