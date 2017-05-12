@@ -472,7 +472,7 @@ function Timer(level)
 	
 	// Timer Variables
 	this.maxframe = 8;			
-	this.totalProcessTime = 120; 			// total time it takes for an item to process (120 = 2 seconds)
+	this.totalProcessTime = 180; 			// total time it takes for an item to process (3 seconds)
 	this.timerTick = this.totalProcessTime / this.maxframe;
 	this.processTimer = 0; 
 	this.currentFrame =  0;
