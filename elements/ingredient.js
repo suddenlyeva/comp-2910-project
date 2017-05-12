@@ -13,7 +13,8 @@ let KIWI_SLICE = 8;
 let YOGURT = 9;
 let FRUIT_YOGURT = 10;
 
-function makeItem(type, level) {
+// Makes an item in the level
+function makeItem(type, level) { // <- states/levels.js
 
     // Texture dictionary
 	// TODO: JSON solution for this?
@@ -48,8 +49,8 @@ function makeItem(type, level) {
 	
 	// Turns the item into waste.
     item.waste = () => {
-		level.completionData.waste++;
-        level.updateWasteInfo();
+		level.completionData.waste++;   // -> states/levels.js
+        level.updateWasteInfo();        // -> states/levels.js
         item.texture = ITEM_TEXTURES[SPLAT];
 		item.interactive = false;
     };
@@ -99,14 +100,14 @@ function makeItem(type, level) {
 	
 	// When the item is clicked.
     item.onDragStart = (event) => {
-        if(!level.isComplete) { // Lockout on level completion, maybe not needed
+        if(!level.isComplete) { // -> states/levels.js
             item.data = event.data;
             item.alpha = 0.5;
             item.dragging = true;
 			
 			// Replace previous conveyor item with a blank
-            if (level.conveyorBelt.collidesWithPoint(item.x, item.y)) {
-                level.conveyorBelt.addItemAtX(makeItem(BLANK, level), item.x);
+            if (level.conveyorBelt.collidesWithPoint(item.x, item.y)) {         // -> elements/conveyorbelt.js
+                level.conveyorBelt.addItemAtX(makeItem(BLANK, level), item.x);  // -> elements/conveyorbelt.js
             }
         }
     };
@@ -118,8 +119,9 @@ function makeItem(type, level) {
         if (item.dragging) {
 			
             // addToConveyor if on conveyor
-            if (level.conveyorBelt.collidesWithPoint(item.x, item.y) && level.conveyorBelt.getItemAtX(item.x).type == BLANK) {
-                level.conveyorBelt.addItemAtX(item, item.x);
+            if (level.conveyorBelt.collidesWithPoint(item.x, item.y) && // -> elements/conveyorbelt.js
+                level.conveyorBelt.getItemAtX(item.x).type == BLANK) {  // -> elements/conveyorbelt.js
+                level.conveyorBelt.addItemAtX(item, item.x);            // -> elements/conveyorbelt.js
             }
             else {
 				
@@ -127,8 +129,8 @@ function makeItem(type, level) {
 				
                 // Add to a processor if on one of those
                 for (let i in level.processors) {
-                    if (level.processors[i].collidesWithPoint(item.x, item.y)) {
-						addedToProcessor = level.processors[i].addItem(item);
+                    if (level.processors[i].collidesWithPoint(item.x, item.y)) {    // -> elements/processor.js
+						addedToProcessor = level.processors[i].addItem(item);       // -> elements/processor.js
                     }
                 }
 				
@@ -138,7 +140,7 @@ function makeItem(type, level) {
 				}
             }
 		
-			level.isComplete = level.checkForCompletion(); // Completion check
+			level.isComplete = level.checkForCompletion(); // -> states/levels.js
         }
 		
 		// Reset visuals and flag
