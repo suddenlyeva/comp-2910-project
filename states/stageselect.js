@@ -1,7 +1,9 @@
 "use strict";
 
+// Stage Select Screen
 function StageSelect() {
 
+    // Create Scene
     this.scene = new PIXI.Container();
 
     // Make background
@@ -20,19 +22,21 @@ function StageSelect() {
     this.btnWidth = CANVAS_WIDTH / 2;
     this.btnHeight = CANVAS_HEIGHT / 2;
     for(let i = 0; i < LEVELS.length; i++) {
-        let btn = makeSimpleButton(
+        let btn = makeSimpleButton( // -> util.js
             this.btnWidth, this.btnHeight, "stage " + i + "\npreview placeholder",
             0xffdfba, this.btnHeight / 4);
         btn.position.set(this.btnWidth * i, 0);
 
         btn.pointertap = () => {
             if(!this.stageBtns.moving)
-                Level.open(LEVELS[i]);
+                Level.open(LEVELS[i]); // -> states/levels.js
         }
 
         this.stageBtns.addChild(btn);
     }
-
+    
+    // Carousel in progress
+    
     // this.carouselMask = new PIXI.Graphics();
     // this.carouselMask.beginFill(0, 0);
     // this.carouselMask.drawRect(0, 0, this.btnWidth, this.btnHeight);
@@ -51,20 +55,20 @@ function StageSelect() {
     // if moved less than 5 units, consider it a button press
     this.stageBtns.tapSensitivity = 5;
 
-    this.stageBtns.pointerdown = eventData => {
+    this.stageBtns.pointerdown = (eventData) => {
         this.stageBtns.dragData = eventData.data.getLocalPosition(this.stageBtns.parent);
         this.stageBtns.oldX = this.stageBtns.x;
         // necessary to stop movement on tap, different from .moving
         this.stageBtns.pressedDown = true;
     };
 
-    this.stageBtns.pointerup = this.stageBtns.pointerupoutside = eventData => {
+    this.stageBtns.pointerup = this.stageBtns.pointerupoutside = (eventData) => {
         this.stageBtns.dragData = this.stageBtns.moving = this.stageBtns.pressedDown = false;
         let diff = this.stageBtns.x - this.stageBtns.oldX,
             diffAbs = Math.abs(diff);
 
         if(diffAbs < this.stageBtns.tapSensitivity) {
-            Level.open(LEVELS[this.stageBtns.currentBtn]);
+            Level.open(LEVELS[this.stageBtns.currentBtn]); // -> states/levels.js
         }
         // if scrolled more than half button width -> advance
         if(diffAbs > this.btnWidth / 2) {
@@ -94,9 +98,9 @@ function StageSelect() {
     };
 
     // ---------------
-    this.backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50);
+    this.backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
     this.backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
-    this.backToMainMenu.pointertap = MainMenu.open;
+    this.backToMainMenu.pointertap = MainMenu.open; // -> states/mainmenu.js
 
     this.scene.addChild(this.background);
     this.scene.addChild(this.stageBtns);
@@ -140,6 +144,7 @@ function StageSelect() {
     };
 }
 
+// Function to open. Stage Select is singleton
 StageSelect.open = () => {
     if(StageSelect.instance == null) {
         StageSelect.instance = new StageSelect();
