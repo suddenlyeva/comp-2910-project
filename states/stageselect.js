@@ -27,20 +27,21 @@ function StageSelect() {
             if(!this.stageBtns.moving)
                 Level.open(LEVELS[i]);
         };
+
         this.stageBtns.addChild(btn);
     }
 
-    this.carouselMask = new PIXI.Graphics();
-    this.carouselMask.beginFill(0, 0);
-    this.carouselMask.drawRect(0, 0, this.btnWidth, this.btnHeight);
-    this.carouselMask.endFill();
+    // this.carouselMask = new PIXI.Graphics();
+    // this.carouselMask.beginFill(0, 0);
+    // this.carouselMask.drawRect(0, 0, this.btnWidth, this.btnHeight);
+    // this.carouselMask.endFill();
 
-    this.stageBtns.mask = this.carouselMask;
+    // this.stageBtns.mask = this.carouselMask;
     this.stageBtns.initialX = this.stageBtns.targetX = CANVAS_WIDTH / 2 - this.btnWidth / 2;
     this.stageBtns.position.set(CANVAS_WIDTH / 2 - this.btnWidth / 2,
         CANVAS_HEIGHT / 2 - this.btnHeight / 2);
     // same position for mask
-    this.carouselMask.position.set(this.stageBtns.x, this.stageBtns.y);
+    // this.carouselMask.position.set(this.stageBtns.x, this.stageBtns.y);
     this.stageBtns.interactive = this.stageBtns.buttonMode = true;
     // index of the current displayed button
     this.stageBtns.currentBtn = 0;
@@ -86,21 +87,41 @@ function StageSelect() {
 
     this.scene.addChild(this.background);
     this.scene.addChild(this.stageBtns);
-    this.scene.addChild(this.carouselMask);
+    // this.scene.addChild(this.carouselMask);
     this.scene.addChild(this.backToMainMenu);
 
     this.stageBtns.deceleration = 10;
-    this.stageBtns.epsilon = 1;
+    this.stageBtns.posEpsilon = 1;
+
+    this.stageBtns.updateDisplay = () => {
+        for(let i = 0; i < this.stageBtns.children.length; i++) {
+            // button position on the scene
+            let btnPos = this.stageBtns.x + this.stageBtns.children[i].x;
+            // optimization: only process the visible buttons
+            if(btnPos + this.btnWidth < 0) continue;
+            if(btnPos > CANVAS_WIDTH) break;
+
+            // magic
+            let ratioFromTarget = this.btnWidth /
+                (this.btnWidth + Math.abs(btnPos - this.stageBtns.initialX));
+            this.stageBtns.children[i].alpha = ratioFromTarget;
+        }
+    }
+
+    // initial carousel display
+    this.stageBtns.updateDisplay();
 
     this.update = () => {
-        if(!this.stageBtns.moving && this.stageBtns.x !== this.stageBtns.targetX) {
-            let diff = this.stageBtns.x - this.stageBtns.targetX;
-            if(Math.abs(diff) < this.stageBtns.epsilon) {
-                this.stageBtns.x = this.stageBtns.targetX;
-            } else {
-                this.stageBtns.x -= (diff / this.stageBtns.deceleration) * TICKER.deltaTime;
+        let posDiff = this.stageBtns.x - this.stageBtns.targetX;
+        if(posDiff !== 0) {
+            if(!this.stageBtns.moving) {
+                this.stageBtns.x =
+                    Math.abs(posDiff) < this.stageBtns.posEpsilon ?
+                    this.stageBtns.targetX :
+                    this.stageBtns.x - (posDiff / this.stageBtns.deceleration) * TICKER.deltaTime;
             }
         }
+        this.stageBtns.updateDisplay();
     };
 }
 
