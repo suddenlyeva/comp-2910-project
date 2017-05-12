@@ -33,13 +33,13 @@ function MainMenu() {
     this.distFromEdge = 200;
     this.buttonWidth = CANVAS_WIDTH / 2 - this.distFromEdge - 20; // 20 between buttons
     this.buttonHeight = CANVAS_HEIGHT / 2;
-    this.playButton = makeSimpleButton(this.buttonWidth, this.buttonHeight,
+    this.playButton = makeSimpleButton(this.buttonWidth, this.buttonHeight, // -> util.js
         "play", 0xb3ecec, this.buttonHeight / 2, 4);
-    this.optionsButton = makeSimpleButton(this.buttonWidth, this.buttonHeight,
+    this.optionsButton = makeSimpleButton(this.buttonWidth, this.buttonHeight, // -> util.js
         "options", 0x94b8b8, this.buttonHeight / 2, 4);
-    // this.fullScreenButton = makeSimpleButton(100, 50, "full screen", 0x94b8b8, 50);
+    // this.fullScreenButton = makeSimpleButton(100, 50, "full screen", 0x94b8b8, 50); // -> util.js
 
-    this.moreGamesButton = makeSimpleButton(200, 50, "more games", 0xFFFF66, 75);
+    this.moreGamesButton = makeSimpleButton(200, 50, "more games", 0xFFFF66, 75); // -> util.js
 
     this.playButton.position.set(this.distFromEdge,
         CANVAS_HEIGHT / 2 - this.playButton.height / 2);
