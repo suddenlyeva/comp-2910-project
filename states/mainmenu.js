@@ -58,7 +58,7 @@ function MainMenu() {
     });
 
     // Options button opens an options panel
-    this.optionsButton.on("pointertap", OptionsMenu.open);
+    this.optionsButton.on("pointertap", OptionsMenu.open); // -> states/optionsmenu.js
 
     // this.fullScreenButton.pointertap = toggleFullScreen;
 
