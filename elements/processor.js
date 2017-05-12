@@ -235,6 +235,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			this.mOutputItem = makeItem(recipeOrder.GetOutput(), level);
 			
 			if(level.isFinalItem(this.mOutputItem.type)) {
+				// TODO: level.poof
 				this.mOutputItem.interactive = false;
 				level.completionData.itemsComplete.push(recipeOrder.GetOutput());
 			}
