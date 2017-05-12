@@ -32,13 +32,13 @@ function Credits() {
 
     //Create button
 
-    this.affiliateButton = makeSimpleButton(300, 100, "more games", 0xFFFF66, 100);
+    this.affiliateButton = makeSimpleButton(300, 100, "more games", 0xFFFF66, 100); // -> util.js
 
     //Position button
 
     this.affiliateButton.position.set((CANVAS_WIDTH / 2) - 170, (CANVAS_HEIGHT / 2) + 200);
 
-    this.affiliateButton.pointertap = Affiliate.open;
+    this.affiliateButton.pointertap = Affiliate.open; // -> states/affiliate.js
 
     // Add to scene
     this.scene.addChild(this.txtThankYou);
@@ -59,6 +59,7 @@ function Credits() {
     };
 }
 
+// Function to open. Credits page is singleton
 Credits.open = () => {
 
     if(Credits.instance == null) {
