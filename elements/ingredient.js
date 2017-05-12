@@ -5,6 +5,12 @@ let SPLAT = 1;
 let APPLE = 2;
 let APPLE_SLICE = 3;
 let BANANA = 4;
+let ORANGE = 5;
+let ORANGE_SLICE = 6;
+let KIWI = 7;
+let KIWI_SLICE = 8;
+let YOGURT = 9;
+let FRUIT_YOGURT = 10;
 
 function makeItem(type, level) {
 
@@ -15,7 +21,13 @@ function makeItem(type, level) {
     ITEM_TEXTURES[APPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"];
     ITEM_TEXTURES[APPLE_SLICE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple-slice.png"];
     ITEM_TEXTURES[BANANA] = PIXI.loader.resources["images/spritesheet.json"].textures["banana.png"];
-    
+    ITEM_TEXTURES[ORANGE] = PIXI.loader.resources["images/spritesheet.json"].textures["orange.png"];
+    ITEM_TEXTURES[ORANGE_SLICE] = PIXI.loader.resources["images/spritesheet.json"].textures["orange-slice.png"];
+    ITEM_TEXTURES[KIWI] = PIXI.loader.resources["images/spritesheet.json"].textures["kiwi.png"];
+    ITEM_TEXTURES[KIWI_SLICE] = PIXI.loader.resources["images/spritesheet.json"].textures["kiwi-slice.png"];
+    ITEM_TEXTURES[YOGURT] = PIXI.loader.resources["images/spritesheet.json"].textures["yogurt.png"];
+    ITEM_TEXTURES[FRUIT_YOGURT] = PIXI.loader.resources["images/spritesheet.json"].textures["fruit-yogurt.png"];
+
     // the argument of textures should be replaced with textureStr after implementing index
     let item = new PIXI.Sprite(
         ITEM_TEXTURES[type]

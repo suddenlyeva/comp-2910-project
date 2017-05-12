@@ -44,6 +44,38 @@ let LEVELS = [
 		],
 		
 		finalItems: [BANANA]
+    },
+    {id: 2, name: "fruit yogurt",
+
+        wasteLimit: 5,
+
+        conveyorBelt: {
+            items: [ORANGE, BLANK, KIWI, KIWI, BLANK, ORANGE, ORANGE, BLANK, BLANK, BLANK, YOGURT],
+            speed: 1.2
+        },
+
+        processors: [
+            {
+                recipe: [ORANGE],
+                result: ORANGE_SLICE,
+                x: 1*TILES_PX,
+                y: 2*TILES_PX
+            },
+            {
+                recipe: [KIWI],
+                result: KIWI_SLICE,
+                x: 7*TILES_PX,
+                y: 2*TILES_PX
+            },
+            {
+                recipe: [ORANGE_SLICE, KIWI_SLICE, YOGURT],
+                result: FRUIT_YOGURT,
+                x: 1*TILES_PX,
+                y: 5*TILES_PX
+            }
+        ],
+
+        finalItems: [FRUIT_YOGURT]
     }
 ];
 
