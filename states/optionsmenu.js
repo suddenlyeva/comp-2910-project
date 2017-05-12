@@ -1,9 +1,13 @@
 "use strict";
 
+// Options menu overlayable
 function OptionsMenu() {
+    
+    // Scale proportions
     this.width  = CANVAS_WIDTH  / 1.5;
     this.height = CANVAS_HEIGHT / 1.5;
-
+    
+    // Create Scene
     this.scene = new PIXI.Container();
 
     // Make Panel and Buttons
@@ -12,15 +16,15 @@ function OptionsMenu() {
     this.panel.beginFill(0xfff3ad);
     this.panel.drawRect(0, 0, this.width, this.height);
     this.panel.endFill();
-    this.okButton = makeSimpleButton(150, 90, "ok", 0xf00e46, 120);
+    this.okButton = makeSimpleButton(150, 90, "ok", 0xf00e46, 120); // -> util.js
 
     this.txtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 200, fill: 0x0
     });
     this.soundTxt = new PIXI.Text("sound", this.txtStyle);
-    this.soundVol = makeSlider(this.panel.width - 400, 100);
+    this.soundVol = makeSlider(this.panel.width - 400, 100); // -> util.js
     this.musicTxt = new PIXI.Text("music", this.txtStyle);
-    this.musicVol = makeSlider(this.soundVol.width, this.soundVol.height);
+    this.musicVol = makeSlider(this.soundVol.width, this.soundVol.height); // -> util.js
 
     this.panel.interactive = true;
 
@@ -31,7 +35,8 @@ function OptionsMenu() {
     this.scene.addChild(this.soundVol);
     this.scene.addChild(this.musicTxt);
     this.scene.addChild(this.musicVol);
-
+    
+    // Position everything
     this.okButton.position.set(
         this.width / 2 - this.okButton.width / 2, this.height - this.okButton.height - 20);
     this.soundVol.position.set(
@@ -51,6 +56,7 @@ function OptionsMenu() {
     this.okButton.on("pointertap", OptionsMenu.close); 
 }
 
+// Function to open. Options Menu is singleton
 OptionsMenu.open = () => {
     if(OptionsMenu.instance == null) {
         OptionsMenu.instance = new OptionsMenu();
@@ -61,6 +67,7 @@ OptionsMenu.open = () => {
     SCENE.addChild(OptionsMenu.instance.scene);
 };
 
+// Close function removes itself from the scene
 OptionsMenu.close = () => {
     if(OptionsMenu.instance != null && OptionsMenu.instance.scene.parent != null) {
         OptionsMenu.instance.scene.parent.removeChild(OptionsMenu.instance.scene);

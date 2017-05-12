@@ -1,10 +1,13 @@
 "use strict";
 
+// Size of one tile unit
+// TODO: Move to better spot
 let TILES_PX = 80;
 
-// JSON
+// JSON Level Data
+// current reset button implementation requires id to be equal to index
 let LEVELS = [
-    // current reset button implementation requires id to be equal to index
+
     {id: 0, name: "tutorial",
     
         wasteLimit: 3,
@@ -106,7 +109,6 @@ function Level(data) {
         16*TILES_PX,
         9*TILES_PX
     );
-    
     this.scene.addChild(this.background);
 
     // Add topbar
@@ -115,7 +117,6 @@ function Level(data) {
         16*TILES_PX,
         TILES_PX
     );
-    
     this.scene.addChild(this.topbar);
 
     // Add Level txt
@@ -126,21 +127,21 @@ function Level(data) {
     this.levelTxt.position.set(TILES_PX * 7, 0);
     this.scene.addChild(this.levelTxt);
 
+    // Add Score txt
     this.txtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 192, fill: 0x0
     });
-
-    // Add Score txt
     this.scoreTxt = new PIXI.Text(padZeroForInt(0, 5), this.txtStyle);
     this.scoreTxt.anchor.set(0, 0.3);
     this.scoreTxt.position.set(TILES_PX * 13, 0);
     this.scene.addChild(this.scoreTxt);
 	
+    // Adds to the Level's score
 	this.addScore = (addedScore) => {
 		this.completionData.score += addedScore;
 		this.scoreTxt.text = padZeroForInt(this.completionData.score, 5);
 	};
-
+    
     // Add Pause Button
     this.isPaused = false;
     this.pauseButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["pause-on.png"]);
@@ -150,7 +151,7 @@ function Level(data) {
     this.pauseButton.on("pointertap", () => {
         this.pauseButton.texture = PIXI.loader.resources["images/spritesheet.json"].textures["pause-off.png"];
         this.isPaused = true;
-        PauseMenu.open(this);
+        PauseMenu.open(this); // -> states/pausemenu.js
     });
     this.scene.addChild(this.pauseButton);
     
@@ -170,12 +171,12 @@ function Level(data) {
     };
     
     // Add Gear
-    this.gear = makeGear("m", data.conveyorBelt.speed);
+    this.gear = makeGear("m", data.conveyorBelt.speed); // -> util.js
     this.gear.anchor.set(0.5);
     this.gear.position.set(TILES_PX / 2, TILES_PX / 2);
     this.scene.addChild(this.gear);
     
-    // Add Constantine
+    // Add Constantine the Apple
     this.constantine = new PIXI.Sprite(
         PIXI.loader.resources["images/spritesheet.json"].textures["constantine-happy.png"]
     );
@@ -202,14 +203,14 @@ function Level(data) {
 	this.processors = [];
 	for (let i in data.processors) {
 		this.processors.push(
-            new Processor( new Recipe(data.processors[i].recipe, data.processors[i].result, data.processors[i].score), this )
+            new Processor( new Recipe(data.processors[i].recipe, data.processors[i].result, data.processors[i].score), this ) // -> elements/processor.js
 		);
-        this.processors[i].SetPosition(data.processors[i].x, data.processors[i].y);
-        this.processors[i].Spawn();
+        this.processors[i].SetPosition(data.processors[i].x, data.processors[i].y); // -> elements/processor.js
+        this.processors[i].Spawn();                                                 // -> elements/processor.js
 	}
     
 	// Load Conveyor Belt
-    this.conveyorBelt = new ConveyorBelt(data.conveyorBelt.items, data.conveyorBelt.speed, this);
+    this.conveyorBelt = new ConveyorBelt(data.conveyorBelt.items, data.conveyorBelt.speed, this); // -> elements/conveyorbelt.js
 	
 	// Completion trackers
 	this.isComplete = false;
@@ -256,7 +257,7 @@ function Level(data) {
         // Update scene objects
         this.conveyorBelt.update();
         for (let i in this.processors) {
-            this.processors[i].update();
+            this.processors[i].update(); // elements/processor.js
         }
         this.gear.update();
         this.hpBar.update();
@@ -275,7 +276,7 @@ function Level(data) {
 			
 			// Move to Stage Complete
 			if (this.timeOut <= 0) {
-				StageComplete.open(this.completionData);
+				StageComplete.open(this.completionData); // -> states/stagecomplete.js
 			}
 		}
         
@@ -288,8 +289,9 @@ function Level(data) {
     };
 }
 
+// Function to open. Level recreates itself
+// Takes in level data
 Level.open = (data) => {
-    // create new instance every time to prevent saving progress
     Level.instance = new Level(data);
 
     SCENE = Level.instance.scene;

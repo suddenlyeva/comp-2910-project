@@ -34,7 +34,7 @@ function Credits() {
 
     // Create button to affiliate page
 
-    this.affiliateButton = makeSimpleButton(300, 100, "more games", 0xFFFF66, 100);
+    this.affiliateButton = makeSimpleButton(300, 100, "more games", 0xFFFF66, 100); // -> util.js
 
     // Position the button
 
@@ -42,7 +42,7 @@ function Credits() {
 
     // Opens affiliate page when the button is pressed or clicked
 
-    this.affiliateButton.pointertap = Affiliate.open;
+    this.affiliateButton.pointertap = Affiliate.open; // -> states/affiliate.js
 
     // Add to scene
     this.scene.addChild(this.txtThankYou);
@@ -64,6 +64,7 @@ function Credits() {
     };
 }
 
+// Function to open. Credits page is singleton
 Credits.open = () => {
 
     if(Credits.instance == null) {

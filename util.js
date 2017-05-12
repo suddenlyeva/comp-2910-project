@@ -6,66 +6,95 @@
 // use this until we have "real" buttons
 // font properties and line style are fixed
 function makeSimpleButton(width, height, text, color, textSize = 20, borderWidth = 2) {
+    
+    // Create Display Objects
     let btnCont = new PIXI.Container();
     let btn = new PIXI.Graphics();
     let txt = new PIXI.Text(text, {
         fontFamily: FONT_FAMILY, fontSize: textSize, fill: "black"
     });
-
+    
+    // Style
     btn.lineStyle(borderWidth, 0x000000, 1);
     btn.beginFill(color);
     btn.drawRect(0, 0, width, height);
     btn.endFill();
-
+    
+    // Group in Container
     btnCont.addChild(btn);
     btnCont.addChild(txt);
-
+    
+    // Set Text
     txt.position.set(width / 2 - txt.width / 2, height / 2 - textSize / 2);
-
+    
+    // Make Interactive
     btnCont.interactive = true;
     btnCont.buttonMode = true;
+    
+    // Return to caller
     return btnCont;
 }
 
+// Creates a scalable progress bar
 function makeProgressBar(width, height, padding, bgColor, fgColor) {
+    
+    // Create Container
     let progressBar = new PIXI.Container();
-
+    
+    // Create Background
     let bgProgress = new PIXI.Graphics();
     bgProgress.beginFill(bgColor);
     bgProgress.drawRect(0, 0, width, height);
     bgProgress.endFill();
-
+    
+    // Create Foreground
     let fgProgress = new PIXI.Graphics();
     fgProgress.beginFill(0xFFFFFF);
     fgProgress.tint = fgColor;
     fgProgress.drawRect(padding, padding, width - padding * 2, height - padding * 2);
     fgProgress.endFill();
     fgProgress.scale.x = 0;
-
+    
+    // Add to container
     progressBar.addChild(bgProgress);
     progressBar.addChild(fgProgress);
-
+    
+    // Functions
+    
     // let user control fgLoading width through scale
-    progressBar.xScale = (s) => { fgProgress.scale.x = s; };
-    // get the current scale
-    progressBar.getScale = () => {return fgProgress.scale.x; };
-    // change the bar's color
+    progressBar.xScale = (s) => {
+        fgProgress.scale.x = s; 
+    };
+    
+    // Get the current scale
+    progressBar.getScale = () => {
+        return fgProgress.scale.x; 
+    };
+    
+    // Change the bar's color
     progressBar.setColor = (color) => {
         fgProgress.tint = color;
-    }
-
+    };
+    
+    // Return to Caller
     return progressBar;
 }
 
+// Builds a Volume Slider
 function makeSlider(width, height, sliderThickness = height / 6, handleWidth = height / 2) {
+    
+    // Create Container
     let sliderObj = new PIXI.Container();
-
+    
+    // Define Colors
     let colorSound = 0x77f441,
         colorMuted = 0xff1a1a,
         colorDrag  = 0xd7f442;
-    // using handleWidth because handle.width is for some reason inaccurate
+        
+    // Using handleWidth because handle.width is for some reason inaccurate
     let endOfSlider = width - handleWidth;
-
+    
+    // Style and Draw Handle
     let handle = new PIXI.Graphics();
     handle.lineStyle(4, 0x0, 1);
     handle.beginFill(0xFFFFFF);
@@ -74,51 +103,67 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
     handle.x = endOfSlider;
     handle.tint = colorSound;
     handle.interactive = handle.buttonMode = true;
-
+    
+    // Style and draw Slider
     let slider = new PIXI.Graphics();
     slider.beginFill(0x0);
     slider.drawRect(0, 0, width, sliderThickness);
     slider.endFill();
     slider.y = height / 2 - slider.height / 2;
 
-    // clicking on the slider brings handle position to that point
+    // Clicking on the slider brings handle position to that point
     let clickableArea = new PIXI.Graphics();
     clickableArea.beginFill(0, 0);
     clickableArea.drawRect(0, 0, width, height)
     clickableArea.endFill();
     clickableArea.interactive = clickableArea.buttonMode = true;
 
-    handle.pointerdown = eventData => {
-        // record cursor position inside handle
+    // Functions
+    
+    // Records cursor position inside handle.dragData
+    handle.pointerdown = (eventData) => {
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
         handle.tint = colorDrag;
     };
-
+    
+    // Change color on mute
     handle.pointerup = handle.pointerupoutside =
         clickableArea.pointerup = clickableArea.pointerupoutside =
-        eventData => {
-            handle.dragData = false;
-            handle.tint = handle.x === slider.x ? colorMuted : colorSound;
+        (eventData) => {
+            handle.dragData = false; // Stop dragging
+            handle.tint = handle.x === slider.x ? colorMuted : colorSound; // IF the handle is on the left edge of slider
         };
-
-    handle.pointermove = eventData => {
+    
+    // Move the handle on drag
+    handle.pointermove = (eventData) => { 
+    
+        // If it's dragging:
         if(handle.dragData) {
+            
+            // Set the color
             handle.tint = colorDrag;
+            
+            // Define a new position
             let newPos = eventData.data.getLocalPosition(handle.parent);
+            
             // xAdjusted is old handle.x + difference between new and old cursor position
             let xAdjusted = handle.x + newPos.x - handle.dragData.x;
-            if(xAdjusted < slider.x) {
+            
+            // Bounds checking
+            if(xAdjusted < slider.x) {              // Past the left
                 handle.x = slider.x;
-            } else if(xAdjusted > endOfSlider) {
+            } else if(xAdjusted > endOfSlider) {    // Past the end of slider
                 handle.x = endOfSlider;
-            } else {
+            } else {                                // Anywhere in the middle
                 handle.x = xAdjusted;
                 handle.dragData = newPos;
             }
         }
     };
-
-    clickableArea.pointerdown = eventData => {
+    
+    // Also move when clicking anywhere on the clickable area
+    // Separate so that clicking on the handle doesn't cause it to snap
+    clickableArea.pointerdown = (eventData) => {
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
         let xAdjusted = handle.dragData.x - handle.width / 2;
         if(xAdjusted < slider.x) {
@@ -129,39 +174,31 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
             handle.x = xAdjusted;
         }
     };
-
+    
+    // Add to container
     sliderObj.addChild(slider);
     sliderObj.addChild(clickableArea);
     sliderObj.addChild(handle);
-
+    
+    // Return to caller
     return sliderObj;
 }
 
-// Point to box collision
-function testHitRectangle(pointObj, rectObj) {
-    let xPoint = pointObj.x;
-    let yPoint = pointObj.y;
-    let xMin = rectObj.x - rectObj.width/2;
-    let xMax = rectObj.x + rectObj.width/2;
-    let yMin = rectObj.y - rectObj.height/2;
-    let yMax = rectObj.y + rectObj.height/2;
-
-    return (xMin < xPoint && xPoint < xMax) && (yMin < yPoint && yPoint < yMax);
-}
-
+// Rescales the screen up to a certain threshold
 function sceneResize(stretchThreshold = 0) {
     // stretchThreshold - how much scene dimensions can deviate from the desired aspect ratio
     // 0.2 means the scene can be stretched by a maximum of 20% vertically or horizontally
     let targetAspectRatio  = CANVAS_WIDTH / CANVAS_HEIGHT,
         currentAspectRatio = window.innerWidth / window.innerHeight;
-
-    if(targetAspectRatio < currentAspectRatio) {
+    
+    if(targetAspectRatio < currentAspectRatio) {                         // Preserve Vertical ratio
         SCENE.scale.y = window.innerHeight / CANVAS_HEIGHT;
-        SCENE.scale.x = Math.min(SCENE.scale.y * (1 + stretchThreshold),
-            window.innerWidth / CANVAS_WIDTH);
-    } else {
-        SCENE.scale.x = window.innerWidth / CANVAS_WIDTH;
-        SCENE.scale.y = Math.min(SCENE.scale.x * (1 + stretchThreshold),
+        SCENE.scale.x = Math.min(SCENE.scale.y * (1 + stretchThreshold), // Use aspect ratio if past Stretch Threshold
+            window.innerWidth / CANVAS_WIDTH);                           // Else stretch the screen
+            
+    } else {                                                             // Preserve Horizontal Ratio
+        SCENE.scale.x = window.innerWidth / CANVAS_WIDTH;                
+        SCENE.scale.y = Math.min(SCENE.scale.x * (1 + stretchThreshold), // Similar Formula as Vertical
             window.innerHeight / CANVAS_HEIGHT);
     }
 }
@@ -171,12 +208,12 @@ function sceneResize(stretchThreshold = 0) {
 function makeGear(size, speed) {
     
     // Constant Controls
-    let FRAMECOUNT = 12;
-    let TIMEOUT = 2;
+    let frameCount = 12;
+    let timeOut = 2;
     
     // Save textures
     let frames = [];
-    for (let i = 0; i < FRAMECOUNT; i++) {
+    for (let i = 0; i < frameCount; i++) {
         frames.push(
             PIXI.loader.resources["images/spritesheet.json"].textures["gear-" + size + "-" + i + ".png"]
         );
@@ -190,6 +227,8 @@ function makeGear(size, speed) {
     gear.currentFrame = 0;
     gear.isNextFrame = false;
     
+    // Functions
+    
     // Update
     gear.update = () => {
         
@@ -197,26 +236,28 @@ function makeGear(size, speed) {
         gear.ticker += speed * TICKER.deltaTime;
         
         // Increment frames, iterate if very fast
-        while (gear.ticker >= TIMEOUT) {
+        while (gear.ticker >= timeOut) {
             gear.currentFrame ++;
-            gear.ticker -= TIMEOUT;
+            gear.ticker -= timeOut;
             gear.isNextFrame = true;
         }
         
         // Reset
-        if (gear.currentFrame >= FRAMECOUNT) {
-            gear.currentFrame -= FRAMECOUNT;
+        if (gear.currentFrame >= frameCount) {
+            gear.currentFrame -= frameCount;
         }
         
         // Change Texture, check is for optimization
         if (gear.isNextFrame) {
             gear.texture = frames[gear.currentFrame];
         }
-    }
+    };
     
+    // Return to caller
     return gear;
 }
 
+// Adds zeros to the beginning of a number as string
 function padZeroForInt(intToPad, digits) {
     let paddedNum = "";
     for(let i = 0; i < digits; i++) {
@@ -226,6 +267,8 @@ function padZeroForInt(intToPad, digits) {
     return paddedNum;
 }
 
+// TODO: Well supported fullscreen functionality 
+//
 // function toggleFullScreen() {
 //     var doc = window.document;
 //     var docEl = doc.documentElement;
