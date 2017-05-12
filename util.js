@@ -184,6 +184,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
     return sliderObj;
 }
 
+// Rescales the screen up to a certain threshold
 function sceneResize(stretchThreshold = 0) {
     // stretchThreshold - how much scene dimensions can deviate from the desired aspect ratio
     // 0.2 means the scene can be stretched by a maximum of 20% vertically or horizontally
