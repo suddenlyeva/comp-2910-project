@@ -73,7 +73,7 @@ function ConveyorBelt(itemTypes, speed, level) {
         item.y = CANVAS_HEIGHT - SPRITE_HALF_PX;
 
         // Normalize to near bottom right corner
-        item.x = CANVAS_WIDTH + this.deltaX - TILES_PX - SPRITE_HALF_PX;
+        item.x = CANVAS_WIDTH + this.deltaX - TILES_PX*2;
 
         // Shift left by index
         item.x -= TILES_PX * index;
@@ -84,7 +84,7 @@ function ConveyorBelt(itemTypes, speed, level) {
     
     // Returns an index based on an X position
     this.getIndexFromX = (x) => {
-        return Math.floor((CANVAS_WIDTH + this.deltaX - x) / TILES_PX) - 1;
+        return Math.floor((CANVAS_WIDTH - SPRITE_HALF_PX + this.deltaX - x) / TILES_PX) - 1;
     }
     
     // Returns an item based on index
@@ -99,7 +99,7 @@ function ConveyorBelt(itemTypes, speed, level) {
     
     // Point Collision
     this.collidesWithPoint = (x,y) => {
-        return (0 < x && x < CANVAS_WIDTH - TILES_PX) && (CANVAS_HEIGHT - TILES_PX < y && y < CANVAS_HEIGHT);
+        return (0 < x && x < CANVAS_WIDTH - SPRITE_HALF_PX) && (CANVAS_HEIGHT - TILES_PX < y && y < CANVAS_HEIGHT);
     }
     
     // Finish Constructor
@@ -113,7 +113,7 @@ function ConveyorBelt(itemTypes, speed, level) {
 		);
 		
         beltTile.y = CANVAS_HEIGHT - TILES_PX;
-        beltTile.x = CANVAS_WIDTH - TILES_PX - SPRITE_HALF_PX;
+        beltTile.x = CANVAS_WIDTH - TILES_PX;
         beltTile.x -= TILES_PX * i;
         this.belt.addChild(beltTile);
     }
@@ -122,8 +122,9 @@ function ConveyorBelt(itemTypes, speed, level) {
 	let trashPit = new PIXI.Sprite(
 			PIXI.loader.resources["images/spritesheet.json"].textures["trash-pit.png"]
 	);
-	trashPit.y = CANVAS_HEIGHT - TILES_PX;
-	trashPit.x = CANVAS_WIDTH - trashPit.width;
+    trashPit.anchor.set(0.5);
+	trashPit.y = CANVAS_HEIGHT - 40;
+	trashPit.x = CANVAS_WIDTH - 48;
 	
     // Add belt background
     level.scene.addChild(this.belt);

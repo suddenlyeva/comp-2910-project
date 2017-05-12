@@ -119,7 +119,7 @@ function Level(data) {
     this.hpBar.update = () => {
         // Smoothly Scale HP
         if ( this.hpBar.getScale() > (1 - this.completionData.waste / data.wasteLimit)) {
-            this.hpBar.xScale(this.hpBar.getScale() * 0.97 );
+            this.hpBar.xScale(this.hpBar.getScale() * 0.975 );
         }
     };
     
