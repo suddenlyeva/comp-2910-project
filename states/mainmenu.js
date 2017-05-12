@@ -64,7 +64,7 @@ function MainMenu() {
 
     //more games button opens the affiliate page
 
-    this.moreGamesButton.on("pointertap", Affiliate.open);
+    this.moreGamesButton.on("pointertap", Affiliate.open); // -> states/affiliate.js
 
     // Add to scene
     this.scene.addChild(this.background);
