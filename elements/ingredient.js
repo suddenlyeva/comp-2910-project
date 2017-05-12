@@ -57,12 +57,24 @@ function makeItem(type, level) {
 	// Item fades into the air
 	item.fadeAway = () => {
 		
+		let fadeAwaySprite = new PIXI.Sprite(
+			PIXI.loader.resources["images/spritesheet.json"].textures["fade-backing.png"]
+		);
+		
+		fadeAwaySprite.anchor.set(0.5);
+		fadeAwaySprite.position.set(item.x, item.y);
+		item.addChild(fadeAwaySprite);
+		
 		// For asynchronous animation
 		let fadeAwayTicker = new PIXI.ticker.Ticker();
+		let alphaTimeOut = 60; // 1 second
 		
 		fadeAwayTicker.add( (delta) => {
 			item.y -= delta; // Float up
-			item.alpha -= 0.02 * delta; // Fade Out
+			alphaTimeOut -= delta;
+			if (alphaTimeOut <= 0) {
+				item.alpha -= 0.02 * delta; // Fade Out
+			}
 			
 			// Kill after faded out.
 			 if (item.alpha <= 0.02) {
