@@ -259,11 +259,10 @@ function makeGear(size, speed) {
 
 // Adds zeros to the beginning of a number as string
 function padZeroForInt(intToPad, digits) {
-    let paddedNum = "";
-    for(let i = 0; i < digits; i++) {
-        paddedNum += "0";
+    let paddedNum = "" + intToPad;
+    while(paddedNum.length < digits) {
+        paddedNum = "0" + paddedNum;
     }
-    paddedNum = (paddedNum + intToPad).slice(-digits);
     return paddedNum;
 }
 
