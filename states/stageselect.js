@@ -24,6 +24,11 @@ function StageSelect() {
             0xffdfba, this.btnHeight / 4);
         btn.position.set(this.btnWidth * i, 0);
 
+        btn.pointertap = () => {
+            if(!this.stageBtns.moving)
+                Level.open(LEVELS[i]);
+        }
+
         this.stageBtns.addChild(btn);
     }
 
