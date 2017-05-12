@@ -16,6 +16,7 @@ function StageSelect() {
     // ---------- carousel
     this.stageBtns = new PIXI.Container();
 
+    // initialize buttons
     this.btnWidth = CANVAS_WIDTH / 2;
     this.btnHeight = CANVAS_HEIGHT / 2;
     for(let i = 0; i < LEVELS.length; i++) {
@@ -52,10 +53,12 @@ function StageSelect() {
     this.stageBtns.pointerdown = eventData => {
         this.stageBtns.dragData = eventData.data.getLocalPosition(this.stageBtns.parent);
         this.stageBtns.oldX = this.stageBtns.x;
+        // necessary to stop movement on tap, different from .moving
+        this.stageBtns.pressedDown = true;
     };
 
     this.stageBtns.pointerup = this.stageBtns.pointerupoutside = eventData => {
-        this.stageBtns.dragData = this.stageBtns.moving = false;
+        this.stageBtns.dragData = this.stageBtns.moving = this.stageBtns.pressedDown = false;
         let diff = this.stageBtns.x - this.stageBtns.oldX,
             diffAbs = Math.abs(diff);
 
@@ -78,6 +81,7 @@ function StageSelect() {
     };
 
     this.stageBtns.pointermove = eventData => {
+        this.stageBtns.pressedDown = false;
         if(this.stageBtns.dragData) {
             let newPos = eventData.data.getLocalPosition(this.stageBtns.parent);
             let xDelta = newPos.x - this.stageBtns.dragData.x;
@@ -90,17 +94,18 @@ function StageSelect() {
     // ---------------
     this.backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50);
     this.backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
-    this.backToMainMenu.on("pointertap", MainMenu.open);
+    this.backToMainMenu.pointertap = MainMenu.open;
 
     this.scene.addChild(this.background);
     this.scene.addChild(this.stageBtns);
     // this.scene.addChild(this.carouselMask);
     this.scene.addChild(this.backToMainMenu);
 
-    this.stageBtns.deceleration = 10;
-    this.stageBtns.posEpsilon = 1;
+    this.stageBtns.deceleration = 10; // ... of the movement animation
+    this.stageBtns.posEpsilon = 1; // for position comparison
 
     this.stageBtns.updateDisplay = () => {
+        // carousel alpha animation
         for(let i = 0; i < this.stageBtns.children.length; i++) {
             // button position on the scene
             let btnPos = this.stageBtns.x + this.stageBtns.children[i].x;
@@ -121,14 +126,15 @@ function StageSelect() {
     this.update = () => {
         let posDiff = this.stageBtns.x - this.stageBtns.targetX;
         if(posDiff !== 0) {
-            if(!this.stageBtns.moving) {
+            if(!this.stageBtns.moving && !this.stageBtns.pressedDown) {
+                // carousel movement animation
                 this.stageBtns.x =
                     Math.abs(posDiff) < this.stageBtns.posEpsilon ?
                     this.stageBtns.targetX :
                     this.stageBtns.x - (posDiff / this.stageBtns.deceleration) * TICKER.deltaTime;
             }
+            this.stageBtns.updateDisplay();
         }
-        this.stageBtns.updateDisplay();
     };
 }
 
