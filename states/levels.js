@@ -50,8 +50,8 @@ let LEVELS = [
         wasteLimit: 5,
 
         conveyorBelt: {
-            items: [ORANGE, BLANK, KIWI, KIWI, BLANK, ORANGE, ORANGE, BLANK, BLANK, BLANK, YOGURT],
-            speed: 1.2
+            items: [ORANGE, BLANK, KIWI, KIWI, BLANK, ORANGE, YOGURT, ORANGE, BLANK, BLANK, KIWI, YOGURT, BLANK, YOGURT],
+            speed: 1.5
         },
 
         processors: [
@@ -182,9 +182,6 @@ function Level(data) {
             this.constantine.texture = PIXI.loader.resources["images/spritesheet.json"].textures["constantine-neutral.png"];
             this.hpBar.setColor(0xFFFF22);
         }
-        if (this.completionData.waste >= data.wasteLimit) {
-            this.isComplete = true;
-        }
     };
     
 	// Identifiers
@@ -200,18 +197,6 @@ function Level(data) {
         this.processors[i].SetPosition(data.processors[i].x, data.processors[i].y);
         this.processors[i].Spawn();
 	}
-	
-    // Check all processors for processing state
-    this.processorsActive = () => {
-        for (let i in this.processors) {
-            if(this.processors[i].currentState == 1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-    }
     
 	// Load Conveyor Belt
     this.conveyorBelt = new ConveyorBelt(data.conveyorBelt.items, data.conveyorBelt.speed, this);
@@ -239,13 +224,26 @@ function Level(data) {
 	
 	// Checks if the level is over
 	this.checkForCompletion = () => {
-        if (!this.isComplete) {
-            for (let i in this.conveyorBelt.items) {
-                if (this.conveyorBelt.items[i].type != BLANK) {
-                    return false;
-                }
-            }
+		
+		// HP Check
+        if (this.completionData.waste >= data.wasteLimit) {
+            return true;
         }
+		
+		// Conveyor Check
+		for (let i in this.conveyorBelt.items) {
+			if (this.conveyorBelt.items[i].type != BLANK) {
+				return false;
+			}
+		}
+		
+		// Processor Check
+		for (let i in this.processors) {
+			if(this.processors[i].currentState > 0) { // Any active or waiting state
+				return false;
+			}
+		}
+			
 		return true;
 	};
 
@@ -272,8 +270,18 @@ function Level(data) {
         this.hpBar.update();
 		
         // Timeout on completion
-		if(this.isComplete && !this.processorsActive()) {
-			this.timeOut -= TICKER.deltaTime;
+		if(this.isComplete) {
+			
+			// Re-Authenticate
+			if (this.checkForCompletion()) {
+				
+				this.timeOut -= TICKER.deltaTime; // Tick
+				
+			} else {
+				this.timeOut = 120; // Stall if it catches a false flag.
+			}
+			
+			// Move to Stage Complete
 			if (this.timeOut <= 0) {
 				StageComplete.open(this.completionData);
 			}
