@@ -10,3 +10,5 @@ kiwi.png - same as the above
 kiwi-slice.png - same as the above
 fruit-yogurt  - same as the above
 yogurt.png - No need to credit. (Source: irasutoya http://www.irasutoya.com/2014/08/blog-post_65.html)
+
+fade-backing - <a href="http://www.freepik.com">Designed by starline / Freepik</a>

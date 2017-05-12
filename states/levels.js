@@ -18,6 +18,7 @@ let LEVELS = [
             {
                 recipe: [APPLE],
                 result: APPLE_SLICE,
+				score: 100,
                 x: 7*TILES_PX,
                 y: 3*TILES_PX
             }
@@ -38,6 +39,7 @@ let LEVELS = [
             {
                 recipe: [APPLE, APPLE],
                 result: BANANA,
+				score: 100,
                 x: 7*TILES_PX,
                 y: 4*TILES_PX
             }
@@ -58,18 +60,21 @@ let LEVELS = [
             {
                 recipe: [ORANGE],
                 result: ORANGE_SLICE,
+				score: 100,
                 x: 1*TILES_PX,
                 y: 2*TILES_PX
             },
             {
                 recipe: [KIWI],
                 result: KIWI_SLICE,
+				score: 100,
                 x: 7*TILES_PX,
                 y: 2*TILES_PX
             },
             {
                 recipe: [ORANGE_SLICE, KIWI_SLICE, YOGURT],
                 result: FRUIT_YOGURT,
+				score: 500,
                 x: 1*TILES_PX,
                 y: 5*TILES_PX
             }
@@ -80,12 +85,17 @@ let LEVELS = [
 ];
 
 function Level(data) {
-    // Score variable
-    let score = 0;
 
     // Identifiers
     this.id = data.id;
     this.name = data.name;
+	
+	// Passed to stage complete menu
+	this.completionData = {
+		score: 0,
+		waste: 0,
+		itemsComplete: []
+	};
 
 	// Declare scene
     this.scene = new PIXI.Container();
@@ -121,11 +131,15 @@ function Level(data) {
     });
 
     // Add Score txt
-    this.score = 0;
-    this.scoreTxt = new PIXI.Text(("00000" + this.score).slice(-5), this.txtStyle);
+    this.scoreTxt = new PIXI.Text(padZeroForInt(0, 5), this.txtStyle);
     this.scoreTxt.anchor.set(0, 0.3);
     this.scoreTxt.position.set(TILES_PX * 13, 0);
     this.scene.addChild(this.scoreTxt);
+	
+	this.addScore = (addedScore) => {
+		this.completionData.score += addedScore;
+		this.scoreTxt.text = padZeroForInt(this.completionData.score, 5);
+	};
 
     // Add Pause Button
     this.isPaused = false;
@@ -183,16 +197,12 @@ function Level(data) {
             this.hpBar.setColor(0xFFFF22);
         }
     };
-    
-	// Identifiers
-    this.id = data.id;
-    this.name = data.name;
 	
 	// Load processors
 	this.processors = [];
 	for (let i in data.processors) {
 		this.processors.push(
-            new Processor(new Recipe(data.processors[i].recipe, data.processors[i].result),this)
+            new Processor( new Recipe(data.processors[i].recipe, data.processors[i].result, data.processors[i].score), this )
 		);
         this.processors[i].SetPosition(data.processors[i].x, data.processors[i].y);
         this.processors[i].Spawn();
@@ -204,12 +214,6 @@ function Level(data) {
 	// Completion trackers
 	this.isComplete = false;
 	this.timeOut = 120;
-	
-	// Passed to stage complete menu
-	this.completionData = {
-		waste: 0,
-		itemsComplete: []
-	};
 	
 	// Check if an item is the level's final item.
 	this.isFinalItem = (itemType) => {
@@ -247,22 +251,10 @@ function Level(data) {
 		return true;
 	};
 
-	// Getter for score
-    this.getScore = () => {
-        return this.score;
-    };
-
-    // Setter for score
-    this.addScore = (numToAdd) => {
-        this.score += numToAdd;
-    };
-
     this.update = () => {
-        
+		
         // Update scene objects
         this.conveyorBelt.update();
-        // this.scoreTxt.text = ("00000" + this.score).slice(-5);
-        this.scoreTxt.text = padZeroForInt(this.score, 5);
         for (let i in this.processors) {
             this.processors[i].update();
         }
