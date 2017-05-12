@@ -114,7 +114,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 				this.requiredIngredients[i].alpha = 1;
 				this.recipeProgress[i] = true;
 				this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
-				
+                
 				level.scene.removeChild(droppedIngredient);
 				return true;
 			}
@@ -141,7 +141,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 		// Item Spawning State
 		else if(this.currentState === this.ProcessorState.Finished && this.bReset){
 			this.currentState = this.ProcessorState.Feeding;
-		}	
+		}
+        
 	};
 	
 	//-------------------------------------------------------------------------------

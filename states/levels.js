@@ -62,13 +62,19 @@ function Level(data) {
     this.background = new PIXI.extras.TilingSprite(
         PIXI.loader.resources["images/spritesheet.json"].textures["background.png"],
         16*TILES_PX,
-        8*TILES_PX
+        9*TILES_PX
     );
     
     this.scene.addChild(this.background);
 
     // Add topbar
-	this.background.y += TILES_PX;
+    this.topbar = new PIXI.extras.TilingSprite(
+        PIXI.loader.resources["images/spritesheet.json"].textures["topbar.png"],
+        16*TILES_PX,
+        TILES_PX
+    );
+    
+    this.scene.addChild(this.topbar);
 
     // Add Level txt
     this.txtStyle = new PIXI.TextStyle({
@@ -113,7 +119,7 @@ function Level(data) {
     this.hpBar.update = () => {
         // Smoothly Scale HP
         if ( this.hpBar.getScale() > (1 - this.completionData.waste / data.wasteLimit)) {
-            this.hpBar.xScale(this.hpBar.getScale() * 0.97 );
+            this.hpBar.xScale(this.hpBar.getScale() * 0.975 );
         }
     };
     
@@ -163,6 +169,18 @@ function Level(data) {
         this.processors[i].Spawn();
 	}
 	
+    // Check all processors for processing state
+    this.processorsActive = () => {
+        for (let i in this.processors) {
+            if(this.processors[i].currentState == 1) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    
 	// Load Conveyor Belt
     this.conveyorBelt = new ConveyorBelt(data.conveyorBelt.items, data.conveyorBelt.speed, this);
 	
@@ -222,7 +240,7 @@ function Level(data) {
         this.hpBar.update();
 		
         // Timeout on completion
-		if(this.isComplete) {
+		if(this.isComplete && !this.processorsActive()) {
 			this.timeOut -= TICKER.deltaTime;
 			if (this.timeOut <= 0) {
 				StageComplete.open(this.completionData);
