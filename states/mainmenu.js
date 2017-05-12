@@ -1,5 +1,7 @@
 "use strict";
 
+// Main Menu Scene
+// TODO: Probably merge with stage select
 function MainMenu() {
     this.scene = new PIXI.Container();
 
@@ -51,8 +53,8 @@ function MainMenu() {
 
     // Play button moves to stage select
     this.playButton.on("pointertap", () => {
-        OptionsMenu.close();
-        StageSelect.open();
+        OptionsMenu.close();    // -> states/optionsmenu.js
+        StageSelect.open();     // -> states/stageselect.js
     });
 
     // Options button opens an options panel
@@ -75,6 +77,7 @@ function MainMenu() {
     this.update = () => {};
 }
 
+// Function to Open. Main Menu is singleton
 MainMenu.open = () => {
     if(MainMenu.instance == null) {
         MainMenu.instance = new MainMenu();
