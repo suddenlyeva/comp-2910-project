@@ -126,12 +126,14 @@ function StageSelect() {
     this.stageBtns.deceleration = 7; // ... of the movement animation
     this.stageBtns.posEpsilon = 1; // for position comparison
 
-    this.stageBtns.updateDisplay = () => {
+    // direction - true (1) if moving left, false(0) if moving right
+    // TODO: currenly unused
+    this.stageBtns.updateDisplay = (direction) => {
         // carousel alpha animation
         for(let i = 0; i < this.stageBtns.children.length; i++) {
             // button position on the scene
             let btnPos = this.stageBtns.x + this.stageBtns.children[i].x;
-            // optimization: only process the visible buttons
+            // TODO: optimization: only process the visible buttons
             // if(btnPos + this.stageBtns.children[i].width < 0) continue;
             // if(btnPos > CANVAS_WIDTH) break;
 
@@ -141,6 +143,8 @@ function StageSelect() {
             this.stageBtns.children[i].alpha = ratioFromTarget;
             this.stageBtns.children[i].scale.set(ratioFromTarget);
             // adjust button positions after rescaling
+            // TODO: compensate for loss of stageBtns width.
+            // currently it's accelerating when moving left
             if(i < this.stageBtns.children.length - 1) {
                 this.stageBtns.children[i + 1].x =
                     this.stageBtns.children[i].x
@@ -162,7 +166,7 @@ function StageSelect() {
                 // carousel movement animation
                 this.stageBtns.x -= (posDiff / this.stageBtns.deceleration) * TICKER.deltaTime;
             }
-            this.stageBtns.updateDisplay();
+            this.stageBtns.updateDisplay(posDiff < 0);
         }
     };
 }
