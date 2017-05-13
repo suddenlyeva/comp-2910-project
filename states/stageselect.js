@@ -25,9 +25,14 @@ function StageSelect() {
     this.btnWBox  = btnWidth + padding * 2;
     for(let i = 0; i < LEVELS.length; i++) {
         let btnCont = new PIXI.Container(),
-            btn = makeSimpleButton( // -> util.js
-                btnWidth, btnHeight, "stage " + i + "\npreview placeholder",
-                0xffdfba, btnHeight / 4);
+            btnBg = new PIXI.Graphics();
+        // transparent background creates padding
+        btnBg.beginFill(0, 0);
+        btnBg.drawRect(0, 0, this.btnWBox, btnHeight);
+        btnBg.endFill();
+        let btn = makeSimpleButton( // -> util.js
+            btnWidth, btnHeight, "stage " + i + "\npreview placeholder",
+            0xffdfba, btnHeight / 4);
         btn.x = padding;
 
         btn.pointertap = () => {
@@ -35,12 +40,8 @@ function StageSelect() {
                 Level.open(LEVELS[i]); // -> states/levels.js
         }
 
-        btnCont.x = this.btnWBox * i;
-        btnCont.initialX = btnCont.x;
-
+        btnCont.addChild(btnBg);
         btnCont.addChild(btn);
-        btnCont.getBtnPos = () => { return btn.position; };
-        btnCont.setBtnPos = (x, y) => { btn.position.set(x, y); };
 
         this.stageBtns.addChild(btnCont);
     }
@@ -82,7 +83,13 @@ function StageSelect() {
                 this.stageBtns.currentBtn = this.stageBtns.children.length - 1;
             }
         }
-        // x position that the carousel needs to be moved to
+
+        // set initial target, adjusted in updateDisplay()
+        this.stageBtns.calcTargetX();
+    };
+
+    // calculate x position that the carousel needs to be moved to
+    this.stageBtns.calcTargetX = () => {
         this.stageBtns.targetX =
             this.stageBtns.initialX - this.stageBtns.children[this.stageBtns.currentBtn].x;
     };
@@ -107,10 +114,13 @@ function StageSelect() {
     this.scene.addChild(this.stageBtns);
     this.scene.addChild(this.backToMainMenu);
 
-    this.stageBtns.deceleration = 10; // ... of the movement animation
+    this.stageBtns.deceleration = 7; // ... of the movement animation
     this.stageBtns.posEpsilon = 1; // for position comparison
 
     this.stageBtns.updateDisplay = () => {
+        // recalculate target
+        this.stageBtns.calcTargetX();
+
         // carousel alpha animation
         for(let i = 0; i < this.stageBtns.children.length; i++) {
             // button position on the scene
@@ -125,8 +135,8 @@ function StageSelect() {
             this.stageBtns.children[i].alpha = ratioFromTarget;
             this.stageBtns.children[i].scale.set(ratioFromTarget);
 
-            // this.stageBtns.children[i].y =
-            //     this.stageBtns.height / 2 * (1 - ratioFromTarget);
+            this.stageBtns.children[i].y =
+                btnHeight / 2 - this.stageBtns.children[i].height / 2;
             if(i !== 0) {
                 this.stageBtns.children[i].x =
                     this.stageBtns.children[i - 1].x
