@@ -46,7 +46,7 @@ function StageSelect() {
         this.stageBtns.addChild(btnCont);
     }
 
-    this.stageBtns.initialX = this.stageBtns.targetX = CANVAS_WIDTH / 2 - this.btnWBox / 2;
+    this.stageBtns.initialX = CANVAS_WIDTH / 2 - this.btnWBox / 2;
     this.stageBtns.position.set(CANVAS_WIDTH / 2 - this.btnWBox / 2,
         CANVAS_HEIGHT / 2 - btnHeight / 2);
     // same position for mask
@@ -83,15 +83,13 @@ function StageSelect() {
                 this.stageBtns.currentBtn = this.stageBtns.children.length - 1;
             }
         }
-
-        // set initial target, adjusted in updateDisplay()
-        this.stageBtns.calcTargetX();
     };
 
     // calculate x position that the carousel needs to be moved to
-    this.stageBtns.calcTargetX = () => {
-        this.stageBtns.targetX =
-            this.stageBtns.initialX - this.stageBtns.children[this.stageBtns.currentBtn].x;
+    this.stageBtns.calcPosDiff = () => {
+        return this.stageBtns.x
+            - this.stageBtns.initialX
+            + this.stageBtns.children[this.stageBtns.currentBtn].x;
     };
 
     this.stageBtns.pointermove = eventData => {
@@ -118,30 +116,28 @@ function StageSelect() {
     this.stageBtns.posEpsilon = 1; // for position comparison
 
     this.stageBtns.updateDisplay = () => {
-        // recalculate target
-        this.stageBtns.calcTargetX();
-
         // carousel alpha animation
         for(let i = 0; i < this.stageBtns.children.length; i++) {
             // button position on the scene
             let btnPos = this.stageBtns.x + this.stageBtns.children[i].x;
             // optimization: only process the visible buttons
-            if(btnPos + this.stageBtns.children[i].width < 0) continue;
-            if(btnPos > CANVAS_WIDTH) break;
+            // if(btnPos + this.stageBtns.children[i].width < 0) continue;
+            // if(btnPos > CANVAS_WIDTH) break;
 
             // magic
             let ratioFromTarget = this.btnWBox /
                 (this.btnWBox + Math.abs(btnPos - this.stageBtns.initialX));
             this.stageBtns.children[i].alpha = ratioFromTarget;
             this.stageBtns.children[i].scale.set(ratioFromTarget);
+            // adjust button positions after rescaling
+            if(i < this.stageBtns.children.length - 1) {
+                this.stageBtns.children[i + 1].x =
+                    this.stageBtns.children[i].x
+                    + this.stageBtns.children[i].width;
+            }
 
             this.stageBtns.children[i].y =
                 btnHeight / 2 - this.stageBtns.children[i].height / 2;
-            if(i !== 0) {
-                this.stageBtns.children[i].x =
-                    this.stageBtns.children[i - 1].x
-                    + this.stageBtns.children[i - 1].width;
-            }
         }
     };
 
@@ -149,14 +145,11 @@ function StageSelect() {
     this.stageBtns.updateDisplay();
 
     this.update = () => {
-        let posDiff = this.stageBtns.x - this.stageBtns.targetX;
-        if(posDiff !== 0) {
+        let posDiff = this.stageBtns.calcPosDiff();
+        if(Math.abs(posDiff) > this.stageBtns.posEpsilon) {
             if(!this.stageBtns.moving && !this.stageBtns.pressedDown) {
                 // carousel movement animation
-                this.stageBtns.x =
-                    Math.abs(posDiff) < this.stageBtns.posEpsilon ?
-                    this.stageBtns.targetX :
-                    this.stageBtns.x - (posDiff / this.stageBtns.deceleration) * TICKER.deltaTime;
+                this.stageBtns.x -= (posDiff / this.stageBtns.deceleration) * TICKER.deltaTime;
             }
             this.stageBtns.updateDisplay();
         }
