@@ -16,16 +16,22 @@ function StageSelect() {
     background.addChild(bgFill);
 
     // ---------- carousel
-    let stageButtons = new PIXI.Container();
+    let stageButtons   = new PIXI.Container();
+    // index of the current displayed button
+    let currentButton  = 0;
+    // if the current button was set manually(true) or calculated automatically(false)
+    let setManually    = false;
+    // if moved less than 5 units, consider it a button press
+    let tapSensitivity = 5;
 
     // initialize buttons
     let buttonWidth        = CANVAS_WIDTH  / 2,
         buttonHeight       = CANVAS_HEIGHT / 2,
-        padding            = 20,
+        padding            = 40,
         buttonDisplayWidth = buttonWidth + padding * 2;
     for(let i = 0; i < LEVELS.length; i++) {
-        let wrapper = new PIXI.Container(),
-            buttonBg   = new PIXI.Graphics();
+        let wrapper  = new PIXI.Container(),
+            buttonBg = new PIXI.Graphics();
         // transparent background creates padding
         buttonBg.beginFill(0, 0);
         buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonHeight);
@@ -35,10 +41,26 @@ function StageSelect() {
             0xffdfba, buttonHeight / 4);
         button.x = padding;
 
-        // button.pointertap = () => {
-        //     if(!stageButtons.moving)
-        //         Level.open(LEVELS[i]); // -> states/levels.js
-        // }
+        button.pointerdown = (eventData) => {
+            button.clickPos = eventData.data.getLocalPosition(button.parent);
+        };
+
+        button.pointerup = button.pointerupoutside = (eventData) => {
+            let diffX = Math.abs(
+                eventData.data.getLocalPosition(button.parent).x -
+                button.clickPos.x),
+                diffY = Math.abs(
+                eventData.data.getLocalPosition(button.parent).y -
+                button.clickPos.y);
+            if(diffX < tapSensitivity && diffY < tapSensitivity) {
+                if(currentButton === i) {
+                    Level.open(LEVELS[currentButton]); // -> states/levels.js
+                } else {
+                    currentButton = i;
+                    setManually = true;
+                }
+            }
+        };
 
         wrapper.addChild(buttonBg);
         wrapper.addChild(button);
@@ -49,32 +71,23 @@ function StageSelect() {
     stageButtons.initialX = CANVAS_WIDTH / 2 - buttonDisplayWidth / 2;
     stageButtons.position.set(stageButtons.initialX, CANVAS_HEIGHT / 2 - buttonHeight / 2);
     stageButtons.interactive = stageButtons.buttonMode = true;
-    // index of the current displayed button
-    stageButtons.currentButton = 0;
-    // if moved less than 5 units, consider it a button press
-    stageButtons.tapSensitivity = 5;
 
     stageButtons.pointerdown = (eventData) => {
         stageButtons.dragData = eventData.data.getLocalPosition(stageButtons.parent);
-        stageButtons.startingDragData = stageButtons.dragData;
         // necessary to stop movement on tap, different from .moving
         stageButtons.pressedDown = true;
     };
 
     stageButtons.pointerup = stageButtons.pointerupoutside = (eventData) => {
-        let diff = Math.abs(
-            eventData.data.getLocalPosition(stageButtons.parent).x -
-            stageButtons.startingDragData.x);
-
         stageButtons.dragData = stageButtons.moving = stageButtons.pressedDown = false;
-
-        if(diff < stageButtons.tapSensitivity) {
-            Level.open(LEVELS[stageButtons.currentButton]); // -> states/levels.js
-        }
-        stageButtons.currentButton = stageButtons.determineCurrent();
+        currentButton = stageButtons.determineCurrent();
     };
 
     stageButtons.determineCurrent = () => {
+        if(setManually) {
+            setManually = false;
+            return currentButton;
+        }
         // button closest to the center point becomes the currentButton
         let centerPoint = stageButtons.initialX + buttonDisplayWidth / 2;
 
@@ -100,7 +113,7 @@ function StageSelect() {
     stageButtons.calcPosDiff = () => {
         return stageButtons.x
             - stageButtons.initialX
-            + stageButtons.children[stageButtons.currentButton].x;
+            + stageButtons.children[currentButton].x;
     };
 
     stageButtons.pointermove = eventData => {
