@@ -7,166 +7,167 @@ function StageSelect() {
     this.scene = new PIXI.Container();
 
     // Make background
-    this.background = new PIXI.Container();
-    this.bgFill = new PIXI.Graphics();
-    this.bgFill.beginFill(0x5d32ea);
-    this.bgFill.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    this.bgFill.endFill();
+    let background = new PIXI.Container(),
+        bgFill     = new PIXI.Graphics();
+    bgFill.beginFill(0x5d32ea);
+    bgFill.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    bgFill.endFill();
 
-    this.background.addChild(this.bgFill);
+    background.addChild(bgFill);
 
     // ---------- carousel
-    this.stageBtns = new PIXI.Container();
+    let stageButtons = new PIXI.Container();
 
     // initialize buttons
-    let btnWidth  = CANVAS_WIDTH / 2,
-        btnHeight = CANVAS_HEIGHT / 2,
-        padding   = 20;
-    this.btnWBox  = btnWidth + padding * 2;
+    let buttonWidth        = CANVAS_WIDTH  / 2,
+        buttonHeight       = CANVAS_HEIGHT / 2,
+        padding            = 20,
+        buttonDisplayWidth = buttonWidth + padding * 2;
     for(let i = 0; i < LEVELS.length; i++) {
-        let btnCont = new PIXI.Container(),
-            btnBg = new PIXI.Graphics();
+        let wrapper = new PIXI.Container(),
+            buttonBg   = new PIXI.Graphics();
         // transparent background creates padding
-        btnBg.beginFill(0, 0);
-        btnBg.drawRect(0, 0, this.btnWBox, btnHeight);
-        btnBg.endFill();
-        let btn = makeSimpleButton( // -> util.js
-            btnWidth, btnHeight, "stage " + i + "\npreview placeholder",
-            0xffdfba, btnHeight / 4);
-        btn.x = padding;
+        buttonBg.beginFill(0, 0);
+        buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonHeight);
+        buttonBg.endFill();
+        let button = makeSimpleButton( // -> util.js
+            buttonWidth, buttonHeight, "stage " + i + "\npreview placeholder",
+            0xffdfba, buttonHeight / 4);
+        button.x = padding;
 
-        btn.pointertap = () => {
-            if(!this.stageBtns.moving)
-                Level.open(LEVELS[i]); // -> states/levels.js
-        }
+        // button.pointertap = () => {
+        //     if(!stageButtons.moving)
+        //         Level.open(LEVELS[i]); // -> states/levels.js
+        // }
 
-        btnCont.addChild(btnBg);
-        btnCont.addChild(btn);
+        wrapper.addChild(buttonBg);
+        wrapper.addChild(button);
 
-        this.stageBtns.addChild(btnCont);
+        stageButtons.addChild(wrapper);
     }
 
-    this.stageBtns.initialX = CANVAS_WIDTH / 2 - this.btnWBox / 2;
-    this.stageBtns.position.set(CANVAS_WIDTH / 2 - this.btnWBox / 2,
-        CANVAS_HEIGHT / 2 - btnHeight / 2);
-    // same position for mask
-    this.stageBtns.interactive = this.stageBtns.buttonMode = true;
+    stageButtons.initialX = CANVAS_WIDTH / 2 - buttonDisplayWidth / 2;
+    stageButtons.position.set(stageButtons.initialX, CANVAS_HEIGHT / 2 - buttonHeight / 2);
+    stageButtons.interactive = stageButtons.buttonMode = true;
     // index of the current displayed button
-    this.stageBtns.currentBtn = 0;
-    this.stageBtns.moving = false;
+    stageButtons.currentButton = 0;
     // if moved less than 5 units, consider it a button press
-    this.stageBtns.tapSensitivity = 5;
+    stageButtons.tapSensitivity = 5;
 
-    this.stageBtns.pointerdown = (eventData) => {
-        this.stageBtns.dragData = eventData.data.getLocalPosition(this.stageBtns.parent);
-        this.stageBtns.oldX = this.stageBtns.x;
+    stageButtons.pointerdown = (eventData) => {
+        stageButtons.dragData = eventData.data.getLocalPosition(stageButtons.parent);
+        stageButtons.startingDragData = stageButtons.dragData;
         // necessary to stop movement on tap, different from .moving
-        this.stageBtns.pressedDown = true;
+        stageButtons.pressedDown = true;
     };
 
-    this.stageBtns.pointerup = this.stageBtns.pointerupoutside = (eventData) => {
-        this.stageBtns.dragData = this.stageBtns.moving = this.stageBtns.pressedDown = false;
-        let diff = this.stageBtns.x - this.stageBtns.oldX,
-            diffAbs = Math.abs(diff);
+    stageButtons.pointerup = stageButtons.pointerupoutside = (eventData) => {
+        let diff = Math.abs(
+            eventData.data.getLocalPosition(stageButtons.parent).x -
+            stageButtons.startingDragData.x);
 
-        if(diffAbs < this.stageBtns.tapSensitivity) {
-            Level.open(LEVELS[this.stageBtns.currentBtn]); // -> states/levels.js
+        stageButtons.dragData = stageButtons.moving = stageButtons.pressedDown = false;
+
+        if(diff < stageButtons.tapSensitivity) {
+            Level.open(LEVELS[stageButtons.currentButton]); // -> states/levels.js
         }
-        this.stageBtns.currentBtn = this.stageBtns.determineCurrent();
+        stageButtons.currentButton = stageButtons.determineCurrent();
     };
 
-    this.stageBtns.determineCurrent = () => {
-        // button closest to the center point becomes the currentBtn
-        let centerPoint = this.stageBtns.initialX + this.btnWBox / 2;
+    stageButtons.determineCurrent = () => {
+        // button closest to the center point becomes the currentButton
+        let centerPoint = stageButtons.initialX + buttonDisplayWidth / 2;
 
         // bound checking
-        if(this.stageBtns.x > centerPoint) {
+        if(stageButtons.x > centerPoint) {
             return 0;
         }
 
-        if(this.stageBtns.x + this.stageBtns.width < centerPoint) {
-            return this.stageBtns.children.length - 1;
+        if(stageButtons.x + stageButtons.width < centerPoint) {
+            return stageButtons.children.length - 1;
         }
 
-        for(let i = 0; i < this.stageBtns.children.length; i++) {
-            let btnPos = this.stageBtns.x + this.stageBtns.children[i].x;
-            if(btnPos <= centerPoint && centerPoint <= btnPos + this.stageBtns.children[i].width) {
+        for(let i = 0; i < stageButtons.children.length; i++) {
+            let buttonPos = stageButtons.x + stageButtons.children[i].x;
+            if(buttonPos <= centerPoint &&
+                centerPoint <= buttonPos + stageButtons.children[i].width) {
                 return i;
             }
         }
     };
 
     // calculate the difference in x position the carousel needs to be moved by
-    this.stageBtns.calcPosDiff = () => {
-        return this.stageBtns.x
-            - this.stageBtns.initialX
-            + this.stageBtns.children[this.stageBtns.currentBtn].x;
+    stageButtons.calcPosDiff = () => {
+        return stageButtons.x
+            - stageButtons.initialX
+            + stageButtons.children[stageButtons.currentButton].x;
     };
 
-    this.stageBtns.pointermove = eventData => {
-        this.stageBtns.pressedDown = false;
-        if(this.stageBtns.dragData) {
-            let newPos = eventData.data.getLocalPosition(this.stageBtns.parent);
-            let xDelta = newPos.x - this.stageBtns.dragData.x;
-            this.stageBtns.x += xDelta;
-            this.stageBtns.dragData = newPos;
-            this.stageBtns.moving = true;
+    stageButtons.pointermove = eventData => {
+        stageButtons.pressedDown = false;
+        if(stageButtons.dragData) {
+            let newPos = eventData.data.getLocalPosition(stageButtons.parent);
+            let xDelta = newPos.x - stageButtons.dragData.x;
+            stageButtons.x += xDelta;
+            stageButtons.dragData = newPos;
+            stageButtons.moving = true;
         }
     };
 
     // ---------------
-    this.backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
-    this.backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
-    this.backToMainMenu.pointertap = MainMenu.open; // -> states/mainmenu.js
+    let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
+    backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
+    backToMainMenu.pointertap = MainMenu.open; // -> states/mainmenu.js
 
-    this.scene.addChild(this.background);
-    this.scene.addChild(this.stageBtns);
-    this.scene.addChild(this.backToMainMenu);
+    this.scene.addChild(background);
+    this.scene.addChild(stageButtons);
+    this.scene.addChild(backToMainMenu);
 
-    this.stageBtns.deceleration = 7; // ... of the movement animation
-    this.stageBtns.posEpsilon = 1; // for position comparison
+    stageButtons.deceleration = 7; // ... of the movement animation
+    stageButtons.posEpsilon = 1; // for position comparison
 
     // direction - true (1) if moving left, false(0) if moving right
     // TODO: currenly unused
-    this.stageBtns.updateDisplay = (direction) => {
+    stageButtons.updateDisplay = (direction) => {
         // carousel alpha animation
-        for(let i = 0; i < this.stageBtns.children.length; i++) {
+        for(let i = 0; i < stageButtons.children.length; i++) {
             // button position on the scene
-            let btnPos = this.stageBtns.x + this.stageBtns.children[i].x;
+            let buttonPos = stageButtons.x + stageButtons.children[i].x;
             // TODO: optimization: only process the visible buttons
-            // if(btnPos + this.stageBtns.children[i].width < 0) continue;
-            // if(btnPos > CANVAS_WIDTH) break;
+            // if(buttonPos + stageButtons.children[i].width < 0) continue;
+            // if(buttonPos > CANVAS_WIDTH) break;
 
             // magic
-            let ratioFromTarget = this.btnWBox /
-                (this.btnWBox + Math.abs(btnPos - this.stageBtns.initialX));
-            this.stageBtns.children[i].alpha = ratioFromTarget;
-            this.stageBtns.children[i].scale.set(ratioFromTarget);
+            let ratioFromTarget = buttonDisplayWidth /
+                (buttonDisplayWidth + Math.abs(stageButtons.initialX - buttonPos));
+            stageButtons.children[i].alpha = ratioFromTarget;
+            stageButtons.children[i].scale.set(ratioFromTarget);
             // adjust button positions after rescaling
-            // TODO: compensate for loss of stageBtns width.
+            // TODO: compensate for loss of stageButtons width OR invert calculation
             // currently it's accelerating when moving left
-            if(i < this.stageBtns.children.length - 1) {
-                this.stageBtns.children[i + 1].x =
-                    this.stageBtns.children[i].x
-                    + this.stageBtns.children[i].width;
+            if(i < stageButtons.children.length - 1) {
+                stageButtons.children[i + 1].x =
+                    stageButtons.children[i].x +
+                    stageButtons.children[i].width;
             }
 
-            this.stageBtns.children[i].y =
-                btnHeight / 2 - this.stageBtns.children[i].height / 2;
+            // stay vertically centered
+            stageButtons.children[i].y =
+                buttonHeight / 2 - stageButtons.children[i].height / 2;
         }
     };
 
     // initial carousel display
-    this.stageBtns.updateDisplay();
+    stageButtons.updateDisplay();
 
     this.update = () => {
-        let posDiff = this.stageBtns.calcPosDiff();
-        if(Math.abs(posDiff) > this.stageBtns.posEpsilon) {
-            if(!this.stageBtns.moving && !this.stageBtns.pressedDown) {
+        let posDiff = stageButtons.calcPosDiff();
+        if(Math.abs(posDiff) > stageButtons.posEpsilon) {
+            if(!stageButtons.moving && !stageButtons.pressedDown) {
                 // carousel movement animation
-                this.stageBtns.x -= (posDiff / this.stageBtns.deceleration) * TICKER.deltaTime;
+                stageButtons.x -= (posDiff / stageButtons.deceleration) * TICKER.deltaTime;
             }
-            this.stageBtns.updateDisplay(posDiff < 0);
+            stageButtons.updateDisplay(posDiff < 0);
         }
     };
 }
