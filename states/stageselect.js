@@ -42,22 +42,21 @@ function StageSelect() {
         button.x = padding;
 
         button.pointerdown = (eventData) => {
+            // remember position where the button was first clicked
             button.clickPos = eventData.data.getLocalPosition(button.parent);
         };
 
         button.pointerup = button.pointerupoutside = (eventData) => {
-            let diffX = Math.abs(
-                eventData.data.getLocalPosition(button.parent).x -
-                button.clickPos.x),
-                diffY = Math.abs(
-                eventData.data.getLocalPosition(button.parent).y -
-                button.clickPos.y);
+            if(!button.clickPos) return;
+            let newPos = eventData.data.getLocalPosition(button.parent);
+            let diffX  = Math.abs(newPos.x - button.clickPos.x),
+                diffY  = Math.abs(newPos.y - button.clickPos.y);
             if(diffX < tapSensitivity && diffY < tapSensitivity) {
                 if(currentButton === i) {
                     Level.open(LEVELS[currentButton]); // -> states/levels.js
                 } else {
+                    setManually   = true;
                     currentButton = i;
-                    setManually = true;
                 }
             }
         };
