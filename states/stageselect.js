@@ -51,6 +51,7 @@ function StageSelect() {
             let newPos = eventData.data.getLocalPosition(button.parent);
             let diffX  = Math.abs(newPos.x - button.clickPos.x),
                 diffY  = Math.abs(newPos.y - button.clickPos.y);
+
             if(diffX < tapSensitivity && diffY < tapSensitivity) {
                 if(currentButton === i) {
                     Level.open(LEVELS[currentButton]); // -> states/levels.js
@@ -59,6 +60,8 @@ function StageSelect() {
                     currentButton = i;
                 }
             }
+
+            button.clickPos = false;
         };
 
         wrapper.addChild(buttonBg);
