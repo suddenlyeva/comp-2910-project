@@ -19,35 +19,36 @@ function StageSelect() {
     this.stageBtns = new PIXI.Container();
 
     // initialize buttons
-    this.btnWidth = CANVAS_WIDTH / 2;
-    this.btnHeight = CANVAS_HEIGHT / 2;
+    let btnWidth  = CANVAS_WIDTH / 2,
+        btnHeight = CANVAS_HEIGHT / 2,
+        padding   = 20;
+    this.btnWBox  = btnWidth + padding * 2;
     for(let i = 0; i < LEVELS.length; i++) {
-        let btn = makeSimpleButton( // -> util.js
-            this.btnWidth, this.btnHeight, "stage " + i + "\npreview placeholder",
-            0xffdfba, this.btnHeight / 4);
-        btn.position.set(this.btnWidth * i, 0);
+        let btnCont = new PIXI.Container(),
+            btn = makeSimpleButton( // -> util.js
+                btnWidth, btnHeight, "stage " + i + "\npreview placeholder",
+                0xffdfba, btnHeight / 4);
+        btn.x = padding;
 
         btn.pointertap = () => {
             if(!this.stageBtns.moving)
                 Level.open(LEVELS[i]); // -> states/levels.js
         }
 
-        this.stageBtns.addChild(btn);
+        btnCont.x = this.btnWBox * i;
+        btnCont.initialX = btnCont.x;
+
+        btnCont.addChild(btn);
+        btnCont.getBtnPos = () => { return btn.position; };
+        btnCont.setBtnPos = (x, y) => { btn.position.set(x, y); };
+
+        this.stageBtns.addChild(btnCont);
     }
 
-    // Carousel in progress
-
-    // this.carouselMask = new PIXI.Graphics();
-    // this.carouselMask.beginFill(0, 0);
-    // this.carouselMask.drawRect(0, 0, this.btnWidth, this.btnHeight);
-    // this.carouselMask.endFill();
-
-    // this.stageBtns.mask = this.carouselMask;
-    this.stageBtns.initialX = this.stageBtns.targetX = CANVAS_WIDTH / 2 - this.btnWidth / 2;
-    this.stageBtns.position.set(CANVAS_WIDTH / 2 - this.btnWidth / 2,
-        CANVAS_HEIGHT / 2 - this.btnHeight / 2);
+    this.stageBtns.initialX = this.stageBtns.targetX = CANVAS_WIDTH / 2 - this.btnWBox / 2;
+    this.stageBtns.position.set(CANVAS_WIDTH / 2 - this.btnWBox / 2,
+        CANVAS_HEIGHT / 2 - btnHeight / 2);
     // same position for mask
-    // this.carouselMask.position.set(this.stageBtns.x, this.stageBtns.y);
     this.stageBtns.interactive = this.stageBtns.buttonMode = true;
     // index of the current displayed button
     this.stageBtns.currentBtn = 0;
@@ -71,7 +72,7 @@ function StageSelect() {
             Level.open(LEVELS[this.stageBtns.currentBtn]); // -> states/levels.js
         }
         // if scrolled more than half button width -> advance
-        if(diffAbs > this.btnWidth / 2) {
+        if(diffAbs > this.btnWBox / 2) {
             // +1 if moving right, -1 if moving left, 0 if same position
             this.stageBtns.currentBtn -= (diff > 0) - (diff < 0);
             // check bounds
@@ -104,7 +105,6 @@ function StageSelect() {
 
     this.scene.addChild(this.background);
     this.scene.addChild(this.stageBtns);
-    // this.scene.addChild(this.carouselMask);
     this.scene.addChild(this.backToMainMenu);
 
     this.stageBtns.deceleration = 10; // ... of the movement animation
@@ -116,15 +116,24 @@ function StageSelect() {
             // button position on the scene
             let btnPos = this.stageBtns.x + this.stageBtns.children[i].x;
             // optimization: only process the visible buttons
-            if(btnPos + this.btnWidth < 0) continue;
+            if(btnPos + this.stageBtns.children[i].width < 0) continue;
             if(btnPos > CANVAS_WIDTH) break;
 
             // magic
-            let ratioFromTarget = this.btnWidth /
-                (this.btnWidth + Math.abs(btnPos - this.stageBtns.initialX));
+            let ratioFromTarget = this.btnWBox /
+                (this.btnWBox + Math.abs(btnPos - this.stageBtns.initialX));
             this.stageBtns.children[i].alpha = ratioFromTarget;
+            this.stageBtns.children[i].scale.set(ratioFromTarget);
+
+            // this.stageBtns.children[i].y =
+            //     this.stageBtns.height / 2 * (1 - ratioFromTarget);
+            if(i !== 0) {
+                this.stageBtns.children[i].x =
+                    this.stageBtns.children[i - 1].x
+                    + this.stageBtns.children[i - 1].width;
+            }
         }
-    }
+    };
 
     // initial carousel display
     this.stageBtns.updateDisplay();
