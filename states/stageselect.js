@@ -72,20 +72,31 @@ function StageSelect() {
         if(diffAbs < this.stageBtns.tapSensitivity) {
             Level.open(LEVELS[this.stageBtns.currentBtn]); // -> states/levels.js
         }
-        // if scrolled more than half button width -> advance
-        if(diffAbs > this.btnWBox / 2) {
-            // +1 if moving right, -1 if moving left, 0 if same position
-            this.stageBtns.currentBtn -= (diff > 0) - (diff < 0);
-            // check bounds
-            if(this.stageBtns.currentBtn < 0) {
-                this.stageBtns.currentBtn = 0;
-            } else if(this.stageBtns.currentBtn >= this.stageBtns.children.length) {
-                this.stageBtns.currentBtn = this.stageBtns.children.length - 1;
+        this.stageBtns.currentBtn = this.stageBtns.determineCurrent();
+    };
+
+    this.stageBtns.determineCurrent = () => {
+        // button closest to the center point becomes the currentBtn
+        let centerPoint = this.stageBtns.initialX + this.btnWBox / 2;
+
+        // bound checking
+        if(this.stageBtns.x > centerPoint) {
+            return 0;
+        }
+
+        if(this.stageBtns.x + this.stageBtns.width < centerPoint) {
+            return this.stageBtns.children.length - 1;
+        }
+
+        for(let i = 0; i < this.stageBtns.children.length; i++) {
+            let btnPos = this.stageBtns.x + this.stageBtns.children[i].x;
+            if(btnPos <= centerPoint && centerPoint <= btnPos + this.stageBtns.children[i].width) {
+                return i;
             }
         }
     };
 
-    // calculate x position that the carousel needs to be moved to
+    // calculate the difference in x position the carousel needs to be moved by
     this.stageBtns.calcPosDiff = () => {
         return this.stageBtns.x
             - this.stageBtns.initialX
