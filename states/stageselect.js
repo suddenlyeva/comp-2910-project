@@ -47,7 +47,7 @@ function StageSelect() {
 
         button.pointerdown = (eventData) => {
             // remember position where the button was first clicked
-            // relative to SCENE
+            // relative to carousel parent (which is going to be this.scene)
             if(!button.clickPos) {
                 button.clickPos = eventData.data.getLocalPosition(stageButtons.parent);
             }
@@ -59,7 +59,8 @@ function StageSelect() {
 
         button.pointerup = (eventData) => {
             if(!button.clickPos) return;
-            let newPos = eventData.data.getLocalPosition(stageButtons.parent); // relative to SCENE
+            // position relative to carousel parent
+            let newPos = eventData.data.getLocalPosition(stageButtons.parent);
             let diffX  = Math.abs(newPos.x - button.clickPos.x),
                 diffY  = Math.abs(newPos.y - button.clickPos.y);
 
