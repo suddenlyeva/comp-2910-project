@@ -3,38 +3,36 @@
 // Stage Select Screen
 function StageSelect() {
 
-    // Create Scene
-    this.scene = new PIXI.Container();
-
-    // Make background
-    let background = new PIXI.Container(),
-        bgFill     = new PIXI.Graphics();
-    bgFill.beginFill(0x5d32ea);
-    bgFill.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    bgFill.endFill();
-
-    background.addChild(bgFill);
-
     // ---------- carousel
-    let stageButtons   = new PIXI.Container();
+    let stageButtons       = new PIXI.Container();
     // index of the current displayed button
-    let currentButton  = 0;
+    let currentButton      = 0;
     // if the current button was set manually(true) or calculated automatically(false)
-    let setManually    = false;
-    // if moved less than 5 units, consider it a button press
-    let tapSensitivity = 5;
+    let setManually        = false;
+    // from pointerup to pointerdown: if moved less than the number of units(x and y)
+    // specified by tapSensitivity, consider it a tap/click
+    let tapSensitivity     = 10;
+    // xDelta multiplier
+    let scrollSensitivity  = 1.5;
 
-    // initialize buttons
+    // 2 update loop variables
+    let deceleration       = 10; // ... of the movement animation
+    let positionEpsilon    = 1;  // for position comparison
+
+    // button dimensions
     let buttonWidth        = CANVAS_WIDTH  / 2,
         buttonHeight       = CANVAS_HEIGHT / 2,
-        padding            = 40,
+        padding            = 25,
         buttonDisplayWidth = buttonWidth + padding * 2;
 
-    // initialX act as the 'anchor' of the carousel; used in position related calculations
-    stageButtons.initialX    = CANVAS_WIDTH / 2 - buttonDisplayWidth / 2;
-    stageButtons.position.set(stageButtons.initialX, CANVAS_HEIGHT / 2 - buttonHeight / 2);
+    // referenceX is a starting x position of the carousel
+    // used as a base reference in position related calculations
+    let referenceX         = CANVAS_WIDTH / 2 - buttonDisplayWidth / 2;
+
+    stageButtons.position.set(referenceX, CANVAS_HEIGHT / 2 - buttonHeight / 2);
     stageButtons.interactive = stageButtons.buttonMode = true;
 
+    // initialize buttons
     for(let i = 0; i < LEVELS.length; i++) {
         let wrapper  = new PIXI.Container(),
             buttonBg = new PIXI.Graphics();
@@ -83,13 +81,13 @@ function StageSelect() {
         wrapper.x = wrapper.width * i;
 
         // --------------------
-        // update wrapper appearance based on how far away it is from stageButtons.initialX
+        // update wrapper appearance based on how far away it is from referenceX
         // leftOfView - is the wrapper is to the left of initialX(true) or to the right(false)?
         wrapper.update = (leftOfView) => {
             let buttonPos = stageButtons.x + wrapper.x;
 
             let ratioFromTarget = buttonDisplayWidth /
-                (buttonDisplayWidth + Math.abs(stageButtons.initialX - buttonPos));
+                (buttonDisplayWidth + Math.abs(referenceX - buttonPos));
             button.alpha = ratioFromTarget;
             // wrapper.scale.set(ratioFromTarget);
             button.scale.set(ratioFromTarget);
@@ -114,13 +112,14 @@ function StageSelect() {
         currentButton         = stageButtons.determineCurrent();
     };
 
+    // determine the current button based on which one is closest to the center point
+    // does nothing if current button was set manually (by clicking a button other than current)
     stageButtons.determineCurrent = () => {
         if(setManually) {
             setManually = false;
             return currentButton;
         }
-        // button closest to the center point becomes the currentButton
-        let centerPoint = stageButtons.initialX + buttonDisplayWidth / 2;
+        let centerPoint = referenceX + buttonDisplayWidth / 2;
 
         for(let i = 0; i < stageButtons.children.length; i++) {
             let buttonR = stageButtons.x +
@@ -133,19 +132,12 @@ function StageSelect() {
         return stageButtons.children.length - 1;
     };
 
-    // calculate the difference in x position the carousel needs to be moved by
-    stageButtons.calcPosDiff = () => {
-        return stageButtons.x -
-            stageButtons.initialX +
-            stageButtons.children[currentButton].x;
-    };
-
     stageButtons.pointermove = eventData => {
         stageButtons.pressedDown   = false;
         if(stageButtons.dragData) {
             let newPos             = eventData.data.getLocalPosition(stageButtons.parent);
             let xDelta             = newPos.x - stageButtons.dragData.x;
-            stageButtons.x        += xDelta;
+            stageButtons.x        += xDelta * scrollSensitivity;
             stageButtons.dragData  = newPos;
             stageButtons.moving    = true;
         }
@@ -156,28 +148,36 @@ function StageSelect() {
     backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
     backToMainMenu.pointertap = MainMenu.open; // -> states/mainmenu.js
 
+    let background = new PIXI.Container(),
+        bgFill     = new PIXI.Graphics();
+    bgFill.beginFill(0x5d32ea);
+    bgFill.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    bgFill.endFill();
+
+    background.addChild(bgFill);
+
+    // Create Scene
+    this.scene = new PIXI.Container();
     this.scene.addChild(background);
     this.scene.addChild(stageButtons);
     this.scene.addChild(backToMainMenu);
 
-    stageButtons.deceleration = 10; // ... of the movement animation
-    stageButtons.posEpsilon   = 1;  // for position comparison
-
     stageButtons.updateDisplay = () => {
-        // adjust carousel display based on position
+        // adjust carousel display based on current position
         for(let i = 0; i < stageButtons.children.length; i++) {
             stageButtons.children[i].update(
-                stageButtons.x + stageButtons.children[i].x < stageButtons.initialX
+                stageButtons.x + stageButtons.children[i].x < referenceX
             );
         }
     };
 
     this.update = () => {
-        let posDiff = stageButtons.calcPosDiff();
-        if(Math.abs(posDiff) > stageButtons.posEpsilon) {
+        // calculate difference in x position that the carousel needs to be moved by
+        let posDiff = stageButtons.x - referenceX + stageButtons.children[currentButton].x;
+        if(Math.abs(posDiff) > positionEpsilon) {
             if(!stageButtons.moving && !stageButtons.pressedDown) {
                 // carousel movement animation
-                stageButtons.x -= (posDiff / stageButtons.deceleration) * TICKER.deltaTime;
+                stageButtons.x -= (posDiff / deceleration) * TICKER.deltaTime;
             }
             stageButtons.updateDisplay();
         }
