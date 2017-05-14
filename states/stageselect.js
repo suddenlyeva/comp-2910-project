@@ -28,7 +28,13 @@ function StageSelect() {
     let buttonWidth        = CANVAS_WIDTH  / 2,
         buttonHeight       = CANVAS_HEIGHT / 2,
         padding            = 40,
-        buttonDisplayWidth = buttonWidth + padding * 2;
+        buttonDisplayWidth = buttonWidth + padding * 2,
+        nextButtonX        = 0;
+
+    stageButtons.initialX = CANVAS_WIDTH / 2 - buttonDisplayWidth / 2;
+    stageButtons.position.set(stageButtons.initialX, CANVAS_HEIGHT / 2 - buttonHeight / 2);
+    stageButtons.interactive = stageButtons.buttonMode = true;
+
     for(let i = 0; i < LEVELS.length; i++) {
         let wrapper  = new PIXI.Container(),
             buttonBg = new PIXI.Graphics();
@@ -43,12 +49,19 @@ function StageSelect() {
 
         button.pointerdown = (eventData) => {
             // remember position where the button was first clicked
-            button.clickPos = eventData.data.getLocalPosition(button.parent);
+            // relative to SCENE
+            if(!button.clickPos) {
+                button.clickPos = eventData.data.getLocalPosition(stageButtons.parent);
+            }
         };
 
-        button.pointerup = button.pointerupoutside = (eventData) => {
+        button.pointerupoutside = button.pointerout = (eventData) => {
+            button.clickPos = false;
+        };
+
+        button.pointerup = (eventData) => {
             if(!button.clickPos) return;
-            let newPos = eventData.data.getLocalPosition(button.parent);
+            let newPos = eventData.data.getLocalPosition(stageButtons.parent); // relative to SCENE
             let diffX  = Math.abs(newPos.x - button.clickPos.x),
                 diffY  = Math.abs(newPos.y - button.clickPos.y);
 
@@ -67,12 +80,28 @@ function StageSelect() {
         wrapper.addChild(buttonBg);
         wrapper.addChild(button);
 
+        // --------------------
+        // update wrapper appearance based on how far away it is from stageButtons.initialX
+        // takes x position as an argument
+        // returns new width of the wrapper
+        wrapper.update = (xPos) => {
+            wrapper.x = xPos;
+            let buttonPos = stageButtons.x + wrapper.x;
+
+            let ratioFromTarget = buttonDisplayWidth /
+                (buttonDisplayWidth + Math.abs(stageButtons.initialX - buttonPos));
+            wrapper.alpha = ratioFromTarget;
+            wrapper.scale.set(ratioFromTarget);
+            wrapper.y = buttonHeight / 2 - wrapper.height / 2;
+
+            return wrapper.x + wrapper.width;
+        };
+        // --------------------
+
+        nextButtonX = wrapper.update(nextButtonX);
+
         stageButtons.addChild(wrapper);
     }
-
-    stageButtons.initialX = CANVAS_WIDTH / 2 - buttonDisplayWidth / 2;
-    stageButtons.position.set(stageButtons.initialX, CANVAS_HEIGHT / 2 - buttonHeight / 2);
-    stageButtons.interactive = stageButtons.buttonMode = true;
 
     stageButtons.pointerdown = (eventData) => {
         stageButtons.dragData = eventData.data.getLocalPosition(stageButtons.parent);
@@ -93,22 +122,15 @@ function StageSelect() {
         // button closest to the center point becomes the currentButton
         let centerPoint = stageButtons.initialX + buttonDisplayWidth / 2;
 
-        // bound checking
-        if(stageButtons.x > centerPoint) {
-            return 0;
-        }
-
-        if(stageButtons.x + stageButtons.width < centerPoint) {
-            return stageButtons.children.length - 1;
-        }
-
         for(let i = 0; i < stageButtons.children.length; i++) {
-            let buttonPos = stageButtons.x + stageButtons.children[i].x;
-            if(buttonPos <= centerPoint &&
-                centerPoint <= buttonPos + stageButtons.children[i].width) {
+            let buttonR = stageButtons.x +
+                stageButtons.children[i].x +
+                stageButtons.children[i].width;
+            if(buttonR >= centerPoint) {
                 return i;
             }
         }
+        return stageButtons.children.length - 1;
     };
 
     // calculate the difference in x position the carousel needs to be moved by
@@ -144,36 +166,12 @@ function StageSelect() {
     // direction - true (1) if moving left, false(0) if moving right
     // TODO: currenly unused
     stageButtons.updateDisplay = (direction) => {
-        // carousel alpha animation
+        // carousel display based on position
+        nextButtonX = 0;
         for(let i = 0; i < stageButtons.children.length; i++) {
-            // button position on the scene
-            let buttonPos = stageButtons.x + stageButtons.children[i].x;
-            // TODO: optimization: only process the visible buttons
-            // if(buttonPos + stageButtons.children[i].width < 0) continue;
-            // if(buttonPos > CANVAS_WIDTH) break;
-
-            // magic
-            let ratioFromTarget = buttonDisplayWidth /
-                (buttonDisplayWidth + Math.abs(stageButtons.initialX - buttonPos));
-            stageButtons.children[i].alpha = ratioFromTarget;
-            stageButtons.children[i].scale.set(ratioFromTarget);
-            // adjust button positions after rescaling
-            // TODO: compensate for loss of stageButtons width OR invert calculation
-            // currently it's accelerating when moving left
-            if(i < stageButtons.children.length - 1) {
-                stageButtons.children[i + 1].x =
-                    stageButtons.children[i].x +
-                    stageButtons.children[i].width;
-            }
-
-            // stay vertically centered
-            stageButtons.children[i].y =
-                buttonHeight / 2 - stageButtons.children[i].height / 2;
+            nextButtonX = stageButtons.children[i].update(nextButtonX);
         }
     };
-
-    // initial carousel display
-    stageButtons.updateDisplay();
 
     this.update = () => {
         let posDiff = stageButtons.calcPosDiff();
