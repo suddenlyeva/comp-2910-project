@@ -28,10 +28,10 @@ function StageSelect() {
     let buttonWidth        = CANVAS_WIDTH  / 2,
         buttonHeight       = CANVAS_HEIGHT / 2,
         padding            = 40,
-        buttonDisplayWidth = buttonWidth + padding * 2,
-        nextButtonX        = 0;
+        buttonDisplayWidth = buttonWidth + padding * 2;
 
-    stageButtons.initialX = CANVAS_WIDTH / 2 - buttonDisplayWidth / 2;
+    // initialX act as the 'anchor' of the carousel; used in position related calculations
+    stageButtons.initialX    = CANVAS_WIDTH / 2 - buttonDisplayWidth / 2;
     stageButtons.position.set(stageButtons.initialX, CANVAS_HEIGHT / 2 - buttonHeight / 2);
     stageButtons.interactive = stageButtons.buttonMode = true;
 
@@ -80,25 +80,25 @@ function StageSelect() {
         wrapper.addChild(buttonBg);
         wrapper.addChild(button);
 
+        wrapper.x = wrapper.width * i;
+
         // --------------------
         // update wrapper appearance based on how far away it is from stageButtons.initialX
-        // takes x position as an argument
-        // returns new width of the wrapper
-        wrapper.update = (xPos) => {
-            wrapper.x = xPos;
+        // leftOfView - is the wrapper is to the left of initialX(true) or to the right(false)?
+        wrapper.update = (leftOfView) => {
             let buttonPos = stageButtons.x + wrapper.x;
 
             let ratioFromTarget = buttonDisplayWidth /
                 (buttonDisplayWidth + Math.abs(stageButtons.initialX - buttonPos));
-            wrapper.alpha = ratioFromTarget;
-            wrapper.scale.set(ratioFromTarget);
-            wrapper.y = buttonHeight / 2 - wrapper.height / 2;
-
-            return wrapper.x + wrapper.width;
+            button.alpha = ratioFromTarget;
+            // wrapper.scale.set(ratioFromTarget);
+            button.scale.set(ratioFromTarget);
+            button.x = leftOfView ? wrapper.width - button.width - padding : padding;
+            button.y = wrapper.height / 2 - button.height / 2;
         };
         // --------------------
 
-        nextButtonX = wrapper.update(nextButtonX);
+        wrapper.update();
 
         stageButtons.addChild(wrapper);
     }
@@ -111,7 +111,7 @@ function StageSelect() {
 
     stageButtons.pointerup = stageButtons.pointerupoutside = (eventData) => {
         stageButtons.dragData = stageButtons.moving = stageButtons.pressedDown = false;
-        currentButton = stageButtons.determineCurrent();
+        currentButton         = stageButtons.determineCurrent();
     };
 
     stageButtons.determineCurrent = () => {
@@ -135,19 +135,19 @@ function StageSelect() {
 
     // calculate the difference in x position the carousel needs to be moved by
     stageButtons.calcPosDiff = () => {
-        return stageButtons.x
-            - stageButtons.initialX
-            + stageButtons.children[currentButton].x;
+        return stageButtons.x -
+            stageButtons.initialX +
+            stageButtons.children[currentButton].x;
     };
 
     stageButtons.pointermove = eventData => {
-        stageButtons.pressedDown = false;
+        stageButtons.pressedDown   = false;
         if(stageButtons.dragData) {
-            let newPos = eventData.data.getLocalPosition(stageButtons.parent);
-            let xDelta = newPos.x - stageButtons.dragData.x;
-            stageButtons.x += xDelta;
-            stageButtons.dragData = newPos;
-            stageButtons.moving = true;
+            let newPos             = eventData.data.getLocalPosition(stageButtons.parent);
+            let xDelta             = newPos.x - stageButtons.dragData.x;
+            stageButtons.x        += xDelta;
+            stageButtons.dragData  = newPos;
+            stageButtons.moving    = true;
         }
     };
 
@@ -160,16 +160,15 @@ function StageSelect() {
     this.scene.addChild(stageButtons);
     this.scene.addChild(backToMainMenu);
 
-    stageButtons.deceleration = 7; // ... of the movement animation
-    stageButtons.posEpsilon = 1; // for position comparison
+    stageButtons.deceleration = 10; // ... of the movement animation
+    stageButtons.posEpsilon   = 1;  // for position comparison
 
-    // direction - true (1) if moving left, false(0) if moving right
-    // TODO: currenly unused
-    stageButtons.updateDisplay = (direction) => {
-        // carousel display based on position
-        nextButtonX = 0;
+    stageButtons.updateDisplay = () => {
+        // adjust carousel display based on position
         for(let i = 0; i < stageButtons.children.length; i++) {
-            nextButtonX = stageButtons.children[i].update(nextButtonX);
+            stageButtons.children[i].update(
+                stageButtons.x + stageButtons.children[i].x < stageButtons.initialX
+            );
         }
     };
 
@@ -180,7 +179,7 @@ function StageSelect() {
                 // carousel movement animation
                 stageButtons.x -= (posDiff / stageButtons.deceleration) * TICKER.deltaTime;
             }
-            stageButtons.updateDisplay(posDiff < 0);
+            stageButtons.updateDisplay();
         }
     };
 }
@@ -194,3 +193,15 @@ StageSelect.open = () => {
     SCENE = StageSelect.instance.scene;
     STATE = StageSelect.instance.update;
 }
+
+// Future TODO:
+// Figure out a solution for scaling wrapper instead of button
+// Problem that needs to be solved:
+// Scaling the button wrapper requires adjusting it's x-position while
+// keeping scroll speed consistant.
+// I had a solution where all buttons left-align to match their adjusted scale.
+// This cause the scroll speed to be inconsistent - the further you scroll
+// the more it accelerates and total carousel width varies as a result of scaling.
+// Possible solution:
+// Find a middle point (like initialX) and have all the buttons
+// move towards it. The perceived scroll speed should seem consistent.
