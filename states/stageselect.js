@@ -3,7 +3,7 @@
 // Stage Select Screen
 function StageSelect() {
 
-    // ---------- carousel
+    // ----------------------------------- Carousel -----------------------------------
     let stageButtons       = new PIXI.Container();
     // index of the current displayed button
     let currentButton      = 0;
@@ -109,16 +109,17 @@ function StageSelect() {
 
     stageButtons.pointerup = stageButtons.pointerupoutside = (eventData) => {
         stageButtons.dragData = stageButtons.moving = stageButtons.pressedDown = false;
-        currentButton         = stageButtons.determineCurrent();
+        currentButton         = determineCurrent();
     };
 
     // determine the current button based on which one is closest to the center point
     // does nothing if current button was set manually (by clicking a button other than current)
-    stageButtons.determineCurrent = () => {
+    let determineCurrent = () => {
         if(setManually) {
             setManually = false;
             return currentButton;
         }
+
         let centerPoint = referenceX + buttonDisplayWidth / 2;
 
         for(let i = 0; i < stageButtons.children.length; i++) {
@@ -143,7 +144,29 @@ function StageSelect() {
         }
     };
 
-    // ---------------
+    // adjust carousel display based on current position
+    let updateDisplay = () => {
+        for(let i = 0; i < stageButtons.children.length; i++) {
+            stageButtons.children[i].update(
+                stageButtons.x + stageButtons.children[i].x < referenceX
+            );
+        }
+    };
+
+    let updateCarousel = () => {
+        // calculate difference in x position that the carousel needs to be moved by
+        let posDiff = stageButtons.x - referenceX + stageButtons.children[currentButton].x;
+        if(Math.abs(posDiff) > positionEpsilon) {
+            if(!stageButtons.moving && !stageButtons.pressedDown) {
+                // carousel movement animation
+                stageButtons.x -= (posDiff / deceleration) * TICKER.deltaTime;
+            }
+            updateDisplay();
+        }
+    };
+
+    // -------------------------------- End of carousel --------------------------------
+
     let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
     backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
     backToMainMenu.pointertap = MainMenu.open; // -> states/mainmenu.js
@@ -162,25 +185,8 @@ function StageSelect() {
     this.scene.addChild(stageButtons);
     this.scene.addChild(backToMainMenu);
 
-    stageButtons.updateDisplay = () => {
-        // adjust carousel display based on current position
-        for(let i = 0; i < stageButtons.children.length; i++) {
-            stageButtons.children[i].update(
-                stageButtons.x + stageButtons.children[i].x < referenceX
-            );
-        }
-    };
-
     this.update = () => {
-        // calculate difference in x position that the carousel needs to be moved by
-        let posDiff = stageButtons.x - referenceX + stageButtons.children[currentButton].x;
-        if(Math.abs(posDiff) > positionEpsilon) {
-            if(!stageButtons.moving && !stageButtons.pressedDown) {
-                // carousel movement animation
-                stageButtons.x -= (posDiff / deceleration) * TICKER.deltaTime;
-            }
-            stageButtons.updateDisplay();
-        }
+        updateCarousel();
     };
 }
 
