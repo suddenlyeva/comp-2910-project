@@ -19,8 +19,7 @@ function StageComplete(data) {
 
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {
-        let next = Level.instance.id + 1;
-        this.scene.parent.removeChild(this.scene);
+        let next = data.id + 1;
         if (next >= LEVELS.length) {
             Credits.open(); // -> states/credits.js
         }
@@ -31,7 +30,6 @@ function StageComplete(data) {
 
     // Back button takes you to the main menu
     this.backButton.on("pointertap", () => {
-        this.scene.parent.removeChild(this.scene);
         StageSelect.open(); // -> states/stageselect.js
     });
 
