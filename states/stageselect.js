@@ -17,11 +17,12 @@ function StageSelect() {
     // swipe speed exponent
     let swipeSensitivity   = 1.6;
 
-    // 2 update loop variables
+    let swipeDistance      = 0;  // accumulates unadjusted xDelta
+
+    // update loop variables
     let deceleration       = 20; // ... of the movement animation
     let positionEpsilon    = 1;  // for position comparison
     let stopWatch          = 0;  // for calculating swipe speed
-    let swipeDistance      = 0;  // accumulates unadjusted xDelta
 
     // button dimensions
     let buttonWidth        = CANVAS_WIDTH  / 2,
