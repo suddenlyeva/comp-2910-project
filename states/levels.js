@@ -9,7 +9,8 @@ let TILES_PX = 80;
 let LEVELS = [
 
     {id: 0, name: "tutorial",
-
+    
+        clearMessage: "An apple a day is one less apple in the garbage.",
         wasteLimit: 3,
 
         conveyorBelt: {
@@ -95,6 +96,8 @@ function Level(data) {
 
     // Passed to stage complete menu
     this.completionData = {
+        id: data.id,
+        clearMessage: data.clearMessage,
         score: 0,
         waste: 0,
         itemsComplete: []
