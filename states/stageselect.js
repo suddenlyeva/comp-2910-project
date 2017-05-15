@@ -13,11 +13,15 @@ function StageSelect() {
     // specified by tapSensitivity, consider it a tap/click
     let tapSensitivity     = 10;
     // xDelta multiplier
-    let scrollSensitivity  = 1.5;
+    let scrollSensitivity  = 1.1;
+    // swipe speed exponent
+    let swipeSensitivity   = 1.6;
 
     // 2 update loop variables
-    let deceleration       = 10; // ... of the movement animation
+    let deceleration       = 20; // ... of the movement animation
     let positionEpsilon    = 1;  // for position comparison
+    let stopWatch          = 0;  // for calculating swipe speed
+    let swipeDistance      = 0;  // accumulates unadjusted xDelta
 
     // button dimensions
     let buttonWidth        = CANVAS_WIDTH  / 2,
@@ -110,12 +114,17 @@ function StageSelect() {
 
     stageButtons.pointerup = stageButtons.pointerupoutside = (eventData) => {
         stageButtons.dragData = stageButtons.moving = stageButtons.pressedDown = false;
-        currentButton         = determineCurrent();
+        let swipeSpeed = swipeDistance / stopWatch;
+        // raise to power, preserve sign
+        let distAdj = Math.pow(Math.abs(swipeSpeed), swipeSensitivity) * (swipeSpeed < 0 ? -1 : 1);
+        currentButton = determineCurrent(distAdj);
+        stopWatch = swipeDistance = 0;
     };
 
     // determine the current button based on which one is closest to the center point
     // does nothing if current button was set manually (by clicking a button other than current)
-    let determineCurrent = () => {
+    // adjX modifier changes how much further ahead to look for currentButton
+    let determineCurrent = (adjX) => {
         if(setManually) {
             setManually = false;
             return currentButton;
@@ -126,7 +135,7 @@ function StageSelect() {
         for(let i = 0; i < stageButtons.children.length; i++) {
             let buttonR = stageButtons.x +
                 stageButtons.children[i].x +
-                stageButtons.children[i].width;
+                stageButtons.children[i].width + adjX;
             if(buttonR >= centerPoint) {
                 return i;
             }
@@ -142,6 +151,8 @@ function StageSelect() {
             stageButtons.x        += xDelta * scrollSensitivity;
             stageButtons.dragData  = newPos;
             stageButtons.moving    = true;
+
+            swipeDistance         += xDelta;
         }
     };
 
@@ -164,6 +175,7 @@ function StageSelect() {
             }
             updateDisplay();
         }
+        if(stageButtons.moving) stopWatch += TICKER.deltaTime;
     };
 
     // -------------------------------- End of carousel --------------------------------
