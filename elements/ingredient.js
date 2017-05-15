@@ -121,6 +121,7 @@ function makeItem(type, level) { // <- states/levels.js
 
             // addToConveyor if on conveyor
             if (level.conveyorBelt.collidesWithPoint(item.x, item.y) && // -> elements/conveyorbelt.js
+                level.conveyorBelt.getItemAtX(item.x) != null &&
                 level.conveyorBelt.getItemAtX(item.x).type == BLANK) {  // -> elements/conveyorbelt.js
                 level.conveyorBelt.addItemAtX(item, item.x);            // -> elements/conveyorbelt.js
             }
