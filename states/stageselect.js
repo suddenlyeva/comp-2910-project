@@ -115,7 +115,8 @@ function StageSelect() {
 
     stageButtons.pointerup = stageButtons.pointerupoutside = (eventData) => {
         stageButtons.dragData = stageButtons.moving = stageButtons.pressedDown = false;
-        let swipeSpeed = swipeDistance / stopWatch;
+        // prevent division by 0
+        let swipeSpeed = stopWatch === 0 ? 0 : swipeDistance / stopWatch;
         // raise to power, preserve sign
         let distAdj = Math.pow(Math.abs(swipeSpeed), swipeSensitivity) * (swipeSpeed < 0 ? -1 : 1);
         currentButton = determineCurrent(distAdj);
