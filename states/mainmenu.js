@@ -1,5 +1,7 @@
 "use strict";
 
+// Main Menu Scene
+// TODO: Probably merge with stage select
 function MainMenu() {
     this.scene = new PIXI.Container();
 
@@ -31,13 +33,13 @@ function MainMenu() {
     this.distFromEdge = 200;
     this.buttonWidth = CANVAS_WIDTH / 2 - this.distFromEdge - 20; // 20 between buttons
     this.buttonHeight = CANVAS_HEIGHT / 2;
-    this.playButton = makeSimpleButton(this.buttonWidth, this.buttonHeight,
+    this.playButton = makeSimpleButton(this.buttonWidth, this.buttonHeight, // -> util.js
         "play", 0xb3ecec, this.buttonHeight / 2, 4);
-    this.optionsButton = makeSimpleButton(this.buttonWidth, this.buttonHeight,
+    this.optionsButton = makeSimpleButton(this.buttonWidth, this.buttonHeight, // -> util.js
         "options", 0x94b8b8, this.buttonHeight / 2, 4);
-    // this.fullScreenButton = makeSimpleButton(100, 50, "full screen", 0x94b8b8, 50);
+    // this.fullScreenButton = makeSimpleButton(100, 50, "full screen", 0x94b8b8, 50); // -> util.js
 
-    this.moreGamesButton = makeSimpleButton(200, 50, "more games", 0xFFFF66, 75);
+    this.moreGamesButton = makeSimpleButton(200, 50, "more games", 0xFFFF66, 75); // -> util.js
 
     this.playButton.position.set(this.distFromEdge,
         CANVAS_HEIGHT / 2 - this.playButton.height / 2);
@@ -51,18 +53,18 @@ function MainMenu() {
 
     // Play button moves to stage select
     this.playButton.on("pointertap", () => {
-        OptionsMenu.close();
-        StageSelect.open();
+        OptionsMenu.close();    // -> states/optionsmenu.js
+        StageSelect.open();     // -> states/stageselect.js
     });
 
     // Options button opens an options panel
-    this.optionsButton.on("pointertap", OptionsMenu.open);
+    this.optionsButton.on("pointertap", OptionsMenu.open); // -> states/optionsmenu.js
 
     // this.fullScreenButton.pointertap = toggleFullScreen;
 
     //more games button opens the affiliate page
 
-    this.moreGamesButton.on("pointertap", Affiliate.open);
+    this.moreGamesButton.on("pointertap", Affiliate.open); // -> states/affiliate.js
 
     // Add to scene
     this.scene.addChild(this.background);
@@ -75,6 +77,7 @@ function MainMenu() {
     this.update = () => {};
 }
 
+// Function to Open. Main Menu is singleton
 MainMenu.open = () => {
     if(MainMenu.instance == null) {
         MainMenu.instance = new MainMenu();
