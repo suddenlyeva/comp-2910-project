@@ -108,13 +108,22 @@ function StageSelect() {
     }
 
     stageButtons.pointerdown = (eventData) => {
+        // if multi-touch is detected, stop event propagation - don't send clicks to buttons
+        if(!stageButtons.pointerId) {
+            stageButtons.pointerId = eventData.data.originalEvent.pointerId;
+        } else {
+            eventData.stopPropagation();
+            return;
+        }
         stageButtons.dragData = eventData.data.getLocalPosition(stageButtons.parent);
         // necessary to stop movement on tap, different from .moving
         stageButtons.pressedDown = true;
     };
 
     stageButtons.pointerup = stageButtons.pointerupoutside = (eventData) => {
-        stageButtons.dragData = stageButtons.moving = stageButtons.pressedDown = false;
+        // don't do anything if using multi-touch
+        if(eventData.data.originalEvent.pointerId !== stageButtons.pointerId) return;
+        stageButtons.dragData = stageButtons.pointerId = stageButtons.moving = stageButtons.pressedDown = false;
         // prevent division by 0
         let swipeSpeed = stopWatch === 0 ? 0 : swipeDistance / stopWatch;
         // raise to power, preserve sign
@@ -146,6 +155,8 @@ function StageSelect() {
     };
 
     stageButtons.pointermove = eventData => {
+        // don't do anything if using multi-touch
+        if(eventData.data.originalEvent.pointerId !== stageButtons.pointerId) return;
         stageButtons.pressedDown   = false;
         if(stageButtons.dragData) {
             let newPos             = eventData.data.getLocalPosition(stageButtons.parent);
