@@ -100,10 +100,11 @@ function makeItem(type, level) { // <- states/levels.js
 
     // When the item is clicked.
     item.onDragStart = (event) => {
-        if(!level.isComplete) { // -> states/levels.js
+        if (!level.itemPickedUp) {
             item.data = event.data;
             item.alpha = 0.5;
             item.dragging = true;
+            level.itemPickedup = true;
 
             // Replace previous conveyor item with a blank
             if (level.conveyorBelt.collidesWithPoint(item.x, item.y)) {         // -> elements/conveyorbelt.js
@@ -139,7 +140,8 @@ function makeItem(type, level) { // <- states/levels.js
                     item.waste();
                 }
             }
-
+            
+            level.itemPickedup = false;
             level.isComplete = level.checkForCompletion(); // -> states/levels.js
         }
 
