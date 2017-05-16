@@ -53,12 +53,21 @@ function OptionsMenu() {
 
     // Back button moves to main menu
     // bind(this) is used to give the function context (which is the current object)
-    this.okButton.on("pointertap", OptionsMenu.close);
+    this.okButton.on("pointertap", () => {
+        sounds["sounds/button-click.wav"].play();
+        OptionsMenu.close();
+    });
+
+    this.soundVol.onSliderAdjust = () => {
+
+      for (let i in SFX_MASTER) {
+          SFX_MASTER[i].volume = this.soundVol.value;
+      }
+    };
 }
 
 // Function to open. Options Menu is singleton
 OptionsMenu.open = () => {
-    sounds["sounds/menu-open.wav"].play();
     if(OptionsMenu.instance == null) {
         OptionsMenu.instance = new OptionsMenu();
     }
@@ -70,7 +79,6 @@ OptionsMenu.open = () => {
 
 // Close function removes itself from the scene
 OptionsMenu.close = () => {
-    sounds["sounds/button-click.wav"].play();
     if(OptionsMenu.instance != null && OptionsMenu.instance.scene.parent != null) {
         OptionsMenu.instance.scene.parent.removeChild(OptionsMenu.instance.scene);
     }

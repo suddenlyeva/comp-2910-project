@@ -59,8 +59,10 @@ function Intro() {
     this.clickableArea.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     this.clickableArea.endFill();
     this.clickableArea.interactive = true;
-    this.clickableArea.pointertap = MainMenu.open; // -> states/mainmenu.js
-
+    this.clickableArea.pointertap = () => {
+        sounds["sounds/button-click.wav"].play();
+        MainMenu.open(); // -> states/mainmenu.js
+    }
     // Add to scene
     this.scene.addChild(this.txtFood);
     this.scene.addChild(this.txtFactory);

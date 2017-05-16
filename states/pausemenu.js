@@ -127,6 +127,8 @@ function PauseMenu() {
     // Play button moves to stage select
     // Requires "this" context to operate so we use () => {}
     this.resumeButton.pointertap = () => {
+        sounds["sounds/button-click.wav"].play();
+        sounds["sounds/menu-open.wav"].play();
         STATE = this.stateBuffer;
         this.cleanUp();
     };
@@ -136,9 +138,16 @@ function PauseMenu() {
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
         Level.open(LEVELS[Level.instance.id]); // -> states/levels.js
     };
-    this.optionsButton.pointertap = OptionsMenu.open;
+
+    this.optionsButton.on("pointertap", () => {
+        sounds["sounds/button-click.wav"].play();
+        sounds["sounds/menu-open.wav"].play();
+        OptionsMenu.open(); // -> states/optionsmenu.js
+    });
+
     this.mainMenuButton.pointertap = () => {
         // this.cleanUp(); // also not needed
+        sounds["sounds/button-click.wav"].play();
         MainMenu.open(); // -> states/mainmenu.js
     };
 
@@ -152,7 +161,6 @@ function PauseMenu() {
 
 // Function to open. Pause Menu is singleton
 PauseMenu.open = () => {
-    sounds["sounds/menu-open.wav"].play();
     if(PauseMenu.instance == null) {
         PauseMenu.instance = new PauseMenu();
     }

@@ -184,7 +184,11 @@ function StageSelect() {
 
     let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
     backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
-    backToMainMenu.pointertap = MainMenu.open; // -> states/mainmenu.js
+    backToMainMenu.on("pointertap", () => {
+        sounds["sounds/button-click.wav"].play();
+        MainMenu.open()
+    });
+
 
     let background = new PIXI.Container(),
         bgFill     = new PIXI.Graphics();
@@ -207,7 +211,6 @@ function StageSelect() {
 
 // Function to open. Stage Select is singleton
 StageSelect.open = () => {
-    sounds["sounds/menu-open.wav"].play();
     if(StageSelect.instance == null) {
         StageSelect.instance = new StageSelect();
     }
