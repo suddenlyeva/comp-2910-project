@@ -132,6 +132,7 @@ function PauseMenu() {
     };
 
     this.resetButton.pointertap = () => {
+        sounds["sounds/button-click.wav"].play();
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
         Level.open(LEVELS[Level.instance.id]); // -> states/levels.js
     };
@@ -151,6 +152,7 @@ function PauseMenu() {
 
 // Function to open. Pause Menu is singleton
 PauseMenu.open = () => {
+    sounds["sounds/menu-open.wav"].play();
     if(PauseMenu.instance == null) {
         PauseMenu.instance = new PauseMenu();
     }

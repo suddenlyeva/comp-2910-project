@@ -207,6 +207,7 @@ function StageSelect() {
 
 // Function to open. Stage Select is singleton
 StageSelect.open = () => {
+    sounds["sounds/menu-open.wav"].play();
     if(StageSelect.instance == null) {
         StageSelect.instance = new StageSelect();
     }

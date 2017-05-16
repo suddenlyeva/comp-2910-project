@@ -58,6 +58,7 @@ function OptionsMenu() {
 
 // Function to open. Options Menu is singleton
 OptionsMenu.open = () => {
+    sounds["sounds/menu-open.wav"].play();
     if(OptionsMenu.instance == null) {
         OptionsMenu.instance = new OptionsMenu();
     }
@@ -69,6 +70,7 @@ OptionsMenu.open = () => {
 
 // Close function removes itself from the scene
 OptionsMenu.close = () => {
+    sounds["sounds/button-click.wav"].play();
     if(OptionsMenu.instance != null && OptionsMenu.instance.scene.parent != null) {
         OptionsMenu.instance.scene.parent.removeChild(OptionsMenu.instance.scene);
     }

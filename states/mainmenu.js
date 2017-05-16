@@ -53,13 +53,16 @@ function MainMenu() {
 
     // Play button moves to stage select
     this.playButton.on("pointertap", () => {
-        sounds["sounds/button-click-forward.wav"].play();
+        sounds["sounds/button-click.wav"].play();
         OptionsMenu.close();    // -> states/optionsmenu.js
         StageSelect.open();     // -> states/stageselect.js
     });
 
     // Options button opens an options panel
-    this.optionsButton.on("pointertap", OptionsMenu.open); // -> states/optionsmenu.js
+    this.optionsButton.on("pointertap", () => {
+        sounds["sounds/button-click.wav"].play();
+        OptionsMenu.open();
+    }); // -> states/optionsmenu.js
 
     // this.fullScreenButton.pointertap = toggleFullScreen;
 
@@ -80,6 +83,8 @@ function MainMenu() {
 
 // Function to Open. Main Menu is singleton
 MainMenu.open = () => {
+    sounds["sounds/menu-open.wav"].play();
+    sounds["sounds/button-click.wav"].play();
     if(MainMenu.instance == null) {
         MainMenu.instance = new MainMenu();
     }

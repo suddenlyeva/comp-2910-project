@@ -49,6 +49,7 @@ function makeItem(type, level) { // <- states/levels.js
 
     // Turns the item into waste.
     item.waste = () => {
+        sounds["sounds/splat.wav"].play();
         level.completionData.waste++;   // -> states/levels.js
         level.updateWasteInfo();        // -> states/levels.js
         item.texture = ITEM_TEXTURES[SPLAT];
@@ -138,7 +139,6 @@ function makeItem(type, level) { // <- states/levels.js
 
                 // else waste
                 if(!addedToProcessor) {
-                    sounds["sounds/splat.wav"].play();
                     item.waste();
                 }
             }
