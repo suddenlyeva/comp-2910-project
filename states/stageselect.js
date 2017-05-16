@@ -4,31 +4,29 @@
 function StageSelect() {
 
     // ----------------------------------- Carousel -----------------------------------
+
+    let deceleration       = 12;  // ... of the movement animation
+    let positionEpsilon    = 1;   // for position comparison
+    // from pointerup to pointerdown: if moved less than the number of units(x and y)
+    // specified by tapSensitivity, consider it a tap/click
+    let tapSensitivity     = 10;  // xDelta multiplier
+    let scrollSensitivity  = 1.1; // swipe speed exponent
+    let swipeSensitivity   = 1.6;
+    // button dimensions
+    let buttonWidth        = CANVAS_WIDTH  / 2,
+        buttonHeight       = CANVAS_HEIGHT / 2,
+        padding            = 25;
+
+    // ***** avoid modifying the following variables *****
     let stageButtons       = new PIXI.Container();
     // index of the current displayed button
     let currentButton      = 0;
     // if the current button was set manually(true) or calculated automatically(false)
     let setManually        = false;
-    // from pointerup to pointerdown: if moved less than the number of units(x and y)
-    // specified by tapSensitivity, consider it a tap/click
-    let tapSensitivity     = 10;
-    // xDelta multiplier
-    let scrollSensitivity  = 1.1;
-    // swipe speed exponent
-    let swipeSensitivity   = 1.6;
-
     let swipeDistance      = 0;  // accumulates unadjusted xDelta
-
-    // update loop variables
-    let deceleration       = 20; // ... of the movement animation
-    let positionEpsilon    = 1;  // for position comparison
     let stopWatch          = 0;  // for calculating swipe speed
 
-    // button dimensions
-    let buttonWidth        = CANVAS_WIDTH  / 2,
-        buttonHeight       = CANVAS_HEIGHT / 2,
-        padding            = 25,
-        buttonDisplayWidth = buttonWidth + padding * 2;
+    let buttonDisplayWidth = buttonWidth + padding * 2;
 
     // referenceX is a starting x position of the carousel
     // used as a base reference in position related calculations
