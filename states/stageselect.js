@@ -155,7 +155,9 @@ function StageSelect() {
         return i;
     };
 
-    stageButtons.pointerup = stageButtons.pointerupoutside = (eventData) => {
+    stageButtons.pointerup = stageButtons.pointerupoutside = stageButtons.pointercancel =
+        eventData => {
+        if(!stageButtons.pointers) return;
         // remove pointer from pointer array
         stageButtons.pointers.splice(
             findIndexById(stageButtons.pointers, eventData.data.originalEvent.pointerId), 1);
@@ -171,6 +173,7 @@ function StageSelect() {
     };
 
     stageButtons.pointermove = eventData => {
+        if(!stageButtons.pointers) return;
         let newPos = eventData.data.getLocalPosition(stageButtons.parent);
         // move only if there's one pointer
         if(stageButtons.pointers.length === 1) {
