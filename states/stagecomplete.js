@@ -41,7 +41,7 @@ function StageComplete(data) {
     this.gradeTxt.position.set(CANVAS_WIDTH / 2 - this.gradeTxt.width / 2, 0);
 
     // ClearMessage
-    this.clearTxt = new PIXI.Text("an apple a day is one less apple in the trash.", this.clearTxtStyle);
+    this.clearTxt = new PIXI.Text(data.clearMessage, this.clearTxtStyle);
     this.clearTxt.anchor.set(0.5);
     this.clearTxt.position.set(CANVAS_WIDTH / 2, TILES_PX * 2.5);
 
@@ -99,9 +99,14 @@ function StageComplete(data) {
         }
     });
 
-    // Back button takes you to the main menu
+    // Home button takes you to the main menu
     this.homeButton.on("pointertap", () => {
         StageSelect.open(); // -> states/stageselect.js
+    });
+
+    // Replay button
+    this.replayButton.on("pointertap", () => {
+        Level.open(LEVELS[data.id]);
     });
 
     this.update = () => {};
