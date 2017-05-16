@@ -69,7 +69,6 @@ function StageSelect() {
 
             if(diffX < tapSensitivity && diffY < tapSensitivity) {
                 if(currentButton === i) {
-                    stageButtons.pointers = false;
                     Level.open(LEVELS[currentButton]); // -> states/levels.js
                 } else {
                     setManually   = true;
@@ -139,7 +138,7 @@ function StageSelect() {
             findIndexById(stageButtons.pointers, eventData.data.originalEvent.pointerId), 1);
         // don't do anything if using multi-touch
         if(stageButtons.pointers.length !== 0) return;
-        stageButtons.moving = stageButtons.pressedDown = false;
+        stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
         // prevent division by 0
         let swipeSpeed = stopWatch === 0 ? 0 : swipeDistance / stopWatch;
         // raise to power, preserve sign
