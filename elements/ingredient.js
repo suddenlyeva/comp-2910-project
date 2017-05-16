@@ -101,6 +101,7 @@ function makeItem(type, level) { // <- states/levels.js
     // When the item is clicked.
     item.onDragStart = (event) => {
         if(!level.isComplete) { // -> states/levels.js
+            sounds["sounds/item-pickup.wav"].play();
             item.data = event.data;
             item.alpha = 0.5;
             item.dragging = true;
@@ -137,6 +138,7 @@ function makeItem(type, level) { // <- states/levels.js
 
                 // else waste
                 if(!addedToProcessor) {
+                    itemWastedSFX.play();
                     item.waste();
                 }
             }
