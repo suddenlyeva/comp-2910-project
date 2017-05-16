@@ -37,7 +37,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
             this.belt.x -= TILES_PX;
 
             // Waste first item if not a blank
-            if (this.items[0].type != BLANK) {
+            if (this.items[0] != null && this.items[0].type != BLANK) {
 
                 this.items[0].waste();          // -> elements/ingredient.js
                 this.items.shift();
