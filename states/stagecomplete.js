@@ -4,8 +4,9 @@
 // Shows when stage is complete=]
 function StageComplete(data) {
     this.scene = new PIXI.Container();
+    this.starContainer = new PIXI.Container();
 
-    // variable to display score dynamically
+    // variable to display score and waste dynamically
     let scoreDisplayed = 0;
     let wasteDisplayed = 0;
     let wasteInterval = 30;
@@ -61,12 +62,12 @@ function StageComplete(data) {
     let stars = [];
     for (let i = 0; i < 5; i++) {
         stars.push(new PIXI.Sprite(
-            PIXI.loader.resources["images/spritesheet.json"].textures["background.png"]
+            PIXI.loader.resources["images/spritesheet.json"].textures["star.png"]
         ));
-        stars[i].position.set(TILES_PX * 2 + 2.5 * i * TILES_PX, TILES_PX * 3.5);
-        stars[i].scale.set(2,2);
-        this.scene.addChild(stars[i]);
+        stars[i].x += i * TILES_PX * 2.5;
+        this.starContainer.addChild(stars[i]);
     }
+    this.starContainer.position.set(CANVAS_WIDTH / 2 - this.starContainer.width / 2, TILES_PX * 3.5);
     //  End of temporary code
 
     // wasteTxt
@@ -84,6 +85,7 @@ function StageComplete(data) {
         this.replayButton.y + this.replayButton.height - this.replayTxt.height / txtVAlign);
 
     // Add to scene
+    this.scene.addChild(this.starContainer);
     this.scene.addChild(this.homeButton);
     this.scene.addChild(this.continueButton);
     this.scene.addChild(this.replayButton);
