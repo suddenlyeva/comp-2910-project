@@ -63,7 +63,7 @@ function StageSelect() {
         };
 
         button.pointerup = (eventData) => {
-            if(!button.clickPos) return;
+            if(!button.clickPos || stageButtons.pointers.length !== 1) return;
             // position relative to carousel parent
             let newPos = eventData.data.getLocalPosition(stageButtons.parent);
             let diffX  = Math.abs(newPos.x - button.clickPos.x),
@@ -71,6 +71,7 @@ function StageSelect() {
 
             if(diffX < tapSensitivity && diffY < tapSensitivity) {
                 if(currentButton === i) {
+                    stageButtons.pointers = false;
                     Level.open(LEVELS[currentButton]); // -> states/levels.js
                 } else {
                     setManually   = true;
@@ -101,35 +102,71 @@ function StageSelect() {
             button.y = wrapper.height / 2 - button.height / 2;
         };
         // --------------------
-
+;
         wrapper.update();
 
         stageButtons.addChild(wrapper);
     }
 
     stageButtons.pointerdown = (eventData) => {
-        // if multi-touch is detected, stop event propagation - don't send clicks to buttons
-        if(!stageButtons.pointerId) {
-            stageButtons.pointerId = eventData.data.originalEvent.pointerId;
+        let pointerData = {
+            id  : eventData.data.originalEvent.pointerId,
+            pos : eventData.data.getLocalPosition(stageButtons.parent)
+        };
+        // if multi-touch is detected, don't send events to buttons and save new pointer id/position
+        if(!stageButtons.pointers || stageButtons.pointers.length === 0) {
+            stageButtons.pointers = [pointerData];
         } else {
+            stageButtons.pointers.push(pointerData);
             eventData.stopPropagation();
-            return;
         }
-        stageButtons.dragData = eventData.data.getLocalPosition(stageButtons.parent);
+
         // necessary to stop movement on tap, different from .moving
         stageButtons.pressedDown = true;
     };
 
+    // ptrArr - array of pointers to look through; ptrId - pointer id whose index we want to find
+    // javascript promises that pointer ids are unique
+    let findIndexById = (ptrArr, ptrId) => {
+        let i = 0;
+        while(ptrArr[i].id !== ptrId && ++i !== ptrArr.length);
+        // if pointer id is not in the array, something went terribly wrong
+        if(i === ptrArr.length) throw new Error("Pointer ID not found");
+        return i;
+    };
+
     stageButtons.pointerup = stageButtons.pointerupoutside = (eventData) => {
+        // remove pointer from pointer array
+        stageButtons.pointers.splice(
+            findIndexById(stageButtons.pointers, eventData.data.originalEvent.pointerId), 1);
         // don't do anything if using multi-touch
-        if(eventData.data.originalEvent.pointerId !== stageButtons.pointerId) return;
-        stageButtons.dragData = stageButtons.pointerId = stageButtons.moving = stageButtons.pressedDown = false;
+        if(stageButtons.pointers.length !== 0) return;
+        stageButtons.moving = stageButtons.pressedDown = false;
         // prevent division by 0
         let swipeSpeed = stopWatch === 0 ? 0 : swipeDistance / stopWatch;
         // raise to power, preserve sign
-        let distAdj = Math.pow(Math.abs(swipeSpeed), swipeSensitivity) * (swipeSpeed < 0 ? -1 : 1);
+        let distAdj   = Math.pow(Math.abs(swipeSpeed), swipeSensitivity) * (swipeSpeed < 0 ? -1 : 1);
         currentButton = determineCurrent(distAdj);
-        stopWatch = swipeDistance = 0;
+        stopWatch     = swipeDistance = 0;
+    };
+
+    stageButtons.pointermove = eventData => {
+        let newPos = eventData.data.getLocalPosition(stageButtons.parent);
+        // move only if there's one pointer
+        if(stageButtons.pointers.length === 1) {
+            stageButtons.pressedDown      = false;
+            let xDelta                    = newPos.x - stageButtons.pointers[0].pos.x;
+            stageButtons.x               += xDelta * scrollSensitivity;
+            stageButtons.moving           = true;
+            stageButtons.pointers[0].pos  = newPos;
+
+            swipeDistance                += xDelta;
+        } else if(stageButtons.pointers.length > 1) {
+            // update the pointer that moved
+            stageButtons.pointers[
+                findIndexById(stageButtons.pointers, eventData.data.originalEvent.pointerId)
+            ].pos = newPos;
+        }
     };
 
     // determine the current button based on which one is closest to the center point
@@ -144,29 +181,14 @@ function StageSelect() {
         let centerPoint = referenceX + buttonDisplayWidth / 2;
 
         for(let i = 0; i < stageButtons.children.length; i++) {
-            let buttonR = stageButtons.x +
+            if(stageButtons.x +
                 stageButtons.children[i].x +
-                stageButtons.children[i].width + adjX;
-            if(buttonR >= centerPoint) {
+                stageButtons.children[i].width + adjX
+                >= centerPoint) {
                 return i;
             }
         }
         return stageButtons.children.length - 1;
-    };
-
-    stageButtons.pointermove = eventData => {
-        // don't do anything if using multi-touch
-        if(eventData.data.originalEvent.pointerId !== stageButtons.pointerId) return;
-        stageButtons.pressedDown   = false;
-        if(stageButtons.dragData) {
-            let newPos             = eventData.data.getLocalPosition(stageButtons.parent);
-            let xDelta             = newPos.x - stageButtons.dragData.x;
-            stageButtons.x        += xDelta * scrollSensitivity;
-            stageButtons.dragData  = newPos;
-            stageButtons.moving    = true;
-
-            swipeDistance         += xDelta;
-        }
     };
 
     // adjust carousel display based on current position
