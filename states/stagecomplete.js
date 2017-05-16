@@ -7,6 +7,9 @@ function StageComplete(data) {
 
     // variable to display score dynamically
     let scoreDisplayed = 0;
+    let wasteDisplayed = 0;
+    let wasteInterval = 30;
+    let wasteTicker = 0;
 
     // home button
     this.homeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-home.png"]);
@@ -67,7 +70,7 @@ function StageComplete(data) {
     //  End of temporary code
 
     // wasteTxt
-    this.wasteTxt = new PIXI.Text("waste : " + data.waste, this.txtStyle);
+    this.wasteTxt = new PIXI.Text("waste : " + wasteDisplayed, this.txtStyle);
     this.wasteTxt.position.set(TILES_PX * 12.5, TILES_PX * 0.75);
 
     // homeTxt for home button
@@ -114,15 +117,29 @@ function StageComplete(data) {
 
     this.displayScore = () => {
         if (scoreDisplayed < data.score) {
-            scoreDisplayed += 9;
+            scoreDisplayed += 13; // 13 is for optimal 10's and 1's digit distribution
             this.scoreTxt.text = "score : " + scoreDisplayed;
         } else {
             this.scoreTxt.text = "score : " + data.score;
         }
     };
 
+    this.displayWaste = () => {
+        if (wasteDisplayed < data.waste) {
+            wasteTicker += TICKER.deltaTime;
+            if (wasteTicker >= wasteInterval) {
+                wasteDisplayed++;
+                this.wasteTxt.text = "waste : " + wasteDisplayed;
+                wasteTicker -= wasteInterval;
+            }
+        } else {
+            this.wasteTxt.text = "waste : " + data.waste;
+        }
+    };
+
     this.update = () => {
         this.displayScore();
+        this.displayWaste();
     };
 }
 
