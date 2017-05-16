@@ -13,7 +13,7 @@ let LEVELS = [
         wasteLimit: 3,
 
         conveyorBelt: {
-            items: [APPLE,BLANK,APPLE,BLANK,APPLE],
+            items: [APPLE,BLANK,BLANK,BLANK,APPLE,BLANK,BLANK,BLANK,APPLE],
             speed: 1.2
         },
 

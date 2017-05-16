@@ -106,7 +106,9 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
 
     // Pad array and construct belt
     for(let i = 0; i < ARRAY_MIN_SIZE; i++) {
-        this.addItemAtIndex(makeItem(BLANK, level), i); // -> elements/ingredient.js
+        if (i < ARRAY_MIN_SIZE - 3) {
+            this.addItemAtIndex(makeItem(BLANK, level), i); // -> elements/ingredient.js
+        }
 
         let beltTile = new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["conveyor-belt.png"]
@@ -134,6 +136,6 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
 
     // Fill out rest of conveyor
     for(let i = 0; i < itemTypes.length; i++) {
-        this.addItemAtIndex(makeItem(itemTypes[i], level), i + ARRAY_MIN_SIZE); // -> elements/ingredient.js
+        this.addItemAtIndex(makeItem(itemTypes[i], level), i + ARRAY_MIN_SIZE - 3); // -> elements/ingredient.js
     }
 }
