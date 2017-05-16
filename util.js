@@ -231,8 +231,6 @@ function letterbox(frameX, frameY) {
     BOT_MASK.y = CANVAS_HEIGHT;
     SCENE.addChild(BOT_MASK);
     
-    
-    
 }
 
 // Make a spinning gear
