@@ -130,7 +130,7 @@ function StageSelect() {
 
     stageButtons.pointerdown = (eventData) => {
         let pointerData = {
-            id  : eventData.data.originalEvent.pointerId,
+            id  : eventData.data.identifier,
             pos : eventData.data.getLocalPosition(stageButtons.parent)
         };
         // if multi-touch is detected, don't send events to buttons and save new pointer id/position
@@ -150,33 +150,36 @@ function StageSelect() {
     let findIndexById = (ptrArr, ptrId) => {
         let i = 0;
         while(ptrArr[i].id !== ptrId && ++i !== ptrArr.length);
-        // if pointer id is not in the array, something went terribly wrong
-        if(i === ptrArr.length) throw new Error("Pointer ID not found");
-        return i;
+        return i !== ptrArr.length ? i : -1;
     };
 
     stageButtons.pointerup = stageButtons.pointerupoutside = stageButtons.pointercancel =
         eventData => {
-        if(!stageButtons.pointers) return;
-        // remove pointer from pointer array
-        stageButtons.pointers.splice(
-            findIndexById(stageButtons.pointers, eventData.data.originalEvent.pointerId), 1);
-        // don't do anything if using multi-touch
-        if(stageButtons.pointers.length !== 0) return;
-        stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
-        // prevent division by 0
-        let swipeSpeed = stopWatch === 0 ? 0 : swipeDistance / stopWatch;
-        // raise to power, preserve sign
-        let distAdj   = Math.pow(Math.abs(swipeSpeed), swipeSensitivity) * (swipeSpeed < 0 ? -1 : 1);
-        currentButton = determineCurrent(distAdj);
-        stopWatch     = swipeDistance = 0;
-    };
+            if(!stageButtons.pointers) return;
+            let ptrIndex = findIndexById(stageButtons.pointers, eventData.data.identifier);
+
+            // if pointer id is not in the array, something went terribly wrong
+            if(ptrIndex === -1) throw new Error("Pointer ID not found");
+            // remove pointer from pointer array
+            stageButtons.pointers.splice(ptrIndex, 1);
+            // don't do anything if using multi-touch
+            if(stageButtons.pointers.length !== 0) return;
+
+            stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
+            // prevent division by 0
+            let swipeSpeed = stopWatch === 0 ? 0 : swipeDistance / stopWatch;
+            // raise to power, preserve sign
+            let distAdj    = Math.pow(Math.abs(swipeSpeed), swipeSensitivity) * (swipeSpeed < 0 ? -1 : 1);
+            currentButton  = determineCurrent(distAdj);
+            stopWatch      = swipeDistance = 0;
+        };
 
     stageButtons.pointermove = eventData => {
         if(!stageButtons.pointers) return;
         let newPos = eventData.data.getLocalPosition(stageButtons.parent);
         // move only if there's one pointer
         if(stageButtons.pointers.length === 1) {
+            if(eventData.data.identifier !== stageButtons.pointers[0].id) return;
             stageButtons.pressedDown      = false;
             let xDelta                    = newPos.x - stageButtons.pointers[0].pos.x;
             stageButtons.x               += xDelta * scrollSensitivity;
@@ -187,7 +190,7 @@ function StageSelect() {
         } else if(stageButtons.pointers.length > 1) {
             // update the pointer that moved
             stageButtons.pointers[
-                findIndexById(stageButtons.pointers, eventData.data.originalEvent.pointerId)
+                findIndexById(stageButtons.pointers, eventData.data.identifier)
             ].pos = newPos;
         }
     };
