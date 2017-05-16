@@ -1,5 +1,6 @@
 "use strict";
 
+
 function Processor(recipeOrder, level) //the Recipe this Processor will produce
 {
 
@@ -11,7 +12,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     // On create / Init
     // Variable assignment
     this.Spawn = () => {
-
+        
+        this.mTimer =  = new Timer(level);
+        
         // Variable Assignments
         //this.mRequiredIngredients = [];
         this.mNumIngredients = recipeOrder.GetListCount();
@@ -57,7 +60,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
             // Spawns Ingredient image on top of the tray
             this.mRequiredIngredients[i] = makeItem(recipeOrder.GetList()[i], level);   // Pushes new Item on the list
             this.mRequiredIngredients[i].interactive = false;                               // Not Pressable
-            this.mRequiredIngredients[i].alpha = this.alpha;                                    // Sets the transparancy
+            this.mRequiredIngredients[i].alpha = this.mAlphaUnfinished;                                    // Sets the transparancy
 
             this.mRequiredIngredients[i].x = this.mSpriteTray[i].x + (this.spriteSizeHalf); // Spawns to the center of the tray
             this.mRequiredIngredients[i].y = this.mSpriteTray[i].y + (this.spriteSizeHalf + 67);
@@ -256,7 +259,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
             // ! Change to ====
             if(droppedIngredient.type == this.mRequiredIngredients[i].type && !this.bRecipeProgress[i])
             {
-                this.mRequiredIngredients[i].alpha = this.itemAlpha; //TODO: MAGIC NUMBER
+                this.mRequiredIngredients[i].alpha = this.mAlphaFinished; //TODO: MAGIC NUMBER
                 this.bRecipeProgress[i] = true;
                 this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
 
@@ -295,7 +298,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
         for(let i = 0; i < this.mNumIngredients; ++i)
         {
             this.bRecipeProgress[i] = false;
-            this.mRequiredIngredients[i].alpha = this.alpha;
+            this.mRequiredIngredients[i].alpha = this.mAlphaUnfinished;
             this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-waiting.png"];
         }
 
@@ -305,8 +308,6 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
         this.bIsTimerFinished = false;      // Timer Flag
         this.bIsTimerSpawned = false;
     };
-
-
 
     //================================================================================
     // Object Variables
@@ -325,10 +326,10 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     // 80 is TILES_PX, defualt sprite size
     this.spriteSizeHalf = TILES_PX / 2;
 
-
     // Enums
-    this.mOutputState = { Blue : 0, Yellow : 1};        // Output State
-    this.mProcessorState = { Feeding : 0, Processing : 1, Finished : 2 }; // Processor State
+    this.mOutputState = { Blue : 0, Yellow : 1};                            // Output State
+    this.mProcessorState = { Feeding : 0, Processing : 1, Finished : 2 };   // Processor State
+    this.SoundFX = {Processing : 0, Finished : 1};                          // SoundFX
 
 
     // Object Variables
@@ -338,8 +339,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     this.mHeight;
 
     this.mScore = 0;                    // Game Score
-    this.alpha = 0.5;                   // Item Incompleted Fade
-    this.itemAlpha = 0.8;               // Item Completed Fade
+    this.mAlphaUnfinished = 0.5;        // Item Incompleted Fade
+    this.mAlphaFinished = 0.8;          // Item Completed Fade
 
     // Ingredients / Item
     this.mRequiredIngredients = [];     // Array of required items
@@ -348,7 +349,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     this.mOutputItem;                   // Local Variable that holds the output object
 
     // Timer Object
-    this.mTimer = new Timer(level);
+    this.mTimer;
     this.bIsTimerSpawned = false;
     this.bIsTimerFinished = false;
 
@@ -442,7 +443,6 @@ function Timer(level)
     this.IsFinished = () => {
         return this.isTimerFinished;
     };
-
 
     //==========================================================================================
     // Mutators
@@ -542,3 +542,4 @@ function Timer(level)
     this.scale = 0;
 
 };
+
