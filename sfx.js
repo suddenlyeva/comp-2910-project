@@ -7,7 +7,7 @@ sounds.load([
     "sounds/splat.wav"
 ]);
 
-sounds.whenLoaded = () => {};
+sounds.whenLoaded = () => { };
 
 
 
