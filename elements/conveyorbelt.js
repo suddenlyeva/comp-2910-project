@@ -12,7 +12,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
     this.speed = speed;
     this.deltaX = 0;
 
-    this.lastIndex = itemTypes.length + ARRAY_MIN_SIZE - 1;
+    this.lastIndex = itemTypes.length + ARRAY_MIN_SIZE - 4;
 
     // Define Behaviours
     this.update = () => {
@@ -23,6 +23,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
         // Move belt forwards
 
         this.belt.x += frameSpeed;
+        ppap.x += frameSpeed;
         for (let i in this.items) {
             this.items[i].x += frameSpeed;      // -> elements/ingredient.js
         }
@@ -106,7 +107,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
 
     // Pad array and construct belt
     for(let i = 0; i < ARRAY_MIN_SIZE; i++) {
-        if (i < ARRAY_MIN_SIZE - 3) {
+        if (i <= ARRAY_MIN_SIZE - 3) {
             this.addItemAtIndex(makeItem(BLANK, level), i); // -> elements/ingredient.js
         }
 
@@ -138,4 +139,24 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
     for(let i = 0; i < itemTypes.length; i++) {
         this.addItemAtIndex(makeItem(itemTypes[i], level), i + ARRAY_MIN_SIZE - 3); // -> elements/ingredient.js
     }
+    
+    let ppap = new PIXI.Container();
+    let pen1 = makeItem(PEN, level);
+    pen1.position.set(-TILES_PX*this.lastIndex - 6 * TILES_PX, CANVAS_HEIGHT - SPRITE_HALF_PX);
+    pen1.interactive = false;
+    ppap.addChild(pen1);
+    let pineapple = makeItem(PINEAPPLE, level);
+    pineapple.position.set(-TILES_PX*this.lastIndex - 7 * TILES_PX, CANVAS_HEIGHT - SPRITE_HALF_PX);
+    pineapple.interactive = false;
+    ppap.addChild(pineapple);
+    let apple = makeItem(APPLE, level);
+    apple.position.set(-TILES_PX*this.lastIndex - 8 * TILES_PX, CANVAS_HEIGHT - SPRITE_HALF_PX);
+    apple.interactive = false;
+    ppap.addChild(apple);
+    let pen2 = makeItem(PEN, level);
+    pen2.position.set(-TILES_PX*this.lastIndex - 9 * TILES_PX, CANVAS_HEIGHT - SPRITE_HALF_PX);
+    pen2.interactive = false;
+    ppap.addChild(pen2);
+    level.scene.addChild(ppap);
+    
 }
