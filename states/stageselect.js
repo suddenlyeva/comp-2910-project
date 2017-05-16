@@ -15,7 +15,11 @@ function StageSelect() {
     // button dimensions
     let buttonWidth        = CANVAS_WIDTH  / 2,
         buttonHeight       = CANVAS_HEIGHT / 2,
-        padding            = 25;
+        buttonPadding      = 25;
+    // clicking current button takes you to the stage if centerX is within the button's bounds
+    // currentPosLimiter limits these bounds
+    // values of buttonWidth / 2 and above will cause the current button to be unclickable
+    let currentPosLimiter  = buttonWidth / 4;
 
     // ***** avoid modifying the following variables *****
     let stageButtons       = new PIXI.Container();
@@ -26,11 +30,13 @@ function StageSelect() {
     let swipeDistance      = 0;  // accumulates unadjusted xDelta
     let stopWatch          = 0;  // for calculating swipe speed
 
-    let buttonDisplayWidth = buttonWidth + padding * 2;
+    let buttonDisplayWidth = buttonWidth + buttonPadding * 2;
 
     // referenceX is a starting x position of the carousel
     // used as a base reference in position related calculations
     let referenceX         = CANVAS_WIDTH / 2 - buttonDisplayWidth / 2;
+    // another reference position, this time to center of the display
+    let centerX            = referenceX + buttonDisplayWidth / 2;
 
     stageButtons.position.set(referenceX, CANVAS_HEIGHT / 2 - buttonHeight / 2);
     stageButtons.interactive = stageButtons.buttonMode = true;
@@ -46,7 +52,7 @@ function StageSelect() {
         let button = makeSimpleButton( // -> util.js
             buttonWidth, buttonHeight, "stage " + i + "\npreview placeholder",
             0xffdfba, buttonHeight / 4);
-        button.x = padding;
+        button.x = buttonPadding;
 
         button.pointerdown = (eventData) => {
             // remember position where the button was first clicked
@@ -68,7 +74,11 @@ function StageSelect() {
                 diffY  = Math.abs(newPos.y - button.clickPos.y);
 
             if(diffX < tapSensitivity && diffY < tapSensitivity) {
-                if(currentButton === i) {
+                let pos  = wrapper.x + button.x + stageButtons.x,  // button's left  edge position
+                    posL = pos + currentPosLimiter,                // adjusted button's left  edge position
+                    posR = pos - currentPosLimiter + button.width; // adjusted button's right edge position
+                // if the current button is at least half way in position, it's clickable
+                if(currentButton === i && posL < centerX && centerX < posR) {
                     Level.open(LEVELS[currentButton]); // -> states/levels.js
                 } else {
                     setManually   = true;
@@ -95,7 +105,7 @@ function StageSelect() {
             button.alpha = ratioFromTarget;
             // wrapper.scale.set(ratioFromTarget);
             button.scale.set(ratioFromTarget);
-            button.x = leftOfView ? wrapper.width - button.width - padding : padding;
+            button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
             button.y = wrapper.height / 2 - button.height / 2;
         };
         // --------------------
@@ -175,13 +185,11 @@ function StageSelect() {
             return currentButton;
         }
 
-        let centerPoint = referenceX + buttonDisplayWidth / 2;
-
         for(let i = 0; i < stageButtons.children.length; i++) {
             if(stageButtons.x +
                 stageButtons.children[i].x +
                 stageButtons.children[i].width + adjX
-                >= centerPoint) {
+                >= centerX) {
                 return i;
             }
         }
