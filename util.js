@@ -203,6 +203,38 @@ function sceneResize(stretchThreshold = 0) {
     }
 }
 
+// Creates the letterbox around the game
+// Divisions are to undo scaling from the scene resize
+function letterbox(frameX, frameY) {
+    frameX /= SCENE.scale.x;
+    frameY /= SCENE.scale.y;
+    frameW = window.innerWidth/SCENE.scale.x * (1 + STRETCH_THRESHOLD);
+    frameH = window.innerHeight/SCENE.scale.y * (1 + STRETCH_THRESHOLD);
+    
+    LEFT_MASK.width = frameX;
+    LEFT_MASK.height = frameH;
+    LEFT_MASK.x = -frameX;
+    SCENE.addChild(LEFT_MASK);
+    
+    RIGHT_MASK.width = frameX;
+    RIGHT_MASK.height = frameH;
+    RIGHT_MASK.x = CANVAS_WIDTH;
+    SCENE.addChild(RIGHT_MASK);
+    
+    TOP_MASK.height = frameY;
+    TOP_MASK.width = frameW
+    TOP_MASK.y = -frameY;
+    SCENE.addChild(TOP_MASK);
+    
+    BOT_MASK.height = frameY;
+    BOT_MASK.width = frameW;
+    BOT_MASK.y = CANVAS_HEIGHT;
+    SCENE.addChild(BOT_MASK);
+    
+    
+    
+}
+
 // Make a spinning gear
 // Sizes: "s, m, l, xl"
 function makeGear(size, speed) {
