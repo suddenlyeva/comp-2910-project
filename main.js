@@ -59,6 +59,7 @@ function setup() {
 
 // Called while the game is running
 function gameLoop() {
+    STATE(); // Single-state update loop for easy switching
 
     // Resize the scene on window resize or scene changed
     if(WINDOW_RESIZED || SCENE !== previousScene) {
@@ -67,7 +68,6 @@ function gameLoop() {
         WINDOW_RESIZED = false;
     }
 
-    STATE(); // Single-state update loop for easy switching
 
     previousScene = SCENE; // Reset Scene switch flag
 
