@@ -211,10 +211,14 @@ function StageSelect() {
 
     // adjust carousel display based on current position
     let updateDisplay = () => {
-        for(let i = 0; i < stageButtons.children.length; i++) {
-            stageButtons.children[i].update(
-                stageButtons.x + stageButtons.children[i].x < refXLeft
-            );
+        let pos;
+        for(let i = 0; i < stageButtons.children.length &&
+            // if position is outside the canvas, don't update
+            (pos = stageButtons.x + stageButtons.children[i].x) <= CANVAS_WIDTH; i++) {
+            if(pos + stageButtons.children[i].width >= 0) {
+                console.log(i);
+                stageButtons.children[i].update(pos < refXLeft);
+            }
         }
     };
 
