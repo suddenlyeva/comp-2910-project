@@ -7,6 +7,11 @@ function StageSelect() {
 
     let deceleration       = 12;  // ... of the movement animation
     let positionEpsilon    = 1;   // for position comparison
+    // background - buttons not in view, foreground - button in view
+    let bgButtonAlpha      = 0.5;
+    let fgButtonAlpha      = 1;
+    let bgButtonScale      = 0.6; // x and y
+    let fgButtonScale      = 1;
     // from pointerup to pointerdown: if moved less than the number of units(x and y)
     // specified by tapSensitivity, consider it a tap/click
     let tapSensitivity     = 10;  // xDelta multiplier
@@ -16,7 +21,7 @@ function StageSelect() {
     let buttonWidth        = CANVAS_WIDTH  / 2,
         buttonHeight       = CANVAS_HEIGHT / 2,
         buttonPadding      = 25;
-    // clicking current button takes you to the stage if centerX is within the button's bounds
+    // clicking current button takes you to the stage if refXCenter is within the button's bounds
     // currentPosLimiter limits these bounds
     // values of buttonWidth / 2 and above will cause the current button to be unclickable
     let currentPosLimiter  = buttonWidth / 4;
@@ -32,13 +37,14 @@ function StageSelect() {
 
     let buttonDisplayWidth = buttonWidth + buttonPadding * 2;
 
-    // referenceX is a starting x position of the carousel
+    // refXLeft is a starting x position of the carousel
     // used as a base reference in position related calculations
-    let referenceX         = CANVAS_WIDTH / 2 - buttonDisplayWidth / 2;
-    // another reference position, this time to center of the display
-    let centerX            = referenceX + buttonDisplayWidth / 2;
+    let refXLeft           = CANVAS_WIDTH / 2 - buttonDisplayWidth / 2; // left   of display
+    // more reference positions
+    let refXCenter         = refXLeft + buttonDisplayWidth / 2;         // center of display
+    let refXRight          = refXLeft + buttonDisplayWidth;             // right  of display
 
-    stageButtons.position.set(referenceX, CANVAS_HEIGHT / 2 - buttonHeight / 2);
+    stageButtons.position.set(refXLeft, CANVAS_HEIGHT / 2 - buttonHeight / 2);
     stageButtons.interactive = stageButtons.buttonMode = true;
 
     // initialize buttons
@@ -78,7 +84,7 @@ function StageSelect() {
                     posL = pos + currentPosLimiter,                // adjusted button's left  edge position
                     posR = pos - currentPosLimiter + button.width; // adjusted button's right edge position
                 // if the current button is at least half way in position, it's clickable
-                if(currentButton === i && posL < centerX && centerX < posR) {
+                if(currentButton === i && posL < refXCenter && refXCenter < posR) {
                     Level.open(LEVELS[currentButton]); // -> states/levels.js
                 } else {
                     setManually   = true;
@@ -95,16 +101,23 @@ function StageSelect() {
         wrapper.x = wrapper.width * i;
 
         // --------------------
-        // update wrapper appearance based on how far away it is from referenceX
-        // leftOfView - is the wrapper is to the left of initialX(true) or to the right(false)?
+        // update wrapper appearance based on how far away it is from refXLeft
+        // leftOfView - is the wrapper is to the left of refXLeft(true) or to the right(false)?
         wrapper.update = (leftOfView) => {
-            let buttonPos = stageButtons.x + wrapper.x;
+            let posL = wrapper.x + stageButtons.x,  // wrapper's left  edge position
+                posR = posL      + wrapper.width;   // wrapper's right edge position
 
-            let ratioFromTarget = buttonDisplayWidth /
-                (buttonDisplayWidth + Math.abs(referenceX - buttonPos));
-            button.alpha = ratioFromTarget;
-            // wrapper.scale.set(ratioFromTarget);
-            button.scale.set(ratioFromTarget);
+            // Calculate how much of the button is in the spotlight
+            // and divide it by display width to find out the percentage of the button in the spotlight.
+            // In center position produces numbers like 0.9986321642984926, if rounding is desired
+            // use Math.round( ... * 100) / 100 to round to 2 decimal places
+            let percentageInView =
+                // performance: conditional operator or multiply by boolean?
+                (posL <= refXRight && refXLeft <= posR ?
+                    Math.min(refXRight - posL, posR - refXLeft) / buttonDisplayWidth
+                    : 0);
+            button.alpha =   bgButtonAlpha + (fgButtonAlpha - bgButtonAlpha) * percentageInView;
+            button.scale.set(bgButtonScale + (fgButtonScale - bgButtonScale) * percentageInView);
             button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
             button.y = wrapper.height / 2 - button.height / 2;
         };
@@ -189,7 +202,7 @@ function StageSelect() {
             if(stageButtons.x +
                 stageButtons.children[i].x +
                 stageButtons.children[i].width + adjX
-                >= centerX) {
+                >= refXCenter) {
                 return i;
             }
         }
@@ -200,14 +213,14 @@ function StageSelect() {
     let updateDisplay = () => {
         for(let i = 0; i < stageButtons.children.length; i++) {
             stageButtons.children[i].update(
-                stageButtons.x + stageButtons.children[i].x < referenceX
+                stageButtons.x + stageButtons.children[i].x < refXLeft
             );
         }
     };
 
     let updateCarousel = () => {
         // calculate difference in x position that the carousel needs to be moved by
-        let posDiff = stageButtons.x - referenceX + stageButtons.children[currentButton].x;
+        let posDiff = stageButtons.x - refXLeft + stageButtons.children[currentButton].x;
         if(Math.abs(posDiff) > positionEpsilon) {
             if(!stageButtons.moving && !stageButtons.pressedDown) {
                 // carousel movement animation
@@ -262,5 +275,5 @@ StageSelect.open = () => {
 // This cause the scroll speed to be inconsistent - the further you scroll
 // the more it accelerates and total carousel width varies as a result of scaling.
 // Possible solution:
-// Find a middle point (like initialX) and have all the buttons
+// Find a middle point (like refXLeft) and have all the buttons
 // move towards it. The perceived scroll speed should seem consistent.
