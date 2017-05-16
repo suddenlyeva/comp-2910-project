@@ -5,6 +5,9 @@
 function StageComplete(data) {
     this.scene = new PIXI.Container();
 
+    // variable to display score dynamically
+    let scoreDisplayed = 0;
+
     // home button
     this.homeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-home.png"]);
     this.homeButton.position.set(TILES_PX * 1.5, TILES_PX * 6.5);
@@ -47,7 +50,7 @@ function StageComplete(data) {
 
     // scoreTxt
     // TODO: Need to replace the text with the actual score
-    this.scoreTxt = new PIXI.Text("score : 00000", this.txtStyle);
+    this.scoreTxt = new PIXI.Text("score : " + scoreDisplayed, this.txtStyle);
     this.scoreTxt.position.set(TILES_PX * 1.5, TILES_PX * 0.75);
 
     // Stars. These are temporary place holder, need to change code later
@@ -64,7 +67,7 @@ function StageComplete(data) {
     //  End of temporary code
 
     // wasteTxt
-    this.wasteTxt = new PIXI.Text("waste : 00", this.txtStyle);
+    this.wasteTxt = new PIXI.Text("waste : " + data.waste, this.txtStyle);
     this.wasteTxt.position.set(TILES_PX * 12.5, TILES_PX * 0.75);
 
     // homeTxt for home button
@@ -109,7 +112,18 @@ function StageComplete(data) {
         Level.open(LEVELS[data.id]);
     });
 
-    this.update = () => {};
+    this.displayScore = () => {
+        if (scoreDisplayed < data.score) {
+            scoreDisplayed += 9;
+            this.scoreTxt.text = "score : " + scoreDisplayed;
+        } else {
+            this.scoreTxt.text = "score : " + data.score;
+        }
+    };
+
+    this.update = () => {
+        this.displayScore();
+    };
 }
 
 StageComplete.open = (completionData) => {
