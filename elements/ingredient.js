@@ -138,7 +138,7 @@ function makeItem(type, level) { // <- states/levels.js
 
                 // else waste
                 if(!addedToProcessor) {
-                    itemWastedSFX.play();
+                    sounds["sounds/splat.wav"].play();
                     item.waste();
                 }
             }

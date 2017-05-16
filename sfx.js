@@ -2,12 +2,12 @@
 
 // Loads the sound effects
 sounds.load([
-    "sounds/collect_coin_03.wav",
+    "sounds/button-click-forward.wav",
     "sounds/item-pickup.wav",
     "sounds/splat.wav"
 ]);
 
-
+sounds.whenLoaded = () => {};
 
 
 
