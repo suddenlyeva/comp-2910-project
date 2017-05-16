@@ -5,18 +5,25 @@
 function StageComplete(data) {
     this.scene = new PIXI.Container();
 
-    this.continueButton = makeSimpleButton(100, 50, "continue", 0x00d27f, 50);  // -> util.js
-    this.homeButton = makeSimpleButton(TILES_PX * 1.5, TILES_PX * 1.5, "home", 0xaa3355, 50);           // -> util.js
-    this.continueButton = makeSimpleButton(TILES_PX * 7, TILES_PX * 2, "continue", 0xaa3355, 50);           // -> util.js
-    this.replayButton = makeSimpleButton(TILES_PX * 1.5, TILES_PX * 1.5, "replay", 0xaa3355, 50);           // -> util.js
+    // home button
+    this.homeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-home.png"]);
+    this.homeButton.position.set(TILES_PX * 1.5, TILES_PX * 6.5);
+    this.homeButton.interactive = true;
+    this.homeButton.buttonMode = true;
+
+    // continue button
+    this.continueButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-next.png"]);
+    this.continueButton.position.set(TILES_PX * 4.5, TILES_PX * 6.25);
+    this.continueButton.interactive = true;
+    this.continueButton.buttonMode = true;
+
+    // replay button
+    this.replayButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-replay.png"]);
+    this.replayButton.position.set(TILES_PX * 13, TILES_PX * 6.5);
+    this.replayButton.interactive = true;
+    this.replayButton.buttonMode = true;
 
     let txtVAlign = 6; // Vertical padding on button labels
-
-    // Position stuff
-    this.continueButton.position.set(10, 10);
-    this.homeButton.position.set(TILES_PX * 1.5, TILES_PX * 6.5);
-    this.continueButton.position.set(TILES_PX * 4.5, TILES_PX * 6.25);
-    this.replayButton.position.set(TILES_PX * 13, TILES_PX * 6.5);
 
     // Style for labels
     this.txtStyle = new PIXI.TextStyle({
@@ -30,7 +37,7 @@ function StageComplete(data) {
     });
 
     // gradeTxt
-    this.gradeTxt = new PIXI.Text("perfect!", this.gradeTxtStyle);
+    this.gradeTxt = new PIXI.Text(data.grade, this.gradeTxtStyle);
     this.gradeTxt.position.set(CANVAS_WIDTH / 2 - this.gradeTxt.width / 2, 0);
 
     // ClearMessage
@@ -60,12 +67,12 @@ function StageComplete(data) {
     this.wasteTxt = new PIXI.Text("waste : 00", this.txtStyle);
     this.wasteTxt.position.set(TILES_PX * 12.5, TILES_PX * 0.75);
 
-    // homeTxt
+    // homeTxt for home button
     this.homeTxt = new PIXI.Text("home", this.txtStyle);
     this.homeTxt.position.set(this.homeButton.x + this.homeButton.width / 2 - this.homeTxt.width / 2,
         this.homeButton.y + this.homeButton.height - this.homeTxt.height / txtVAlign);
 
-    // replayTxt
+    // replayTxt for replay button
     this.replayTxt = new PIXI.Text("replay", this.txtStyle);
     this.replayTxt.position.set(this.replayButton.x + this.replayButton.width / 2 - this.replayTxt.width / 2,
         this.replayButton.y + this.replayButton.height - this.replayTxt.height / txtVAlign);
@@ -100,15 +107,8 @@ function StageComplete(data) {
     this.update = () => {};
 }
 
-// StageComplete.open = (completionData) => {
-//     StageComplete.instance = new StageComplete(completionData);
-//
-//     SCENE = StageComplete.instance.scene;
-//     STATE = StageComplete.instance.update;
-// }
-// hacked original code to test
-StageComplete.open = () => {
-    StageComplete.instance = new StageComplete();
+StageComplete.open = (completionData) => {
+    StageComplete.instance = new StageComplete(completionData);
 
     SCENE = StageComplete.instance.scene;
     STATE = StageComplete.instance.update;
