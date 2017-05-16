@@ -53,6 +53,7 @@ function MainMenu() {
 
     // Play button moves to stage select
     this.playButton.on("pointertap", () => {
+        buttonClickSFX.play();
         OptionsMenu.close();    // -> states/optionsmenu.js
         StageSelect.open();     // -> states/stageselect.js
     });
