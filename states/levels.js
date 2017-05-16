@@ -10,7 +10,7 @@ let LEVELS = [
 
     {id: 0, name: "tutorial",
     
-        clearMessage: "An apple a day is one less apple in the garbage.",
+        clearMessage: "An apple a day is one less apple in the trash.",
         wasteLimit: 3,
         maxScore: 300,
 
@@ -299,7 +299,7 @@ function Level(data) {
             
             // Processor Check
             for (let i in this.processors) {
-                if(this.processors[i].GetState() === 1) { // Any active or waiting state.
+                if(this.processors[i].GetState() > 0) { // Any active or waiting state.
                     this.timeOut = 120; // Stall if it catches a false flag.
                 }
             }
