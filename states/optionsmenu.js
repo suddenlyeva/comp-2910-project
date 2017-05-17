@@ -54,7 +54,7 @@ function OptionsMenu() {
     // Back button moves to main menu
     // bind(this) is used to give the function context (which is the current object)
     this.okButton.on("pointertap", () => {
-        sounds["sounds/button-click.wav"].play();
+        sounds[eSFXList.ButtonClick].play();
         OptionsMenu.close();
     });
 

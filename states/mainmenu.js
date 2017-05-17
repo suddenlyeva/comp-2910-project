@@ -53,16 +53,16 @@ function MainMenu() {
 
     // Play button moves to stage select
     this.playButton.on("pointertap", () => {
-        sounds["sounds/button-click.wav"].play();
-        sounds["sounds/menu-open.wav"].play();
+        sounds[eSFXList.ButtonClick].play();
+        sounds[eSFXList.MenuOpen].play();
         OptionsMenu.close();    // -> states/optionsmenu.js
         StageSelect.open();     // -> states/stageselect.js
     });
 
     // Options button opens an options panel
     this.optionsButton.on("pointertap", () => {
-        sounds["sounds/button-click.wav"].play();
-        sounds["sounds/menu-open.wav"].play();
+        sounds[eSFXList.ButtonClick].play();
+        sounds[eSFXList.MenuOpen].play();
         OptionsMenu.open(); // -> states/optionsmenu.js
     });
     // this.fullScreenButton.pointertap = toggleFullScreen;

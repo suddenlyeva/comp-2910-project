@@ -60,7 +60,8 @@ function Intro() {
     this.clickableArea.endFill();
     this.clickableArea.interactive = true;
     this.clickableArea.pointertap = () => {
-        sounds["sounds/button-click.wav"].play();
+        sounds[eSFXList.ButtonClick].play();
+        sounds[eSFXList.MenuOpen].play();
         MainMenu.open(); // -> states/mainmenu.js
     }
     // Add to scene
