@@ -143,7 +143,6 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
     let ppap = new PIXI.Container();
     let pen1 = makeItem(PEN, level);
     pen1.position.set(-TILES_PX*this.lastIndex - 17 * TILES_PX, CANVAS_HEIGHT - SPRITE_HALF_PX);
-    console.log(pen1.x);
     pen1.interactive = false;
     ppap.addChild(pen1);
     let pineapple = makeItem(PINEAPPLE, level);
