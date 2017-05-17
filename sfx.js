@@ -7,7 +7,7 @@ let SFX_MASTER = [];
 let SFX_VOLUME = 1.0;
 
 /* This list allows us to change the file names of the audio
-* without changing it in other areas*/
+* without changing it in the rest of the code*/
 let eSFXList = {
     MenuOpen : "sounds/menu-open.wav",
     ButtonClick: "sounds/button-click.wav",
@@ -15,6 +15,8 @@ let eSFXList = {
     Splat: "sounds/splat.wav",
     Processing : "sounds/processing.ogg",
     ClockTicking : "sounds/ticking.wav",
+    IntoProcessor: "sounds/into-processor.wav",
+    RecipeComplete: "sounds/recipe-complete.wav"
 
 };
 
@@ -25,20 +27,27 @@ sounds.load([
     eSFXList.ItemPickUp,
     eSFXList.Splat,
     eSFXList.Processing,
-    eSFXList.ClockTicking
+    eSFXList.ClockTicking,
+    eSFXList.IntoProcessor
 ]);
 
 // Adds the sounds to SFX master to allow volume control of sfx
 sounds.whenLoaded = () => {
-    SFX_MASTER.push(sounds[eSFXList.MenuOpen]);
-    SFX_MASTER.push(sounds[eSFXList.ButtonClick]);
-    SFX_MASTER.push(sounds[eSFXList.ItemPickUp]);
-    SFX_MASTER.push(sounds[eSFXList.Splat]);
-    SFX_MASTER.push(sounds[eSFXList.Processing]);
-    SFX_MASTER.push(sounds[eSFXList.ClockTicking]);
+    for(let i in eSFXList) {
+        SFX_MASTER.push(sounds[eSFXList[i]]);
+    }
 };
 
+function PlaySound(sfx, isLooping) {
+    sounds[sfx].loop = isLooping;
+    sounds[sfx].play();
+}
 
+function StopSound(sfx) {
+    sounds[sfx].playFrom(0);    // Resets the player back to time 0
+    sounds[sfx].pause();        // Pauses it right after reseting playbar
+    sounds[sfx].loop = false;   // In case if flag is true
+}
 
 
 

@@ -54,7 +54,7 @@ function makeItem(type, level) { // <- states/levels.js
 
     // Turns the item into waste.
     item.waste = () => {
-        sounds["sounds/splat.wav"].play();
+        sounds[eSFXList.Splat].play();
         level.completionData.waste++;   // -> states/levels.js
         level.updateWasteInfo();        // -> states/levels.js
         item.texture = ITEM_TEXTURES[SPLAT];
@@ -107,7 +107,7 @@ function makeItem(type, level) { // <- states/levels.js
     // When the item is clicked.
     item.onDragStart = (event) => {
         if (!level.itemPickedUp) { // -> states/levels.js
-            sounds["sounds/item-pickup.wav"].play();
+            sounds[eSFXList.ItemPickUp].play();
             item.data = event.data;
             item.alpha = 0.5;
             item.dragging = true;
@@ -138,6 +138,7 @@ function makeItem(type, level) { // <- states/levels.js
 
                 // Add to a processor if on one of those
                 for (let i in level.processors) {
+                    sounds[eSFXList.IntoProcessor].play();
                     if (level.processors[i].collidesWithPoint(item.x, item.y)) {    // -> elements/processor.js
                         addedToProcessor = level.processors[i].addItem(item);       // -> elements/processor.js
                     }
