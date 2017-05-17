@@ -125,6 +125,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
 
     // Records cursor position inside handle.dragData
     handle.pointerdown = (eventData) => {
+        sounds["sounds/button-click.wav"].play();
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
         handle.tint = colorDrag;
     };
@@ -134,6 +135,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
     handle.pointerup = handle.pointerupoutside =
         clickableArea.pointerup = clickableArea.pointerupoutside =
         (eventData) => {
+            sounds["sounds/button-click.wav"].play();
             handle.dragData = false; // Stop dragging
             handle.tint = handle.x === slider.x ? colorMuted : colorSound; // IF the handle is on the left edge of slider
         };
@@ -186,14 +188,6 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
 
         sliderObj.onSliderAdjust();
     };
-
-    handle.on("pointerdown", () => {
-        sounds["sounds/button-click.wav"].play();
-    });
-
-    handle.on("pointerup", () => {
-        sounds["sounds/button-click.wav"].play();
-    });
 
     sliderObj.onSliderAdjust = () => {};
 
