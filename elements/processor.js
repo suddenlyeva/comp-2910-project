@@ -13,7 +13,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     // Variable assignment
     this.Spawn = () => {
         
-        this.mTimer =  = new Timer(level);
+        this.mTimer = new Timer(level);
         
         // Variable Assignments
         //this.mRequiredIngredients = [];
@@ -111,9 +111,10 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
             }break;
 
             case (this.mProcessorState.Processing): {   // Processing State
-
+                    let something = 0;
                     // If Timer hasn't been spawned, spawn it.
                     if(!this.bIsTimerSpawned) {
+                        this.PlaySound(this.eSoundFX.Processing, 0.5, true);
                         this.mTimer.OnSpawn();
                         this.bIsTimerSpawned = true;
                     }
@@ -158,7 +159,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
             this.mCurrentState = this.mProcessorState.Processing;
         }
 
-        // Proccessing Timer State
+        // Processing Timer State
         else if(this.mCurrentState === this.mProcessorState.Processing && this.bIsTimerFinished) {
             this.mCurrentState = this.mProcessorState.Finished;
 
@@ -175,12 +176,6 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     //================================================================================
     // Acessors
     //================================================================================
-
-    //-------------------------------------------------------------------------------
-    // Gets Score of the recipe
-    this.GetScore = () => {
-        return (this.mScore);
-    };
 
     //-------------------------------------------------------------------------------
     // Checks if all the required Recipe Ingredients are added
@@ -232,12 +227,6 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     //================================================================================
     // Mutators
     //================================================================================
-
-    //-------------------------------------------------------------------------------
-    // Sets Score
-    this.SetScore = () => {
-        //(this.mScore) = recipeOrder.GetScore();
-    };
 
     //-------------------------------------------------------------------------------
     // Sets Position of the Compressor
@@ -309,6 +298,27 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
         this.bIsTimerSpawned = false;
     };
 
+    //------------------------------------------------------------------------------
+    // Magic is bad
+    this.PlaySound = (playSound, playVolume, isLooping) => {
+        sounds[playSound].loop = isLooping;
+        sounds[playSound].volume = playVolume * SFX_VOLUME;
+        sounds[playSound].play();
+    };
+    
+    
+    this.StopAllSounds = (stringName) => {
+        
+        
+        if(sounds[this.eSoundFX.Processing].loop == true) {
+            sounds[this.eSoundFX.Processing].loop = false;
+        }
+        if(sounds[this.eSoundFX.Completed].loop == true) {
+            sounds[this.eSoundFX.Completed].loop = false;
+        }
+    };
+    
+    
     //================================================================================
     // Object Variables
     //================================================================================
@@ -329,8 +339,10 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     // Enums
     this.mOutputState = { Blue : 0, Yellow : 1};                            // Output State
     this.mProcessorState = { Feeding : 0, Processing : 1, Finished : 2 };   // Processor State
-    this.SoundFX = {Processing : 0, Finished : 1};                          // SoundFX
-
+    this.eSoundFX = { Processing :  "sounds/processing.ogg",
+                      Completed :   "sounds/processing.ogg",
+                      Ticker :      "sounds/ticker.ogg"};                // SoundFX
+    
 
     // Object Variables
     this.mPosition = {x : 0, y : 0};    // Processor Position
