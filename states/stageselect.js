@@ -15,10 +15,13 @@ function StageSelect() {
     let tapSensitivity     = 10;  // xDelta multiplier
     let scrollSensitivity  = 1.1; // swipe speed exponent
     let swipeSensitivity   = 1.6;
-    // button dimensions
+    // button properties
     let buttonWidth        = 640,
         buttonHeight       = 460,
-        buttonPadding      = 25;
+        buttonPadding      = 25,
+        buttonTextStyle    = new PIXI.TextStyle({
+            fontFamily: FONT_FAMILY, fontSize: 100
+        });
     // clicking current button takes you to the stage if refXCenter is within the button's bounds
     // currentPosLimiter limits these bounds
     // values of buttonWidth / 2 and above will cause the current button to be unclickable
@@ -48,17 +51,24 @@ function StageSelect() {
     // initialize buttons
     for(let i = 0; i < LEVELS.length; i++) {
         let wrapper  = new PIXI.Container(),
+            button   = new PIXI.Container(),
             buttonBg = new PIXI.Graphics();
         // transparent background creates padding
         buttonBg.beginFill(0, 0);
         buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonHeight);
         buttonBg.endFill();
-        // let button = makeSimpleButton( // -> util.js
-        //     buttonWidth, buttonHeight, "stage " + i + "\npreview placeholder",
-        //     0xffdfba, buttonHeight / 4);
-        let button = new PIXI.Sprite(
+
+        let buttonImage = new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
         );
+        button.addChild(buttonImage);
+
+        let buttonText = new PIXI.Text(
+            (i !== 0 ? "level " + i + " :" : "") + " " + LEVELS[i].name,
+            buttonTextStyle);
+        button.addChild(buttonText);
+        buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
+
         button.interactive = button.buttonMode = true;
         button.x = buttonPadding;
 
@@ -272,7 +282,7 @@ function StageSelect() {
     optionsButton.on("pointertap", () => {
         sounds["sounds/button-click.wav"].play();
         sounds["sounds/menu-open.wav"].play();
-        cleanUpCarousel();
+        // cleanUpCarousel(); // not needed for locally opened pop-up menu
         OptionsMenu.open(); // -> states/optionsmenu.js
     });
     
