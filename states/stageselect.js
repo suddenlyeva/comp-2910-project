@@ -53,9 +53,6 @@ function StageSelect() {
         buttonBg.beginFill(0, 0);
         buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonHeight);
         buttonBg.endFill();
-        // let button = makeSimpleButton( // -> util.js
-        //     buttonWidth, buttonHeight, "stage " + i + "\npreview placeholder",
-        //     0xffdfba, buttonHeight / 4);
         let button = new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
         );
@@ -268,7 +265,7 @@ function StageSelect() {
     optionsButton.on("pointertap", () => {
         sounds["sounds/button-click.wav"].play();
         sounds["sounds/menu-open.wav"].play();
-        cleanUpCarousel();
+        // cleanUpCarousel(); // not needed for locally opened pop-up menu
         OptionsMenu.open(); // -> states/optionsmenu.js
     });
     
