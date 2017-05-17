@@ -28,7 +28,8 @@ sounds.load([
     eSFXList.Splat,
     eSFXList.Processing,
     eSFXList.ClockTicking,
-    eSFXList.IntoProcessor
+    eSFXList.IntoProcessor,
+    eSFXList.RecipeComplete
 ]);
 
 // Adds the sounds to SFX master to allow volume control of sfx
