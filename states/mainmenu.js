@@ -53,19 +53,26 @@ function MainMenu() {
 
     // Play button moves to stage select
     this.playButton.on("pointertap", () => {
+        sounds["sounds/button-click.wav"].play();
+        sounds["sounds/menu-open.wav"].play();
         OptionsMenu.close();    // -> states/optionsmenu.js
         StageSelect.open();     // -> states/stageselect.js
     });
 
     // Options button opens an options panel
-    this.optionsButton.on("pointertap", OptionsMenu.open); // -> states/optionsmenu.js
-
+    this.optionsButton.on("pointertap", () => {
+        sounds["sounds/button-click.wav"].play();
+        sounds["sounds/menu-open.wav"].play();
+        OptionsMenu.open(); // -> states/optionsmenu.js
+    });
     // this.fullScreenButton.pointertap = toggleFullScreen;
 
     //more games button opens the affiliate page
 
-    this.moreGamesButton.on("pointertap", Affiliate.open); // -> states/affiliate.js
-
+    this.moreGamesButton.on("pointertap", () => {
+        sounds["sounds/button-click.wav"].play();
+        Affiliate.open(); // -> states/affiliate.js
+    });
     // Add to scene
     this.scene.addChild(this.background);
     this.scene.addChild(this.playButton);
