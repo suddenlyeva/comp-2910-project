@@ -13,7 +13,7 @@ let LEVELS = [
         wasteLimit: 3,
 
         conveyorBelt: {
-            items: [APPLE,BLANK,APPLE,BLANK,APPLE],
+            items: [APPLE,BLANK,BLANK,BLANK,APPLE,BLANK,BLANK,BLANK,APPLE],
             speed: 1.2
         },
 
@@ -149,6 +149,8 @@ function Level(data) {
     this.pauseButton.interactive = true;
     this.pauseButton.buttonMode = true;
     this.pauseButton.on("pointertap", () => {
+        sounds["sounds/menu-open.wav"].play();
+        sounds["sounds/button-click.wav"].play();
         this.pauseButton.texture = PIXI.loader.resources["images/spritesheet.json"].textures["pause-off.png"];
         this.isPaused = true;
         PauseMenu.open(this); // -> states/pausemenu.js

@@ -1,14 +1,23 @@
 "use strict";
 
+let SFX_MASTER = [];
+let SFX_VOLUME = 1.0;
+
 // Loads the sound effects
 sounds.load([
-    "sounds/button-click-forward.wav",
+    "sounds/menu-open.wav",
+    "sounds/button-click.wav",
     "sounds/item-pickup.wav",
-    "sounds/splat.wav",
-    "sounds/processing.ogg"
+    "sounds/splat.wav"
+
 ]);
 
-sounds.whenLoaded = () => { };
+sounds.whenLoaded = () => {
+    SFX_MASTER.push(sounds["sounds/menu-open.wav"]);
+    SFX_MASTER.push(sounds["sounds/button-click.wav"]);
+    SFX_MASTER.push(sounds["sounds/item-pickup.wav"]);
+    SFX_MASTER.push(sounds["sounds/splat.wav"]);
+};
 
 
 

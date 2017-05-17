@@ -90,6 +90,9 @@ function setup() {
     );
     RIGHT_MASK.interactive = true;
     
+    // Load texture dictionary
+    defineItemTextures();
+    
     // Start game
     Intro.open(); // -> states/intro.js
     TICKER.add(gameLoop);

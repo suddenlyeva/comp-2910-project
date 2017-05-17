@@ -120,11 +120,15 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
 
     // Functions
 
+    sliderObj.value = 1.0;
+
+
     // Records cursor position inside handle.dragData
     handle.pointerdown = (eventData) => {
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
         handle.tint = colorDrag;
     };
+
 
     // Change color on mute
     handle.pointerup = handle.pointerupoutside =
@@ -158,6 +162,10 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
                 handle.x = xAdjusted;
                 handle.dragData = newPos;
             }
+
+            sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
+
+            sliderObj.onSliderAdjust();
         }
     };
 
@@ -173,7 +181,21 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         } else {
             handle.x = xAdjusted;
         }
+
+        sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
+
+        sliderObj.onSliderAdjust();
     };
+
+    handle.on("pointerdown", () => {
+        sounds["sounds/button-click.wav"].play();
+    });
+
+    handle.on("pointerup", () => {
+        sounds["sounds/button-click.wav"].play();
+    });
+
+    sliderObj.onSliderAdjust = () => {};
 
     // Add to container
     sliderObj.addChild(slider);
@@ -230,8 +252,6 @@ function letterbox(frameX, frameY) {
     BOT_MASK.width = frameW;
     BOT_MASK.y = CANVAS_HEIGHT;
     SCENE.addChild(BOT_MASK);
-    
-    
     
 }
 
