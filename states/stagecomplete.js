@@ -203,9 +203,6 @@ function StageComplete(data) {
                     stars[i].currentScale += 0.03;
                     stars[i].scale.x = stars[i].currentScale;
                     stars[i].scale.y = stars[i].currentScale;
-                    console.log(stars[i].currentScale);
-                    console.log(stars[i].scale.x);
-                    console.log(stars[i].scale.y);
                 }
             }
             starTicker -= starInterval;
