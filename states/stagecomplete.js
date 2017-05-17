@@ -98,18 +98,18 @@ function StageComplete(data) {
     this.scoreTxt = new PIXI.Text("score : " + scoreDisplayed, this.txtStyle);
     this.scoreTxt.position.set(TILES_PX * 3 - this.scoreTxt.width / 2, TILES_PX * 0.5);
 
-    // Stars. These are temporary place holder, need to change code later
-    // TODO: replace with the atual sprite
+    // Stars
     let stars = [];
     for (let i = 0; i < grade.nStars; i++) {
         stars.push(new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["star.png"]
         ));
         stars[i].x += i * TILES_PX * 2.5;
+        stars[i].anchor.set(0.5);
         this.starContainer.addChild(stars[i]);
     }
-    this.starContainer.position.set(CANVAS_WIDTH / 2 - this.starContainer.width / 2, TILES_PX * 3.5 + txtVAlign);
-    //  End of temporary code
+    this.starContainer.position.set(CANVAS_WIDTH / 2 - this.starContainer.width / 2 + TILES_PX,
+        TILES_PX * 4.5 + txtVAlign);
 
     // wasteTxt
     this.wasteTxt = new PIXI.Text("waste : " + wasteDisplayed, this.txtStyle);
@@ -182,9 +182,40 @@ function StageComplete(data) {
         this.wasteTxt.position.set(CANVAS_WIDTH - TILES_PX * 3 - this.wasteTxt.width / 2, TILES_PX * 0.5);
     };
 
+    // Star animation. TODO: Refactoring
+    let limitScale = 1;
+    let starTicker = 0;
+    let starInterval = 1;
+    let delayCounter = 0 ;
+    for(let i = 0; i < stars.length; i++){
+        stars[i].currentScale = 0;
+        stars[i].scale.x = 0;
+        stars[i].scale.y = 0;
+        stars[i].delay = i*10;
+    }
+    this.displayStar = () => {
+        starTicker += TICKER.deltaTime;
+        if(starTicker >= starInterval) {
+            if(delayCounter <= stars[stars.length-1].delay)
+                delayCounter++;
+            for (let i = 0; i < stars.length; i++) {
+                if (stars[i].currentScale < limitScale && stars[i].delay < delayCounter) {
+                    stars[i].currentScale += 0.03;
+                    stars[i].scale.x = stars[i].currentScale;
+                    stars[i].scale.y = stars[i].currentScale;
+                    console.log(stars[i].currentScale);
+                    console.log(stars[i].scale.x);
+                    console.log(stars[i].scale.y);
+                }
+            }
+            starTicker -= starInterval;
+        }
+    };
+
     this.update = () => {
         this.displayScore();
         this.displayWaste();
+        this.displayStar();
     };
 }
 
