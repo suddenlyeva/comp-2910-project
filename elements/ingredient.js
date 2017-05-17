@@ -12,13 +12,12 @@ let KIWI = 7;
 let KIWI_SLICE = 8;
 let YOGURT = 9;
 let FRUIT_YOGURT = 10;
+let PINEAPPLE = 11;
+let PEN = 99;
 
-// Makes an item in the level
-function makeItem(type, level) { // <- states/levels.js
-
-    // Texture dictionary
-    // TODO: JSON solution for this?
-    let ITEM_TEXTURES = [];
+// Texture dictionary
+let ITEM_TEXTURES = [];
+function defineItemTextures() {
     ITEM_TEXTURES[SPLAT] = PIXI.loader.resources["images/spritesheet.json"].textures["splat.png"];
     ITEM_TEXTURES[BLANK] = PIXI.loader.resources["images/spritesheet.json"].textures["blank.png"];
     ITEM_TEXTURES[APPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"];
@@ -30,6 +29,12 @@ function makeItem(type, level) { // <- states/levels.js
     ITEM_TEXTURES[KIWI_SLICE] = PIXI.loader.resources["images/spritesheet.json"].textures["kiwi-slice.png"];
     ITEM_TEXTURES[YOGURT] = PIXI.loader.resources["images/spritesheet.json"].textures["yogurt.png"];
     ITEM_TEXTURES[FRUIT_YOGURT] = PIXI.loader.resources["images/spritesheet.json"].textures["fruit-yogurt.png"];
+    ITEM_TEXTURES[PINEAPPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["pineapple.png"];
+    ITEM_TEXTURES[PEN] = PIXI.loader.resources["images/spritesheet.json"].textures["pen.png"];
+}
+
+// Makes an item in the level
+function makeItem(type, level) { // <- states/levels.js
 
     // Create the Sprite
     let item = new PIXI.Sprite(
@@ -101,11 +106,12 @@ function makeItem(type, level) { // <- states/levels.js
 
     // When the item is clicked.
     item.onDragStart = (event) => {
-        if(!level.isComplete) { // -> states/levels.js
+        if (!level.itemPickedUp) { // -> states/levels.js
             sounds["sounds/item-pickup.wav"].play();
             item.data = event.data;
             item.alpha = 0.5;
             item.dragging = true;
+            level.itemPickedup = true;
 
             // Replace previous conveyor item with a blank
             if (level.conveyorBelt.collidesWithPoint(item.x, item.y)) {         // -> elements/conveyorbelt.js
@@ -142,7 +148,8 @@ function makeItem(type, level) { // <- states/levels.js
                     item.waste();
                 }
             }
-
+            
+            level.itemPickedup = false;
             level.isComplete = level.checkForCompletion(); // -> states/levels.js
         }
 
