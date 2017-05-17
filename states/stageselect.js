@@ -7,19 +7,17 @@ function StageSelect() {
 
     let deceleration       = 12;  // ... of the movement animation
     let positionEpsilon    = 1;   // for position comparison
-    // background - buttons not in view, foreground - button in view
-    let bgButtonAlpha      = 0.5;
-    let fgButtonAlpha      = 1;
-    let bgButtonScale      = 0.6; // x and y
-    let fgButtonScale      = 1;
+    // primary - button in view, secondary - buttons not in view
+    let buttonAlpha        = { primary : 1, secondary : 0.5 };
+    let buttonScale        = { primary : 1, secondary : 0.6 };
     // from pointerup to pointerdown: if moved less than the number of units(x and y)
     // specified by tapSensitivity, consider it a tap/click
     let tapSensitivity     = 10;  // xDelta multiplier
     let scrollSensitivity  = 1.1; // swipe speed exponent
     let swipeSensitivity   = 1.6;
     // button dimensions
-    let buttonWidth        = CANVAS_WIDTH  / 2,
-        buttonHeight       = CANVAS_HEIGHT / 2,
+    let buttonWidth        = 640,
+        buttonHeight       = 460,
         buttonPadding      = 25;
     // clicking current button takes you to the stage if refXCenter is within the button's bounds
     // currentPosLimiter limits these bounds
@@ -55,9 +53,13 @@ function StageSelect() {
         buttonBg.beginFill(0, 0);
         buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonHeight);
         buttonBg.endFill();
-        let button = makeSimpleButton( // -> util.js
-            buttonWidth, buttonHeight, "stage " + i + "\npreview placeholder",
-            0xffdfba, buttonHeight / 4);
+        // let button = makeSimpleButton( // -> util.js
+        //     buttonWidth, buttonHeight, "stage " + i + "\npreview placeholder",
+        //     0xffdfba, buttonHeight / 4);
+        let button = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
+        );
+        button.interactive = button.buttonMode = true;
         button.x = buttonPadding;
 
         button.pointerdown = (eventData) => {
@@ -116,8 +118,10 @@ function StageSelect() {
                 (posL <= refXRight && refXLeft <= posR ?
                     Math.min(refXRight - posL, posR - refXLeft) / buttonDisplayWidth
                     : 0);
-            button.alpha =   bgButtonAlpha + (fgButtonAlpha - bgButtonAlpha) * percentageInView;
-            button.scale.set(bgButtonScale + (fgButtonScale - bgButtonScale) * percentageInView);
+            button.alpha   = buttonAlpha.secondary +
+                (buttonAlpha.primary - buttonAlpha.secondary) * percentageInView;
+            button.scale.set(buttonScale.secondary +
+                (buttonScale.primary - buttonScale.secondary) * percentageInView);
             button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
             button.y = wrapper.height / 2 - button.height / 2;
         };
