@@ -114,7 +114,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
                     let something = 0;
                     // If Timer hasn't been spawned, spawn it.
                     if(!this.bIsTimerSpawned) {
-                        this.PlaySound(this.eSoundFX.Processing, 0.5, true);
+                        this.PlaySound(eSFXList.Processing, 0.5, true);
                         this.mTimer.OnSpawn();
                         this.bIsTimerSpawned = true;
                     }
@@ -136,6 +136,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
                 this.mTimer.OnKill();
 
                 if(!this.bIsFinishedSpawning) {
+                    this.StopSound(eSFXList.Processing);
                     this.SpawnOutput();
                     this.mOutputSprite.texture = this.mOutputTexture[this.mOutputState.Yellow];
                     this.bIsFinishedSpawning = true;
@@ -302,10 +303,15 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     // Magic is bad
     this.PlaySound = (playSound, playVolume, isLooping) => {
         sounds[playSound].loop = isLooping;
-        sounds[playSound].volume = playVolume * SFX_VOLUME;
+        sounds[playSound].volume = playVolume;
         sounds[playSound].play();
     };
     
+    this.StopSound = (sfx) => {
+        sounds[sfx].loop = false;   // In case if it is flagged as looping
+        sounds[sfx].pause();
+        sounds[sfx].playFrom(0);
+    };
     
     this.StopAllSounds = (stringName) => {
         
