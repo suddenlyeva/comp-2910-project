@@ -61,7 +61,8 @@ function Intro() {
     this.clickableArea.interactive = true;
     this.clickableArea.pointertap = () => {
         sounds["sounds/button-click.wav"].play();
-        MainMenu.open(); // -> states/mainmenu.js
+        sounds["sounds/menu-open.wav"].play();
+        StageSelect.open(); // -> states/mainmenu.js
     }
     // Add to scene
     this.scene.addChild(this.txtFood);

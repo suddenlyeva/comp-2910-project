@@ -247,7 +247,8 @@ function StageSelect() {
     };
 
     // -------------------------------- End of carousel --------------------------------
-
+    
+    /*
     let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
     backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
     backToMainMenu.on("pointertap", () => {
@@ -255,8 +256,45 @@ function StageSelect() {
         cleanUpCarousel();
         MainMenu.open()
     });
+    */
+    
+    // Options
+    let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
+    optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 3, CANVAS_HEIGHT - TILES_PX * 1.5);
+    optionsButton.scale.set(1/1.5,1/1.5);
+    optionsButton.interactive = true;
+    optionsButton.buttonMode = true;
 
+    optionsButton.on("pointertap", () => {
+        sounds["sounds/button-click.wav"].play();
+        sounds["sounds/menu-open.wav"].play();
+        cleanUpCarousel();
+        OptionsMenu.open(); // -> states/optionsmenu.js
+    });
+    
+    // Fullscreen
+    let fullscreenButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
+    fullscreenButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
+    fullscreenButton.scale.set(1/1.5,1/1.5);
+    fullscreenButton.interactive = true;
+    fullscreenButton.buttonMode = true;
+    fullscreenButton.on("pointertap", () => {
+        cleanUpCarousel();
+        toggleFullScreen();
+    });
+    
+    // More Games
+    let moreGamesButton = makeSimpleButton(TILES_PX * 3, TILES_PX, "more games", 0xFFFF66, 75); // -> util.js
+    moreGamesButton.position.set(TILES_PX * 0.25, CANVAS_HEIGHT - TILES_PX * 1.25);
 
+    moreGamesButton.on("pointertap", () => {
+        sounds["sounds/button-click.wav"].play();
+        cleanUpCarousel();
+        OptionsMenu.close();
+        Affiliate.open(); // -> states/affiliate.js
+    });
+    
+    
     let background = new PIXI.Container(),
         bgFill     = new PIXI.Graphics();
     bgFill.beginFill(0x5d32ea);
@@ -269,7 +307,10 @@ function StageSelect() {
     this.scene = new PIXI.Container();
     this.scene.addChild(background);
     this.scene.addChild(stageButtons);
-    this.scene.addChild(backToMainMenu);
+    this.scene.addChild(optionsButton);
+    this.scene.addChild(fullscreenButton);
+    this.scene.addChild(moreGamesButton);
+    //this.scene.addChild(backToMainMenu);
 
     this.update = () => {
         updateCarousel();

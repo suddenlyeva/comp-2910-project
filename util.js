@@ -310,18 +310,18 @@ function padZeroForInt(intToPad, digits) {
 }
 
 // TODO: Well supported fullscreen functionality
-//
-// function toggleFullScreen() {
-//     var doc = window.document;
-//     var docEl = doc.documentElement;
-//
-//     var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-//     var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-//
-//     if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-//         requestFullScreen.call(docEl);
-//     }
-//     else {
-//         cancelFullScreen.call(doc);
-//     }
-// }
+
+ function toggleFullScreen() {
+     let doc = window.document;
+     let docEl = document.getElementById("display");
+
+     let requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+     let cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+     if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+         requestFullScreen.call(docEl);
+     }
+     else {
+         cancelFullScreen.call(doc);
+     }
+ }
