@@ -4,8 +4,9 @@
 // Shows when stage is complete=]
 function StageComplete(data) {
     this.scene = new PIXI.Container();
+    this.starContainer = new PIXI.Container();
 
-    // variable to display score dynamically
+    // variable to display score and waste dynamically
     let scoreDisplayed = 0;
     let wasteDisplayed = 0;
     let wasteInterval = 30;
@@ -43,7 +44,33 @@ function StageComplete(data) {
     });
 
     // gradeTxt
-    this.gradeTxt = new PIXI.Text(data.grade, this.gradeTxtStyle);
+    // TODO: Re think about structure (there is a order matter)
+    this.getStrGrade = (score) => {
+        // gradeLists[gradePercentage, gradeStr]
+        let gradeLists = {
+            first: [100, "perfect!"],
+            second: [80, "excellent!"],
+            third: [60, "great!"],
+            fourth: [40, "nice!"],
+            last: [0, "good enough!"]
+        };
+
+        // Calculate grade rate
+        let gradeRate = (score / data.maxScore) * 100;
+
+        // Decide grade string
+        if (gradeRate >= gradeLists.first[0])
+            return gradeLists.first[1];
+        else if (gradeRate >= gradeLists.second[0])
+            return gradeLists.second[1];
+        else if (gradeRate >= gradeLists.third[0])
+            return gradeLists.third[1];
+        else if (gradeRate >= gradeLists.fourth[0])
+            return gradeLists.fourth[1];
+        else if (gradeRate >= gradeLists.last[0])
+            return gradeLists.last[1];
+    };
+    this.gradeTxt = new PIXI.Text(this.getStrGrade(data.score), this.gradeTxtStyle);
     this.gradeTxt.position.set(CANVAS_WIDTH / 2 - this.gradeTxt.width / 2, 0);
 
     // ClearMessage
@@ -61,12 +88,12 @@ function StageComplete(data) {
     let stars = [];
     for (let i = 0; i < 5; i++) {
         stars.push(new PIXI.Sprite(
-            PIXI.loader.resources["images/spritesheet.json"].textures["background.png"]
+            PIXI.loader.resources["images/spritesheet.json"].textures["star.png"]
         ));
-        stars[i].position.set(TILES_PX * 2 + 2.5 * i * TILES_PX, TILES_PX * 3.5);
-        stars[i].scale.set(2,2);
-        this.scene.addChild(stars[i]);
+        stars[i].x += i * TILES_PX * 2.5;
+        this.starContainer.addChild(stars[i]);
     }
+    this.starContainer.position.set(CANVAS_WIDTH / 2 - this.starContainer.width / 2, TILES_PX * 3.5);
     //  End of temporary code
 
     // wasteTxt
@@ -84,6 +111,7 @@ function StageComplete(data) {
         this.replayButton.y + this.replayButton.height - this.replayTxt.height / txtVAlign);
 
     // Add to scene
+    this.scene.addChild(this.starContainer);
     this.scene.addChild(this.homeButton);
     this.scene.addChild(this.continueButton);
     this.scene.addChild(this.replayButton);
@@ -136,6 +164,7 @@ function StageComplete(data) {
             this.wasteTxt.text = "waste : " + data.waste;
         }
     };
+
 
     this.update = () => {
         this.displayScore();

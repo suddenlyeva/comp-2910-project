@@ -102,8 +102,8 @@ function Level(data) {
     // Passed to stage complete menu
     this.completionData = {
         id: data.id,
+        maxScore: data.maxScore,
         clearMessage: data.clearMessage,
-        grade: "",
         score: 0,
         waste: 0,
         itemsComplete: []
@@ -260,32 +260,6 @@ function Level(data) {
         return true;
     };
 
-    this.getStrGrade = (score) => {
-        // gradeLists[gradePercentage, gradeStr]
-        let gradeLists = {
-            first: [100, "perfect!"],
-            second: [80, "excellent!"],
-            third: [60, "great!"],
-            fourth: [40, "nice!"],
-            last: [0, "good enough!"]
-        };
-
-        // Calculate grade rate
-        let gradeRate = (score / data.maxScore) * 100;
-
-        // Decide grade string
-        if (gradeRate >= gradeLists.first[0])
-            return gradeLists.first[1];
-        else if (gradeRate >= gradeLists.second[0])
-            return gradeLists.second[1];
-        else if (gradeRate >= gradeLists.third[0])
-            return gradeLists.third[1];
-        else if (gradeRate >= gradeLists.fourth[0])
-            return gradeLists.fourth[1];
-        else if (gradeRate >= gradeLists.last[0])
-            return gradeLists.last[1];
-    };
-
     this.update = () => {
 
         // Update scene objects
@@ -313,8 +287,6 @@ function Level(data) {
             }
             // Move to Stage Complete
             if (this.timeOut <= 0) {
-                this.completionData.grade = this.getStrGrade(this.completionData.score);
-                console.log(this.getStrGrade(this.completionData.score));
                 StageComplete.open(this.completionData); // -> states/stagecomplete.js
             }
         }
