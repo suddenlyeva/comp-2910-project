@@ -273,15 +273,15 @@ function StageSelect() {
     });
     
     // Fullscreen
-    let fullscreenButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
-    fullscreenButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
-    fullscreenButton.scale.set(1/1.5,1/1.5);
-    fullscreenButton.interactive = true;
-    fullscreenButton.buttonMode = true;
-    fullscreenButton.on("pointertap", () => {
-        cleanUpCarousel();
-        toggleFullScreen();
-    });
+    // let fullscreenButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
+    // fullscreenButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
+    // fullscreenButton.scale.set(1/1.5,1/1.5);
+    // fullscreenButton.interactive = true;
+    // fullscreenButton.buttonMode = true;
+    // fullscreenButton.on("pointertap", () => {
+    //     cleanUpCarousel();
+    //     toggleFullScreen();
+    // });
     
     // More Games
     let moreGamesButton = makeSimpleButton(TILES_PX * 3, TILES_PX, "more games", 0xFFFF66, 75); // -> util.js
@@ -308,7 +308,7 @@ function StageSelect() {
     this.scene.addChild(background);
     this.scene.addChild(stageButtons);
     this.scene.addChild(optionsButton);
-    this.scene.addChild(fullscreenButton);
+    //this.scene.addChild(fullscreenButton);
     this.scene.addChild(moreGamesButton);
     //this.scene.addChild(backToMainMenu);
 
