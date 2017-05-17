@@ -5,8 +5,32 @@
 function StageComplete(data) {
     this.scene = new PIXI.Container();
     this.starContainer = new PIXI.Container();
+    this.messageContainer = new PIXI.Container();
 
-    // variable to display score and waste dynamically
+    let gradeLists = {
+        perfect: {percentage: 100, text: "perfect!", nStars: 5},
+        excellent: {percentage: 80, text: "excellent!", nStars: 4},
+        great: {percentage: 60, text: "great!", nStars: 3},
+        nice: {percentage: 40, text: "nice!", nStars: 2},
+        good: {percentage: 0, text: "good enough!", nStars: 1}
+    };
+
+    let gradeRate = (data.score / data.maxScore) * 100;
+    let grade;
+    // Decide grade string
+    if (gradeRate >= gradeLists.perfect.percentage) {
+        grade = gradeLists.perfect;
+    } else if (gradeRate >= gradeLists.excellent.percentage) {
+        grade = gradeLists.excellent;
+    } else if (gradeRate >= gradeLists.great.percentage) {
+        grade = gradeLists.great;
+    } else if (gradeRate >= gradeLists.nice.percentage) {
+        grade = gradeLists.nice;
+    } else if (gradeRate >= gradeLists.good.percentage) {
+        grade = gradeLists.good;
+    }
+
+    // variables to display score and waste dynamically
     let scoreDisplayed = 0;
     let wasteDisplayed = 0;
     let wasteInterval = 30;
@@ -14,7 +38,7 @@ function StageComplete(data) {
 
     // home button
     this.homeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-home.png"]);
-    this.homeButton.position.set(TILES_PX * 1.5, TILES_PX * 6.5);
+    this.homeButton.position.set(TILES_PX * 2.25, TILES_PX * 6.5);
     this.homeButton.interactive = true;
     this.homeButton.buttonMode = true;
 
@@ -26,11 +50,11 @@ function StageComplete(data) {
 
     // replay button
     this.replayButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-replay.png"]);
-    this.replayButton.position.set(TILES_PX * 13, TILES_PX * 6.5);
+    this.replayButton.position.set(TILES_PX * 12.25, TILES_PX * 6.5);
     this.replayButton.interactive = true;
     this.replayButton.buttonMode = true;
 
-    let txtVAlign = 6; // Vertical padding on button labels
+    let txtVAlign = 6; // Magical padding for everything, somehow
 
     // Style for labels
     this.txtStyle = new PIXI.TextStyle({
@@ -41,64 +65,55 @@ function StageComplete(data) {
     });
     this.clearTxtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 80, fill: 0x0
+        // dropShadow: true, dropShadowAngle: 4 * Math.PI / 12, dropShadowDistance: 2
     });
 
     // gradeTxt
-    // TODO: Re think about structure (there is a order matter)
-    this.getStrGrade = (score) => {
-        // gradeLists[gradePercentage, gradeStr]
-        let gradeLists = {
-            first: [100, "perfect!"],
-            second: [80, "excellent!"],
-            third: [60, "great!"],
-            fourth: [40, "nice!"],
-            last: [0, "good enough!"]
-        };
-
-        // Calculate grade rate
-        let gradeRate = (score / data.maxScore) * 100;
-
-        // Decide grade string
-        if (gradeRate >= gradeLists.first[0])
-            return gradeLists.first[1];
-        else if (gradeRate >= gradeLists.second[0])
-            return gradeLists.second[1];
-        else if (gradeRate >= gradeLists.third[0])
-            return gradeLists.third[1];
-        else if (gradeRate >= gradeLists.fourth[0])
-            return gradeLists.fourth[1];
-        else if (gradeRate >= gradeLists.last[0])
-            return gradeLists.last[1];
-    };
-    this.gradeTxt = new PIXI.Text(this.getStrGrade(data.score), this.gradeTxtStyle);
-    this.gradeTxt.position.set(CANVAS_WIDTH / 2 - this.gradeTxt.width / 2, 0);
+    this.gradeTxt = new PIXI.Text(grade.text, this.gradeTxtStyle);
+    this.gradeTxt.position.set(CANVAS_WIDTH / 2 - this.gradeTxt.width / 2, -txtVAlign);
 
     // ClearMessage
     this.clearTxt = new PIXI.Text(data.clearMessage, this.clearTxtStyle);
-    this.clearTxt.anchor.set(0.5);
-    this.clearTxt.position.set(CANVAS_WIDTH / 2, TILES_PX * 2.5);
+    this.clearTxt.x = TILES_PX;
+    this.clearTxt.y = txtVAlign;
+    this.clearTxt.alpha = 0.8;
+
+    // message panel
+    this.messageLeft = new PIXI.Sprite(PIXI.utils.TextureCache["message-left.png"]);
+    this.messageMiddle = new PIXI.extras.TilingSprite(
+        PIXI.loader.resources["images/spritesheet.json"].textures["message-middle.png"],
+        this.clearTxt.width,
+        TILES_PX
+    );
+    this.messageRight = new PIXI.Sprite(PIXI.utils.TextureCache["message-right.png"]);
+    this.messageMiddle.x = TILES_PX;
+    this.messageRight.x = this.messageMiddle.width + TILES_PX;
+    this.messageContainer.addChild(this.messageLeft);
+    this.messageContainer.addChild(this.messageMiddle);
+    this.messageContainer.addChild(this.messageRight);
+    this.messageContainer.addChild(this.clearTxt);
+    this.messageContainer.position.set(CANVAS_WIDTH / 2 - this.messageContainer.width / 2, TILES_PX * 2);
 
     // scoreTxt
-    // TODO: Need to replace the text with the actual score
     this.scoreTxt = new PIXI.Text("score : " + scoreDisplayed, this.txtStyle);
-    this.scoreTxt.position.set(TILES_PX * 1.5, TILES_PX * 0.75);
+    this.scoreTxt.position.set(TILES_PX * 3 - this.scoreTxt.width / 2, TILES_PX * 0.5);
 
     // Stars. These are temporary place holder, need to change code later
     // TODO: replace with the atual sprite
     let stars = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < grade.nStars; i++) {
         stars.push(new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["star.png"]
         ));
         stars[i].x += i * TILES_PX * 2.5;
         this.starContainer.addChild(stars[i]);
     }
-    this.starContainer.position.set(CANVAS_WIDTH / 2 - this.starContainer.width / 2, TILES_PX * 3.5);
+    this.starContainer.position.set(CANVAS_WIDTH / 2 - this.starContainer.width / 2, TILES_PX * 3.5 + txtVAlign);
     //  End of temporary code
 
     // wasteTxt
     this.wasteTxt = new PIXI.Text("waste : " + wasteDisplayed, this.txtStyle);
-    this.wasteTxt.position.set(TILES_PX * 12.5, TILES_PX * 0.75);
+    this.wasteTxt.position.set(CANVAS_WIDTH - TILES_PX * 3 - this.wasteTxt.width / 2, TILES_PX * 0.5);
 
     // homeTxt for home button
     this.homeTxt = new PIXI.Text("home", this.txtStyle);
@@ -112,11 +127,11 @@ function StageComplete(data) {
 
     // Add to scene
     this.scene.addChild(this.starContainer);
+    this.scene.addChild(this.messageContainer);
     this.scene.addChild(this.homeButton);
     this.scene.addChild(this.continueButton);
     this.scene.addChild(this.replayButton);
     this.scene.addChild(this.gradeTxt);
-    this.scene.addChild(this.clearTxt);
     this.scene.addChild(this.scoreTxt);
     this.scene.addChild(this.wasteTxt);
     this.scene.addChild(this.homeTxt);
@@ -150,6 +165,7 @@ function StageComplete(data) {
         } else {
             this.scoreTxt.text = "score : " + data.score;
         }
+        this.scoreTxt.position.set(TILES_PX * 3 - this.scoreTxt.width / 2, TILES_PX * 0.5);
     };
 
     this.displayWaste = () => {
@@ -163,8 +179,8 @@ function StageComplete(data) {
         } else {
             this.wasteTxt.text = "waste : " + data.waste;
         }
+        this.wasteTxt.position.set(CANVAS_WIDTH - TILES_PX * 3 - this.wasteTxt.width / 2, TILES_PX * 0.5);
     };
-
 
     this.update = () => {
         this.displayScore();
