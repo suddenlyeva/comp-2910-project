@@ -1,10 +1,11 @@
 "use strict";
 
 function PauseMenu() {
-    let txtVAlign = 6;
 
+    // Create Scene
     this.scene  = new PIXI.Container();
-    // holds the state before the pause
+
+    // Holds the state before the pause
     this.stateBuffer;
 
     // pause the game when scene gets added
@@ -13,6 +14,7 @@ function PauseMenu() {
         STATE = this.update;
     });
 
+    // Make Panel
     this.panel = new PIXI.Graphics();
     this.panel.lineStyle(5, 0, 1);
     // this.panel.width = TILES_PX * 12;
@@ -22,6 +24,8 @@ function PauseMenu() {
     this.panel.endFill();
 
     // Make Buttons
+
+    // Container
     this.buttons = new PIXI.Container();
     // Set dimensions of the buttons container
     // this.buttonsDimensions = new PIXI.Graphics();
@@ -30,49 +34,65 @@ function PauseMenu() {
     // this.buttonsDimensions.endFill();
     // console.log(this.buttonsDimensions.width);
 
+    // Resume
     this.resumeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-play.png"]);
     this.resumeButton.position.set(TILES_PX * 2, TILES_PX * 2);
     this.resumeButton.interactive = true;
     this.resumeButton.buttonMode = true;
 
+    // Reset
     this.resetButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-restart.png"]);
     this.resetButton.position.set(this.resumeButton.x + TILES_PX * 3, TILES_PX * 2);
     this.resetButton.interactive = true;
     this.resetButton.buttonMode = true;
 
+    // Options
     this.optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
     this.optionsButton.position.set(this.resetButton.x + TILES_PX * 3, TILES_PX * 2);
     this.optionsButton.interactive = true;
     this.optionsButton.buttonMode = true;
 
+    // Back to Menu
     this.mainMenuButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-back.png"]);
     this.mainMenuButton.position.set(this.panel.width / 2 - this.mainMenuButton.width / 2, TILES_PX * 5);
     this.mainMenuButton.interactive = true;
     this.mainMenuButton.buttonMode = true;
 
+    // Create and Style Text
+
+    let txtVAlign = 6; // Vertical padding on button labels
+
+    // Style for Pause Label
     this.txtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 200, fill: 0x0
     });
+
+    // Paused Label
     this.pauseTxt = new PIXI.Text("paused", this.txtStyle);
     this.pauseTxt.position.set(this.panel.width / 2 - this.pauseTxt.width / 2, 0);
 
+    // Style for other labels
     this.txtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 96, fill: 0x0
     });
 
+    // Resume
     this.resumeTxt = new PIXI.Text("continue", this.txtStyle);
     this.resumeTxt.position.set(this.resumeButton.x + this.resumeButton.width / 2 - this.resumeTxt.width / 2,
             this.resumeButton.y + this.resumeButton.height - this.resumeTxt.height / txtVAlign);
 
+    // Reset
     this.resetTxt = new PIXI.Text("restart", this.txtStyle);
     this.resetTxt.position.set(this.resetButton.x + this.resetButton.width / 2 - this.resetTxt.width / 2,
         this.resetButton.y + this.resetButton.height - this.resetTxt.height / txtVAlign);
 
+    // Options
     this.optionsTxt = new PIXI.Text("options", this.txtStyle);
     this.optionsTxt.position.set(this.optionsButton.x + this.optionsButton.width / 2 - this.optionsTxt.width / 2,
         this.optionsButton.y + this.optionsButton.height - this.optionsTxt.height / txtVAlign);
 
 
+    // Add to container
     // this.buttons.addChild(this.buttonsDimensions);
     this.buttons.addChild(this.resumeButton);
     this.buttons.addChild(this.resetButton);
@@ -83,6 +103,7 @@ function PauseMenu() {
     this.buttons.addChild(this.resetTxt);
     this.buttons.addChild(this.optionsTxt);
 
+    // Create Transparent Overlay
     this.bgFill = new PIXI.Graphics();
     this.bgFill.beginFill(0x6a0e1d, 0.4);
     this.bgFill.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -109,14 +130,15 @@ function PauseMenu() {
         STATE = this.stateBuffer;
         this.cleanUp();
     };
+
     this.resetButton.pointertap = () => {
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
-        Level.open(LEVELS[Level.instance.id]);
+        Level.open(LEVELS[Level.instance.id]); // -> states/levels.js
     };
     this.optionsButton.pointertap = OptionsMenu.open;
     this.mainMenuButton.pointertap = () => {
         // this.cleanUp(); // also not needed
-        MainMenu.open();
+        MainMenu.open(); // -> states/mainmenu.js
     };
 
     this.cleanUp = () => {
@@ -127,6 +149,7 @@ function PauseMenu() {
     this.update = () => {};
 }
 
+// Function to open. Pause Menu is singleton
 PauseMenu.open = () => {
     if(PauseMenu.instance == null) {
         PauseMenu.instance = new PauseMenu();
