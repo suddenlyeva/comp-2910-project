@@ -266,7 +266,7 @@ function Level(data) {
             
             // Processor Check
             for (let i in this.processors) {
-                if(this.processors[i].GetState() === 1) { // Any active or waiting state.
+                if(this.processors[i].GetState() > 0) { // Any active or waiting state.
                     this.timeOut = 120; // Stall if it catches a false flag.
                 }
             }
