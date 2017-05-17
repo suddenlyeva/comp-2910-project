@@ -7,11 +7,9 @@ function StageSelect() {
 
     let deceleration       = 12;  // ... of the movement animation
     let positionEpsilon    = 1;   // for position comparison
-    // background - buttons not in view, foreground - button in view
-    let bgButtonAlpha      = 0.5;
-    let fgButtonAlpha      = 1;
-    let bgButtonScale      = 0.6; // x and y
-    let fgButtonScale      = 1;
+    // primary - button in view, secondary - buttons not in view
+    let buttonAlpha        = { primary : 1, secondary : 0.5 };
+    let buttonScale        = { primary : 1, secondary : 0.6 };
     // from pointerup to pointerdown: if moved less than the number of units(x and y)
     // specified by tapSensitivity, consider it a tap/click
     let tapSensitivity     = 10;  // xDelta multiplier
@@ -120,8 +118,10 @@ function StageSelect() {
                 (posL <= refXRight && refXLeft <= posR ?
                     Math.min(refXRight - posL, posR - refXLeft) / buttonDisplayWidth
                     : 0);
-            button.alpha =   bgButtonAlpha + (fgButtonAlpha - bgButtonAlpha) * percentageInView;
-            button.scale.set(bgButtonScale + (fgButtonScale - bgButtonScale) * percentageInView);
+            button.alpha   = buttonAlpha.secondary +
+                (buttonAlpha.primary - buttonAlpha.secondary) * percentageInView;
+            button.scale.set(buttonScale.secondary +
+                (buttonScale.primary - buttonScale.secondary) * percentageInView);
             button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
             button.y = wrapper.height / 2 - button.height / 2;
         };
