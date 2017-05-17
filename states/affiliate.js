@@ -39,7 +39,8 @@ function Affiliate() {
 
     // When logo is clicked send user to affiliates page
     this.foodFallLogo.pointertap = () => {
-        sounds[eSFXList.ButtonClick].play();
+        PlaySound(eSFXList.ButtonClick, false);
+        //sounds[eSFXList.ButtonClick].play();
 
         window.parent.location.href = "http://foodfall.ca/";
 
@@ -58,8 +59,8 @@ function Affiliate() {
 
     // When logo is clicked send user to affiliate page
     this.raceToZeroLogo.pointertap = () => {
-
-        sounds[eSFXList.ButtonClick].play();
+        PlaySound(eSFXList.ButtonClick, false);
+        //sounds[eSFXList.ButtonClick].play();
         window.location.href = "";
 
     };
@@ -77,8 +78,8 @@ function Affiliate() {
 
     // When logo is clicked send user to affiliate page
     this.captainPlanLogo.pointertap = () => {
-
-        sounds[eSFXList.ButtonClick].play();
+        PlaySound(eSFXList.ButtonClick, false);
+        //sounds[eSFXList.ButtonClick].play();
         window.location.href = "http://students.bcitdev.com/A01009216/Captain-Plan-It/index.php";
 
     };
@@ -87,8 +88,8 @@ function Affiliate() {
     this.mainMenuButton = makeSimpleButton(200, 50, "main menu", 0xFFFF66, 75);
     this.mainMenuButton.position.set((CANVAS_WIDTH /2) - 100, CANVAS_HEIGHT - 100);
     this.mainMenuButton.on("pointertap", () => {
-
-        sounds[eSFXList.ButtonClick].play();
+        PlaySound(eSFXList.ButtonClick, false);
+        //sounds[eSFXList.ButtonClick].play();
         MainMenu.open();
 
     });

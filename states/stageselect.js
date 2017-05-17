@@ -278,8 +278,10 @@ function StageSelect() {
     optionsButton.buttonMode = true;
 
     optionsButton.on("pointertap", () => {
-        sounds[eSFXList.ButtonClick].play();
-        sounds[eSFXList.MenuOpen].play();
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        //sounds[eSFXList.ButtonClick].play();
+        //sounds[eSFXList.MenuOpen].play();
         // cleanUpCarousel(); // not needed for locally opened pop-up menu
         OptionsMenu.open(); // -> states/optionsmenu.js
     });
@@ -300,8 +302,10 @@ function StageSelect() {
     moreGamesButton.position.set(TILES_PX * 0.25, CANVAS_HEIGHT - TILES_PX * 1.25);
 
     moreGamesButton.on("pointertap", () => {
-        sounds[eSFXList.ButtonClick].play();
-        sounds[eSFXList.MenuOpen].play();
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        //sounds[eSFXList.ButtonClick].play();
+        //sounds[eSFXList.MenuOpen].play();
         cleanUpCarousel();
         OptionsMenu.close();
         Affiliate.open(); // -> states/affiliate.js
