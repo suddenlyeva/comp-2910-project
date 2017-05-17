@@ -65,12 +65,10 @@ function StageSelect() {
         button.pointerdown = (eventData) => {
             // remember position where the button was first clicked
             // relative to carousel parent (which is going to be this.scene)
-            if(!button.clickPos) {
-                button.clickPos = eventData.data.getLocalPosition(stageButtons.parent);
-            }
+            button.clickPos = eventData.data.getLocalPosition(stageButtons.parent);
         };
 
-        button.pointerupoutside = button.pointerout = (eventData) => {
+        button.pointerupoutside = button.pointerout = button.pointercancel = (eventData) => {
             button.clickPos = false;
         };
 
@@ -169,13 +167,13 @@ function StageSelect() {
             // don't do anything if using multi-touch
             if(stageButtons.pointers.length !== 0) return;
 
-            stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
             // prevent division by 0
             let swipeSpeed = stopWatch === 0 ? 0 : swipeDistance / stopWatch;
             // raise to power, preserve sign
             let distAdj    = Math.pow(Math.abs(swipeSpeed), swipeSensitivity) * (swipeSpeed < 0 ? -1 : 1);
             currentButton  = determineCurrent(distAdj);
-            stopWatch      = swipeDistance = 0;
+
+            cleanUpCarousel();
         };
 
     stageButtons.pointermove = eventData => {
@@ -204,7 +202,6 @@ function StageSelect() {
     // adjX modifier changes how much further ahead to look for currentButton
     let determineCurrent = (adjX) => {
         if(setManually) {
-            setManually = false;
             return currentButton;
         }
 
@@ -244,12 +241,18 @@ function StageSelect() {
         if(stageButtons.moving) stopWatch += TICKER.deltaTime;
     };
 
+    let cleanUpCarousel = () => {
+        setManually = stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
+        swipeDistance = stopWatch = 0;
+    };
+
     // -------------------------------- End of carousel --------------------------------
 
     let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
     backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
     backToMainMenu.on("pointertap", () => {
         sounds["sounds/button-click.wav"].play();
+        cleanUpCarousel();
         MainMenu.open()
     });
 
