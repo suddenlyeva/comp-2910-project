@@ -13,7 +13,7 @@ let LEVELS = [
         wasteLimit: 3,
 
         conveyorBelt: {
-            items: [APPLE,BLANK,APPLE,BLANK,APPLE],
+            items: [APPLE,BLANK,BLANK,BLANK,APPLE,BLANK,BLANK,BLANK,APPLE],
             speed: 1.2
         },
 
@@ -217,6 +217,7 @@ function Level(data) {
     // Completion trackers
     this.isComplete = false;
     this.timeOut = 120;
+    this.itemPickedup = false;
 
     // Check if an item is the level's final item.
     this.isFinalItem = (itemType) => {
@@ -243,12 +244,10 @@ function Level(data) {
                 return false;
             }
         }
-
-        // Processor Check
-        for (let i in this.processors) {
-            if(this.processors[i].GetState() > 0) { // Any active or waiting state TODO: Functionify
-                return false;
-            }
+        
+        // Item Check
+        if (this.itemPickedup) {
+            return false;
         }
 
         return true;
@@ -266,16 +265,19 @@ function Level(data) {
 
         // Timeout on completion
         if(this.isComplete) {
-
+            
+            // Processor Check
+            for (let i in this.processors) {
+                if(this.processors[i].GetState() === 1) { // Any active or waiting state.
+                    this.timeOut = 120; // Stall if it catches a false flag.
+                }
+            }
             // Re-Authenticate
             if (this.checkForCompletion()) {
 
                 this.timeOut -= TICKER.deltaTime; // Tick
 
-            } else {
-                this.timeOut = 120; // Stall if it catches a false flag.
             }
-
             // Move to Stage Complete
             if (this.timeOut <= 0) {
                 StageComplete.open(this.completionData); // -> states/stagecomplete.js
