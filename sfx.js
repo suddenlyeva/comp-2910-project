@@ -28,8 +28,7 @@ sounds.load([
     eSFXList.Splat,
     eSFXList.Processing,
     eSFXList.ClockTicking,
-    eSFXList.IntoProcessor,
-    eSFXList.RecipeComplete
+    eSFXList.IntoProcessor
 ]);
 
 // Adds the sounds to SFX master to allow volume control of sfx
@@ -41,7 +40,6 @@ sounds.whenLoaded = () => {
     SFX_MASTER.push(sounds[eSFXList.Processing]);
     SFX_MASTER.push(sounds[eSFXList.ClockTicking]);
     SFX_MASTER.push(sounds[eSFXList.IntoProcessor]);
-    SFX_MASTER.push(sounds[eSFXList.RecipeComplete]);
 };
 
 
