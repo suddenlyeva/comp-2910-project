@@ -101,7 +101,7 @@ function setup() {
 
 // Called while the game is running
 function gameLoop() {
-
+    
     // Resize the scene on window resize or scene changed
     if(WINDOW_RESIZED || SCENE !== previousScene) {
         sceneResize(STRETCH_THRESHOLD); // -> util.js
