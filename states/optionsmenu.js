@@ -58,12 +58,16 @@ function OptionsMenu() {
         OptionsMenu.close();
     });
 
+    //Adjusts the volume for each sfx as it slides
     this.soundVol.onSliderAdjust = () => {
 
       for (let i in SFX_MASTER) {
-          SFX_MASTER[i].volume = this.soundVol.value;
+          SFX_VOLUME = this.soundVol.value;
+          SFX_MASTER[i].volume = SFX_VOLUME;
       }
     };
+
+
 }
 
 // Function to open. Options Menu is singleton

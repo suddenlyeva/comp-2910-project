@@ -129,6 +129,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         handle.tint = colorDrag;
     };
 
+
     // Change color on mute
     handle.pointerup = handle.pointerupoutside =
         clickableArea.pointerup = clickableArea.pointerupoutside =
@@ -185,6 +186,14 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
 
         sliderObj.onSliderAdjust();
     };
+
+    handle.on("pointerdown", () => {
+        sounds["sounds/button-click.wav"].play();
+    });
+
+    handle.on("pointerup", () => {
+        sounds["sounds/button-click.wav"].play();
+    });
 
     sliderObj.onSliderAdjust = () => {};
 

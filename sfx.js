@@ -1,6 +1,7 @@
 "use strict";
 
 let SFX_MASTER = [];
+let SFX_VOLUME = 1.0;
 
 // Loads the sound effects
 sounds.load([
