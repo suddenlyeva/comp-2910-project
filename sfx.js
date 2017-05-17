@@ -18,7 +18,8 @@ let eSFXList = {
     IntoProcessor: "sounds/into-processor.wav",
     RecipeComplete: "sounds/recipe-complete.wav",
     IntoConveyor: "sounds/into-conveyor.wav",
-    ItemDropped: "sounds/item-dropped.wav"
+    ItemDropped: "sounds/item-dropped.wav",
+    Error: "sounds/error.wav"
 
 };
 
@@ -33,7 +34,8 @@ sounds.load([
     eSFXList.IntoProcessor,
     eSFXList.RecipeComplete,
     eSFXList.IntoConveyor,
-    eSFXList.ItemDropped
+    eSFXList.ItemDropped,
+    eSFXList.Error
 ]);
 
 // Adds the sounds to SFX master to allow volume control of sfx
