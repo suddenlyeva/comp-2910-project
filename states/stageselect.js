@@ -286,6 +286,7 @@ function StageSelect() {
     moreGamesButton.on("pointertap", () => {
         sounds["sounds/button-click.wav"].play();
         cleanUpCarousel();
+        OptionsMenu.close();
         Affiliate.open(); // -> states/affiliate.js
     });
     
