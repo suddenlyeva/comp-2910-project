@@ -41,7 +41,7 @@ function Affiliate() {
     this.foodFallLogo.pointertap = () => {
         sounds["sounds/button-click.wav"].play();
 
-        window.location.href = "http://foodfall.ca/";
+        window.parent.location.href = "http://foodfall.ca/";
 
     };
 
@@ -60,7 +60,7 @@ function Affiliate() {
     this.raceToZeroLogo.pointertap = () => {
 
         sounds["sounds/button-click.wav"].play();
-        window.location.href = "";
+        window.parent.location.href = "";
 
     };
 
@@ -79,7 +79,7 @@ function Affiliate() {
     this.captainPlanLogo.pointertap = () => {
 
         sounds["sounds/button-click.wav"].play();
-        window.location.href = "http://students.bcitdev.com/A01009216/Captain-Plan-It/index.php";
+        window.parent.location.href = "http://students.bcitdev.com/A01009216/Captain-Plan-It/index.php";
 
     };
 
