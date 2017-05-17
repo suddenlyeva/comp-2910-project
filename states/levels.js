@@ -97,15 +97,14 @@ let LEVEL_PROGRESS = [];
 function loadProgress () {
     
     // If new user
-    LEVEL_PROGRESS.push({
+    LEVEL_PROGRESS[0] = {
        unlocked: true,
-       score: 0
-    });
-
-    for (let i = 0, i < LEVELS.length, i++) {
+       highscore: 0
+    };
+    for (let i = 1; i < LEVELS.length; i++) {
         LEVEL_PROGRESS[i] = {
             unlocked: false,
-            score: 0
+            highscore: 0
         };
     }
     
@@ -156,7 +155,9 @@ function Level(data) {
     this.txtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 96, fill: 0x0
     });
-    this.levelTxt = new PIXI.Text("level " + this.id + " : " + this.name, this.txtStyle);
+    this.levelTxt = new PIXI.Text(
+        (this.id !== 0 ? "level " + this.id + " :" : "") + " " + this.name,
+        this.txtStyle);
     this.levelTxt.position.set(TILES_PX * 7, 0);
     this.scene.addChild(this.levelTxt);
 
