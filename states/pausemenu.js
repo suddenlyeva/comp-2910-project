@@ -147,8 +147,13 @@ function PauseMenu() {
 
     this.mainMenuButton.pointertap = () => {
         // this.cleanUp(); // also not needed
+<<<<<<< HEAD
         sounds[eSFXList.ButtonClick].play();
         MainMenu.open(); // -> states/mainmenu.js
+=======
+        sounds["sounds/button-click.wav"].play();
+        StageSelect.open(); // -> states/mainmenu.js
+>>>>>>> dev
     };
 
     this.cleanUp = () => {

@@ -313,13 +313,13 @@ function padZeroForInt(intToPad, digits) {
 }
 
 // TODO: Well supported fullscreen functionality
-//
+
 // function toggleFullScreen() {
-//     var doc = window.document;
-//     var docEl = doc.documentElement;
+//     let doc = window.document;
+//     let docEl = document.getElementById("display");
 //
-//     var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-//     var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+//     let requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+//     let cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
 //
 //     if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
 //         requestFullScreen.call(docEl);

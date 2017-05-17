@@ -7,19 +7,17 @@ function StageSelect() {
 
     let deceleration       = 12;  // ... of the movement animation
     let positionEpsilon    = 1;   // for position comparison
-    // background - buttons not in view, foreground - button in view
-    let bgButtonAlpha      = 0.5;
-    let fgButtonAlpha      = 1;
-    let bgButtonScale      = 0.6; // x and y
-    let fgButtonScale      = 1;
+    // primary - button in view, secondary - buttons not in view
+    let buttonAlpha        = { primary : 1, secondary : 0.5 };
+    let buttonScale        = { primary : 1, secondary : 0.6 };
     // from pointerup to pointerdown: if moved less than the number of units(x and y)
     // specified by tapSensitivity, consider it a tap/click
     let tapSensitivity     = 10;  // xDelta multiplier
     let scrollSensitivity  = 1.1; // swipe speed exponent
     let swipeSensitivity   = 1.6;
     // button dimensions
-    let buttonWidth        = CANVAS_WIDTH  / 2,
-        buttonHeight       = CANVAS_HEIGHT / 2,
+    let buttonWidth        = 640,
+        buttonHeight       = 460,
         buttonPadding      = 25;
     // clicking current button takes you to the stage if refXCenter is within the button's bounds
     // currentPosLimiter limits these bounds
@@ -55,20 +53,22 @@ function StageSelect() {
         buttonBg.beginFill(0, 0);
         buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonHeight);
         buttonBg.endFill();
-        let button = makeSimpleButton( // -> util.js
-            buttonWidth, buttonHeight, "stage " + i + "\npreview placeholder",
-            0xffdfba, buttonHeight / 4);
+        // let button = makeSimpleButton( // -> util.js
+        //     buttonWidth, buttonHeight, "stage " + i + "\npreview placeholder",
+        //     0xffdfba, buttonHeight / 4);
+        let button = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
+        );
+        button.interactive = button.buttonMode = true;
         button.x = buttonPadding;
 
         button.pointerdown = (eventData) => {
             // remember position where the button was first clicked
             // relative to carousel parent (which is going to be this.scene)
-            if(!button.clickPos) {
-                button.clickPos = eventData.data.getLocalPosition(stageButtons.parent);
-            }
+            button.clickPos = eventData.data.getLocalPosition(stageButtons.parent);
         };
 
-        button.pointerupoutside = button.pointerout = (eventData) => {
+        button.pointerupoutside = button.pointerout = button.pointercancel = (eventData) => {
             button.clickPos = false;
         };
 
@@ -116,8 +116,10 @@ function StageSelect() {
                 (posL <= refXRight && refXLeft <= posR ?
                     Math.min(refXRight - posL, posR - refXLeft) / buttonDisplayWidth
                     : 0);
-            button.alpha =   bgButtonAlpha + (fgButtonAlpha - bgButtonAlpha) * percentageInView;
-            button.scale.set(bgButtonScale + (fgButtonScale - bgButtonScale) * percentageInView);
+            button.alpha   = buttonAlpha.secondary +
+                (buttonAlpha.primary - buttonAlpha.secondary) * percentageInView;
+            button.scale.set(buttonScale.secondary +
+                (buttonScale.primary - buttonScale.secondary) * percentageInView);
             button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
             button.y = wrapper.height / 2 - button.height / 2;
         };
@@ -165,13 +167,13 @@ function StageSelect() {
             // don't do anything if using multi-touch
             if(stageButtons.pointers.length !== 0) return;
 
-            stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
             // prevent division by 0
             let swipeSpeed = stopWatch === 0 ? 0 : swipeDistance / stopWatch;
             // raise to power, preserve sign
             let distAdj    = Math.pow(Math.abs(swipeSpeed), swipeSensitivity) * (swipeSpeed < 0 ? -1 : 1);
             currentButton  = determineCurrent(distAdj);
-            stopWatch      = swipeDistance = 0;
+
+            cleanUpCarousel();
         };
 
     stageButtons.pointermove = eventData => {
@@ -200,7 +202,6 @@ function StageSelect() {
     // adjX modifier changes how much further ahead to look for currentButton
     let determineCurrent = (adjX) => {
         if(setManually) {
-            setManually = false;
             return currentButton;
         }
 
@@ -240,16 +241,64 @@ function StageSelect() {
         if(stageButtons.moving) stopWatch += TICKER.deltaTime;
     };
 
-    // -------------------------------- End of carousel --------------------------------
+    let cleanUpCarousel = () => {
+        setManually = stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
+        swipeDistance = stopWatch = 0;
+    };
 
+    // -------------------------------- End of carousel --------------------------------
+    
+    /*
     let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
     backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
     backToMainMenu.on("pointertap", () => {
+<<<<<<< HEAD
         sounds[eSFXList.ButtonClick].play();
+=======
+        sounds["sounds/button-click.wav"].play();
+        cleanUpCarousel();
+>>>>>>> dev
         MainMenu.open()
     });
+    */
+    
+    // Options
+    let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
+    optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 3, CANVAS_HEIGHT - TILES_PX * 1.5);
+    optionsButton.scale.set(1/1.5,1/1.5);
+    optionsButton.interactive = true;
+    optionsButton.buttonMode = true;
 
+    optionsButton.on("pointertap", () => {
+        sounds["sounds/button-click.wav"].play();
+        sounds["sounds/menu-open.wav"].play();
+        cleanUpCarousel();
+        OptionsMenu.open(); // -> states/optionsmenu.js
+    });
+    
+    // Fullscreen
+    // let fullscreenButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
+    // fullscreenButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
+    // fullscreenButton.scale.set(1/1.5,1/1.5);
+    // fullscreenButton.interactive = true;
+    // fullscreenButton.buttonMode = true;
+    // fullscreenButton.on("pointertap", () => {
+    //     cleanUpCarousel();
+    //     toggleFullScreen();
+    // });
+    
+    // More Games
+    let moreGamesButton = makeSimpleButton(TILES_PX * 3, TILES_PX, "more games", 0xFFFF66, 75); // -> util.js
+    moreGamesButton.position.set(TILES_PX * 0.25, CANVAS_HEIGHT - TILES_PX * 1.25);
 
+    moreGamesButton.on("pointertap", () => {
+        sounds["sounds/button-click.wav"].play();
+        cleanUpCarousel();
+        OptionsMenu.close();
+        Affiliate.open(); // -> states/affiliate.js
+    });
+    
+    
     let background = new PIXI.Container(),
         bgFill     = new PIXI.Graphics();
     bgFill.beginFill(0x5d32ea);
@@ -262,7 +311,10 @@ function StageSelect() {
     this.scene = new PIXI.Container();
     this.scene.addChild(background);
     this.scene.addChild(stageButtons);
-    this.scene.addChild(backToMainMenu);
+    this.scene.addChild(optionsButton);
+    //this.scene.addChild(fullscreenButton);
+    this.scene.addChild(moreGamesButton);
+    //this.scene.addChild(backToMainMenu);
 
     this.update = () => {
         updateCarousel();

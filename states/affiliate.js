@@ -41,7 +41,7 @@ function Affiliate() {
     this.foodFallLogo.pointertap = () => {
         sounds[eSFXList.ButtonClick].play();
 
-        window.location.href = "http://foodfall.ca/";
+        window.parent.location.href = "http://foodfall.ca/";
 
     };
 
@@ -59,8 +59,13 @@ function Affiliate() {
     // When logo is clicked send user to affiliate page
     this.raceToZeroLogo.pointertap = () => {
 
+<<<<<<< HEAD
         sounds[eSFXList.ButtonClick].play();
         window.location.href = "";
+=======
+        sounds["sounds/button-click.wav"].play();
+        window.parent.location.href = "";
+>>>>>>> dev
 
     };
 
@@ -78,8 +83,13 @@ function Affiliate() {
     // When logo is clicked send user to affiliate page
     this.captainPlanLogo.pointertap = () => {
 
+<<<<<<< HEAD
         sounds[eSFXList.ButtonClick].play();
         window.location.href = "http://students.bcitdev.com/A01009216/Captain-Plan-It/index.php";
+=======
+        sounds["sounds/button-click.wav"].play();
+        window.parent.location.href = "http://students.bcitdev.com/A01009216/Captain-Plan-It/index.php";
+>>>>>>> dev
 
     };
 
@@ -87,8 +97,13 @@ function Affiliate() {
     this.mainMenuButton = makeSimpleButton(200, 50, "main menu", 0xFFFF66, 75);
     this.mainMenuButton.position.set((CANVAS_WIDTH /2) - 100, CANVAS_HEIGHT - 100);
     this.mainMenuButton.on("pointertap", () => {
+<<<<<<< HEAD
         sounds[eSFXList.ButtonClick].play();
         MainMenu.open();
+=======
+        sounds["sounds/button-click.wav"].play();
+        StageSelect.open();
+>>>>>>> dev
     });
 
     // Shadows for the affiliate logos
