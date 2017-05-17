@@ -88,7 +88,7 @@ function Affiliate() {
     this.mainMenuButton.position.set((CANVAS_WIDTH /2) - 100, CANVAS_HEIGHT - 100);
     this.mainMenuButton.on("pointertap", () => {
         sounds["sounds/button-click.wav"].play();
-        MainMenu.open();
+        StageSelect.open();
     });
 
     // Shadows for the affiliate logos
