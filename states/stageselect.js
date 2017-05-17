@@ -18,8 +18,8 @@ function StageSelect() {
     let scrollSensitivity  = 1.1; // swipe speed exponent
     let swipeSensitivity   = 1.6;
     // button dimensions
-    let buttonWidth        = CANVAS_WIDTH  / 2,
-        buttonHeight       = CANVAS_HEIGHT / 2,
+    let buttonWidth        = 640,
+        buttonHeight       = 460,
         buttonPadding      = 25;
     // clicking current button takes you to the stage if refXCenter is within the button's bounds
     // currentPosLimiter limits these bounds
@@ -55,9 +55,13 @@ function StageSelect() {
         buttonBg.beginFill(0, 0);
         buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonHeight);
         buttonBg.endFill();
-        let button = makeSimpleButton( // -> util.js
-            buttonWidth, buttonHeight, "stage " + i + "\npreview placeholder",
-            0xffdfba, buttonHeight / 4);
+        // let button = makeSimpleButton( // -> util.js
+        //     buttonWidth, buttonHeight, "stage " + i + "\npreview placeholder",
+        //     0xffdfba, buttonHeight / 4);
+        let button = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
+        );
+        button.interactive = button.buttonMode = true;
         button.x = buttonPadding;
 
         button.pointerdown = (eventData) => {
