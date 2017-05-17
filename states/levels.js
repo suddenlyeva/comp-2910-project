@@ -87,6 +87,30 @@ let LEVELS = [
     }
 ];
 
+let LEVEL_PROGRESS = [];
+function loadProgress () {
+    
+    // If new user
+    LEVEL_PROGRESS.push({
+       unlocked: true,
+       score: 0
+    });
+
+    for (let i = 0, i < LEVELS.length, i++) {
+        LEVEL_PROGRESS[i] = {
+            unlocked: false,
+            score: 0
+        };
+    }
+    
+    // If logged in
+    // TODO:
+}
+
+function saveProgress() {
+    // TODO: Upload LEVEL_PROGRESS to firebase
+}
+
 function Level(data) {
 
     // Identifiers
@@ -123,9 +147,7 @@ function Level(data) {
     this.txtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 96, fill: 0x0
     });
-    this.levelTxt = new PIXI.Text(
-        (this.id !== 0 ? "level " + this.id + " :" : "") + " " + this.name,
-        this.txtStyle);
+    this.levelTxt = new PIXI.Text("level " + this.id + " : " + this.name, this.txtStyle);
     this.levelTxt.position.set(TILES_PX * 7, 0);
     this.scene.addChild(this.levelTxt);
 
@@ -246,7 +268,7 @@ function Level(data) {
                 return false;
             }
         }
-
+        
         // Item Check
         if (this.itemPickedup) {
             return false;
@@ -267,7 +289,7 @@ function Level(data) {
 
         // Timeout on completion
         if(this.isComplete) {
-
+            
             // Processor Check
             for (let i in this.processors) {
                 if(this.processors[i].GetState() > 0) { // Any active or waiting state.
