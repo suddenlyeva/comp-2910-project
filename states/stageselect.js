@@ -278,6 +278,10 @@ function StageSelect() {
     fullscreenButton.scale.set(1/1.5,1/1.5);
     fullscreenButton.interactive = true;
     fullscreenButton.buttonMode = true;
+    fullscreenButton.on("pointertap", () => {
+        cleanUpCarousel();
+        toggleFullScreen();
+    });
     
     // More Games
     let moreGamesButton = makeSimpleButton(TILES_PX * 3, TILES_PX, "more games", 0xFFFF66, 75); // -> util.js
