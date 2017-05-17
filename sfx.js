@@ -7,7 +7,7 @@ let SFX_MASTER = [];
 let SFX_VOLUME = 1.0;
 
 /* This list allows us to change the file names of the audio
-* without changing it in other areas*/
+* without changing it in the rest of the code*/
 let eSFXList = {
     MenuOpen : "sounds/menu-open.wav",
     ButtonClick: "sounds/button-click.wav",
@@ -15,6 +15,8 @@ let eSFXList = {
     Splat: "sounds/splat.wav",
     Processing : "sounds/processing.ogg",
     ClockTicking : "sounds/ticking.wav",
+    IntoProcessor: "sounds/into-processor.wav",
+    RecipeComplete: "sounds/recipe-complete.wav"
 
 };
 
@@ -25,7 +27,9 @@ sounds.load([
     eSFXList.ItemPickUp,
     eSFXList.Splat,
     eSFXList.Processing,
-    eSFXList.ClockTicking
+    eSFXList.ClockTicking,
+    eSFXList.IntoProcessor,
+    eSFXList.RecipeComplete
 ]);
 
 // Adds the sounds to SFX master to allow volume control of sfx
@@ -36,8 +40,9 @@ sounds.whenLoaded = () => {
     SFX_MASTER.push(sounds[eSFXList.Splat]);
     SFX_MASTER.push(sounds[eSFXList.Processing]);
     SFX_MASTER.push(sounds[eSFXList.ClockTicking]);
+    SFX_MASTER.push(sounds[eSFXList.IntoProcessor]);
+    SFX_MASTER.push(sounds[eSFXList.RecipeComplete]);
 };
-
 
 
 
