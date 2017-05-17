@@ -54,6 +54,7 @@ function makeItem(type, level) { // <- states/levels.js
 
     // Turns the item into waste.
     item.waste = () => {
+        sounds["sounds/splat.wav"].play();
         level.completionData.waste++;   // -> states/levels.js
         level.updateWasteInfo();        // -> states/levels.js
         item.texture = ITEM_TEXTURES[SPLAT];
@@ -105,7 +106,8 @@ function makeItem(type, level) { // <- states/levels.js
 
     // When the item is clicked.
     item.onDragStart = (event) => {
-        if (!level.itemPickedUp) {
+        if (!level.itemPickedUp) { // -> states/levels.js
+            sounds["sounds/item-pickup.wav"].play();
             item.data = event.data;
             item.alpha = 0.5;
             item.dragging = true;

@@ -120,6 +120,9 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
 
     // Functions
 
+    sliderObj.value = 1.0;
+
+
     // Records cursor position inside handle.dragData
     handle.pointerdown = (eventData) => {
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
@@ -158,6 +161,10 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
                 handle.x = xAdjusted;
                 handle.dragData = newPos;
             }
+
+            sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
+
+            sliderObj.onSliderAdjust();
         }
     };
 
@@ -173,7 +180,13 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         } else {
             handle.x = xAdjusted;
         }
+
+        sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
+
+        sliderObj.onSliderAdjust();
     };
+
+    sliderObj.onSliderAdjust = () => {};
 
     // Add to container
     sliderObj.addChild(slider);
