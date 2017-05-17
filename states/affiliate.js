@@ -144,7 +144,6 @@ function Affiliate() {
 
 // Opens affiliate page used in credits and main menu pages
 Affiliate.open = () => {
-    sounds["sounds/menu-open.wav"].play();
     if(Affiliate.instance == null) {
         Affiliate.instance = new Affiliate();
     }

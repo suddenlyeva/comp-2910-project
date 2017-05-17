@@ -58,8 +58,10 @@ function makeItem(type, level) { // <- states/levels.js
         level.updateWasteInfo();        // -> states/levels.js
         item.texture = ITEM_TEXTURES[SPLAT];
         item.interactive = false;
+        PlaySound(eSFXList.ItemDropped, false);
         PlaySound(eSFXList.Splat, false);
         //sounds[eSFXList.Splat].play();
+        //sounds[eSFXList.ItemDropped].play();
     };
 
     // Item fades into the air
@@ -133,7 +135,7 @@ function makeItem(type, level) { // <- states/levels.js
                 level.conveyorBelt.getItemAtX(item.x) != null &&
                 level.conveyorBelt.getItemAtX(item.x).type == BLANK) {  // -> elements/conveyorbelt.js
                 level.conveyorBelt.addItemAtX(item, item.x);            // -> elements/conveyorbelt.js
-                PlaySound(eSFXList.ItemPickUp, false);
+                PlaySound(eSFXList.ItemDropped, false);
                 //sounds[eSFXList.IntoConveyor].play();
             }
             else {
@@ -146,7 +148,7 @@ function makeItem(type, level) { // <- states/levels.js
                     if (level.processors[i].collidesWithPoint(item.x, item.y)) {    // -> elements/processor.js
                         addedToProcessor = level.processors[i].addItem(item);       // -> elements/processor.js
                         PlaySound(eSFXList.IntoProcessor, false);
-                        PlaySound(eSFXList.ItemPickUp, false);
+                        PlaySound(eSFXList.ItemDropped, false);
                         //sounds[eSFXList.IntoProcessor].play();
                         //sounds[eSFXList.ItemPickUp].play();
                     }
