@@ -64,8 +64,6 @@ function Intro() {
         sounds[eSFXList.ButtonClick].play();
         sounds[eSFXList.MenuOpen].play();
         MainMenu.open(); // -> states/mainmenu.js
-        sounds[eSFXList.ButtonClick].play();
-        sounds[eSFXList.MenuOpen].play();
         StageSelect.open(); // -> states/mainmenu.js
 
     }

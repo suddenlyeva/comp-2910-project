@@ -95,6 +95,8 @@ function StageSelect() {
                     posR = pos - currentPosLimiter + button.width; // adjusted button's right edge position
                 // if the current button is at least half way in position, it's clickable
                 if(currentButton === i && posL < refXCenter && refXCenter < posR) {
+                    sounds[eSFXList.ButtonClick].play();
+                    sounds[eSFXList.MenuOpen].play();
                     Level.open(LEVELS[currentButton]); // -> states/levels.js
                 } else {
                     setManually   = true;
@@ -276,8 +278,8 @@ function StageSelect() {
     optionsButton.buttonMode = true;
 
     optionsButton.on("pointertap", () => {
-        sounds["sounds/button-click.wav"].play();
-        sounds["sounds/menu-open.wav"].play();
+        sounds[eSFXList.ButtonClick].play();
+        sounds[eSFXList.MenuOpen].play();
         // cleanUpCarousel(); // not needed for locally opened pop-up menu
         OptionsMenu.open(); // -> states/optionsmenu.js
     });
@@ -298,7 +300,8 @@ function StageSelect() {
     moreGamesButton.position.set(TILES_PX * 0.25, CANVAS_HEIGHT - TILES_PX * 1.25);
 
     moreGamesButton.on("pointertap", () => {
-        sounds["sounds/button-click.wav"].play();
+        sounds[eSFXList.ButtonClick].play();
+        sounds[eSFXList.MenuOpen].play();
         cleanUpCarousel();
         OptionsMenu.close();
         Affiliate.open(); // -> states/affiliate.js

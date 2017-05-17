@@ -138,9 +138,10 @@ function makeItem(type, level) { // <- states/levels.js
 
                 // Add to a processor if on one of those
                 for (let i in level.processors) {
-                    sounds[eSFXList.IntoProcessor].play();
+
                     if (level.processors[i].collidesWithPoint(item.x, item.y)) {    // -> elements/processor.js
                         addedToProcessor = level.processors[i].addItem(item);       // -> elements/processor.js
+                        sounds[eSFXList.IntoProcessor].play();
                     }
                 }
 
