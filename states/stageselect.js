@@ -245,7 +245,7 @@ function StageSelect() {
     let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
     backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
     backToMainMenu.on("pointertap", () => {
-        sounds["sounds/button-click.wav"].play();
+        sounds[eSFXList.ButtonClick].play();
         MainMenu.open()
     });
 
