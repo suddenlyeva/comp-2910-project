@@ -5,6 +5,20 @@
         <meta charset="utf-8">
         <!-- <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link rel="manifest" href="manifest.json"> -->
+        <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+        <script>
+            // Initialize Firebase
+            let config = {
+                apiKey: "AIzaSyAnEAl3LyLNeLTPB5D50QvHYlzrM6PTSeA",
+                authDomain: "foodfactoryzero.firebaseapp.com",
+                databaseURL: "https://foodfactoryzero.firebaseio.com",
+                projectId: "foodfactoryzero",
+                storageBucket: "foodfactoryzero.appspot.com",
+                messagingSenderId: "845951886262"
+            };
+            firebase.initializeApp(config);
+            let database = firebase.database();
+        </script>
         <script src="pixi.min.js"></script>
         <script src="sound.js"></script>
         <script src="sfx.js"></script>

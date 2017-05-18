@@ -95,18 +95,68 @@ let LEVELS = [
 
 let LEVEL_PROGRESS = [];
 function loadProgress () {
-    
+    // Variables for testing. replace these with unique user ID
+    let userId1 = "picojiro";
+    let userId2 = "picosaburo";
+
+    // TODO: use unique info from user authentification as ID (instead of userID1 and 2)
+    // TODO: user login check
+    // if userlogin = true then    -> not yet
+    //    if isExist(user) then      -> done
+    //          get all progress      -> done
+    //    else
+    //          initialize record and add user   -> done later move DB writing to saveProgress function
+    // else use new user statement    -> not yet
+    database.ref('users/' + userId2).once('value').then(function(snapshot){
+        if(snapshot.exists()) {
+            console.log("existing" + userId2);
+            let progress = snapshot.val();
+            for (let i = 0; i < LEVELS.length; i++) {
+                LEVEL_PROGRESS[i] = {
+                    unlocked: progress[i].unlocked,
+                    highscore: progress[i].highscore
+                };
+            }
+        } else {
+            console.log("missing" + userId2);
+            for (let i = 0; i < LEVELS.length; i++) {
+                if(i <= 0) {
+                    LEVEL_PROGRESS[i] = {
+                        unlocked: true,
+                        highscore: 100
+                    };
+                    // TODO: move this DB writing to save progress later
+                    database.ref('users/' + userId2 + '/' + i).set({
+                        unlocked: true,
+                        highscore: 100
+                    });
+                    // move until here
+                } else {
+                    LEVEL_PROGRESS[i] = {
+                        unlocked: false,
+                        highscore: 200
+                    };
+                    // TODO: move this DB writing to save progress later
+                    database.ref('users/' + userId2 + '/' + i).set({
+                        unlocked: false,
+                        highscore: 200
+                    });
+                    // move until here
+                }
+            }
+        }
+    });
     // If new user
-    LEVEL_PROGRESS[0] = {
-       unlocked: true,
-       highscore: 0
-    };
-    for (let i = 1; i < LEVELS.length; i++) {
-        LEVEL_PROGRESS[i] = {
-            unlocked: false,
-            highscore: 0
-        };
-    }
+    // LEVEL_PROGRESS[0] = {
+    //    unlocked: true,
+    //    highscore: 0
+    // };
+    // for (let i = 1; i < LEVELS.length; i++) {
+    //     LEVEL_PROGRESS[i] = {
+    //         unlocked: false,
+    //         highscore: 0
+    //     };
+    // }
     
     // If logged in
     // TODO:
