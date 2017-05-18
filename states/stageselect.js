@@ -283,11 +283,25 @@ function StageSelect() {
     };
 
     // -------------------------------- End of carousel --------------------------------
-    let easyButton = makeSimpleButton(TILES_PX * 2, TILES_PX, "easy", 0xb3ecec, 75);
-    easyButton.position.set(CANVAS_WIDTH / 2, CANVAS_HEIGHT - TILES_PX * 1.5);
-    easyButton.interactive = easyButton.buttonMode = true;
 
-    easyButton.pointertap = goToButton.bind(this, 0, false);
+    // Difficulty buttons
+    let easyButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "easy",   0xb3ecec, 75);
+    easyButton.interactive   = easyButton.buttonMode = true;
+
+    let normalButton = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "normal", 0xb3ecec, 75);
+    normalButton.interactive = normalButton.buttonMode = true;
+
+    let hardButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "hard",   0xb3ecec, 75);
+    hardButton.interactive   = hardButton.buttonMode = true;
+
+    // center the normal button and position the other 2 relative to it
+    normalButton.position.set(CANVAS_WIDTH / 2 - normalButton.width / 2, CANVAS_HEIGHT - TILES_PX * 1.2);
+    hardButton.position.set(normalButton.x + hardButton.width + TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
+    easyButton.position.set(normalButton.x - easyButton.width - TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
+
+    easyButton  .pointertap = goToButton.bind(this, 0);
+    normalButton.pointertap = goToButton.bind(this, 1);
+    hardButton  .pointertap = goToButton.bind(this, 2);
 
     // Options
     let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
@@ -347,6 +361,8 @@ function StageSelect() {
     //this.scene.addChild(fullscreenButton);
     this.scene.addChild(moreGamesButton);
     this.scene.addChild(easyButton);
+    this.scene.addChild(normalButton);
+    this.scene.addChild(hardButton);
     //this.scene.addChild(backToMainMenu);
 
     this.update = () => {
