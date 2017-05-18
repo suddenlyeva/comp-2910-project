@@ -36,7 +36,7 @@ function StageSelect() {
     let swipeDistance      = 0;  // accumulates unadjusted xDelta
     let stopWatch          = 0;  // for calculating swipe speed
 
-    let buttonDisplayWidth = buttonWidth + buttonPadding * 2,
+    let buttonDisplayWidth  = buttonWidth + buttonPadding * 2,
         buttonDisplayHeight = buttonHeight;
 
     // refXLeft is a starting x position of the carousel
@@ -70,19 +70,18 @@ function StageSelect() {
         button.addChild(buttonText);
         buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
 
-        let highscoreText = new PIXI.Text(
-            "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5),
-            buttonTextStyle);
-        button.addChild(highscoreText);
-        highscoreText.position.set(button.width / 2 - highscoreText.width, button.height / 2);
-
-        if (!LEVEL_PROGRESS[i].unlocked) {
-            let lockedText = new PIXI.Text("locked", buttonTextStyle);
-            lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5 );
-            button.addChild(lockedText);
-        }
-
+        let highscoreText = new PIXI.Text("highscore: 00000", buttonTextStyle);
         highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
+        button.addChild(highscoreText);
+
+        let lockedText = new PIXI.Text("locked", buttonTextStyle);
+        lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5 );
+        button.addChild(lockedText);
+
+        wrapper.updateProgress = () => {
+            highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
+            lockedText.text = LEVEL_PROGRESS[i].unlocked ? "" : "locked";
+        };
 
         button.interactive = button.buttonMode = true;
         button.x = buttonPadding;
@@ -365,6 +364,12 @@ function StageSelect() {
     this.scene.addChild(hardButton);
     //this.scene.addChild(backToMainMenu);
 
+    this.updateProgress = () => {
+        for(let i = 0; i < stageButtons.children.length; i++) {
+            stageButtons.children[i].updateProgress();
+        }
+    };
+
     this.update = () => {
         updateCarousel();
     };
@@ -375,9 +380,11 @@ StageSelect.open = () => {
 
     // Make new stage select for progress testing...
 
-    //if(StageSelect.instance == null) {
+    if(StageSelect.instance == null) {
         StageSelect.instance = new StageSelect();
-    //}
+    }
+
+    StageSelect.instance.updateProgress();
 
     SCENE = StageSelect.instance.scene;
     STATE = StageSelect.instance.update;
