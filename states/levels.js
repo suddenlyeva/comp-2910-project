@@ -93,6 +93,33 @@ let LEVELS = [
     }
 ];
 
+let PPAP_UNLOCKED = false;
+let PPAP = {id: LEVELS.length, name: "pen pinapple apple pen",
+        
+        clearMessage: ":3",
+        wasteLimit: 5,
+        maxScore: 99999,
+
+        conveyorBelt: {
+            items: [PEN,PINEAPPLE,APPLE,PEN],
+            speed: 1.5
+        },
+
+        processors: [
+            {
+                recipe: [PEN,PINEAPPLE,APPLE,PEN],
+                result: BANANA,
+                score: 99999,
+                x: 1*TILES_PX,
+                y: 2*TILES_PX
+            }
+        ],
+
+        finalItems: [BANANA]
+};
+
+console.log(PPAP.id);
+
 let LEVEL_PROGRESS = [];
 function loadProgress () {
     
@@ -325,6 +352,63 @@ function Level(data) {
         }
 
     };
+    
+    // PPAP
+    let pen = new PIXI.Sprite(ITEM_TEXTURES[PEN]);
+    pen.anchor.set(0.5);
+    pen.interactive = true;
+    pen.buttonMode = true;
+    this.scene.addChild(pen);
+    
+        
+    pen.onDragStart = (event) => {
+        if (!this.itemPickedUp) { // -> states/levels.js
+            PlaySound(eSFXList.ItemPickUp, false);
+            pen.data = event.data;
+            pen.alpha = 0.5;
+            pen.dragging = true;
+            this.itemPickedup = true;
+        }
+    };
+    
+    pen.onDragMove = () => {
+        if(pen.dragging) {
+            // Track x and y
+            let newPosition = pen.data.getLocalPosition(pen.parent);
+            pen.x = newPosition.x;
+            pen.y = newPosition.y;
+        }
+    };
+    
+    pen.onDragEnd = () => {
+
+        if(pen.dragging) {
+            if (pen.x < TILES_PX && pen.y < TILES_PX) {
+                PlaySound(eSFXList.IntoProcessor, false);
+                this.scene.removeChild(pen);
+                
+                if(!PPAP_UNLOCKED) {
+                    LEVELS.push(PPAP);
+                    PPAP_UNLOCKED = true;
+                }
+            }
+            
+            PlaySound(eSFXList.ItemDropped, false);
+            this.itemPickedup = false;
+        }
+    
+        // Reset visuals and flag
+        pen.alpha = 1;
+        pen.dragging = false;
+        pen.data = null;
+        
+    };
+    
+    // Declare event handlers
+    pen.on('pointerdown', pen.onDragStart)
+        .on('pointerup', pen.onDragEnd)
+        .on('pointerupoutside', pen.onDragEnd)
+        .on('pointermove', pen.onDragMove);
 }
 
 // Function to open. Level recreates itself
