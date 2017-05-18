@@ -23,7 +23,6 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
         // Move belt forwards
 
         this.belt.x += frameSpeed;
-        ppap.x += frameSpeed;
         for (let i in this.items) {
             this.items[i].x += frameSpeed;      // -> elements/ingredient.js
         }
@@ -120,7 +119,72 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
         beltTile.x -= TILES_PX * i;
         this.belt.addChild(beltTile);
     }
+    
+    
+                
+    if(!PPAP_UNLOCKED) {
+        // PPAP
+        let pen = new PIXI.Sprite(ITEM_TEXTURES[PEN]);
+        pen.anchor.set(0.5);
+        pen.interactive = true;
+        pen.buttonMode = true;
+        pen.x = CANVAS_WIDTH - 0.5 * TILES_PX;;
+        pen.y = CANVAS_HEIGHT - 60;
+        level.scene.addChild(pen);
+        
+            
+        pen.onDragStart = (event) => {
+            if (!level.itemPickedUp) { // -> states/levels.js
+                PlaySound(eSFXList.ItemPickUp, false);
+                pen.data = event.data;
+                pen.alpha = 0.5;
+                pen.dragging = true;
+                level.itemPickedup = true;
+            }
+        };
+        
+        pen.onDragMove = () => {
+            if(pen.dragging) {
+                // Track x and y
+                let newPosition = pen.data.getLocalPosition(pen.parent);
+                pen.x = newPosition.x;
+                pen.y = newPosition.y;
+            }
+        };
+        
+        pen.onDragEnd = () => {
 
+            if(pen.dragging) {
+                if (pen.x < TILES_PX && pen.y < TILES_PX) {
+                    PlaySound(eSFXList.IntoProcessor, false);
+                    level.scene.removeChild(pen);
+                    LEVELS.push(PPAP);
+                    LEVEL_PROGRESS.push({
+                        unlocked: true,
+                        highscore: 0
+                    });
+                    PPAP_UNLOCKED = true;
+                }
+                
+                PlaySound(eSFXList.ItemDropped, false);
+                this.itemPickedup = false;
+            }
+        
+            // Reset visuals and flag
+            pen.alpha = 1;
+            pen.dragging = false;
+            pen.data = null;
+            
+        };
+        
+        // Declare event handlers
+        pen.on('pointerdown', pen.onDragStart)
+            .on('pointerup', pen.onDragEnd)
+            .on('pointerupoutside', pen.onDragEnd)
+            .on('pointermove', pen.onDragMove);
+    
+    }
+    
     // Trash Pit
     let trashPit = new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["trash-pit.png"]
@@ -139,24 +203,4 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
     for(let i = 0; i < itemTypes.length; i++) {
         this.addItemAtIndex(makeItem(itemTypes[i], level), i + ARRAY_MIN_SIZE - 3); // -> elements/ingredient.js
     }
-    
-    let ppap = new PIXI.Container();
-    let pen1 = makeItem(PEN, level);
-    pen1.position.set(-TILES_PX*this.lastIndex - 17 * TILES_PX, CANVAS_HEIGHT - SPRITE_HALF_PX);
-    pen1.interactive = false;
-    ppap.addChild(pen1);
-    let pineapple = makeItem(PINEAPPLE, level);
-    pineapple.position.set(-TILES_PX*this.lastIndex - 18 * TILES_PX, CANVAS_HEIGHT - SPRITE_HALF_PX);
-    pineapple.interactive = false;
-    ppap.addChild(pineapple);
-    let apple = makeItem(APPLE, level);
-    apple.position.set(-TILES_PX*this.lastIndex - 19 * TILES_PX, CANVAS_HEIGHT - SPRITE_HALF_PX);
-    apple.interactive = false;
-    ppap.addChild(apple);
-    let pen2 = makeItem(PEN, level);
-    pen2.position.set(-TILES_PX*this.lastIndex - 20 * TILES_PX, CANVAS_HEIGHT - SPRITE_HALF_PX);
-    pen2.interactive = false;
-    ppap.addChild(pen2);
-    level.scene.addChild(ppap);
-    
 }
