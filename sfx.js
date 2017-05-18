@@ -45,6 +45,17 @@ sounds.whenLoaded = () => {
     }
 };
 
+// function PlaySound(sfx, isLooping) {
+    // sounds[sfx].loop = isLooping;
+    // sounds[sfx].play();
+// }
+
+// function StopSound(sfx) {
+    // sounds[sfx].playFrom(0);    // Resets the player back to time 0
+    // sounds[sfx].pause();        // Pauses it right after reseting playbar
+    // sounds[sfx].loop = false;   // In case if flag is true
+// }
+
 function PlaySound(sfx, isLooping) {
     sounds[sfx].loop = isLooping;
     if(isLooping) {
@@ -65,14 +76,13 @@ function StopSound(sfx) {
     if(sounds[sfx].loop) {
         sounds[sfx].nPlaying--;
         if (sounds[sfx].nPlaying < 1) {
-            sounds[sfx].pause();
+            sounds[sfx].pause(); 
         }
     }
     else {
         sounds[sfx].pause();        // Pauses it right after reseting playbar
     }
 }
-
 
 
 
