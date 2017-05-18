@@ -26,7 +26,8 @@ let eSFXList = {
     ItemDropped: "sounds/item-dropped.wav",
     Error: "sounds/error.wav",
     StageComplete: "sounds/stage-complete.wav",
-    GameOver: "sounds/game-over.wav"
+    GameOver: "sounds/game-over.wav",
+    PPAP: "sounds/ppap.wav"
 };
 
 /* This list allows us to change the file names of the music
@@ -50,6 +51,7 @@ sounds.load([
     eSFXList.Error,
     eSFXList.StageComplete,
     eSFXList.GameOver,
+    eSFXList.PPAP,
     eMusicList.Music
 ]);
 let NumBGM = 1;
