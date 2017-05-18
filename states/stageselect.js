@@ -50,128 +50,132 @@ function StageSelect() {
     stageButtons.interactive = stageButtons.buttonMode = true;
 
     // initialize buttons
-    for(let i = 0; i < LEVELS.length; i++) {
-        let wrapper  = new PIXI.Container(),
-            button   = new PIXI.Container(),
-            buttonBg = new PIXI.Graphics();
-        // transparent background creates padding
-        buttonBg.beginFill(0, 0);
-        buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonDisplayHeight);
-        buttonBg.endFill();
+    this.initButtons = () => {
+        for(let i = stageButtons.children.length; i < LEVELS.length; i++) {
+            let wrapper  = new PIXI.Container(),
+                button   = new PIXI.Container(),
+                buttonBg = new PIXI.Graphics();
+            // transparent background creates padding
+            buttonBg.beginFill(0, 0);
+            buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonDisplayHeight);
+            buttonBg.endFill();
 
-        // remember level id
-        button.id = LEVELS[i].id;
+            // remember level id
+            button.id = LEVELS[i].id;
 
-        let buttonImage = new PIXI.Sprite(
-            PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
-        );
-        button.addChild(buttonImage);
+            let buttonImage = new PIXI.Sprite(
+                PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
+            );
+            button.addChild(buttonImage);
 
-        let buttonText = new PIXI.Text(
-            (i !== 0 ? "level " + i + " :" : "") + " " + LEVELS[i].name,
-            buttonTextStyle);
-        button.addChild(buttonText);
-        buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
+            let buttonText = new PIXI.Text(
+                (i !== 0 ? "level " + i + " :" : "") + " " + LEVELS[i].name,
+                buttonTextStyle);
+            button.addChild(buttonText);
+            buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
 
-        let highscoreText = new PIXI.Text("", buttonTextStyle);
-        button.addChild(highscoreText);
+            let highscoreText = new PIXI.Text("", buttonTextStyle);
+            button.addChild(highscoreText);
 
-        let lockedText = new PIXI.Text("", buttonTextStyle);
-        button.addChild(lockedText);
+            let lockedText = new PIXI.Text("", buttonTextStyle);
+            button.addChild(lockedText);
 
-        wrapper.updateProgress = () => {
-            highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
-            lockedText.text = LEVEL_PROGRESS[i].unlocked ? "" : "locked";
+            wrapper.updateProgress = () => {
+                highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
+                lockedText.text = LEVEL_PROGRESS[i].unlocked ? "" : "locked";
 
-            // scale the button back to 100%, set text positions and scale the button back
-            let scaleMemX = button.scale.x,
-                scaleMemY = button.scale.y;
-            button.scale.set(buttonScale.primary);
+                // scale the button back to 100%, set text positions and scale the button back
+                let scaleMemX = button.scale.x,
+                    scaleMemY = button.scale.y;
+                button.scale.set(buttonScale.primary);
 
-            // position stuff on the button here
-            lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5);
-            highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
+                // position stuff on the button here
+                lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5);
+                highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
 
-            button.scale.set(scaleMemX, scaleMemY);
-        };
+                button.scale.set(scaleMemX, scaleMemY);
+            };
 
-        button.interactive = button.buttonMode = true;
-        button.x = buttonPadding;
+            button.interactive = button.buttonMode = true;
+            button.x = buttonPadding;
 
-        button.pointerdown = (eventData) => {
-            // remember position where the button was first clicked
-            // relative to carousel parent (which is going to be this.scene)
-            button.clickPos = eventData.data.getLocalPosition(stageButtons.parent);
-        };
+            button.pointerdown = (eventData) => {
+                // remember position where the button was first clicked
+                // relative to carousel parent (which is going to be this.scene)
+                button.clickPos = eventData.data.getLocalPosition(stageButtons.parent);
+            };
 
-        button.pointerupoutside = button.pointerout = button.pointercancel = (eventData) => {
-            button.clickPos = false;
-        };
+            button.pointerupoutside = button.pointerout = button.pointercancel = (eventData) => {
+                button.clickPos = false;
+            };
 
-        button.pointerup = (eventData) => {
-            if(!button.clickPos || stageButtons.pointers.length !== 1) return;
-            // position relative to carousel parent
-            let newPos = eventData.data.getLocalPosition(stageButtons.parent);
-            let diffX  = Math.abs(newPos.x - button.clickPos.x),
-                diffY  = Math.abs(newPos.y - button.clickPos.y);
+            button.pointerup = (eventData) => {
+                if(!button.clickPos || stageButtons.pointers.length !== 1) return;
+                // position relative to carousel parent
+                let newPos = eventData.data.getLocalPosition(stageButtons.parent);
+                let diffX  = Math.abs(newPos.x - button.clickPos.x),
+                    diffY  = Math.abs(newPos.y - button.clickPos.y);
 
-            if(diffX < tapSensitivity && diffY < tapSensitivity) {
-                let pos  = wrapper.x + button.x + stageButtons.x,  // button's left  edge position
-                    posL = pos + currentPosLimiter,                // adjusted button's left  edge position
-                    posR = pos - currentPosLimiter + button.width; // adjusted button's right edge position
-                // if the current button is at least half way in position, it's clickable
-                if(currentButton === i && posL < refXCenter && refXCenter < posR) {
+                if(diffX < tapSensitivity && diffY < tapSensitivity) {
+                    let pos  = wrapper.x + button.x + stageButtons.x,  // button's left  edge position
+                        posL = pos + currentPosLimiter,                // adjusted button's left  edge position
+                        posR = pos - currentPosLimiter + button.width; // adjusted button's right edge position
+                    // if the current button is at least half way in position, it's clickable
+                    if(currentButton === i && posL < refXCenter && refXCenter < posR) {
 
-                    if (LEVEL_PROGRESS[currentButton].unlocked) {
-                        sounds[eSFXList.ButtonClick].play();
-                        sounds[eSFXList.MenuOpen].play();
-                        Level.open(LEVELS[currentButton]); // -> states/levels.js
+                        if (LEVEL_PROGRESS[currentButton].unlocked) {
+                            sounds[eSFXList.ButtonClick].play();
+                            sounds[eSFXList.MenuOpen].play();
+                            Level.open(LEVELS[currentButton]); // -> states/levels.js
+                        }
+
+                    } else {
+                        goToButton(i);
                     }
-
-                } else {
-                    goToButton(i);
                 }
-            }
 
-            button.clickPos = false;
-        };
+                button.clickPos = false;
+            };
 
-        wrapper.addChild(buttonBg);
-        wrapper.addChild(button);
+            wrapper.addChild(buttonBg);
+            wrapper.addChild(button);
 
-        // consider replacing all 'wrapper.width' with 'buttonDisplayWidth'
-        wrapper.x = wrapper.width * i;
+            // consider replacing all 'wrapper.width' with 'buttonDisplayWidth'
+            wrapper.x = wrapper.width * i;
 
-        // --------------------
-        // update wrapper appearance based on how far away it is from refXLeft
-        // leftOfView - is the wrapper is to the left of refXLeft(true) or to the right(false)?
-        wrapper.update = (leftOfView) => {
-            let posL = wrapper.x + stageButtons.x,  // wrapper's left  edge position
-                posR = posL      + wrapper.width;   // wrapper's right edge position
+            // --------------------
+            // update wrapper appearance based on how far away it is from refXLeft
+            // leftOfView - is the wrapper is to the left of refXLeft(true) or to the right(false)?
+            wrapper.update = (leftOfView) => {
+                let posL = wrapper.x + stageButtons.x,  // wrapper's left  edge position
+                    posR = posL      + wrapper.width;   // wrapper's right edge position
 
-            // Calculate how much of the button is in the spotlight
-            // and divide it by display width to find out the percentage of the button in the spotlight.
-            // In center position produces numbers like 0.9986321642984926, if rounding is desired
-            // use Math.round( ... * 100) / 100 to round to 2 decimal places
-            let percentageInView =
-                // performance: conditional operator or multiply by boolean?
-                (posL <= refXRight && refXLeft <= posR ?
-                    Math.min(refXRight - posL, posR - refXLeft) / buttonDisplayWidth
-                    : 0);
-            button.alpha   = buttonAlpha.secondary +
-                (buttonAlpha.primary - buttonAlpha.secondary) * percentageInView;
+                // Calculate how much of the button is in the spotlight
+                // and divide it by display width to find out the percentage of the button in the spotlight.
+                // In center position produces numbers like 0.9986321642984926, if rounding is desired
+                // use Math.round( ... * 100) / 100 to round to 2 decimal places
+                let percentageInView =
+                    // performance: conditional operator or multiply by boolean?
+                    (posL <= refXRight && refXLeft <= posR ?
+                        Math.min(refXRight - posL, posR - refXLeft) / buttonDisplayWidth
+                        : 0);
+                button.alpha   = buttonAlpha.secondary +
+                    (buttonAlpha.primary - buttonAlpha.secondary) * percentageInView;
 
-            button.scale.set(buttonScale.secondary +
-                (buttonScale.primary - buttonScale.secondary) * percentageInView);
-            button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
-            button.y = buttonDisplayHeight / 2 - button.height / 2;
-        };
-        // --------------------
+                button.scale.set(buttonScale.secondary +
+                    (buttonScale.primary - buttonScale.secondary) * percentageInView);
+                button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
+                button.y = buttonDisplayHeight / 2 - button.height / 2;
+            };
+            // --------------------
 
-        wrapper.update();
+            wrapper.update();
 
-        stageButtons.addChild(wrapper);
+            stageButtons.addChild(wrapper);
+        }
     }
+
+    this.initButtons();
 
     stageButtons.pointerdown = (eventData) => {
         let pointerData = {
@@ -397,6 +401,7 @@ StageSelect.open = () => {
         StageSelect.instance = new StageSelect();
     }
 
+    StageSelect.instance.initButtons();
     StageSelect.instance.updateProgress();
 
     SCENE = StageSelect.instance.scene;
