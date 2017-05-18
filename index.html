@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Food Factory Zero</title>
+        <meta charset="utf-8">
+        <!-- <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="manifest" href="manifest.json"> -->
+        <style>
+            * { padding: 0; margin: 0}
+            html, body, iframe { overflow:hidden; }
+            body { background-color: #000; }
+            /* if JS is disabled 100vw 100vh will still do the trick (kind of) */
+            iframe {
+                border: none;
+                width: 100vw;
+                height: 100vh;
+            }
+            @media screen and (orientation: portrait) {
+                iframe {
+                    transform-origin: bottom left; 
+                    transform: rotate(90deg);
+
+                    position: absolute;
+                    top: -100vw;
+                    width: 100vh;
+                    height: 100vw;
+                }
+            }
+
+            @media screen and (orientation: landscape) {
+                iframe {
+                    transform: rotate(0deg);
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <script src="screen.js"></script>
+        <iframe id="game-window" src="game.html"></iframe>
+        <script>resizeIframe();</script>
+    </body>
+</html>

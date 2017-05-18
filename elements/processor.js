@@ -206,18 +206,12 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
         let inputRight = this.mPosition.x + (this.mWidth - TILES_PX*2);//x2
         let inputTop = this.mPosition.y; // y1
         let inputBottom = this.mPosition.y + TILES_PX*2; //y2
+        
+        return  ( inputLeft < x
+        && x < inputRight
+        && inputTop < y
+        && y < inputBottom);
 
-        // Recipe Boxes
-        if(this.mCurrentState === this.mProcessorState.Feeding) {
-            return  ( inputLeft < x
-            && x < inputRight
-            && inputTop < y
-            && y < inputBottom);
-        }
-        // If state is not Feeding, Item's Dragged on Top will still fall
-        else {
-            return false;
-		}
     };
 
     //-------------------------------------------------------------------------------
@@ -245,17 +239,20 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     //-------------------------------------------------------------------------------
     // Passes Ingredient Object to Processor
     this.addItem = (droppedIngredient) => {
-        for(let i = 0; i < this.mNumIngredients; ++i)
-        {
-            // ! Change to ====
-            if(droppedIngredient.type == this.mRequiredIngredients[i].type && !this.bRecipeProgress[i])
-            {
-                this.mRequiredIngredients[i].alpha = this.mAlphaFinished; //TODO: MAGIC NUMBER
-                this.bRecipeProgress[i] = true;
-                this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
 
-                level.scene.removeChild(droppedIngredient);
-                return true;
+        if(this.mCurrentState === this.mProcessorState.Feeding) {
+            for(let i = 0; i < this.mNumIngredients; ++i)
+            {
+                // ! Change to ====
+                if(droppedIngredient.type == this.mRequiredIngredients[i].type && !this.bRecipeProgress[i])
+                {
+                    this.mRequiredIngredients[i].alpha = this.mAlphaFinished; //TODO: MAGIC NUMBER
+                    this.bRecipeProgress[i] = true;
+                    this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
+
+                    level.scene.removeChild(droppedIngredient);
+                    return true;
+                }
             }
         }
         return false;
