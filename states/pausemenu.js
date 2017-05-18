@@ -142,6 +142,7 @@ function PauseMenu() {
         PlaySound(eSFXList.MenuOpen, false);
         PlaySound(eSFXList.ButtonClick, false);
         StopSound(eSFXList.ClockTicking, true);
+        StopSound(eSFXList.PPAP, true);
         
         //sounds[eSFXList.ButtonClick].play();
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
@@ -159,6 +160,7 @@ function PauseMenu() {
     this.mainMenuButton.pointertap = () => {
         // this.cleanUp(); // also not needed
         StopSound(eSFXList.ClockTicking, true);
+        StopSound(eSFXList.PPAP, true);
         PlaySound(eSFXList.ButtonClick, false);
         //sounds[eSFXList.ButtonClick].play();
         StageSelect.open(); // -> states/stageselect.js

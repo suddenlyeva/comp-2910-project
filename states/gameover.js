@@ -58,21 +58,6 @@ function GameOver() {
     // Paused Label
     this.gameOverTxt = new PIXI.Text("game over", this.txtStyle);
     this.gameOverTxt.position.set(this.panel.width / 2 - this.gameOverTxt.width / 2, 0);
-<<<<<<< HEAD
-    
-    this.gameOverTxt.update = () => {
-        this.gameOverTxt.x++;
-    }
-    
-    
-    let GOAnim = animate(this.gameOverText,
-    {
-        delay: 0,
-        interval: 1,
-        endCondition: () => {return false;}
-    });
-=======
->>>>>>> dev
 
     // Style for other labels
     this.txtStyle = new PIXI.TextStyle({
