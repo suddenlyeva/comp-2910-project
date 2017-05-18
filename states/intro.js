@@ -89,6 +89,7 @@ function Intro() {
 
     // Update the scene
     this.update = () => {
+
         if(this.txtFood.alpha < 1) {
             this.txtFood.alpha += this.appearSpeed * TICKER.deltaTime;
         } else if(this.txtFactory.alpha < 1) {
@@ -104,7 +105,6 @@ function Intro() {
 
 // Function to open. Intro is singleton
 Intro.open = () => {
-
     if(Intro.instance == null) {
         Intro.instance = new Intro();
     }
@@ -112,3 +112,4 @@ Intro.open = () => {
     SCENE = Intro.instance.scene;
     STATE = Intro.instance.update;
 }
+

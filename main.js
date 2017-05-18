@@ -116,7 +116,7 @@ function setup() {
 
 // Called while the game is running
 function gameLoop() {
-  
+
     STATE(); // Single-state update loop for easy switching
     
     if(WINDOW_RESIZED || SCENE !== previousScene) {

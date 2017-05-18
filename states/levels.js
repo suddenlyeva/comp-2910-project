@@ -3,6 +3,7 @@
 // Size of one tile unit
 // TODO: Move to better spot
 let TILES_PX = 80;
+let test1 = [0,0,0];
 
 // JSON Level Data
 let LEVELS = [
@@ -261,8 +262,11 @@ function Level(data) {
     this.pauseButton.interactive = true;
     this.pauseButton.buttonMode = true;
     this.pauseButton.on("pointertap", () => {
-        sounds["sounds/menu-open.wav"].play();
-        sounds["sounds/button-click.wav"].play();
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        StopSound(eSFXList.ClockTicking, true);
+        //sounds["sounds/menu-open.wav"].play();
+        //sounds["sounds/button-click.wav"].play();
         this.pauseButton.texture = PIXI.loader.resources["images/spritesheet.json"].textures["pause-off.png"];
         this.isPaused = true;
         PauseMenu.open(this); // -> states/pausemenu.js
@@ -371,6 +375,10 @@ function Level(data) {
         this.conveyorBelt.update();
         for (let i in this.processors) {
             this.processors[i].update(); // elements/processor.js
+            if(this.processors[i].GetState() != test1[i]){
+                console.log("Processor " + i + " State: " + this.processors[i].GetState());
+                test1[i] = this.processors[i].GetState();
+            }
         }
         this.gear.update();
         this.hpBar.update();

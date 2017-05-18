@@ -3,7 +3,7 @@
 // TODO: Overhaul
 // Shows when stage is complete=]
 function StageComplete(data) {
-    
+
     // Update progress
     if (LEVEL_PROGRESS[data.id].highscore < data.score) {
         LEVEL_PROGRESS[data.id].highscore = data.score;
@@ -148,6 +148,8 @@ function StageComplete(data) {
 
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
         this.cleanUp();
         let next = data.id + 1;
         if (next >= LEVELS.length) {
@@ -160,12 +162,15 @@ function StageComplete(data) {
 
     // Home button takes you to the main menu
     this.homeButton.on("pointertap", () => {
+        PlaySound(eSFXList.ButtonClick, false);
         this.cleanUp();
         StageSelect.open(); // -> states/stageselect.js
     });
 
     // Replay button
     this.replayButton.on("pointertap", () => {
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
         this.cleanUp();
         Level.open(LEVELS[data.id]);
     });
@@ -229,6 +234,8 @@ function StageComplete(data) {
         this.displayWaste();
         this.displayStar();
     };
+
+    PlaySound(eSFXList.StageComplete, false);
     
     this.cleanUp = () => {
         if(data.id == PPAP.id) {
