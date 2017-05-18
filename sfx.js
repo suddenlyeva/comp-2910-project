@@ -20,7 +20,8 @@ let eSFXList = {
     IntoConveyor: "sounds/into-conveyor.wav",
     ItemDropped: "sounds/item-dropped.wav",
     Error: "sounds/error.wav",
-    StageComplete: "sounds/stage-complete.wav"
+    StageComplete: "sounds/stage-complete.wav",
+    GameOver: "sounds/game-over.wav"
 
 };
 
@@ -37,7 +38,8 @@ sounds.load([
     eSFXList.IntoConveyor,
     eSFXList.ItemDropped,
     eSFXList.Error,
-    eSFXList.StageComplete
+    eSFXList.StageComplete,
+    eSFXList.GameOver
 ]);
 
 // Adds the sounds to SFX master to allow volume control of sfx
@@ -107,6 +109,12 @@ function StopSound(sfx, isFullStop) {
 
 function VolSetSound(level) {
 	for(let i in eSFXList) {
+
+	    if(level < sounds[eSFXList[i]].volume && eSFXList[i] != eSFXList.ClockTicking)
+            sounds[eSFXList[i]].fadeOut(0.1);
+	    else if (eSFXList[i] != eSFXList.ClockTicking)
+            sounds[eSFXList[i]].fadeIn(0.5);
+
 		sounds[eSFXList[i]].volume = level;
 	}
 }
