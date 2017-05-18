@@ -36,7 +36,7 @@ function GameOver() {
 
     // Reset
     this.resetButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-restart.png"]);
-    this.resetButton.position.set(TILES_PX * 3, TILES_PX * 2);
+    this.resetButton.position.set(this.panel.width / 2 - this.resetButton.width / 2, TILES_PX * 2);
     this.resetButton.interactive = true;
     this.resetButton.buttonMode = true;
 
@@ -58,6 +58,7 @@ function GameOver() {
     // Paused Label
     this.gameOverTxt = new PIXI.Text("game over", this.txtStyle);
     this.gameOverTxt.position.set(this.panel.width / 2 - this.gameOverTxt.width / 2, 0);
+<<<<<<< HEAD
     
     this.gameOverTxt.update = () => {
         this.gameOverTxt.x++;
@@ -70,6 +71,8 @@ function GameOver() {
         interval: 1,
         endCondition: () => {return false;}
     });
+=======
+>>>>>>> dev
 
     // Style for other labels
     this.txtStyle = new PIXI.TextStyle({
@@ -127,9 +130,13 @@ function GameOver() {
         this.scene.parent.removeChild(this.scene);
     };
 
+<<<<<<< HEAD
     this.update = () => {
         GOAnim();
     };
+=======
+    this.update = () => {};
+>>>>>>> dev
 }
 
 // Function to open. Pause Menu is singleton

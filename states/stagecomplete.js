@@ -3,7 +3,7 @@
 // TODO: Overhaul
 // Shows when stage is complete=]
 function StageComplete(data) {
-    
+
     // Update progress
     if (LEVEL_PROGRESS[data.id].highscore < data.score) {
         LEVEL_PROGRESS[data.id].highscore = data.score;
@@ -148,6 +148,8 @@ function StageComplete(data) {
 
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
         this.cleanUp();
         let next = data.id + 1;
         if (next >= LEVELS.length) {
@@ -160,15 +162,21 @@ function StageComplete(data) {
 
     // Home button takes you to the main menu
     this.homeButton.on("pointertap", () => {
+        PlaySound(eSFXList.ButtonClick, false);
         this.cleanUp();
         StageSelect.open(); // -> states/stageselect.js
     });
 
     // Replay button
     this.replayButton.on("pointertap", () => {
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
         this.cleanUp();
         Level.open(LEVELS[data.id]);
     });
+
+    // save state
+    saveProgress();
 
     this.displayScore = () => {
         if (scoreDisplayed < data.score) {
@@ -194,7 +202,7 @@ function StageComplete(data) {
         this.wasteTxt.position.set(CANVAS_WIDTH - TILES_PX * 3 - this.wasteTxt.width / 2, TILES_PX * 0.5);
     };
 
-    // Star animation. TODO: Refactoring
+    // Star animation.
     let limitScale = 1;
     let starTicker = 0;
     let starInterval = 1;
@@ -226,6 +234,8 @@ function StageComplete(data) {
         this.displayWaste();
         this.displayStar();
     };
+
+    PlaySound(eSFXList.StageComplete, false);
     
     this.cleanUp = () => {
         if(data.id == PPAP.id) {

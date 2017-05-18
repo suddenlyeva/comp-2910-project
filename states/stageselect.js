@@ -29,8 +29,6 @@ function StageSelect() {
 
     // ***** avoid modifying the following variables *****
     let stageButtons       = new PIXI.Container();
-    // index of the current displayed button
-    let currentButton      = 0;
     // if the current button was set manually(true) or calculated automatically(false)
     let setManually        = false;
     let swipeDistance      = 0;  // accumulates unadjusted xDelta
@@ -46,7 +44,18 @@ function StageSelect() {
     let refXCenter         = refXLeft + buttonDisplayWidth / 2;         // center of display
     let refXRight          = refXLeft + buttonDisplayWidth;             // right  of display
 
-    stageButtons.position.set(refXLeft, CANVAS_HEIGHT / 2 - buttonDisplayHeight / 2);
+    // find first locked level and return its index - 1
+    let firstBeforeLocked = () => {
+        let i = 0;
+        while(i + 1 < LEVEL_PROGRESS.length && LEVEL_PROGRESS[i + 1].unlocked) i++;
+        return i;
+    };
+
+    // index of the current displayed button
+    let currentButton = firstBeforeLocked();
+
+    stageButtons.position.set(refXLeft - (buttonDisplayWidth * currentButton),
+        CANVAS_HEIGHT / 2 - buttonDisplayHeight / 2);
     stageButtons.interactive = stageButtons.buttonMode = true;
 
     // initialize buttons
@@ -141,14 +150,14 @@ function StageSelect() {
             wrapper.addChild(button);
 
             // consider replacing all 'wrapper.width' with 'buttonDisplayWidth'
-            wrapper.x = wrapper.width * i;
+            wrapper.x = buttonDisplayWidth * i;
 
             // --------------------
             // update wrapper appearance based on how far away it is from refXLeft
             // leftOfView - is the wrapper is to the left of refXLeft(true) or to the right(false)?
             wrapper.update = (leftOfView) => {
                 let posL = wrapper.x + stageButtons.x,  // wrapper's left  edge position
-                    posR = posL      + wrapper.width;   // wrapper's right edge position
+                    posR = posL      + buttonDisplayWidth;   // wrapper's right edge position
 
                 // Calculate how much of the button is in the spotlight
                 // and divide it by display width to find out the percentage of the button in the spotlight.
@@ -164,12 +173,12 @@ function StageSelect() {
 
                 button.scale.set(buttonScale.secondary +
                     (buttonScale.primary - buttonScale.secondary) * percentageInView);
-                button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
+                button.x = leftOfView ? buttonDisplayWidth - button.width - buttonPadding : buttonPadding;
                 button.y = buttonDisplayHeight / 2 - button.height / 2;
             };
             // --------------------
 
-            wrapper.update();
+            wrapper.update(stageButtons.x + wrapper.x < refXLeft);
 
             stageButtons.addChild(wrapper);
         }

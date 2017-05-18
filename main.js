@@ -9,6 +9,12 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 });
 
+let DATABASE = firebase.database();
+
+// Load Progress
+loadProgress();
+
+
 // Base Canvas Size
 let CANVAS_WIDTH = 1280,
     CANVAS_HEIGHT = 720;
@@ -102,9 +108,6 @@ function setup() {
     // Load texture dictionary
     defineItemTextures();
     
-    // Load Progress
-    loadProgress();
-    
     // Start game
     Intro.open(); // -> states/intro.js
     TICKER.add(gameLoop);
@@ -113,7 +116,7 @@ function setup() {
 
 // Called while the game is running
 function gameLoop() {
-  
+
     STATE(); // Single-state update loop for easy switching
     
     if(WINDOW_RESIZED || SCENE !== previousScene) {
