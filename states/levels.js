@@ -152,8 +152,10 @@ function loadProgress () {
 }
 
 function saveProgress() {
+    // check user login status again before saving
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
+            // signed in, then save progress
             console.log("Saving progress...");
             for (let i = 0; i < LEVELS.length; i++) {
                 DATABASE.ref('users/' + user.uid + '/' + i).set({
@@ -162,7 +164,7 @@ function saveProgress() {
                 });
             }
         } else {
-            // not signed in.
+            // not signed in, then nothing.
             console.log("Failed to save. Please login.");
         }
     });
