@@ -5,7 +5,6 @@
 let TILES_PX = 80;
 
 // JSON Level Data
-// current reset button implementation requires id to be equal to index
 let LEVELS = [
 
     {id: 0, name: "tutorial",
@@ -96,7 +95,7 @@ let LEVELS = [
 let PPAP_UNLOCKED = false;
 let PPAP = {id: LEVELS.length, name: "ppap",
         
-        clearMessage: ":DDDD",
+        clearMessage: "now go play the actual levels",
         wasteLimit: 5,
         maxScore: 99999,
 
@@ -108,14 +107,14 @@ let PPAP = {id: LEVELS.length, name: "ppap",
         processors: [
             {
                 recipe: [PEN,PINEAPPLE,APPLE,PEN],
-                result: BANANA,
+                result: PPAP_ITEM,
                 score: 99999,
                 x: 4*TILES_PX,
                 y: 3*TILES_PX
             }
         ],
 
-        finalItems: [BANANA]
+        finalItems: [PPAP_ITEM]
 };
 
 let LEVEL_PROGRESS = [];
