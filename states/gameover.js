@@ -115,13 +115,7 @@ function GameOver() {
         this.scene.parent.removeChild(this.scene);
     };
 
-<<<<<<< HEAD
-    this.update = () => {
-        GOAnim();
-    };
-=======
     this.update = () => {};
->>>>>>> dev
 }
 
 // Function to open. Pause Menu is singleton
