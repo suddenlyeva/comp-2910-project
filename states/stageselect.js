@@ -7,7 +7,7 @@ function StageSelect() {
 
     let deceleration       = 12;  // ... of the movement animation
     let positionEpsilon    = 1;   // for position comparison
-    // primary - button in view, secondary - buttons not in view
+    // primary - button in spotlight, secondary - buttons not in spotlight
     let buttonAlpha        = { primary : 1, secondary : 0.5 };
     let buttonScale        = { primary : 1, secondary : 0.6 };
     // from pointerup to pointerdown: if moved less than the number of units(x and y)
@@ -36,7 +36,7 @@ function StageSelect() {
     let swipeDistance      = 0;  // accumulates unadjusted xDelta
     let stopWatch          = 0;  // for calculating swipe speed
 
-    let buttonDisplayWidth = buttonWidth + buttonPadding * 2,
+    let buttonDisplayWidth  = buttonWidth + buttonPadding * 2,
         buttonDisplayHeight = buttonHeight;
 
     // refXLeft is a starting x position of the carousel
@@ -59,6 +59,9 @@ function StageSelect() {
         buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonDisplayHeight);
         buttonBg.endFill();
 
+        // remember level id
+        button.id = LEVELS[i].id;
+
         let buttonImage = new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
         );
@@ -70,19 +73,27 @@ function StageSelect() {
         button.addChild(buttonText);
         buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
 
-        let highscoreText = new PIXI.Text(
-            "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5),
-            buttonTextStyle);
+        let highscoreText = new PIXI.Text("", buttonTextStyle);
         button.addChild(highscoreText);
-        highscoreText.position.set(button.width / 2 - highscoreText.width, button.height / 2);
 
-        if (!LEVEL_PROGRESS[i].unlocked) {
-            let lockedText = new PIXI.Text("locked", buttonTextStyle);
-            lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5 );
-            button.addChild(lockedText);
-        }
+        let lockedText = new PIXI.Text("", buttonTextStyle);
+        button.addChild(lockedText);
 
-        highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
+        wrapper.updateProgress = () => {
+            highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
+            lockedText.text = LEVEL_PROGRESS[i].unlocked ? "" : "locked";
+
+            // scale the button back to 100%, set text positions and scale the button back
+            let scaleMemX = button.scale.x,
+                scaleMemY = button.scale.y;
+            button.scale.set(buttonScale.primary);
+
+            // position stuff on the button here
+            lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5);
+            highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
+
+            button.scale.set(scaleMemX, scaleMemY);
+        };
 
         button.interactive = button.buttonMode = true;
         button.x = buttonPadding;
@@ -149,6 +160,7 @@ function StageSelect() {
                     : 0);
             button.alpha   = buttonAlpha.secondary +
                 (buttonAlpha.primary - buttonAlpha.secondary) * percentageInView;
+
             button.scale.set(buttonScale.secondary +
                 (buttonScale.primary - buttonScale.secondary) * percentageInView);
             button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
@@ -305,8 +317,8 @@ function StageSelect() {
 
     // Options
     let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
-    optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 3, CANVAS_HEIGHT - TILES_PX * 1.5);
-    optionsButton.scale.set(1/1.5,1/1.5);
+    optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
+    optionsButton.scale.set(2/3, 2/3);
     optionsButton.interactive = true;
     optionsButton.buttonMode = true;
 
@@ -365,6 +377,12 @@ function StageSelect() {
     this.scene.addChild(hardButton);
     //this.scene.addChild(backToMainMenu);
 
+    this.updateProgress = () => {
+        for(let i = 0; i < stageButtons.children.length; i++) {
+            stageButtons.children[i].updateProgress();
+        }
+    };
+
     this.update = () => {
         updateCarousel();
     };
@@ -375,9 +393,11 @@ StageSelect.open = () => {
 
     // Make new stage select for progress testing...
 
-    //if(StageSelect.instance == null) {
+    if(StageSelect.instance == null) {
         StageSelect.instance = new StageSelect();
-    //}
+    }
+
+    StageSelect.instance.updateProgress();
 
     SCENE = StageSelect.instance.scene;
     STATE = StageSelect.instance.update;
