@@ -167,6 +167,9 @@ function StageComplete(data) {
         Level.open(LEVELS[data.id]);
     });
 
+    // save state
+    saveProgress();
+
     this.displayScore = () => {
         if (scoreDisplayed < data.score) {
             scoreDisplayed += 13; // 13 is for optimal 10's and 1's digit distribution
@@ -191,7 +194,7 @@ function StageComplete(data) {
         this.wasteTxt.position.set(CANVAS_WIDTH - TILES_PX * 3 - this.wasteTxt.width / 2, TILES_PX * 0.5);
     };
 
-    // Star animation. TODO: Refactoring
+    // Star animation.
     let limitScale = 1;
     let starTicker = 0;
     let starInterval = 1;

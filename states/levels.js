@@ -95,30 +95,6 @@ let LEVELS = [
 
 let LEVEL_PROGRESS = [];
 function loadProgress () {
-    // Variables for testing. replace these with unique user ID
-    let userId1 = "picojiro";
-    let userId2 = "picosaburo";
-
-    // firebase.auth().onAuthStateChanged(function(user) {
-    //     if (user) {
-    //         // User is signed in.
-    //         console.log("Logged in");
-    //         console.log(user);
-    //         console.log(user.uid);
-    //     } else {
-    //         // No user is signed in.
-    //         console.log("Not logged in");
-    //     }
-    // });
-
-    // TODO: use unique info from user authentification as ID (instead of userID1 and 2)
-    // TODO: user login check
-    // if userlogin = true then    -> not yet
-    //    if isExist(user) then      -> done
-    //          get all progress      -> done
-    //    else
-    //          initialize record and add user   -> done later move DB writing to saveProgress function
-    // else use new user statement    -> not yet
     firebase.auth().onAuthStateChanged(function(user) {
         // check user is signed in or not
         if (user) {
@@ -148,25 +124,11 @@ function loadProgress () {
                                 unlocked: true,
                                 highscore: 0
                             };
-                            // TODO: move this DB writing to save progress later
-                            // write the user progress to db
-                            DATABASE.ref('users/' + user.uid + '/' + i).set({
-                                unlocked: true,
-                                highscore: 0
-                            });
-                            // move until here
                         } else {
                             LEVEL_PROGRESS[i] = {
                                 unlocked: false,
                                 highscore: 0
                             };
-                            // TODO: move this DB writing to save progress later
-                            // write the user progress to db
-                            DATABASE.ref('users/' + user.uid + '/' + i).set({
-                                unlocked: false,
-                                highscore: 0
-                            });
-                            // move until here
                         }
                     }
                 }
@@ -190,7 +152,20 @@ function loadProgress () {
 }
 
 function saveProgress() {
-    // TODO: Upload LEVEL_PROGRESS to firebase
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            console.log("Saving progress...");
+            for (let i = 0; i < LEVELS.length; i++) {
+                DATABASE.ref('users/' + user.uid + '/' + i).set({
+                    unlocked: LEVEL_PROGRESS[i].unlocked,
+                    highscore: LEVEL_PROGRESS[i].highscore
+                });
+            }
+        } else {
+            // not signed in.
+            console.log("Failed to save. Please login.");
+        }
+    });
 }
 
 function Level(data) {
