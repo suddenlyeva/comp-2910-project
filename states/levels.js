@@ -103,7 +103,7 @@ function loadProgress () {
     };
     for (let i = 1; i < LEVELS.length; i++) {
         LEVEL_PROGRESS[i] = {
-            unlocked: false,
+            unlocked: true,
             highscore: 0
         };
     }
@@ -300,10 +300,12 @@ function Level(data) {
         // Timeout on completion
         if(this.isComplete) {
             
-            // Processor Check
-            for (let i in this.processors) {
-                if(this.processors[i].GetState() > 0) { // Any active or waiting state.
-                    this.timeOut = 120; // Stall if it catches a false flag.
+            if (!this.completionData.waste >= data.wasteLimit) {
+                // Processor Check
+                for (let i in this.processors) {
+                    if(this.processors[i].GetState() > 0) { // Any active or waiting state.
+                        this.timeOut = 120; // Stall if it catches a false flag.
+                    }
                 }
             }
             // Re-Authenticate
@@ -314,7 +316,12 @@ function Level(data) {
             }
             // Move to Stage Complete
             if (this.timeOut <= 0) {
-                StageComplete.open(this.completionData); // -> states/stagecomplete.js
+                //if (!this.completionData.waste >= data.wasteLimit) {
+                    StageComplete.open(this.completionData); // -> states/stagecomplete.js
+                //}
+                //else {
+                //    GameOver.open();
+                //}
             }
         }
 
