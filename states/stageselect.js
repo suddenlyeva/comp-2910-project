@@ -368,6 +368,8 @@ function StageSelect() {
     this.update = () => {
         updateCarousel();
     };
+
+  //  PlaySound(eMusicList.Music, true);
 }
 
 // Function to open. Stage Select is singleton

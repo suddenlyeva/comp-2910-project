@@ -59,13 +59,22 @@ function OptionsMenu() {
         OptionsMenu.close();
     });
 
-    //Adjusts the volume for all sfx as it slides
+    // Adjusts the volume for all sfx based on slider position
     this.soundVol.onSliderAdjust = () => {
 
       for (let i in SFX_MASTER) {
           SFX_VOLUME = this.soundVol.value;
           SFX_MASTER[i].volume = SFX_VOLUME;
       }
+    };
+
+    // Adjusts the volume of bgm music based on slider position
+    this.musicVol.onSliderAdjust = () => {
+
+        for(let i in MUSIC_MASTER) {
+            MUSIC_VOLUME = this.musicVol.value;
+            MUSIC_MASTER[i].volume = MUSIC_VOLUME;
+        }
     };
 
 

@@ -3,10 +3,15 @@
 // Array of all the sound effects
 let SFX_MASTER = [];
 
+// Array of all the bgm
+let MUSIC_MASTER = [];
+
 // Default volume
 let SFX_VOLUME = 1.0;
 
-/* This list allows us to change the file names of the audio
+let MUSIC_VOLUME = 1.0;
+
+/* This list allows us to change the file names of the sfx audio
 * without changing it in the rest of the code*/
 let eSFXList = {
     MenuOpen : "sounds/menu-open.wav",
@@ -22,7 +27,12 @@ let eSFXList = {
     Error: "sounds/error.wav",
     StageComplete: "sounds/stage-complete.wav",
     GameOver: "sounds/game-over.wav"
+};
 
+/* This list allows us to change the file names of the music
+ * without changing it in the rest of the code*/
+let eMusicList = {
+    Music: "sounds/music.wav"
 };
 
 // Loads the sound effects
@@ -39,13 +49,18 @@ sounds.load([
     eSFXList.ItemDropped,
     eSFXList.Error,
     eSFXList.StageComplete,
-    eSFXList.GameOver
+    eSFXList.GameOver,
+    eMusicList.Music
 ]);
+let NumBGM = 1;
 
 // Adds the sounds to SFX master to allow volume control of sfx
 sounds.whenLoaded = () => {
     for(let i in eSFXList) {
         SFX_MASTER.push(sounds[eSFXList[i]]);
+    }
+    for(let i in eMusicList) {
+        MUSIC_MASTER.push(sounds[eMusicList.Music]);
     }
 };
 
@@ -64,7 +79,7 @@ function PlaySound(sfx, isLooping) {
 	
     sounds[sfx].loop = isLooping;
 	
-    if(isLooping) {
+    if(isLooping && sfx === eSFXList.ClockTicking) {
         if (sounds[sfx].nPlaying == null) {
             sounds[sfx].nPlaying = 1;
         }
