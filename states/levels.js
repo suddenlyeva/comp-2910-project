@@ -93,6 +93,29 @@ let LEVELS = [
     }
 ];
 
+let LEVEL_PROGRESS = [];
+function loadProgress () {
+    
+    // If new user
+    LEVEL_PROGRESS[0] = {
+       unlocked: true,
+       highscore: 0
+    };
+    for (let i = 1; i < LEVELS.length; i++) {
+        LEVEL_PROGRESS[i] = {
+            unlocked: false,
+            highscore: 0
+        };
+    }
+    
+    // If logged in
+    // TODO:
+}
+
+function saveProgress() {
+    // TODO: Upload LEVEL_PROGRESS to firebase
+}
+
 function Level(data) {
 
     // Identifiers
@@ -255,7 +278,7 @@ function Level(data) {
                 return false;
             }
         }
-
+        
         // Item Check
         if (this.itemPickedup) {
             return false;
@@ -276,7 +299,7 @@ function Level(data) {
 
         // Timeout on completion
         if(this.isComplete) {
-
+            
             // Processor Check
             for (let i in this.processors) {
                 if(this.processors[i].GetState() > 0) { // Any active or waiting state.

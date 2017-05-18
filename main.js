@@ -93,6 +93,9 @@ function setup() {
     // Load texture dictionary
     defineItemTextures();
     
+    // Load Progress
+    loadProgress();
+    
     // Start game
     Intro.open(); // -> states/intro.js
     TICKER.add(gameLoop);
@@ -101,16 +104,14 @@ function setup() {
 
 // Called while the game is running
 function gameLoop() {
-    
-    // Resize the scene on window resize or scene changed
-    if(WINDOW_RESIZED || SCENE !== previousScene) {
-        sceneResize(STRETCH_THRESHOLD); // -> util.js
-        RENDERER.resize(window.innerWidth, window.innerHeight);
-    }
-
+  
     STATE(); // Single-state update loop for easy switching
     
     if(WINDOW_RESIZED || SCENE !== previousScene) {
+        
+        sceneResize(STRETCH_THRESHOLD); // -> util.js
+        RENDERER.resize(window.innerWidth, window.innerHeight);
+        
         frameX = (window.innerWidth - CANVAS_WIDTH * SCENE.scale.x)/2;
         frameY = (window.innerHeight - CANVAS_HEIGHT * SCENE.scale.y)/2;
         SCENE.x = frameX;

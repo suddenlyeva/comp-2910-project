@@ -68,6 +68,20 @@ function StageSelect() {
             buttonTextStyle);
         button.addChild(buttonText);
         buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
+        
+        let highscoreText = new PIXI.Text(
+            "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5),
+            buttonTextStyle);
+        button.addChild(highscoreText);
+        highscoreText.position.set(button.width / 2 - highscoreText.width, button.height / 2);
+        
+        if (!LEVEL_PROGRESS[i].unlocked) {
+            let lockedText = new PIXI.Text("locked", buttonTextStyle);
+            lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5 );
+            button.addChild(lockedText);
+        }
+        
+        highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
 
         button.interactive = button.buttonMode = true;
         button.x = buttonPadding;
@@ -95,9 +109,13 @@ function StageSelect() {
                     posR = pos - currentPosLimiter + button.width; // adjusted button's right edge position
                 // if the current button is at least half way in position, it's clickable
                 if(currentButton === i && posL < refXCenter && refXCenter < posR) {
-                    sounds[eSFXList.ButtonClick].play();
-                    sounds[eSFXList.MenuOpen].play();
-                    Level.open(LEVELS[currentButton]); // -> states/levels.js
+                  
+                    if (LEVEL_PROGRESS[currentButton].unlocked) {
+                        sounds[eSFXList.ButtonClick].play();
+                        sounds[eSFXList.MenuOpen].play();
+                        Level.open(LEVELS[currentButton]); // -> states/levels.js
+                    }
+                  
                 } else {
                     setManually   = true;
                     currentButton = i;
@@ -336,9 +354,12 @@ function StageSelect() {
 
 // Function to open. Stage Select is singleton
 StageSelect.open = () => {
-    if(StageSelect.instance == null) {
+    
+    // Make new stage select for progress testing...
+    
+    //if(StageSelect.instance == null) {
         StageSelect.instance = new StageSelect();
-    }
+    //}
 
     SCENE = StageSelect.instance.scene;
     STATE = StageSelect.instance.update;
