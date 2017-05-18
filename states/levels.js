@@ -95,25 +95,79 @@ let LEVELS = [
 
 let LEVEL_PROGRESS = [];
 function loadProgress () {
-    
-    // If new user
-    LEVEL_PROGRESS[0] = {
-       unlocked: true,
-       highscore: 0
-    };
-    for (let i = 1; i < LEVELS.length; i++) {
-        LEVEL_PROGRESS[i] = {
-            unlocked: false,
-            highscore: 0
-        };
-    }
-    
-    // If logged in
-    // TODO:
+    firebase.auth().onAuthStateChanged(function(user) {
+        // check user is signed in or not
+        if (user) {
+            // signed in
+            console.log(user.uid);
+            // check the user existence on db
+            DATABASE.ref('users/' + user.uid).once('value').then(function(snapshot){
+                if(snapshot.exists()) {
+                    // the user already exists on db
+                    console.log("existing : " + user.uid);
+                    // get the user object value
+                    let progress = snapshot.val();
+                    // load the user's progress
+                    for (let i = 0; i < LEVELS.length; i++) {
+                        LEVEL_PROGRESS[i] = {
+                            unlocked: progress[i].unlocked,
+                            highscore: progress[i].highscore
+                        };
+                    }
+                } else {
+                    // the user is not existed on db
+                    console.log("no exiting : " + user.uid);
+                    // initialize progress with default values
+                    for (let i = 0; i < LEVELS.length; i++) {
+                        if(i <= 0) {
+                            LEVEL_PROGRESS[i] = {
+                                unlocked: true,
+                                highscore: 0
+                            };
+                        } else {
+                            LEVEL_PROGRESS[i] = {
+                                unlocked: false,
+                                highscore: 0
+                            };
+                        }
+                    }
+                }
+            });
+        } else {
+            // not signed in.
+            console.log("Not logged in");
+            // initialize progress with default values
+            LEVEL_PROGRESS[0] = {
+               unlocked: true,
+               highscore: 0
+            };
+            for (let i = 1; i < LEVELS.length; i++) {
+                LEVEL_PROGRESS[i] = {
+                    unlocked: false,
+                    highscore: 0
+                };
+            }
+        }
+    });
 }
 
 function saveProgress() {
-    // TODO: Upload LEVEL_PROGRESS to firebase
+    // check user login status again before saving
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // signed in, then save progress
+            console.log("Saving progress...");
+            for (let i = 0; i < LEVELS.length; i++) {
+                DATABASE.ref('users/' + user.uid + '/' + i).set({
+                    unlocked: LEVEL_PROGRESS[i].unlocked,
+                    highscore: LEVEL_PROGRESS[i].highscore
+                });
+            }
+        } else {
+            // not signed in, then nothing.
+            console.log("Failed to save. Please login.");
+        }
+    });
 }
 
 function Level(data) {
