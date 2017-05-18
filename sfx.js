@@ -26,7 +26,7 @@ let eSFXList = {
     ItemDropped: "sounds/item-dropped.wav",
     Error: "sounds/error.wav",
     StageComplete: "sounds/stage-complete.wav",
-    GameOver: "sounds/game-over.wav"
+    GameOver: "sounds/game-over.wav",
     PPAP: "sounds/ppap.wav"
 };
 
@@ -54,7 +54,6 @@ sounds.load([
     eSFXList.PPAP,
     eMusicList.Music
 ]);
-let NumBGM = 1;
 
 // Adds the sounds to SFX master to allow volume control of sfx
 sounds.whenLoaded = () => {
