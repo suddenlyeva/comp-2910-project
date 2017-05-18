@@ -68,19 +68,19 @@ function StageSelect() {
             buttonTextStyle);
         button.addChild(buttonText);
         buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
-        
+
         let highscoreText = new PIXI.Text(
             "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5),
             buttonTextStyle);
         button.addChild(highscoreText);
         highscoreText.position.set(button.width / 2 - highscoreText.width, button.height / 2);
-        
+
         if (!LEVEL_PROGRESS[i].unlocked) {
             let lockedText = new PIXI.Text("locked", buttonTextStyle);
             lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5 );
             button.addChild(lockedText);
         }
-        
+
         highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
 
         button.interactive = button.buttonMode = true;
@@ -109,16 +109,15 @@ function StageSelect() {
                     posR = pos - currentPosLimiter + button.width; // adjusted button's right edge position
                 // if the current button is at least half way in position, it's clickable
                 if(currentButton === i && posL < refXCenter && refXCenter < posR) {
-                  
+
                     if (LEVEL_PROGRESS[currentButton].unlocked) {
                         sounds[eSFXList.ButtonClick].play();
                         sounds[eSFXList.MenuOpen].play();
                         Level.open(LEVELS[currentButton]); // -> states/levels.js
                     }
-                  
+
                 } else {
-                    setManually   = true;
-                    currentButton = i;
+                    goToButton(i);
                 }
             }
 
@@ -264,13 +263,24 @@ function StageSelect() {
         if(stageButtons.moving) stopWatch += TICKER.deltaTime;
     };
 
+    let goToButton = (n, scroll = true) => {
+        if(n < 0 || n >= stageButtons.children.length) throw new Error("goToButton: requested button doesn't exist.");
+
+        if(!scroll) {
+            stageButtons.x = refXLeft - stageButtons.children[n].x;
+        }
+
+        setManually   = true;
+        currentButton = n;
+    }
+
     let cleanUpCarousel = () => {
         setManually = stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
         swipeDistance = stopWatch = 0;
     };
 
     // -------------------------------- End of carousel --------------------------------
-    
+
     /*
     let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
     backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
@@ -280,7 +290,7 @@ function StageSelect() {
         MainMenu.open()
     });
     */
-    
+
     // Options
     let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
     optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 3, CANVAS_HEIGHT - TILES_PX * 1.5);
@@ -296,7 +306,7 @@ function StageSelect() {
         // cleanUpCarousel(); // not needed for locally opened pop-up menu
         OptionsMenu.open(); // -> states/optionsmenu.js
     });
-    
+
     // Fullscreen
     // let fullscreenButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
     // fullscreenButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
@@ -307,7 +317,7 @@ function StageSelect() {
     //     cleanUpCarousel();
     //     toggleFullScreen();
     // });
-    
+
     // More Games
     let moreGamesButton = makeSimpleButton(TILES_PX * 3, TILES_PX, "more games", 0xFFFF66, 75); // -> util.js
     moreGamesButton.position.set(TILES_PX * 0.25, CANVAS_HEIGHT - TILES_PX * 1.25);
@@ -321,8 +331,8 @@ function StageSelect() {
         OptionsMenu.close();
         Affiliate.open(); // -> states/affiliate.js
     });
-    
-    
+
+
     let background = new PIXI.Container(),
         bgFill     = new PIXI.Graphics();
     bgFill.beginFill(0x5d32ea);
@@ -347,9 +357,9 @@ function StageSelect() {
 
 // Function to open. Stage Select is singleton
 StageSelect.open = () => {
-    
+
     // Make new stage select for progress testing...
-    
+
     //if(StageSelect.instance == null) {
         StageSelect.instance = new StageSelect();
     //}
