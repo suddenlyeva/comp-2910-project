@@ -351,6 +351,10 @@ function Level(data) {
 
     };
     
+    if(data.id == PPAP.id) {
+        PlaySound(eSFXList.PPAP);
+    }
+    
 }
 
 // Function to open. Level recreates itself
