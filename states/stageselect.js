@@ -304,8 +304,8 @@ function StageSelect() {
 
     // Options
     let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
-    optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 3, CANVAS_HEIGHT - TILES_PX * 1.5);
-    optionsButton.scale.set(1/1.5,1/1.5);
+    optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
+    optionsButton.scale.set(2/3, 2/3);
     optionsButton.interactive = true;
     optionsButton.buttonMode = true;
 
