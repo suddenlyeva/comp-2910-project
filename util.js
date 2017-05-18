@@ -303,6 +303,17 @@ function makeGear(size, speed) {
     return gear;
 }
 
+// arr - array of object with property 'id'; id - object id whose index we want to find
+// returns -1 if index not found
+function findIndexById(arr, id) {
+    for(let i = 0; i < arr.length; i++) {
+        if(arr[i].id === id) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 // Adds zeros to the beginning of a number as string
 function padZeroForInt(intToPad, digits) {
     let paddedNum = "" + intToPad;
