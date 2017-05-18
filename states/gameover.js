@@ -36,7 +36,7 @@ function GameOver() {
 
     // Reset
     this.resetButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-restart.png"]);
-    this.resetButton.position.set(TILES_PX * 3, TILES_PX * 2);
+    this.resetButton.position.set(this.panel.width / 2 - this.resetButton.width / 2, TILES_PX * 2);
     this.resetButton.interactive = true;
     this.resetButton.buttonMode = true;
 
