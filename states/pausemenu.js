@@ -154,7 +154,7 @@ function PauseMenu() {
         // this.cleanUp(); // also not needed
         PlaySound(eSFXList.ButtonClick, false);
         //sounds[eSFXList.ButtonClick].play();
-        MainMenu.open(); // -> states/mainmenu.js
+        StageSelect.open(); // -> states/stageselect.js
     };
 
     this.cleanUp = () => {
