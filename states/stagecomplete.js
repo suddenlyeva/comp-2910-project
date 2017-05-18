@@ -3,6 +3,15 @@
 // TODO: Overhaul
 // Shows when stage is complete=]
 function StageComplete(data) {
+    
+    // Update progress
+    if (LEVEL_PROGRESS[data.id].highscore < data.score) {
+        LEVEL_PROGRESS[data.id].highscore = data.score;
+    }
+    if (data.id < LEVEL_PROGRESS.length - 1) {
+        LEVEL_PROGRESS[data.id + 1].unlocked = true;
+    }
+  
     this.scene = new PIXI.Container();
     this.starContainer = new PIXI.Container();
     this.messageContainer = new PIXI.Container();
