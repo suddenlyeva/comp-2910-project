@@ -316,12 +316,12 @@ function Level(data) {
             }
             // Move to Stage Complete
             if (this.timeOut <= 0) {
-                //if (!this.completionData.waste >= data.wasteLimit) {
+                if (!this.completionData.waste >= data.wasteLimit) {
                     StageComplete.open(this.completionData); // -> states/stagecomplete.js
-                //}
-                //else {
-                //    GameOver.open();
-                //}
+                }
+                else {
+                    GameOver.open();
+                }
             }
         }
 
