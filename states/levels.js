@@ -107,7 +107,7 @@ function loadProgress () {
     //    else
     //          initialize record and add user   -> done later move DB writing to saveProgress function
     // else use new user statement    -> not yet
-    database.ref('users/' + userId2).once('value').then(function(snapshot){
+    DATABASE.ref('users/' + userId2).once('value').then(function(snapshot){
         if(snapshot.exists()) {
             console.log("existing" + userId2);
             let progress = snapshot.val();
@@ -126,7 +126,7 @@ function loadProgress () {
                         highscore: 100
                     };
                     // TODO: move this DB writing to save progress later
-                    database.ref('users/' + userId2 + '/' + i).set({
+                    DATABASE.ref('users/' + userId2 + '/' + i).set({
                         unlocked: true,
                         highscore: 100
                     });
@@ -137,7 +137,7 @@ function loadProgress () {
                         highscore: 200
                     };
                     // TODO: move this DB writing to save progress later
-                    database.ref('users/' + userId2 + '/' + i).set({
+                    DATABASE.ref('users/' + userId2 + '/' + i).set({
                         unlocked: false,
                         highscore: 200
                     });

@@ -9,6 +9,12 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 });
 
+let DATABASE = firebase.database();
+
+// Load Progress
+loadProgress();
+
+
 // Base Canvas Size
 let CANVAS_WIDTH = 1280,
     CANVAS_HEIGHT = 720;
@@ -101,9 +107,6 @@ function setup() {
     
     // Load texture dictionary
     defineItemTextures();
-    
-    // Load Progress
-    loadProgress();
     
     // Start game
     Intro.open(); // -> states/intro.js
