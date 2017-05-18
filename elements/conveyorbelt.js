@@ -119,6 +119,70 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
         beltTile.x -= TILES_PX * i;
         this.belt.addChild(beltTile);
     }
+    
+    
+    // PPAP
+    let pen = new PIXI.Sprite(ITEM_TEXTURES[PEN]);
+    pen.anchor.set(0.5);
+    pen.interactive = true;
+    pen.buttonMode = true;
+    pen.x = CANVAS_WIDTH - 0.5 * TILES_PX;;
+    pen.y = CANVAS_HEIGHT - 60;
+    level.scene.addChild(pen);
+    
+        
+    pen.onDragStart = (event) => {
+        if (!level.itemPickedUp) { // -> states/levels.js
+            PlaySound(eSFXList.ItemPickUp, false);
+            pen.data = event.data;
+            pen.alpha = 0.5;
+            pen.dragging = true;
+            level.itemPickedup = true;
+        }
+    };
+    
+    pen.onDragMove = () => {
+        if(pen.dragging) {
+            // Track x and y
+            let newPosition = pen.data.getLocalPosition(pen.parent);
+            pen.x = newPosition.x;
+            pen.y = newPosition.y;
+        }
+    };
+    
+    pen.onDragEnd = () => {
+
+        if(pen.dragging) {
+            if (pen.x < TILES_PX && pen.y < TILES_PX) {
+                PlaySound(eSFXList.IntoProcessor, false);
+                level.scene.removeChild(pen);
+                
+                if(!PPAP_UNLOCKED) {
+                    LEVELS.push(PPAP);
+                    LEVEL_PROGRESS.push({
+                        unlocked: true,
+                        highscore: 0
+                    });
+                    PPAP_UNLOCKED = true;
+                }
+            }
+            
+            PlaySound(eSFXList.ItemDropped, false);
+            this.itemPickedup = false;
+        }
+    
+        // Reset visuals and flag
+        pen.alpha = 1;
+        pen.dragging = false;
+        pen.data = null;
+        
+    };
+    
+    // Declare event handlers
+    pen.on('pointerdown', pen.onDragStart)
+        .on('pointerup', pen.onDragEnd)
+        .on('pointerupoutside', pen.onDragEnd)
+        .on('pointermove', pen.onDragMove);
 
     // Trash Pit
     let trashPit = new PIXI.Sprite(
