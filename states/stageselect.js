@@ -59,6 +59,9 @@ function StageSelect() {
         buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonDisplayHeight);
         buttonBg.endFill();
 
+        // remember level id
+        button.id = LEVELS[i].id;
+
         let buttonImage = new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
         );
@@ -70,17 +73,26 @@ function StageSelect() {
         button.addChild(buttonText);
         buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
 
-        let highscoreText = new PIXI.Text("highscore: 00000", buttonTextStyle);
-        highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
+        let highscoreText = new PIXI.Text("", buttonTextStyle);
         button.addChild(highscoreText);
 
-        let lockedText = new PIXI.Text("locked", buttonTextStyle);
-        lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5 );
+        let lockedText = new PIXI.Text("", buttonTextStyle);
         button.addChild(lockedText);
 
         wrapper.updateProgress = () => {
             highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
             lockedText.text = LEVEL_PROGRESS[i].unlocked ? "" : "locked";
+
+            // scale the button back to 100%, set text positions and scale the button back
+            let scaleMemX = button.scale.x,
+                scaleMemY = button.scale.y;
+            button.scale.set(buttonScale.primary);
+
+            // position stuff on the button here
+            lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5);
+            highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
+
+            button.scale.set(scaleMemX, scaleMemY);
         };
 
         button.interactive = button.buttonMode = true;
@@ -148,6 +160,7 @@ function StageSelect() {
                     : 0);
             button.alpha   = buttonAlpha.secondary +
                 (buttonAlpha.primary - buttonAlpha.secondary) * percentageInView;
+
             button.scale.set(buttonScale.secondary +
                 (buttonScale.primary - buttonScale.secondary) * percentageInView);
             button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
