@@ -139,6 +139,7 @@ function StageSelect() {
                         }
 
                     } else {
+                        setManually = true;
                         goToButton(i);
                     }
                 }
@@ -293,7 +294,6 @@ function StageSelect() {
     let goToButton = (n, scroll = true) => {
         if(n < 0 || n >= stageButtons.children.length) throw new Error("goToButton: requested button doesn't exist.");
 
-        setManually   = true;
         currentButton = n;
 
         if(!scroll) {
