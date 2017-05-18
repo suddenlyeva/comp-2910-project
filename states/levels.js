@@ -377,8 +377,6 @@ function Level(data) {
 
         // Timeout on completion
         if(this.isComplete) {
-            console.log(this.completionData.waste);
-            console.log(data.wasteLimit);
             if (!(this.completionData.waste >= data.wasteLimit)) {
                 // Processor Check
                 for (let i in this.processors) {
