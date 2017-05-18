@@ -7,7 +7,7 @@ function StageSelect() {
 
     let deceleration       = 12;  // ... of the movement animation
     let positionEpsilon    = 1;   // for position comparison
-    // primary - button in view, secondary - buttons not in view
+    // primary - button in spotlight, secondary - buttons not in spotlight
     let buttonAlpha        = { primary : 1, secondary : 0.5 };
     let buttonScale        = { primary : 1, secondary : 0.6 };
     // from pointerup to pointerdown: if moved less than the number of units(x and y)
