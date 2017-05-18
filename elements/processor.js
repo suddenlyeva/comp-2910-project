@@ -216,7 +216,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
         }
         // If state is not Feeding, Item's Dragged on Top will still fall
         else {
-			PlaySound(eSFXList.Error,false);
+			//PlaySound(eSFXList.Error,false);
             return false;
 		}
     };

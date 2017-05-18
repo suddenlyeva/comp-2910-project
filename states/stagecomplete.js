@@ -3,7 +3,7 @@
 // TODO: Overhaul
 // Shows when stage is complete=]
 function StageComplete(data) {
-    
+
     // Update progress
     if (LEVEL_PROGRESS[data.id].highscore < data.score) {
         LEVEL_PROGRESS[data.id].highscore = data.score;
@@ -226,6 +226,8 @@ function StageComplete(data) {
         this.displayWaste();
         this.displayStar();
     };
+
+    PlaySound(eSFXList.StageComplete, false);
 }
 
 StageComplete.open = (completionData) => {

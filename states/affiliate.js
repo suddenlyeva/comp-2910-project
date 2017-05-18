@@ -90,7 +90,7 @@ function Affiliate() {
     this.mainMenuButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false);
         //sounds[eSFXList.ButtonClick].play();
-        MainMenu.open();
+        StageSelect.open(); // -> states/stageselect.js
 
     });
 
