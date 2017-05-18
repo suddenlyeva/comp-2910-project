@@ -162,6 +162,7 @@ function StageSelect() {
 
     stageButtons.pointerdown = (eventData) => {
         let pointerData = {
+            // javascript promises that pointer ids are unique
             id  : eventData.data.identifier,
             pos : eventData.data.getLocalPosition(stageButtons.parent)
         };
@@ -175,14 +176,6 @@ function StageSelect() {
 
         // necessary to stop movement on tap, different from .moving
         stageButtons.pressedDown = true;
-    };
-
-    // ptrArr - array of pointers to look through; ptrId - pointer id whose index we want to find
-    // javascript promises that pointer ids are unique
-    let findIndexById = (ptrArr, ptrId) => {
-        let i = 0;
-        while(ptrArr[i].id !== ptrId && ++i !== ptrArr.length);
-        return i !== ptrArr.length ? i : -1;
     };
 
     stageButtons.pointerup = stageButtons.pointerupoutside = stageButtons.pointercancel =
