@@ -52,8 +52,8 @@ sounds.load([
     eSFXList.Error,
     eSFXList.StageComplete,
     eSFXList.GameOver,
-    eMusicList.Music,
-    eSFXList.PPAP
+    eSFXList.PPAP,
+    eMusicList.Music
 ]);
 
 // Adds the sounds to SFX master to allow volume control of sfx
@@ -62,7 +62,7 @@ sounds.whenLoaded = () => {
         SFX_MASTER.push(sounds[eSFXList[i]]);
     }
     for(let i in eMusicList) {
-        MUSIC_MASTER.push(sounds[eMusicList.Music]);
+        MUSIC_MASTER.push(sounds[eMusicList[i]]);
     }
     loadResources();
 };
