@@ -148,12 +148,9 @@ function StageComplete(data) {
 
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {
-
         PlaySound(eSFXList.ButtonClick, false);
         PlaySound(eSFXList.MenuOpen, false);
-
         this.cleanUp();
-
         let next = data.id + 1;
         if (next >= LEVELS.length) {
             Credits.open(); // -> states/credits.js
@@ -165,11 +162,8 @@ function StageComplete(data) {
 
     // Home button takes you to the main menu
     this.homeButton.on("pointertap", () => {
-
         PlaySound(eSFXList.ButtonClick, false);
-
         this.cleanUp();
-
         StageSelect.open(); // -> states/stageselect.js
     });
 
@@ -240,6 +234,7 @@ function StageComplete(data) {
         this.displayWaste();
         this.displayStar();
     };
+
     PlaySound(eSFXList.StageComplete, false);
     
     this.cleanUp = () => {
