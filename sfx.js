@@ -20,7 +20,7 @@ let eSFXList = {
     IntoConveyor: "sounds/into-conveyor.wav",
     ItemDropped: "sounds/item-dropped.wav",
     Error: "sounds/error.wav",
-    StageComplete: "sounds/stage-complete.wav"
+    PPAP: "sounds/ppap.wav"
 
 };
 
@@ -37,7 +37,7 @@ sounds.load([
     eSFXList.IntoConveyor,
     eSFXList.ItemDropped,
     eSFXList.Error,
-    eSFXList.StageComplete
+    eSFXList.PPAP
 ]);
 
 // Adds the sounds to SFX master to allow volume control of sfx
@@ -47,77 +47,17 @@ sounds.whenLoaded = () => {
     }
 };
 
-// function PlaySound(sfx, isLooping) {
-    // sounds[sfx].loop = isLooping;
-    // sounds[sfx].play();
-// }
-
-// function StopSound(sfx) {
-    // sounds[sfx].playFrom(0);    // Resets the player back to time 0
-    // sounds[sfx].pause();        // Pauses it right after reseting playbar
-    // sounds[sfx].loop = false;   // In case if flag is true
-// }
-
 function PlaySound(sfx, isLooping) {
-	
     sounds[sfx].loop = isLooping;
-	
-    if(isLooping) {
-        if (sounds[sfx].nPlaying == null) {
-            sounds[sfx].nPlaying = 1;
-        }
-        else {
-            sounds[sfx].nPlaying++;
-        }
-        sounds[sfx].restart();
-    }
-    else {
-        sounds[sfx].play();
-    }
+    sounds[sfx].play();
 }
 
-// function StopSound(sfx) {
-    // if(sounds[sfx].loop) {
-        // sounds[sfx].nPlaying--;
-        // if (sounds[sfx].nPlaying < 1) {
-            // sounds[sfx].pause(); 
-        // }
-    // }
-    // else {
-        // sounds[sfx].pause();        // Pauses it right after reseting playbar
-    // }
- // }
-
-function StopSound(sfx, isFullStop) {
-    if(sounds[sfx].loop) {
-        if(isFullStop) {
-            sounds[sfx].nPlaying = 0;
-        }
-        if (sounds[sfx].nPlaying > 0) {
-            sounds[sfx].nPlaying--;
-        }
-        if (sounds[sfx].nPlaying < 1) {
-            sounds[sfx].pause(); 
-        }
-    }
-    else {
-        sounds[sfx].pause();        // Pauses it right after reseting playbar
-    }
+function StopSound(sfx) {
+    sounds[sfx].playFrom(0);    // Resets the player back to time 0
+    sounds[sfx].pause();        // Pauses it right after reseting playbar
+    sounds[sfx].loop = false;   // In case if flag is true
 }
 
-function VolSetSound(level) {
-	for(let i in eSFXList) {
-		sounds[eSFXList[i]].volume = level;
-	}
-}
-
-function ResetSound() {
-    
-    //Resets the Tick
-    VolSetSound(SFX_VOLUME); 
-    
-    StopSound(eSFXList.ClockTicking, true); // Explicitly Forced
-}
 
 
 
