@@ -60,9 +60,14 @@ function Intro() {
     this.clickableArea.endFill();
     this.clickableArea.interactive = true;
     this.clickableArea.pointertap = () => {
-        sounds["sounds/button-click.wav"].play();
-        sounds["sounds/menu-open.wav"].play();
+
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        //sounds[eSFXList.ButtonClick].play();
+        //sounds[eSFXList.MenuOpen].play();
+        MainMenu.open(); // -> states/mainmenu.js
         StageSelect.open(); // -> states/mainmenu.js
+
     }
     // Add to scene
     this.scene.addChild(this.txtFood);
