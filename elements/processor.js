@@ -211,6 +211,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
         && x < inputRight
         && inputTop < y
         && y < inputBottom);
+
     };
 
     //-------------------------------------------------------------------------------
