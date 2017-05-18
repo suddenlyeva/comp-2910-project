@@ -1,150 +1,378 @@
 "use strict";
 
+// Stage Select Screen
 function StageSelect() {
 
-    this.scene = new PIXI.Container();
+    // ----------------------------------- Carousel -----------------------------------
 
-    // Make background
-    this.background = new PIXI.Container();
-    this.bgFill = new PIXI.Graphics();
-    this.bgFill.beginFill(0x5d32ea);
-    this.bgFill.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    this.bgFill.endFill();
+    let deceleration       = 12;  // ... of the movement animation
+    let positionEpsilon    = 1;   // for position comparison
+    // primary - button in view, secondary - buttons not in view
+    let buttonAlpha        = { primary : 1, secondary : 0.5 };
+    let buttonScale        = { primary : 1, secondary : 0.6 };
+    // from pointerup to pointerdown: if moved less than the number of units(x and y)
+    // specified by tapSensitivity, consider it a tap/click
+    let tapSensitivity     = 10;  // xDelta multiplier
+    let scrollSensitivity  = 1.1; // swipe speed exponent
+    let swipeSensitivity   = 1.6;
+    // button properties
+    let buttonWidth        = 640,
+        buttonHeight       = 460,
+        buttonPadding      = 25,
+        buttonTextStyle    = new PIXI.TextStyle({
+            fontFamily: FONT_FAMILY, fontSize: 100
+        });
+    // clicking current button takes you to the stage if refXCenter is within the button's bounds
+    // currentPosLimiter limits these bounds
+    // values of buttonWidth / 2 and above will cause the current button to be unclickable
+    let currentPosLimiter  = buttonWidth / 4;
 
-    this.background.addChild(this.bgFill);
+    // ***** avoid modifying the following variables *****
+    let stageButtons       = new PIXI.Container();
+    // index of the current displayed button
+    let currentButton      = 0;
+    // if the current button was set manually(true) or calculated automatically(false)
+    let setManually        = false;
+    let swipeDistance      = 0;  // accumulates unadjusted xDelta
+    let stopWatch          = 0;  // for calculating swipe speed
 
-    // ---------- carousel
-    this.stageBtns = new PIXI.Container();
+    let buttonDisplayWidth = buttonWidth + buttonPadding * 2;
+
+    // refXLeft is a starting x position of the carousel
+    // used as a base reference in position related calculations
+    let refXLeft           = CANVAS_WIDTH / 2 - buttonDisplayWidth / 2; // left   of display
+    // more reference positions
+    let refXCenter         = refXLeft + buttonDisplayWidth / 2;         // center of display
+    let refXRight          = refXLeft + buttonDisplayWidth;             // right  of display
+
+    stageButtons.position.set(refXLeft, CANVAS_HEIGHT / 2 - buttonHeight / 2);
+    stageButtons.interactive = stageButtons.buttonMode = true;
 
     // initialize buttons
-    this.btnWidth = CANVAS_WIDTH / 2;
-    this.btnHeight = CANVAS_HEIGHT / 2;
     for(let i = 0; i < LEVELS.length; i++) {
-        let btn = makeSimpleButton(
-            this.btnWidth, this.btnHeight, "stage " + i + "\npreview placeholder",
-            0xffdfba, this.btnHeight / 4);
-        btn.position.set(this.btnWidth * i, 0);
+        let wrapper  = new PIXI.Container(),
+            button   = new PIXI.Container(),
+            buttonBg = new PIXI.Graphics();
+        // transparent background creates padding
+        buttonBg.beginFill(0, 0);
+        buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonHeight);
+        buttonBg.endFill();
 
-        btn.pointertap = () => {
-            if(!this.stageBtns.moving)
-                Level.open(LEVELS[i]);
+        let buttonImage = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
+        );
+        button.addChild(buttonImage);
+
+        let buttonText = new PIXI.Text(
+            (i !== 0 ? "level " + i + " :" : "") + " " + LEVELS[i].name,
+            buttonTextStyle);
+        button.addChild(buttonText);
+        buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
+        
+        let highscoreText = new PIXI.Text(
+            "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5),
+            buttonTextStyle);
+        button.addChild(highscoreText);
+        highscoreText.position.set(button.width / 2 - highscoreText.width, button.height / 2);
+        
+        if (!LEVEL_PROGRESS[i].unlocked) {
+            let lockedText = new PIXI.Text("locked", buttonTextStyle);
+            lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5 );
+            button.addChild(lockedText);
         }
+        
+        highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
 
-        this.stageBtns.addChild(btn);
+        button.interactive = button.buttonMode = true;
+        button.x = buttonPadding;
+
+        button.pointerdown = (eventData) => {
+            // remember position where the button was first clicked
+            // relative to carousel parent (which is going to be this.scene)
+            button.clickPos = eventData.data.getLocalPosition(stageButtons.parent);
+        };
+
+        button.pointerupoutside = button.pointerout = button.pointercancel = (eventData) => {
+            button.clickPos = false;
+        };
+
+        button.pointerup = (eventData) => {
+            if(!button.clickPos || stageButtons.pointers.length !== 1) return;
+            // position relative to carousel parent
+            let newPos = eventData.data.getLocalPosition(stageButtons.parent);
+            let diffX  = Math.abs(newPos.x - button.clickPos.x),
+                diffY  = Math.abs(newPos.y - button.clickPos.y);
+
+            if(diffX < tapSensitivity && diffY < tapSensitivity) {
+                let pos  = wrapper.x + button.x + stageButtons.x,  // button's left  edge position
+                    posL = pos + currentPosLimiter,                // adjusted button's left  edge position
+                    posR = pos - currentPosLimiter + button.width; // adjusted button's right edge position
+                // if the current button is at least half way in position, it's clickable
+                if(currentButton === i && posL < refXCenter && refXCenter < posR) {
+                  
+                    if (LEVEL_PROGRESS[currentButton].unlocked) {
+                        sounds[eSFXList.ButtonClick].play();
+                        sounds[eSFXList.MenuOpen].play();
+                        Level.open(LEVELS[currentButton]); // -> states/levels.js
+                    }
+                  
+                } else {
+                    setManually   = true;
+                    currentButton = i;
+                }
+            }
+
+            button.clickPos = false;
+        };
+
+        wrapper.addChild(buttonBg);
+        wrapper.addChild(button);
+
+        wrapper.x = wrapper.width * i;
+
+        // --------------------
+        // update wrapper appearance based on how far away it is from refXLeft
+        // leftOfView - is the wrapper is to the left of refXLeft(true) or to the right(false)?
+        wrapper.update = (leftOfView) => {
+            let posL = wrapper.x + stageButtons.x,  // wrapper's left  edge position
+                posR = posL      + wrapper.width;   // wrapper's right edge position
+
+            // Calculate how much of the button is in the spotlight
+            // and divide it by display width to find out the percentage of the button in the spotlight.
+            // In center position produces numbers like 0.9986321642984926, if rounding is desired
+            // use Math.round( ... * 100) / 100 to round to 2 decimal places
+            let percentageInView =
+                // performance: conditional operator or multiply by boolean?
+                (posL <= refXRight && refXLeft <= posR ?
+                    Math.min(refXRight - posL, posR - refXLeft) / buttonDisplayWidth
+                    : 0);
+            button.alpha   = buttonAlpha.secondary +
+                (buttonAlpha.primary - buttonAlpha.secondary) * percentageInView;
+            button.scale.set(buttonScale.secondary +
+                (buttonScale.primary - buttonScale.secondary) * percentageInView);
+            button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
+            button.y = wrapper.height / 2 - button.height / 2;
+        };
+        // --------------------
+;
+        wrapper.update();
+
+        stageButtons.addChild(wrapper);
     }
 
-    // this.carouselMask = new PIXI.Graphics();
-    // this.carouselMask.beginFill(0, 0);
-    // this.carouselMask.drawRect(0, 0, this.btnWidth, this.btnHeight);
-    // this.carouselMask.endFill();
+    stageButtons.pointerdown = (eventData) => {
+        let pointerData = {
+            id  : eventData.data.identifier,
+            pos : eventData.data.getLocalPosition(stageButtons.parent)
+        };
+        // if multi-touch is detected, don't send events to buttons and save new pointer id/position
+        if(!stageButtons.pointers || stageButtons.pointers.length === 0) {
+            stageButtons.pointers = [pointerData];
+        } else {
+            stageButtons.pointers.push(pointerData);
+            eventData.stopPropagation();
+        }
 
-    // this.stageBtns.mask = this.carouselMask;
-    this.stageBtns.initialX = this.stageBtns.targetX = CANVAS_WIDTH / 2 - this.btnWidth / 2;
-    this.stageBtns.position.set(CANVAS_WIDTH / 2 - this.btnWidth / 2,
-        CANVAS_HEIGHT / 2 - this.btnHeight / 2);
-    // same position for mask
-    // this.carouselMask.position.set(this.stageBtns.x, this.stageBtns.y);
-    this.stageBtns.interactive = this.stageBtns.buttonMode = true;
-    // index of the current displayed button
-    this.stageBtns.currentBtn = 0;
-    this.stageBtns.moving = false;
-    // if moved less than 5 units, consider it a button press
-    this.stageBtns.tapSensitivity = 5;
-
-    this.stageBtns.pointerdown = eventData => {
-        this.stageBtns.dragData = eventData.data.getLocalPosition(this.stageBtns.parent);
-        this.stageBtns.oldX = this.stageBtns.x;
         // necessary to stop movement on tap, different from .moving
-        this.stageBtns.pressedDown = true;
+        stageButtons.pressedDown = true;
     };
 
-    this.stageBtns.pointerup = this.stageBtns.pointerupoutside = eventData => {
-        this.stageBtns.dragData = this.stageBtns.moving = this.stageBtns.pressedDown = false;
-        let diff = this.stageBtns.x - this.stageBtns.oldX,
-            diffAbs = Math.abs(diff);
+    // ptrArr - array of pointers to look through; ptrId - pointer id whose index we want to find
+    // javascript promises that pointer ids are unique
+    let findIndexById = (ptrArr, ptrId) => {
+        let i = 0;
+        while(ptrArr[i].id !== ptrId && ++i !== ptrArr.length);
+        return i !== ptrArr.length ? i : -1;
+    };
 
-        if(diffAbs < this.stageBtns.tapSensitivity) {
-            Level.open(LEVELS[this.stageBtns.currentBtn]);
+    stageButtons.pointerup = stageButtons.pointerupoutside = stageButtons.pointercancel =
+        eventData => {
+            if(!stageButtons.pointers) return;
+            let ptrIndex = findIndexById(stageButtons.pointers, eventData.data.identifier);
+
+            // if pointer id is not in the array, something went terribly wrong
+            if(ptrIndex === -1) throw new Error("Pointer ID not found");
+            // remove pointer from pointer array
+            stageButtons.pointers.splice(ptrIndex, 1);
+            // don't do anything if using multi-touch
+            if(stageButtons.pointers.length !== 0) return;
+
+            // prevent division by 0
+            let swipeSpeed = stopWatch === 0 ? 0 : swipeDistance / stopWatch;
+            // raise to power, preserve sign
+            let distAdj    = Math.pow(Math.abs(swipeSpeed), swipeSensitivity) * (swipeSpeed < 0 ? -1 : 1);
+            currentButton  = determineCurrent(distAdj);
+
+            cleanUpCarousel();
+        };
+
+    stageButtons.pointermove = eventData => {
+        if(!stageButtons.pointers) return;
+        let newPos = eventData.data.getLocalPosition(stageButtons.parent);
+        // move only if there's one pointer
+        if(stageButtons.pointers.length === 1) {
+            if(eventData.data.identifier !== stageButtons.pointers[0].id) return;
+            stageButtons.pressedDown      = false;
+            let xDelta                    = newPos.x - stageButtons.pointers[0].pos.x;
+            stageButtons.x               += xDelta * scrollSensitivity;
+            stageButtons.moving           = true;
+            stageButtons.pointers[0].pos  = newPos;
+
+            swipeDistance                += xDelta;
+        } else if(stageButtons.pointers.length > 1) {
+            // update the pointer that moved
+            stageButtons.pointers[
+                findIndexById(stageButtons.pointers, eventData.data.identifier)
+            ].pos = newPos;
         }
-        // if scrolled more than half button width -> advance
-        if(diffAbs > this.btnWidth / 2) {
-            // +1 if moving right, -1 if moving left, 0 if same position
-            this.stageBtns.currentBtn -= (diff > 0) - (diff < 0);
-            // check bounds
-            if(this.stageBtns.currentBtn < 0) {
-                this.stageBtns.currentBtn = 0;
-            } else if(this.stageBtns.currentBtn >= this.stageBtns.children.length) {
-                this.stageBtns.currentBtn = this.stageBtns.children.length - 1;
+    };
+
+    // determine the current button based on which one is closest to the center point
+    // does nothing if current button was set manually (by clicking a button other than current)
+    // adjX modifier changes how much further ahead to look for currentButton
+    let determineCurrent = (adjX) => {
+        if(setManually) {
+            return currentButton;
+        }
+
+        for(let i = 0; i < stageButtons.children.length; i++) {
+            if(stageButtons.x +
+                stageButtons.children[i].x +
+                stageButtons.children[i].width + adjX
+                >= refXCenter) {
+                return i;
             }
         }
-        // x position that the carousel needs to be moved to
-        this.stageBtns.targetX =
-            this.stageBtns.initialX - this.stageBtns.children[this.stageBtns.currentBtn].x;
+        return stageButtons.children.length - 1;
     };
 
-    this.stageBtns.pointermove = eventData => {
-        this.stageBtns.pressedDown = false;
-        if(this.stageBtns.dragData) {
-            let newPos = eventData.data.getLocalPosition(this.stageBtns.parent);
-            let xDelta = newPos.x - this.stageBtns.dragData.x;
-            this.stageBtns.x += xDelta;
-            this.stageBtns.dragData = newPos;
-            this.stageBtns.moving = true;
+    // adjust carousel display based on current position
+    let updateDisplay = () => {
+        let pos;
+        for(let i = 0; i < stageButtons.children.length &&
+            // if position is outside the canvas, don't update
+            (pos = stageButtons.x + stageButtons.children[i].x) <= CANVAS_WIDTH; i++) {
+            if(pos + stageButtons.children[i].width >= 0) {
+                stageButtons.children[i].update(pos < refXLeft);
+            }
         }
     };
 
-    // ---------------
-    this.backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50);
-    this.backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
-    this.backToMainMenu.pointertap = MainMenu.open;
-
-    this.scene.addChild(this.background);
-    this.scene.addChild(this.stageBtns);
-    // this.scene.addChild(this.carouselMask);
-    this.scene.addChild(this.backToMainMenu);
-
-    this.stageBtns.deceleration = 10; // ... of the movement animation
-    this.stageBtns.posEpsilon = 1; // for position comparison
-
-    this.stageBtns.updateDisplay = () => {
-        // carousel alpha animation
-        for(let i = 0; i < this.stageBtns.children.length; i++) {
-            // button position on the scene
-            let btnPos = this.stageBtns.x + this.stageBtns.children[i].x;
-            // optimization: only process the visible buttons
-            if(btnPos + this.btnWidth < 0) continue;
-            if(btnPos > CANVAS_WIDTH) break;
-
-            // magic
-            let ratioFromTarget = this.btnWidth /
-                (this.btnWidth + Math.abs(btnPos - this.stageBtns.initialX));
-            this.stageBtns.children[i].alpha = ratioFromTarget;
+    let updateCarousel = () => {
+        // calculate difference in x position that the carousel needs to be moved by
+        let posDiff = stageButtons.x - refXLeft + stageButtons.children[currentButton].x;
+        if(Math.abs(posDiff) > positionEpsilon) {
+            if(!stageButtons.moving && !stageButtons.pressedDown) {
+                // carousel movement animation
+                stageButtons.x -= (posDiff / deceleration) * TICKER.deltaTime;
+            }
+            updateDisplay();
         }
-    }
+        if(stageButtons.moving) stopWatch += TICKER.deltaTime;
+    };
 
-    // initial carousel display
-    this.stageBtns.updateDisplay();
+    let cleanUpCarousel = () => {
+        setManually = stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
+        swipeDistance = stopWatch = 0;
+    };
+
+    // -------------------------------- End of carousel --------------------------------
+    
+    /*
+    let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
+    backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
+    backToMainMenu.on("pointertap", () => {
+        sounds["sounds/button-click.wav"].play();
+        cleanUpCarousel();
+        MainMenu.open()
+    });
+    */
+    
+    // Options
+    let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
+    optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 3, CANVAS_HEIGHT - TILES_PX * 1.5);
+    optionsButton.scale.set(1/1.5,1/1.5);
+    optionsButton.interactive = true;
+    optionsButton.buttonMode = true;
+
+    optionsButton.on("pointertap", () => {
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        //sounds[eSFXList.ButtonClick].play();
+        //sounds[eSFXList.MenuOpen].play();
+        // cleanUpCarousel(); // not needed for locally opened pop-up menu
+        OptionsMenu.open(); // -> states/optionsmenu.js
+    });
+    
+    // Fullscreen
+    // let fullscreenButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
+    // fullscreenButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
+    // fullscreenButton.scale.set(1/1.5,1/1.5);
+    // fullscreenButton.interactive = true;
+    // fullscreenButton.buttonMode = true;
+    // fullscreenButton.on("pointertap", () => {
+    //     cleanUpCarousel();
+    //     toggleFullScreen();
+    // });
+    
+    // More Games
+    let moreGamesButton = makeSimpleButton(TILES_PX * 3, TILES_PX, "more games", 0xFFFF66, 75); // -> util.js
+    moreGamesButton.position.set(TILES_PX * 0.25, CANVAS_HEIGHT - TILES_PX * 1.25);
+
+    moreGamesButton.on("pointertap", () => {
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        //sounds[eSFXList.ButtonClick].play();
+        //sounds[eSFXList.MenuOpen].play();
+        cleanUpCarousel();
+        OptionsMenu.close();
+        Affiliate.open(); // -> states/affiliate.js
+    });
+    
+    
+    let background = new PIXI.Container(),
+        bgFill     = new PIXI.Graphics();
+    bgFill.beginFill(0x5d32ea);
+    bgFill.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    bgFill.endFill();
+
+    background.addChild(bgFill);
+
+    // Create Scene
+    this.scene = new PIXI.Container();
+    this.scene.addChild(background);
+    this.scene.addChild(stageButtons);
+    this.scene.addChild(optionsButton);
+    //this.scene.addChild(fullscreenButton);
+    this.scene.addChild(moreGamesButton);
+    //this.scene.addChild(backToMainMenu);
 
     this.update = () => {
-        let posDiff = this.stageBtns.x - this.stageBtns.targetX;
-        if(posDiff !== 0) {
-            if(!this.stageBtns.moving && !this.stageBtns.pressedDown) {
-                // carousel movement animation
-                this.stageBtns.x =
-                    Math.abs(posDiff) < this.stageBtns.posEpsilon ?
-                    this.stageBtns.targetX :
-                    this.stageBtns.x - (posDiff / this.stageBtns.deceleration) * TICKER.deltaTime;
-            }
-            this.stageBtns.updateDisplay();
-        }
+        updateCarousel();
     };
 }
 
+// Function to open. Stage Select is singleton
 StageSelect.open = () => {
-    if(StageSelect.instance == null) {
+    
+    // Make new stage select for progress testing...
+    
+    //if(StageSelect.instance == null) {
         StageSelect.instance = new StageSelect();
-    }
+    //}
 
     SCENE = StageSelect.instance.scene;
     STATE = StageSelect.instance.update;
 }
+
+// Future TODO:
+// Figure out a solution for scaling wrapper instead of button
+// Problem that needs to be solved:
+// Scaling the button wrapper requires adjusting it's x-position while
+// keeping scroll speed consistant.
+// I had a solution where all buttons left-align to match their adjusted scale.
+// This cause the scroll speed to be inconsistent - the further you scroll
+// the more it accelerates and total carousel width varies as a result of scaling.
+// Possible solution:
+// Find a middle point (like refXLeft) and have all the buttons
+// move towards it. The perceived scroll speed should seem consistent.

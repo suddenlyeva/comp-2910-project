@@ -12,12 +12,12 @@ let KIWI = 7;
 let KIWI_SLICE = 8;
 let YOGURT = 9;
 let FRUIT_YOGURT = 10;
+let PINEAPPLE = 11;
+let PEN = 99;
 
-function makeItem(type, level) {
-
-    // Texture dictionary
-	// TODO: JSON solution for this?
-    let ITEM_TEXTURES = [];
+// Texture dictionary
+let ITEM_TEXTURES = [];
+function defineItemTextures() {
     ITEM_TEXTURES[SPLAT] = PIXI.loader.resources["images/spritesheet.json"].textures["splat.png"];
     ITEM_TEXTURES[BLANK] = PIXI.loader.resources["images/spritesheet.json"].textures["blank.png"];
     ITEM_TEXTURES[APPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"];
@@ -29,6 +29,12 @@ function makeItem(type, level) {
     ITEM_TEXTURES[KIWI_SLICE] = PIXI.loader.resources["images/spritesheet.json"].textures["kiwi-slice.png"];
     ITEM_TEXTURES[YOGURT] = PIXI.loader.resources["images/spritesheet.json"].textures["yogurt.png"];
     ITEM_TEXTURES[FRUIT_YOGURT] = PIXI.loader.resources["images/spritesheet.json"].textures["fruit-yogurt.png"];
+    ITEM_TEXTURES[PINEAPPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["pineapple.png"];
+    ITEM_TEXTURES[PEN] = PIXI.loader.resources["images/spritesheet.json"].textures["pen.png"];
+}
+
+// Makes an item in the level
+function makeItem(type, level) { // <- states/levels.js
 
     // Create the Sprite
     let item = new PIXI.Sprite(
@@ -36,118 +42,138 @@ function makeItem(type, level) {
     );
     item.buttonMode = true;
     item.anchor.set(0.5);
-    
+
     // Data that is different for each ingredient
     item.type = type;
     item.interactive = item.type > SPLAT; // Kind of hacky, index non interactive items to less than SPLAT
-    
+
     // Data that needs to be tracked every frame
     item.dragging = false;
-    
+
     // Behaviours that we need the object to do
-	
-	// Turns the item into waste.
+
+    // Turns the item into waste.
     item.waste = () => {
-		level.completionData.waste++;
-        level.updateWasteInfo();
+        level.completionData.waste++;   // -> states/levels.js
+        level.updateWasteInfo();        // -> states/levels.js
         item.texture = ITEM_TEXTURES[SPLAT];
-		item.interactive = false;
+        item.interactive = false;
+        PlaySound(eSFXList.ItemDropped, false);
+        PlaySound(eSFXList.Splat, false);
+        //sounds[eSFXList.Splat].play();
+        //sounds[eSFXList.ItemDropped].play();
     };
-	
-	// Item fades into the air
-	item.fadeAway = () => {
-		
-		// Make backing object
-		let fadeAwaySprite = new PIXI.Sprite(
-			PIXI.loader.resources["images/spritesheet.json"].textures["fade-backing.png"]
-		);
-		level.scene.addChild(fadeAwaySprite);
-		fadeAwaySprite.anchor.set(0.5);
-		fadeAwaySprite.position.set(item.x, item.y);
-		
-		//Resort on scene
-		level.scene.removeChild(item);
-		level.scene.addChild(item);
-		
-		// For asynchronous animation
-		let fadeAwayTicker = new PIXI.ticker.Ticker();
-		let alphaTimeOut = 60; // 1 second
-		
-		fadeAwayTicker.add( (delta) => {
-			
-			// Float Up
-			fadeAwaySprite.y -= delta;
-			item.y -= delta;
-			
-			// Fade Out
-			alphaTimeOut -= delta;
-			if (alphaTimeOut <= 0) {
-				fadeAwaySprite.alpha -= 0.02 * delta
-				item.alpha -= 0.02 * delta;
-			}
-			
-			// Kill after faded out.
-			 if (fadeAwaySprite.alpha <= 0.02) {
-				 level.scene.removeChild(fadeAwaySprite);
-				 level.scene.removeChild(item);
-				 fadeAwayTicker.destroy();
-			 }
-		});
-		
-		fadeAwayTicker.start();
-	};
-	
-	// When the item is clicked.
+
+    // Item fades into the air
+    item.fadeAway = () => {
+
+        // Make backing object
+        let fadeAwaySprite = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["fade-backing.png"]
+        );
+        level.scene.addChild(fadeAwaySprite);
+        fadeAwaySprite.anchor.set(0.5);
+        fadeAwaySprite.position.set(item.x, item.y);
+
+        //Resort on scene
+        level.scene.removeChild(item);
+        level.scene.addChild(item);
+
+        // For asynchronous animation
+        let fadeAwayTicker = new PIXI.ticker.Ticker();
+        let alphaTimeOut = 60; // 1 second
+
+        fadeAwayTicker.add( (delta) => {
+
+            // Float Up
+            fadeAwaySprite.y -= delta;
+            item.y -= delta;
+
+            // Fade Out
+            alphaTimeOut -= delta;
+            if (alphaTimeOut <= 0) {
+                fadeAwaySprite.alpha -= 0.02 * delta
+                item.alpha -= 0.02 * delta;
+            }
+
+            // Kill after faded out.
+             if (fadeAwaySprite.alpha <= 0.02) {
+                 level.scene.removeChild(fadeAwaySprite);
+                 level.scene.removeChild(item);
+                 fadeAwayTicker.destroy();
+             }
+        });
+
+        fadeAwayTicker.start();
+    };
+
+    // When the item is clicked.
     item.onDragStart = (event) => {
-        if(!level.isComplete) { // Lockout on level completion, maybe not needed
+        if (!level.itemPickedUp) { // -> states/levels.js
+            PlaySound(eSFXList.ItemPickUp, false);
+            //sounds[eSFXList.ItemPickUp].play();
             item.data = event.data;
             item.alpha = 0.5;
             item.dragging = true;
-			
-			// Replace previous conveyor item with a blank
-            if (level.conveyorBelt.collidesWithPoint(item.x, item.y)) {
-                level.conveyorBelt.addItemAtX(makeItem(BLANK, level), item.x);
+            level.itemPickedup = true;
+
+            // Replace previous conveyor item with a blank
+            if (level.conveyorBelt.collidesWithPoint(item.x, item.y)) {         // -> elements/conveyorbelt.js
+                level.conveyorBelt.addItemAtX(makeItem(BLANK, level), item.x);  // -> elements/conveyorbelt.js
             }
         }
     };
-    
-	// When you let go of the item
+
+    // When you let go of the item
     item.onDragEnd = (event) => {
-        
-		// Only if it was picked up
+
+        // Only if it was picked up
         if (item.dragging) {
-			
+
             // addToConveyor if on conveyor
-            if (level.conveyorBelt.collidesWithPoint(item.x, item.y) && level.conveyorBelt.getItemAtX(item.x).type == BLANK) {
-                level.conveyorBelt.addItemAtX(item, item.x);
+            if (level.conveyorBelt.collidesWithPoint(item.x, item.y) && // -> elements/conveyorbelt.js
+                level.conveyorBelt.getItemAtX(item.x) != null &&
+                level.conveyorBelt.getItemAtX(item.x).type == BLANK) {  // -> elements/conveyorbelt.js
+                level.conveyorBelt.addItemAtX(item, item.x);            // -> elements/conveyorbelt.js
+                //sounds[eSFXList.IntoConveyor].play();
             }
             else {
-				
-				let addedToProcessor = false;
-				
+
+                let addedToProcessor = false;
+
                 // Add to a processor if on one of those
                 for (let i in level.processors) {
-                    if (level.processors[i].collidesWithPoint(item.x, item.y)) {
-						addedToProcessor = level.processors[i].addItem(item);
+
+                    if (level.processors[i].collidesWithPoint(item.x, item.y)) {    // -> elements/processor.js
+                        addedToProcessor = level.processors[i].addItem(item);       // -> elements/processor.js
                     }
                 }
-				
+
                 // else waste
-				if(!addedToProcessor) {
-					item.waste();
-				}
+                if(!addedToProcessor) {
+                    // Play "wrong" sound
+                    PlaySound(eSFXList.Error, false);
+                    //sounds[eSFXList.Error].play();
+                    item.waste();
+                }
+                else {
+                    // Play "correct" sounds
+                    PlaySound(eSFXList.IntoProcessor, false);
+                    //sounds[eSFXList.IntoProcessor].play();
+                }
             }
-		
-			level.isComplete = level.checkForCompletion(); // Completion check
+            PlaySound(eSFXList.ItemDropped, false);
+            level.itemPickedup = false;
+            level.isComplete = level.checkForCompletion(); // -> states/levels.js
         }
-		
-		// Reset visuals and flag
+
+        // Reset visuals and flag
         item.alpha = 1;
         item.dragging = false;
         item.data = null;
     };
-    
-	// When you drag the item around
+
+    // When you drag the item around
     item.onDragMove = () => {
         if(item.dragging) {
             // Track x and y
@@ -156,16 +182,16 @@ function makeItem(type, level) {
             item.y = newPosition.y;
         }
     };
-    
+
     // Declare event handlers
     item.on('pointerdown', item.onDragStart)
         .on('pointerup', item.onDragEnd)
         .on('pointerupoutside', item.onDragEnd)
         .on('pointermove', item.onDragMove);
-    
-	// Add to scene
+
+    // Add to scene
     level.scene.addChild(item);
-	
-	// Return to caller
+
+    // Return to caller
     return item;
 }
