@@ -127,28 +127,40 @@ function PauseMenu() {
     // Play button moves to stage select
     // Requires "this" context to operate so we use () => {}
     this.resumeButton.pointertap = () => {
-        sounds[eSFXList.ButtonClick].play();
-        sounds[eSFXList.MenuOpen].play();
+        
+        VolSetSound(SFX_VOLUME);
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        //sounds[eSFXList.ButtonClick].play();
+        //sounds[eSFXList.MenuOpen].play();
         STATE = this.stateBuffer;
         this.cleanUp();
     };
 
     this.resetButton.pointertap = () => {
-        sounds[eSFXList.ButtonClick].play();
+        
+		ResetSound();
+        PlaySound(eSFXList.MenuOpen, false);
+        PlaySound(eSFXList.ButtonClick, false);
+        
+        //sounds[eSFXList.ButtonClick].play();
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
         Level.open(LEVELS[Level.instance.id]); // -> states/levels.js
     };
 
     this.optionsButton.on("pointertap", () => {
-        sounds[eSFXList.ButtonClick].play();
-        sounds[eSFXList.MenuOpen].play();
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        //sounds[eSFXList.ButtonClick].play();
+        //sounds[eSFXList.MenuOpen].play();
         OptionsMenu.open(); // -> states/optionsmenu.js
     });
 
     this.mainMenuButton.pointertap = () => {
         // this.cleanUp(); // also not needed
-
-        sounds[eSFXList.ButtonClick].play();
+        ResetSound();
+        PlaySound(eSFXList.ButtonClick, false);
+        //sounds[eSFXList.ButtonClick].play();
         MainMenu.open(); // -> states/mainmenu.js
     };
 
@@ -165,7 +177,7 @@ PauseMenu.open = () => {
     if(PauseMenu.instance == null) {
         PauseMenu.instance = new PauseMenu();
     }
-
     SCENE.addChild(PauseMenu.instance.scene);
+	VolSetSound(0);
 }
 

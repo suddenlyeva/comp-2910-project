@@ -61,11 +61,11 @@ function Intro() {
     this.clickableArea.interactive = true;
     this.clickableArea.pointertap = () => {
 
-        sounds[eSFXList.ButtonClick].play();
-        sounds[eSFXList.MenuOpen].play();
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        //sounds[eSFXList.ButtonClick].play();
+        //sounds[eSFXList.MenuOpen].play();
         MainMenu.open(); // -> states/mainmenu.js
-        sounds[eSFXList.ButtonClick].play();
-        sounds[eSFXList.MenuOpen].play();
         StageSelect.open(); // -> states/mainmenu.js
 
     }

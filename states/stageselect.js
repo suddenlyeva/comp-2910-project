@@ -15,10 +15,13 @@ function StageSelect() {
     let tapSensitivity     = 10;  // xDelta multiplier
     let scrollSensitivity  = 1.1; // swipe speed exponent
     let swipeSensitivity   = 1.6;
-    // button dimensions
+    // button properties
     let buttonWidth        = 640,
         buttonHeight       = 460,
-        buttonPadding      = 25;
+        buttonPadding      = 25,
+        buttonTextStyle    = new PIXI.TextStyle({
+            fontFamily: FONT_FAMILY, fontSize: 100
+        });
     // clicking current button takes you to the stage if refXCenter is within the button's bounds
     // currentPosLimiter limits these bounds
     // values of buttonWidth / 2 and above will cause the current button to be unclickable
@@ -48,17 +51,24 @@ function StageSelect() {
     // initialize buttons
     for(let i = 0; i < LEVELS.length; i++) {
         let wrapper  = new PIXI.Container(),
+            button   = new PIXI.Container(),
             buttonBg = new PIXI.Graphics();
         // transparent background creates padding
         buttonBg.beginFill(0, 0);
         buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonHeight);
         buttonBg.endFill();
-        // let button = makeSimpleButton( // -> util.js
-        //     buttonWidth, buttonHeight, "stage " + i + "\npreview placeholder",
-        //     0xffdfba, buttonHeight / 4);
-        let button = new PIXI.Sprite(
+
+        let buttonImage = new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
         );
+        button.addChild(buttonImage);
+
+        let buttonText = new PIXI.Text(
+            (i !== 0 ? "level " + i + " :" : "") + " " + LEVELS[i].name,
+            buttonTextStyle);
+        button.addChild(buttonText);
+        buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
+
         button.interactive = button.buttonMode = true;
         button.x = buttonPadding;
 
@@ -85,6 +95,8 @@ function StageSelect() {
                     posR = pos - currentPosLimiter + button.width; // adjusted button's right edge position
                 // if the current button is at least half way in position, it's clickable
                 if(currentButton === i && posL < refXCenter && refXCenter < posR) {
+                    sounds[eSFXList.ButtonClick].play();
+                    sounds[eSFXList.MenuOpen].play();
                     Level.open(LEVELS[currentButton]); // -> states/levels.js
                 } else {
                     setManually   = true;
@@ -252,12 +264,8 @@ function StageSelect() {
     let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
     backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
     backToMainMenu.on("pointertap", () => {
-<<<<<<< HEAD
-        sounds[eSFXList.ButtonClick].play();
-=======
         sounds["sounds/button-click.wav"].play();
         cleanUpCarousel();
->>>>>>> dev
         MainMenu.open()
     });
     */
@@ -270,9 +278,11 @@ function StageSelect() {
     optionsButton.buttonMode = true;
 
     optionsButton.on("pointertap", () => {
-        sounds["sounds/button-click.wav"].play();
-        sounds["sounds/menu-open.wav"].play();
-        cleanUpCarousel();
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        //sounds[eSFXList.ButtonClick].play();
+        //sounds[eSFXList.MenuOpen].play();
+        // cleanUpCarousel(); // not needed for locally opened pop-up menu
         OptionsMenu.open(); // -> states/optionsmenu.js
     });
     
@@ -292,7 +302,10 @@ function StageSelect() {
     moreGamesButton.position.set(TILES_PX * 0.25, CANVAS_HEIGHT - TILES_PX * 1.25);
 
     moreGamesButton.on("pointertap", () => {
-        sounds["sounds/button-click.wav"].play();
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        //sounds[eSFXList.ButtonClick].play();
+        //sounds[eSFXList.MenuOpen].play();
         cleanUpCarousel();
         OptionsMenu.close();
         Affiliate.open(); // -> states/affiliate.js
