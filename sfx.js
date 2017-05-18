@@ -59,7 +59,9 @@ sounds.whenLoaded = () => {
 // }
 
 function PlaySound(sfx, isLooping) {
+	
     sounds[sfx].loop = isLooping;
+	
     if(isLooping) {
         if (sounds[sfx].nPlaying == null) {
             sounds[sfx].nPlaying = 1;
@@ -74,9 +76,26 @@ function PlaySound(sfx, isLooping) {
     }
 }
 
-function StopSound(sfx) {
+// function StopSound(sfx) {
+    // if(sounds[sfx].loop) {
+        // sounds[sfx].nPlaying--;
+        // if (sounds[sfx].nPlaying < 1) {
+            // sounds[sfx].pause(); 
+        // }
+    // }
+    // else {
+        // sounds[sfx].pause();        // Pauses it right after reseting playbar
+    // }
+ // }
+
+function StopSound(sfx, isFullStop) {
     if(sounds[sfx].loop) {
-        sounds[sfx].nPlaying--;
+        if(isFullStop) {
+            sounds[sfx].nPlaying = 0;
+        }
+        if (sounds[sfx].nPlaying > 0) {
+            sounds[sfx].nPlaying--;
+        }
         if (sounds[sfx].nPlaying < 1) {
             sounds[sfx].pause(); 
         }
@@ -84,6 +103,20 @@ function StopSound(sfx) {
     else {
         sounds[sfx].pause();        // Pauses it right after reseting playbar
     }
+}
+
+function VolSetSound(level) {
+	for(let i in eSFXList) {
+		sounds[eSFXList[i]].volume = level;
+	}
+}
+
+function ResetSound() {
+    
+    //Resets the Tick
+    VolSetSound(SFX_VOLUME); 
+    
+    StopSound(eSFXList.ClockTicking, true); // Explicitly Forced
 }
 
 
