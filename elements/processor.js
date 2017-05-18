@@ -114,7 +114,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
                     let something = 0;
                     // If Timer hasn't been spawned, spawn it.
                     if(!this.bIsTimerSpawned) {
-                        this.PlaySound(this.eSoundFX.Processing, 0.5, true);
+                        PlaySound(eSFXList.ClockTicking, true);
                         this.mTimer.OnSpawn();
                         this.bIsTimerSpawned = true;
                     }
@@ -136,6 +136,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
                 this.mTimer.OnKill();
 
                 if(!this.bIsFinishedSpawning) {
+					StopSound(eSFXList.ClockTicking);
                     this.SpawnOutput();
                     this.mOutputSprite.texture = this.mOutputTexture[this.mOutputState.Yellow];
                     this.bIsFinishedSpawning = true;
@@ -214,8 +215,10 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
             && y < inputBottom);
         }
         // If state is not Feeding, Item's Dragged on Top will still fall
-        else
+        else {
+			PlaySound(eSFXList.Error,false);
             return false;
+		}
     };
 
     //-------------------------------------------------------------------------------
@@ -269,6 +272,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
             this.mOutputItem.x = TILES_PX + this.mOutputSprite.x;
             this.mOutputItem.y = TILES_PX + this.mOutputSprite.y;
 
+			PlaySound(eSFXList.RecipeComplete,false);
+			
             if(level.isFinalItem(this.mOutputItem.type)) {
                 // TODO: level.poof
                 this.mOutputItem.interactive = false;
@@ -298,27 +303,6 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
         this.bIsTimerSpawned = false;
     };
 
-    //------------------------------------------------------------------------------
-    // Magic is bad
-    this.PlaySound = (playSound, playVolume, isLooping) => {
-        sounds[playSound].loop = isLooping;
-        sounds[playSound].volume = playVolume * SFX_VOLUME;
-        sounds[playSound].play();
-    };
-    
-    
-    this.StopAllSounds = (stringName) => {
-        
-        
-        if(sounds[this.eSoundFX.Processing].loop == true) {
-            sounds[this.eSoundFX.Processing].loop = false;
-        }
-        if(sounds[this.eSoundFX.Completed].loop == true) {
-            sounds[this.eSoundFX.Completed].loop = false;
-        }
-    };
-    
-    
     //================================================================================
     // Object Variables
     //================================================================================
@@ -339,10 +323,6 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     // Enums
     this.mOutputState = { Blue : 0, Yellow : 1};                            // Output State
     this.mProcessorState = { Feeding : 0, Processing : 1, Finished : 2 };   // Processor State
-    this.eSoundFX = { Processing :  "sounds/processing.ogg",
-                      Completed :   "sounds/processing.ogg",
-                      Ticker :      "sounds/ticker.ogg"};                // SoundFX
-    
 
     // Object Variables
     this.mPosition = {x : 0, y : 0};    // Processor Position
