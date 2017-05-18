@@ -419,7 +419,7 @@ function Level(data) {
     };
     
     if(data.id == PPAP.id) {
-        PlaySound(eSFXList.PPAP);
+        sounds[eSFXList.PPAP].playFrom(0);
     }
     
 }
