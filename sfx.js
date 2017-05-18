@@ -57,7 +57,9 @@ sounds.whenLoaded = () => {
 // }
 
 function PlaySound(sfx, isLooping) {
+	
     sounds[sfx].loop = isLooping;
+	
     if(isLooping) {
         if (sounds[sfx].nPlaying == null) {
             sounds[sfx].nPlaying = 1;
@@ -82,6 +84,18 @@ function StopSound(sfx) {
     else {
         sounds[sfx].pause();        // Pauses it right after reseting playbar
     }
+}
+
+function VolSetSound(level) {
+	for(let i in eSFXList) {
+		sounds[eSFXList[i]].volume = level;
+	}
+}
+
+function ResetSound() {
+	for(let i in eSFXList) {
+		sounds[eSFXList[i]].volume = SFX_MASTER;
+	}
 }
 
 

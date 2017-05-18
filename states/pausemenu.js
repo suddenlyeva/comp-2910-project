@@ -136,6 +136,7 @@ function PauseMenu() {
     };
 
     this.resetButton.pointertap = () => {
+		VolSetSound(1.5);
         PlaySound(eSFXList.ButtonClick, false);
         //sounds[eSFXList.ButtonClick].play();
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
@@ -152,12 +153,14 @@ function PauseMenu() {
 
     this.mainMenuButton.pointertap = () => {
         // this.cleanUp(); // also not needed
+		VolSetSound(1.5);
         PlaySound(eSFXList.ButtonClick, false);
         //sounds[eSFXList.ButtonClick].play();
         MainMenu.open(); // -> states/mainmenu.js
     };
 
     this.cleanUp = () => {
+		VolSetSound(1.5);
         OptionsMenu.close();
         this.scene.parent.removeChild(this.scene);
     };
@@ -170,7 +173,7 @@ PauseMenu.open = () => {
     if(PauseMenu.instance == null) {
         PauseMenu.instance = new PauseMenu();
     }
-
     SCENE.addChild(PauseMenu.instance.scene);
+	VolSetSound(0);
 }
 
