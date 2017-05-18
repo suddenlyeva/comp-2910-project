@@ -3,6 +3,15 @@
 // TODO: Overhaul
 // Shows when stage is complete=]
 function StageComplete(data) {
+
+    // Update progress
+    if (LEVEL_PROGRESS[data.id].highscore < data.score) {
+        LEVEL_PROGRESS[data.id].highscore = data.score;
+    }
+    if (data.id < LEVEL_PROGRESS.length - 1) {
+        LEVEL_PROGRESS[data.id + 1].unlocked = true;
+    }
+  
     this.scene = new PIXI.Container();
     this.starContainer = new PIXI.Container();
     this.messageContainer = new PIXI.Container();
@@ -139,6 +148,7 @@ function StageComplete(data) {
 
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {
+        PlaySound(eSFXList.ButtonClick, false);
         let next = data.id + 1;
         if (next >= LEVELS.length) {
             Credits.open(); // -> states/credits.js
@@ -150,11 +160,13 @@ function StageComplete(data) {
 
     // Home button takes you to the main menu
     this.homeButton.on("pointertap", () => {
+        PlaySound(eSFXList.ButtonClick, false);
         StageSelect.open(); // -> states/stageselect.js
     });
 
     // Replay button
     this.replayButton.on("pointertap", () => {
+        PlaySound(eSFXList.ButtonClick);
         Level.open(LEVELS[data.id]);
     });
 
@@ -214,6 +226,8 @@ function StageComplete(data) {
         this.displayWaste();
         this.displayStar();
     };
+
+    PlaySound(eSFXList.StageComplete, false);
 }
 
 StageComplete.open = (completionData) => {

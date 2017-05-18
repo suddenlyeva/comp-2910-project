@@ -161,7 +161,7 @@ function PauseMenu() {
         ResetSound();
         PlaySound(eSFXList.ButtonClick, false);
         //sounds[eSFXList.ButtonClick].play();
-        MainMenu.open(); // -> states/mainmenu.js
+        StageSelect.open(); // -> states/stageselect.js
     };
 
     this.cleanUp = () => {

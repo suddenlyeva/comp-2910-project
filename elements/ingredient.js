@@ -138,20 +138,24 @@ function makeItem(type, level) { // <- states/levels.js
             else {
 
                 let addedToProcessor = false;
+                let collidedWithProcessor = false;
 
                 // Add to a processor if on one of those
                 for (let i in level.processors) {
 
                     if (level.processors[i].collidesWithPoint(item.x, item.y)) {    // -> elements/processor.js
                         addedToProcessor = level.processors[i].addItem(item);       // -> elements/processor.js
+                        collidedWithProcessor = true;
                     }
                 }
 
                 // else waste
+
+                if (collidedWithProcessor && !addedToProcessor){
+                    PlaySound(eSFXList.Error, false);
+                }
+
                 if(!addedToProcessor) {
-                    // Play "wrong" sound
-                    //PlaySound(eSFXList.Error, false);
-                    //sounds[eSFXList.Error].play();
                     item.waste();
                 }
                 else {

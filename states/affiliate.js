@@ -61,7 +61,7 @@ function Affiliate() {
     this.raceToZeroLogo.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false);
         //sounds[eSFXList.ButtonClick].play();
-        window.location.href = "";
+        window.location.href = "http://racetozero.byethost12.com/?i=1";
 
     };
 
@@ -90,7 +90,7 @@ function Affiliate() {
     this.mainMenuButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false);
         //sounds[eSFXList.ButtonClick].play();
-        MainMenu.open();
+        StageSelect.open(); // -> states/stageselect.js
 
     });
 

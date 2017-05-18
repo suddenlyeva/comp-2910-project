@@ -94,6 +94,29 @@ let LEVELS = [
     }
 ];
 
+let LEVEL_PROGRESS = [];
+function loadProgress () {
+    
+    // If new user
+    LEVEL_PROGRESS[0] = {
+       unlocked: true,
+       highscore: 0
+    };
+    for (let i = 1; i < LEVELS.length; i++) {
+        LEVEL_PROGRESS[i] = {
+            unlocked: false,
+            highscore: 0
+        };
+    }
+    
+    // If logged in
+    // TODO:
+}
+
+function saveProgress() {
+    // TODO: Upload LEVEL_PROGRESS to firebase
+}
+
 function Level(data) {
 
     // Identifiers
@@ -161,8 +184,10 @@ function Level(data) {
     this.pauseButton.interactive = true;
     this.pauseButton.buttonMode = true;
     this.pauseButton.on("pointertap", () => {
-        sounds["sounds/menu-open.wav"].play();
-        sounds["sounds/button-click.wav"].play();
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        //sounds["sounds/menu-open.wav"].play();
+        //sounds["sounds/button-click.wav"].play();
         this.pauseButton.texture = PIXI.loader.resources["images/spritesheet.json"].textures["pause-off.png"];
         this.isPaused = true;
         PauseMenu.open(this); // -> states/pausemenu.js
@@ -256,7 +281,7 @@ function Level(data) {
                 return false;
             }
         }
-
+        
         // Item Check
         if (this.itemPickedup) {
             return false;
@@ -281,7 +306,7 @@ function Level(data) {
 
         // Timeout on completion
         if(this.isComplete) {
-
+            
             // Processor Check
             for (let i in this.processors) {
                 if(this.processors[i].GetState() > 0) { // Any active or waiting state.
