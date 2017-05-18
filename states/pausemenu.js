@@ -131,6 +131,7 @@ function PauseMenu() {
         VolSetSound(SFX_VOLUME);
         PlaySound(eSFXList.ButtonClick, false);
         PlaySound(eSFXList.MenuOpen, false);
+        ResumeSoundLoop(eSFXList.ClockTicking);
         //sounds[eSFXList.ButtonClick].play();
         //sounds[eSFXList.MenuOpen].play();
         STATE = this.stateBuffer;
@@ -139,7 +140,6 @@ function PauseMenu() {
 
     this.resetButton.pointertap = () => {
         
-		ResetSound();
         PlaySound(eSFXList.MenuOpen, false);
         PlaySound(eSFXList.ButtonClick, false);
         
@@ -178,6 +178,5 @@ PauseMenu.open = () => {
         PauseMenu.instance = new PauseMenu();
     }
     SCENE.addChild(PauseMenu.instance.scene);
-	VolSetSound(0);
 }
 

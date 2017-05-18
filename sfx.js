@@ -70,8 +70,17 @@ function PlaySound(sfx, isLooping) {
             sounds[sfx].nPlaying++;
         }
         sounds[sfx].restart();
+        sounds[sfx].resume = null;
     }
     else {
+        sounds[sfx].play();
+    }
+}
+
+function ResumeSoundLoop(sfx) {
+    if(sounds[sfx].loop && sounds[sfx].resume) {
+        sounds[sfx].nPlaying = sounds[sfx].resume;
+        sounds[sfx].resume = null;
         sounds[sfx].play();
     }
 }
@@ -91,6 +100,7 @@ function PlaySound(sfx, isLooping) {
 function StopSound(sfx, isFullStop) {
     if(sounds[sfx].loop) {
         if(isFullStop) {
+            sounds[sfx].resume = sounds[sfx].nPlaying;
             sounds[sfx].nPlaying = 0;
         }
         if (sounds[sfx].nPlaying > 0) {

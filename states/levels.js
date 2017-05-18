@@ -186,6 +186,7 @@ function Level(data) {
     this.pauseButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false);
         PlaySound(eSFXList.MenuOpen, false);
+        StopSound(eSFXList.ClockTicking, true);
         //sounds["sounds/menu-open.wav"].play();
         //sounds["sounds/button-click.wav"].play();
         this.pauseButton.texture = PIXI.loader.resources["images/spritesheet.json"].textures["pause-off.png"];
