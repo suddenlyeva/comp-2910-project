@@ -26,8 +26,10 @@ let eSFXList = {
     ItemDropped: "sounds/item-dropped.wav",
     Error: "sounds/error.wav",
     StageComplete: "sounds/stage-complete.wav",
-    GameOver: "sounds/game-over.wav"
+    GameOver: "sounds/game-over.wav",
+    PPAP: "sounds/ppap.wav"
 };
+
 
 /* This list allows us to change the file names of the music
  * without changing it in the rest of the code*/
@@ -50,9 +52,9 @@ sounds.load([
     eSFXList.Error,
     eSFXList.StageComplete,
     eSFXList.GameOver,
-    eMusicList.Music
+    eMusicList.Music,
+    eSFXList.PPAP
 ]);
-let NumBGM = 1;
 
 // Adds the sounds to SFX master to allow volume control of sfx
 sounds.whenLoaded = () => {
@@ -62,6 +64,7 @@ sounds.whenLoaded = () => {
     for(let i in eMusicList) {
         MUSIC_MASTER.push(sounds[eMusicList.Music]);
     }
+    loadResources();
 };
 
 // function PlaySound(sfx, isLooping) {
@@ -79,7 +82,7 @@ function PlaySound(sfx, isLooping) {
 	
     sounds[sfx].loop = isLooping;
 	
-    if(isLooping && sfx === eSFXList.ClockTicking) {
+    if(isLooping) {
         if (sounds[sfx].nPlaying == null) {
             sounds[sfx].nPlaying = 1;
         }

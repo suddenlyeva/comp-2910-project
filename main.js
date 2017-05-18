@@ -3,11 +3,18 @@
 let USER;
 
 firebase.auth().onAuthStateChanged(function(user) {
+
   if (user) {
       console.log("logged in");
       USER = user;
   }
 });
+
+let DATABASE = firebase.database();
+
+// Load Progress
+loadProgress();
+
 
 // Base Canvas Size
 let CANVAS_WIDTH = 1280,
@@ -63,12 +70,13 @@ loadingProgressBar.position.set(CANVAS_WIDTH / 2 - loadingProgressBar.width / 2,
     CANVAS_HEIGHT / 2 - loadingProgressBar.height / 2);
 SCENE.addChild(loadingProgressBar);
 
-
+function loadResources() {
 // Load game with PIXI loader
-PIXI.loader
-    .on("progress", showLoadingProgress)
-    .add(thingsToLoad)
-    .load(setup);
+    PIXI.loader
+        .on("progress", showLoadingProgress)
+        .add(thingsToLoad)
+        .load(setup);
+}
 
 // Starts the game at Intro
 function setup() {
@@ -101,9 +109,6 @@ function setup() {
     
     // Load texture dictionary
     defineItemTextures();
-    
-    // Load Progress
-    loadProgress();
     
     // Start game
     Intro.open(); // -> states/intro.js

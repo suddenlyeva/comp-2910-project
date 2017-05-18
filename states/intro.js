@@ -108,8 +108,8 @@ Intro.open = () => {
     if(Intro.instance == null) {
         Intro.instance = new Intro();
     }
-
-    SCENE = Intro.instance.scene;
-    STATE = Intro.instance.update;
+    PlaySound(eMusicList.Music, true);
+        SCENE = Intro.instance.scene;
+        STATE = Intro.instance.update;
 }
 
