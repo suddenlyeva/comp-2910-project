@@ -9,8 +9,10 @@ let TILES_PX = 80;
 let LEVELS = [
 
     {id: 0, name: "tutorial",
-
+    
+        clearMessage: "an apple a day is one less apple in the trash.",
         wasteLimit: 3,
+        maxScore: 300,
 
         conveyorBelt: {
             items: [APPLE,BLANK,BLANK,BLANK,APPLE,BLANK,BLANK,BLANK,APPLE],
@@ -30,8 +32,10 @@ let LEVELS = [
         finalItems: [APPLE_SLICE]
     },
     {id: 1, name: "apple apple banana",
-
+        
+        clearMessage: "this is a test level. don't try this at home.",
         wasteLimit: 5,
+        maxScore: 300,
 
         conveyorBelt: {
             items: [APPLE, BLANK, APPLE, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
@@ -51,8 +55,10 @@ let LEVELS = [
         finalItems: [BANANA]
     },
     {id: 2, name: "fruit yogurt",
-
+        
+        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
+        maxScore: 2100,
 
         conveyorBelt: {
             items: [ORANGE, BLANK, KIWI, KIWI, BLANK, ORANGE, YOGURT, ORANGE, BLANK, BLANK, KIWI, YOGURT, BLANK, YOGURT],
@@ -95,6 +101,9 @@ function Level(data) {
 
     // Passed to stage complete menu
     this.completionData = {
+        id: data.id,
+        maxScore: data.maxScore,
+        clearMessage: data.clearMessage,
         score: 0,
         waste: 0,
         itemsComplete: []
