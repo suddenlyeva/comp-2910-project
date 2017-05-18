@@ -36,7 +36,8 @@ function StageSelect() {
     let swipeDistance      = 0;  // accumulates unadjusted xDelta
     let stopWatch          = 0;  // for calculating swipe speed
 
-    let buttonDisplayWidth = buttonWidth + buttonPadding * 2;
+    let buttonDisplayWidth = buttonWidth + buttonPadding * 2,
+        buttonDisplayHeight = buttonHeight;
 
     // refXLeft is a starting x position of the carousel
     // used as a base reference in position related calculations
@@ -45,7 +46,7 @@ function StageSelect() {
     let refXCenter         = refXLeft + buttonDisplayWidth / 2;         // center of display
     let refXRight          = refXLeft + buttonDisplayWidth;             // right  of display
 
-    stageButtons.position.set(refXLeft, CANVAS_HEIGHT / 2 - buttonHeight / 2);
+    stageButtons.position.set(refXLeft, CANVAS_HEIGHT / 2 - buttonDisplayHeight / 2);
     stageButtons.interactive = stageButtons.buttonMode = true;
 
     // initialize buttons
@@ -55,7 +56,7 @@ function StageSelect() {
             buttonBg = new PIXI.Graphics();
         // transparent background creates padding
         buttonBg.beginFill(0, 0);
-        buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonHeight);
+        buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonDisplayHeight);
         buttonBg.endFill();
 
         let buttonImage = new PIXI.Sprite(
@@ -127,6 +128,7 @@ function StageSelect() {
         wrapper.addChild(buttonBg);
         wrapper.addChild(button);
 
+        // consider replacing all 'wrapper.width' with 'buttonDisplayWidth'
         wrapper.x = wrapper.width * i;
 
         // --------------------
@@ -150,10 +152,10 @@ function StageSelect() {
             button.scale.set(buttonScale.secondary +
                 (buttonScale.primary - buttonScale.secondary) * percentageInView);
             button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
-            button.y = wrapper.height / 2 - button.height / 2;
+            button.y = buttonDisplayHeight / 2 - button.height / 2;
         };
         // --------------------
-;
+
         wrapper.update();
 
         stageButtons.addChild(wrapper);
@@ -266,12 +268,13 @@ function StageSelect() {
     let goToButton = (n, scroll = true) => {
         if(n < 0 || n >= stageButtons.children.length) throw new Error("goToButton: requested button doesn't exist.");
 
-        if(!scroll) {
-            stageButtons.x = refXLeft - stageButtons.children[n].x;
-        }
-
         setManually   = true;
         currentButton = n;
+
+        if(!scroll) {
+            stageButtons.x = refXLeft - stageButtons.children[n].x;
+            updateDisplay();
+        }
     }
 
     let cleanUpCarousel = () => {
@@ -280,16 +283,11 @@ function StageSelect() {
     };
 
     // -------------------------------- End of carousel --------------------------------
+    let easyButton = makeSimpleButton(TILES_PX * 2, TILES_PX, "easy", 0xb3ecec, 75);
+    easyButton.position.set(CANVAS_WIDTH / 2, CANVAS_HEIGHT - TILES_PX * 1.5);
+    easyButton.interactive = easyButton.buttonMode = true;
 
-    /*
-    let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
-    backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
-    backToMainMenu.on("pointertap", () => {
-        sounds["sounds/button-click.wav"].play();
-        cleanUpCarousel();
-        MainMenu.open()
-    });
-    */
+    easyButton.pointertap = goToButton.bind(this, 0, false);
 
     // Options
     let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
@@ -348,6 +346,7 @@ function StageSelect() {
     this.scene.addChild(optionsButton);
     //this.scene.addChild(fullscreenButton);
     this.scene.addChild(moreGamesButton);
+    this.scene.addChild(easyButton);
     //this.scene.addChild(backToMainMenu);
 
     this.update = () => {
