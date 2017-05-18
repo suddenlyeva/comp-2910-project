@@ -134,13 +134,10 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
         
             
         pen.onDragStart = (event) => {
-            if (!level.itemPickedUp) { // -> states/levels.js
-                PlaySound(eSFXList.ItemPickUp, false);
-                pen.data = event.data;
-                pen.alpha = 0.5;
-                pen.dragging = true;
-                level.itemPickedup = true;
-            }
+            PlaySound(eSFXList.ItemPickUp, false);
+            pen.data = event.data;
+            pen.alpha = 0.5;
+            pen.dragging = true;
         };
         
         pen.onDragMove = () => {
@@ -167,7 +164,6 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
                 }
                 
                 PlaySound(eSFXList.ItemDropped, false);
-                this.itemPickedup = false;
             }
         
             // Reset visuals and flag

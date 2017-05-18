@@ -54,7 +54,6 @@ sounds.load([
     eSFXList.PPAP,
     eMusicList.Music
 ]);
-let NumBGM = 1;
 
 // Adds the sounds to SFX master to allow volume control of sfx
 sounds.whenLoaded = () => {
