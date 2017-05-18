@@ -127,8 +127,7 @@ function PauseMenu() {
     // Play button moves to stage select
     // Requires "this" context to operate so we use () => {}
     this.resumeButton.pointertap = () => {
-        
-        VolSetSound(SFX_VOLUME);
+
         PlaySound(eSFXList.ButtonClick, false);
         PlaySound(eSFXList.MenuOpen, false);
         ResumeSoundLoop(eSFXList.ClockTicking);
@@ -142,6 +141,7 @@ function PauseMenu() {
         
         PlaySound(eSFXList.MenuOpen, false);
         PlaySound(eSFXList.ButtonClick, false);
+        StopSound(eSFXList.ClockTicking, true);
         
         //sounds[eSFXList.ButtonClick].play();
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
@@ -158,7 +158,7 @@ function PauseMenu() {
 
     this.mainMenuButton.pointertap = () => {
         // this.cleanUp(); // also not needed
-        ResetSound();
+        StopSound(eSFXList.ClockTicking, true);
         PlaySound(eSFXList.ButtonClick, false);
         //sounds[eSFXList.ButtonClick].play();
         StageSelect.open(); // -> states/stageselect.js

@@ -149,6 +149,7 @@ function StageComplete(data) {
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
         let next = data.id + 1;
         if (next >= LEVELS.length) {
             Credits.open(); // -> states/credits.js
@@ -166,7 +167,8 @@ function StageComplete(data) {
 
     // Replay button
     this.replayButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick);
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
         Level.open(LEVELS[data.id]);
     });
 
