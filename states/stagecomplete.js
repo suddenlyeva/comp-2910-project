@@ -11,7 +11,7 @@ function StageComplete(data) {
     if (data.id < LEVEL_PROGRESS.length - 1) {
         LEVEL_PROGRESS[data.id + 1].unlocked = true;
     }
-    
+  
     this.scene = new PIXI.Container();
     this.starContainer = new PIXI.Container();
     this.messageContainer = new PIXI.Container();

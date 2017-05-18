@@ -42,7 +42,13 @@ function Credits() {
 
     // Opens affiliate page when the button is pressed or clicked
 
-    this.affiliateButton.pointertap = Affiliate.open; // -> states/affiliate.js
+    this.affiliateButton.on("pointertap", () => {
+        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.MenuOpen, false);
+        //sounds[eSFXList.ButtonClick].play();
+        //sounds[eSFXList.MenuOpen].play();
+        Affiliate.open(); // -> states/affiliate.js
+    });
 
     // Add to scene
     this.scene.addChild(this.txtThankYou);
