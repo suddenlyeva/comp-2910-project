@@ -93,6 +93,31 @@ let LEVELS = [
     }
 ];
 
+let PPAP_UNLOCKED = false;
+let PPAP = {id: LEVELS.length, name: "ppap",
+        
+        clearMessage: ":DDDD",
+        wasteLimit: 5,
+        maxScore: 99999,
+
+        conveyorBelt: {
+            items: [PEN,BLANK,PINEAPPLE,BLANK,APPLE,BLANK,PEN],
+            speed: 1.3
+        },
+
+        processors: [
+            {
+                recipe: [PEN,PINEAPPLE,APPLE,PEN],
+                result: BANANA,
+                score: 99999,
+                x: 4*TILES_PX,
+                y: 3*TILES_PX
+            }
+        ],
+
+        finalItems: [BANANA]
+};
+
 let LEVEL_PROGRESS = [];
 function loadProgress () {
     firebase.auth().onAuthStateChanged(function(user) {
@@ -379,6 +404,11 @@ function Level(data) {
         }
 
     };
+    
+    if(data.id == PPAP.id) {
+        PlaySound(eSFXList.PPAP);
+    }
+    
 }
 
 // Function to open. Level recreates itself
