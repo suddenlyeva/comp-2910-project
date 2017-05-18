@@ -7,7 +7,7 @@ function StageSelect() {
 
     let deceleration       = 12;  // ... of the movement animation
     let positionEpsilon    = 1;   // for position comparison
-    // primary - button in view, secondary - buttons not in view
+    // primary - button in spotlight, secondary - buttons not in spotlight
     let buttonAlpha        = { primary : 1, secondary : 0.5 };
     let buttonScale        = { primary : 1, secondary : 0.6 };
     // from pointerup to pointerdown: if moved less than the number of units(x and y)
@@ -36,7 +36,8 @@ function StageSelect() {
     let swipeDistance      = 0;  // accumulates unadjusted xDelta
     let stopWatch          = 0;  // for calculating swipe speed
 
-    let buttonDisplayWidth = buttonWidth + buttonPadding * 2;
+    let buttonDisplayWidth  = buttonWidth + buttonPadding * 2,
+        buttonDisplayHeight = buttonHeight;
 
     // refXLeft is a starting x position of the carousel
     // used as a base reference in position related calculations
@@ -45,123 +46,140 @@ function StageSelect() {
     let refXCenter         = refXLeft + buttonDisplayWidth / 2;         // center of display
     let refXRight          = refXLeft + buttonDisplayWidth;             // right  of display
 
-    stageButtons.position.set(refXLeft, CANVAS_HEIGHT / 2 - buttonHeight / 2);
+    stageButtons.position.set(refXLeft, CANVAS_HEIGHT / 2 - buttonDisplayHeight / 2);
     stageButtons.interactive = stageButtons.buttonMode = true;
 
     // initialize buttons
-    for(let i = 0; i < LEVELS.length; i++) {
-        let wrapper  = new PIXI.Container(),
-            button   = new PIXI.Container(),
-            buttonBg = new PIXI.Graphics();
-        // transparent background creates padding
-        buttonBg.beginFill(0, 0);
-        buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonHeight);
-        buttonBg.endFill();
+    this.initButtons = () => {
+        for(let i = stageButtons.children.length; i < LEVELS.length; i++) {
+            let wrapper  = new PIXI.Container(),
+                button   = new PIXI.Container(),
+                buttonBg = new PIXI.Graphics();
+            // transparent background creates padding
+            buttonBg.beginFill(0, 0);
+            buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonDisplayHeight);
+            buttonBg.endFill();
 
-        let buttonImage = new PIXI.Sprite(
-            PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
-        );
-        button.addChild(buttonImage);
+            // remember level id
+            button.id = LEVELS[i].id;
 
-        let buttonText = new PIXI.Text(
-            (i !== 0 ? "level " + i + " :" : "") + " " + LEVELS[i].name,
-            buttonTextStyle);
-        button.addChild(buttonText);
-        buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
-        
-        let highscoreText = new PIXI.Text(
-            "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5),
-            buttonTextStyle);
-        button.addChild(highscoreText);
-        highscoreText.position.set(button.width / 2 - highscoreText.width, button.height / 2);
-        
-        if (!LEVEL_PROGRESS[i].unlocked) {
-            let lockedText = new PIXI.Text("locked", buttonTextStyle);
-            lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5 );
+            let buttonImage = new PIXI.Sprite(
+                PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
+            );
+            button.addChild(buttonImage);
+
+            let buttonText = new PIXI.Text(
+                (i !== 0 ? "level " + i + " :" : "") + " " + LEVELS[i].name,
+                buttonTextStyle);
+            button.addChild(buttonText);
+            buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
+
+            let highscoreText = new PIXI.Text("", buttonTextStyle);
+            button.addChild(highscoreText);
+
+            let lockedText = new PIXI.Text("", buttonTextStyle);
             button.addChild(lockedText);
-        }
-        
-        highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
 
-        button.interactive = button.buttonMode = true;
-        button.x = buttonPadding;
+            wrapper.updateProgress = () => {
+                highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
+                lockedText.text = LEVEL_PROGRESS[i].unlocked ? "" : "locked";
 
-        button.pointerdown = (eventData) => {
-            // remember position where the button was first clicked
-            // relative to carousel parent (which is going to be this.scene)
-            button.clickPos = eventData.data.getLocalPosition(stageButtons.parent);
-        };
+                // scale the button back to 100%, set text positions and scale the button back
+                let scaleMemX = button.scale.x,
+                    scaleMemY = button.scale.y;
+                button.scale.set(buttonScale.primary);
 
-        button.pointerupoutside = button.pointerout = button.pointercancel = (eventData) => {
-            button.clickPos = false;
-        };
+                // position stuff on the button here
+                lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5);
+                highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
 
-        button.pointerup = (eventData) => {
-            if(!button.clickPos || stageButtons.pointers.length !== 1) return;
-            // position relative to carousel parent
-            let newPos = eventData.data.getLocalPosition(stageButtons.parent);
-            let diffX  = Math.abs(newPos.x - button.clickPos.x),
-                diffY  = Math.abs(newPos.y - button.clickPos.y);
+                button.scale.set(scaleMemX, scaleMemY);
+            };
 
-            if(diffX < tapSensitivity && diffY < tapSensitivity) {
-                let pos  = wrapper.x + button.x + stageButtons.x,  // button's left  edge position
-                    posL = pos + currentPosLimiter,                // adjusted button's left  edge position
-                    posR = pos - currentPosLimiter + button.width; // adjusted button's right edge position
-                // if the current button is at least half way in position, it's clickable
-                if(currentButton === i && posL < refXCenter && refXCenter < posR) {
-                  
-                    if (LEVEL_PROGRESS[currentButton].unlocked) {
-                        sounds[eSFXList.ButtonClick].play();
-                        sounds[eSFXList.MenuOpen].play();
-                        Level.open(LEVELS[currentButton]); // -> states/levels.js
+            button.interactive = button.buttonMode = true;
+            button.x = buttonPadding;
+
+            button.pointerdown = (eventData) => {
+                // remember position where the button was first clicked
+                // relative to carousel parent (which is going to be this.scene)
+                button.clickPos = eventData.data.getLocalPosition(stageButtons.parent);
+            };
+
+            button.pointerupoutside = button.pointerout = button.pointercancel = (eventData) => {
+                button.clickPos = false;
+            };
+
+            button.pointerup = (eventData) => {
+                if(!button.clickPos || stageButtons.pointers.length !== 1) return;
+                // position relative to carousel parent
+                let newPos = eventData.data.getLocalPosition(stageButtons.parent);
+                let diffX  = Math.abs(newPos.x - button.clickPos.x),
+                    diffY  = Math.abs(newPos.y - button.clickPos.y);
+
+                if(diffX < tapSensitivity && diffY < tapSensitivity) {
+                    let pos  = wrapper.x + button.x + stageButtons.x,  // button's left  edge position
+                        posL = pos + currentPosLimiter,                // adjusted button's left  edge position
+                        posR = pos - currentPosLimiter + button.width; // adjusted button's right edge position
+                    // if the current button is at least half way in position, it's clickable
+                    if(currentButton === i && posL < refXCenter && refXCenter < posR) {
+
+                        if (LEVEL_PROGRESS[currentButton].unlocked) {
+                            sounds[eSFXList.ButtonClick].play();
+                            sounds[eSFXList.MenuOpen].play();
+                            Level.open(LEVELS[currentButton]); // -> states/levels.js
+                        }
+
+                    } else {
+                        goToButton(i);
                     }
-                  
-                } else {
-                    setManually   = true;
-                    currentButton = i;
                 }
-            }
 
-            button.clickPos = false;
-        };
+                button.clickPos = false;
+            };
 
-        wrapper.addChild(buttonBg);
-        wrapper.addChild(button);
+            wrapper.addChild(buttonBg);
+            wrapper.addChild(button);
 
-        wrapper.x = wrapper.width * i;
+            // consider replacing all 'wrapper.width' with 'buttonDisplayWidth'
+            wrapper.x = wrapper.width * i;
 
-        // --------------------
-        // update wrapper appearance based on how far away it is from refXLeft
-        // leftOfView - is the wrapper is to the left of refXLeft(true) or to the right(false)?
-        wrapper.update = (leftOfView) => {
-            let posL = wrapper.x + stageButtons.x,  // wrapper's left  edge position
-                posR = posL      + wrapper.width;   // wrapper's right edge position
+            // --------------------
+            // update wrapper appearance based on how far away it is from refXLeft
+            // leftOfView - is the wrapper is to the left of refXLeft(true) or to the right(false)?
+            wrapper.update = (leftOfView) => {
+                let posL = wrapper.x + stageButtons.x,  // wrapper's left  edge position
+                    posR = posL      + wrapper.width;   // wrapper's right edge position
 
-            // Calculate how much of the button is in the spotlight
-            // and divide it by display width to find out the percentage of the button in the spotlight.
-            // In center position produces numbers like 0.9986321642984926, if rounding is desired
-            // use Math.round( ... * 100) / 100 to round to 2 decimal places
-            let percentageInView =
-                // performance: conditional operator or multiply by boolean?
-                (posL <= refXRight && refXLeft <= posR ?
-                    Math.min(refXRight - posL, posR - refXLeft) / buttonDisplayWidth
-                    : 0);
-            button.alpha   = buttonAlpha.secondary +
-                (buttonAlpha.primary - buttonAlpha.secondary) * percentageInView;
-            button.scale.set(buttonScale.secondary +
-                (buttonScale.primary - buttonScale.secondary) * percentageInView);
-            button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
-            button.y = wrapper.height / 2 - button.height / 2;
-        };
-        // --------------------
-;
-        wrapper.update();
+                // Calculate how much of the button is in the spotlight
+                // and divide it by display width to find out the percentage of the button in the spotlight.
+                // In center position produces numbers like 0.9986321642984926, if rounding is desired
+                // use Math.round( ... * 100) / 100 to round to 2 decimal places
+                let percentageInView =
+                    // performance: conditional operator or multiply by boolean?
+                    (posL <= refXRight && refXLeft <= posR ?
+                        Math.min(refXRight - posL, posR - refXLeft) / buttonDisplayWidth
+                        : 0);
+                button.alpha   = buttonAlpha.secondary +
+                    (buttonAlpha.primary - buttonAlpha.secondary) * percentageInView;
 
-        stageButtons.addChild(wrapper);
+                button.scale.set(buttonScale.secondary +
+                    (buttonScale.primary - buttonScale.secondary) * percentageInView);
+                button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
+                button.y = buttonDisplayHeight / 2 - button.height / 2;
+            };
+            // --------------------
+
+            wrapper.update();
+
+            stageButtons.addChild(wrapper);
+        }
     }
+
+    this.initButtons();
 
     stageButtons.pointerdown = (eventData) => {
         let pointerData = {
+            // javascript promises that pointer ids are unique
             id  : eventData.data.identifier,
             pos : eventData.data.getLocalPosition(stageButtons.parent)
         };
@@ -175,14 +193,6 @@ function StageSelect() {
 
         // necessary to stop movement on tap, different from .moving
         stageButtons.pressedDown = true;
-    };
-
-    // ptrArr - array of pointers to look through; ptrId - pointer id whose index we want to find
-    // javascript promises that pointer ids are unique
-    let findIndexById = (ptrArr, ptrId) => {
-        let i = 0;
-        while(ptrArr[i].id !== ptrId && ++i !== ptrArr.length);
-        return i !== ptrArr.length ? i : -1;
     };
 
     stageButtons.pointerup = stageButtons.pointerupoutside = stageButtons.pointercancel =
@@ -271,27 +281,48 @@ function StageSelect() {
         if(stageButtons.moving) stopWatch += TICKER.deltaTime;
     };
 
+    let goToButton = (n, scroll = true) => {
+        if(n < 0 || n >= stageButtons.children.length) throw new Error("goToButton: requested button doesn't exist.");
+
+        setManually   = true;
+        currentButton = n;
+
+        if(!scroll) {
+            stageButtons.x = refXLeft - stageButtons.children[n].x;
+            updateDisplay();
+        }
+    }
+
     let cleanUpCarousel = () => {
         setManually = stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
         swipeDistance = stopWatch = 0;
     };
 
     // -------------------------------- End of carousel --------------------------------
-    
-    /*
-    let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
-    backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
-    backToMainMenu.on("pointertap", () => {
-        sounds["sounds/button-click.wav"].play();
-        cleanUpCarousel();
-        MainMenu.open()
-    });
-    */
-    
+
+    // Difficulty buttons
+    let easyButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "easy",   0xb3ecec, 75);
+    easyButton.interactive   = easyButton.buttonMode = true;
+
+    let normalButton = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "normal", 0xb3ecec, 75);
+    normalButton.interactive = normalButton.buttonMode = true;
+
+    let hardButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "hard",   0xb3ecec, 75);
+    hardButton.interactive   = hardButton.buttonMode = true;
+
+    // center the normal button and position the other 2 relative to it
+    normalButton.position.set(CANVAS_WIDTH / 2 - normalButton.width / 2, CANVAS_HEIGHT - TILES_PX * 1.2);
+    hardButton.position.set(normalButton.x + hardButton.width + TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
+    easyButton.position.set(normalButton.x - easyButton.width - TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
+
+    easyButton  .pointertap = goToButton.bind(this, 0);
+    normalButton.pointertap = goToButton.bind(this, 1);
+    hardButton  .pointertap = goToButton.bind(this, 2);
+
     // Options
     let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
-    optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 3, CANVAS_HEIGHT - TILES_PX * 1.5);
-    optionsButton.scale.set(1/1.5,1/1.5);
+    optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
+    optionsButton.scale.set(2/3, 2/3);
     optionsButton.interactive = true;
     optionsButton.buttonMode = true;
 
@@ -303,7 +334,7 @@ function StageSelect() {
         // cleanUpCarousel(); // not needed for locally opened pop-up menu
         OptionsMenu.open(); // -> states/optionsmenu.js
     });
-    
+
     // Fullscreen
     // let fullscreenButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
     // fullscreenButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
@@ -314,7 +345,7 @@ function StageSelect() {
     //     cleanUpCarousel();
     //     toggleFullScreen();
     // });
-    
+
     // More Games
     let moreGamesButton = makeSimpleButton(TILES_PX * 3, TILES_PX, "more games", 0xFFFF66, 75); // -> util.js
     moreGamesButton.position.set(TILES_PX * 0.25, CANVAS_HEIGHT - TILES_PX * 1.25);
@@ -328,8 +359,8 @@ function StageSelect() {
         OptionsMenu.close();
         Affiliate.open(); // -> states/affiliate.js
     });
-    
-    
+
+
     let background = new PIXI.Container(),
         bgFill     = new PIXI.Graphics();
     bgFill.beginFill(0x5d32ea);
@@ -345,7 +376,16 @@ function StageSelect() {
     this.scene.addChild(optionsButton);
     //this.scene.addChild(fullscreenButton);
     this.scene.addChild(moreGamesButton);
+    this.scene.addChild(easyButton);
+    this.scene.addChild(normalButton);
+    this.scene.addChild(hardButton);
     //this.scene.addChild(backToMainMenu);
+
+    this.updateProgress = () => {
+        for(let i = 0; i < stageButtons.children.length; i++) {
+            stageButtons.children[i].updateProgress();
+        }
+    };
 
     this.update = () => {
         updateCarousel();
@@ -354,12 +394,15 @@ function StageSelect() {
 
 // Function to open. Stage Select is singleton
 StageSelect.open = () => {
-    
+
     // Make new stage select for progress testing...
-    
-    //if(StageSelect.instance == null) {
+
+    if(StageSelect.instance == null) {
         StageSelect.instance = new StageSelect();
-    //}
+    }
+
+    StageSelect.instance.initButtons();
+    StageSelect.instance.updateProgress();
 
     SCENE = StageSelect.instance.scene;
     STATE = StageSelect.instance.update;

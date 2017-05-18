@@ -148,6 +148,7 @@ function StageComplete(data) {
 
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {
+        this.cleanUp();
         let next = data.id + 1;
         if (next >= LEVELS.length) {
             Credits.open(); // -> states/credits.js
@@ -159,13 +160,18 @@ function StageComplete(data) {
 
     // Home button takes you to the main menu
     this.homeButton.on("pointertap", () => {
+        this.cleanUp();
         StageSelect.open(); // -> states/stageselect.js
     });
 
     // Replay button
     this.replayButton.on("pointertap", () => {
+        this.cleanUp();
         Level.open(LEVELS[data.id]);
     });
+
+    // save state
+    saveProgress();
 
     this.displayScore = () => {
         if (scoreDisplayed < data.score) {
@@ -191,7 +197,7 @@ function StageComplete(data) {
         this.wasteTxt.position.set(CANVAS_WIDTH - TILES_PX * 3 - this.wasteTxt.width / 2, TILES_PX * 0.5);
     };
 
-    // Star animation. TODO: Refactoring
+    // Star animation.
     let limitScale = 1;
     let starTicker = 0;
     let starInterval = 1;
@@ -222,6 +228,12 @@ function StageComplete(data) {
         this.displayScore();
         this.displayWaste();
         this.displayStar();
+    };
+    
+    this.cleanUp = () => {
+        if(data.id == PPAP.id) {
+            StopSound(eSFXList.PPAP);
+        }
     };
 }
 
