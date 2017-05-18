@@ -377,8 +377,9 @@ function Level(data) {
 
         // Timeout on completion
         if(this.isComplete) {
-            
-            if (!this.completionData.waste >= data.wasteLimit) {
+            console.log(this.completionData.waste);
+            console.log(data.wasteLimit);
+            if (!(this.completionData.waste >= data.wasteLimit)) {
                 // Processor Check
                 for (let i in this.processors) {
                     if(this.processors[i].GetState() > 0) { // Any active or waiting state.
@@ -394,7 +395,7 @@ function Level(data) {
             }
             // Move to Stage Complete
             if (this.timeOut <= 0) {
-                if (!this.completionData.waste >= data.wasteLimit) {
+                if (!(this.completionData.waste >= data.wasteLimit)) {
                     StageComplete.open(this.completionData); // -> states/stagecomplete.js
                 }
                 else {
