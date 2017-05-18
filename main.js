@@ -1,5 +1,11 @@
 "use strict";
 
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+      console.log("logged in");
+  }
+});
+
 // Base Canvas Size
 let CANVAS_WIDTH = 1280,
     CANVAS_HEIGHT = 720;
