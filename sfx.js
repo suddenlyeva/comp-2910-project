@@ -64,6 +64,7 @@ sounds.whenLoaded = () => {
     for(let i in eMusicList) {
         MUSIC_MASTER.push(sounds[eMusicList.Music]);
     }
+    loadResources();
 };
 
 // function PlaySound(sfx, isLooping) {

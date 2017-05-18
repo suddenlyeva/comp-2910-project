@@ -264,6 +264,7 @@ function Level(data) {
     this.pauseButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false);
         PlaySound(eSFXList.MenuOpen, false);
+        StopSound(eSFXList.ClockTicking, true);
         //sounds["sounds/menu-open.wav"].play();
         //sounds["sounds/button-click.wav"].play();
         this.pauseButton.texture = PIXI.loader.resources["images/spritesheet.json"].textures["pause-off.png"];
@@ -374,6 +375,10 @@ function Level(data) {
         this.conveyorBelt.update();
         for (let i in this.processors) {
             this.processors[i].update(); // elements/processor.js
+            if(this.processors[i].GetState() != test1[i]){
+                console.log("Processor " + i + " State: " + this.processors[i].GetState());
+                test1[i] = this.processors[i].GetState();
+            }
         }
         this.gear.update();
         this.hpBar.update();
@@ -414,7 +419,7 @@ function Level(data) {
     };
     
     if(data.id == PPAP.id) {
-        PlaySound(eSFXList.PPAP);
+        sounds[eSFXList.PPAP].playFrom(0);
     }
     
 }
