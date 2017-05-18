@@ -36,7 +36,8 @@ function StageSelect() {
     let swipeDistance      = 0;  // accumulates unadjusted xDelta
     let stopWatch          = 0;  // for calculating swipe speed
 
-    let buttonDisplayWidth = buttonWidth + buttonPadding * 2;
+    let buttonDisplayWidth = buttonWidth + buttonPadding * 2,
+        buttonDisplayHeight = buttonHeight;
 
     // refXLeft is a starting x position of the carousel
     // used as a base reference in position related calculations
@@ -45,7 +46,7 @@ function StageSelect() {
     let refXCenter         = refXLeft + buttonDisplayWidth / 2;         // center of display
     let refXRight          = refXLeft + buttonDisplayWidth;             // right  of display
 
-    stageButtons.position.set(refXLeft, CANVAS_HEIGHT / 2 - buttonHeight / 2);
+    stageButtons.position.set(refXLeft, CANVAS_HEIGHT / 2 - buttonDisplayHeight / 2);
     stageButtons.interactive = stageButtons.buttonMode = true;
 
     // initialize buttons
@@ -55,7 +56,7 @@ function StageSelect() {
             buttonBg = new PIXI.Graphics();
         // transparent background creates padding
         buttonBg.beginFill(0, 0);
-        buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonHeight);
+        buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonDisplayHeight);
         buttonBg.endFill();
 
         let buttonImage = new PIXI.Sprite(
@@ -68,19 +69,19 @@ function StageSelect() {
             buttonTextStyle);
         button.addChild(buttonText);
         buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
-        
+
         let highscoreText = new PIXI.Text(
             "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5),
             buttonTextStyle);
         button.addChild(highscoreText);
         highscoreText.position.set(button.width / 2 - highscoreText.width, button.height / 2);
-        
+
         if (!LEVEL_PROGRESS[i].unlocked) {
             let lockedText = new PIXI.Text("locked", buttonTextStyle);
             lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5 );
             button.addChild(lockedText);
         }
-        
+
         highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
 
         button.interactive = button.buttonMode = true;
@@ -109,16 +110,15 @@ function StageSelect() {
                     posR = pos - currentPosLimiter + button.width; // adjusted button's right edge position
                 // if the current button is at least half way in position, it's clickable
                 if(currentButton === i && posL < refXCenter && refXCenter < posR) {
-                  
+
                     if (LEVEL_PROGRESS[currentButton].unlocked) {
                         sounds[eSFXList.ButtonClick].play();
                         sounds[eSFXList.MenuOpen].play();
                         Level.open(LEVELS[currentButton]); // -> states/levels.js
                     }
-                  
+
                 } else {
-                    setManually   = true;
-                    currentButton = i;
+                    goToButton(i);
                 }
             }
 
@@ -128,6 +128,7 @@ function StageSelect() {
         wrapper.addChild(buttonBg);
         wrapper.addChild(button);
 
+        // consider replacing all 'wrapper.width' with 'buttonDisplayWidth'
         wrapper.x = wrapper.width * i;
 
         // --------------------
@@ -151,10 +152,10 @@ function StageSelect() {
             button.scale.set(buttonScale.secondary +
                 (buttonScale.primary - buttonScale.secondary) * percentageInView);
             button.x = leftOfView ? wrapper.width - button.width - buttonPadding : buttonPadding;
-            button.y = wrapper.height / 2 - button.height / 2;
+            button.y = buttonDisplayHeight / 2 - button.height / 2;
         };
         // --------------------
-;
+
         wrapper.update();
 
         stageButtons.addChild(wrapper);
@@ -264,23 +265,44 @@ function StageSelect() {
         if(stageButtons.moving) stopWatch += TICKER.deltaTime;
     };
 
+    let goToButton = (n, scroll = true) => {
+        if(n < 0 || n >= stageButtons.children.length) throw new Error("goToButton: requested button doesn't exist.");
+
+        setManually   = true;
+        currentButton = n;
+
+        if(!scroll) {
+            stageButtons.x = refXLeft - stageButtons.children[n].x;
+            updateDisplay();
+        }
+    }
+
     let cleanUpCarousel = () => {
         setManually = stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
         swipeDistance = stopWatch = 0;
     };
 
     // -------------------------------- End of carousel --------------------------------
-    
-    /*
-    let backToMainMenu = makeSimpleButton(200, 50, "back to main menu", 0xb3ecec, 50); // -> util.js
-    backToMainMenu.position.set(CANVAS_WIDTH - 220, CANVAS_HEIGHT - 70);
-    backToMainMenu.on("pointertap", () => {
-        sounds["sounds/button-click.wav"].play();
-        cleanUpCarousel();
-        MainMenu.open()
-    });
-    */
-    
+
+    // Difficulty buttons
+    let easyButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "easy",   0xb3ecec, 75);
+    easyButton.interactive   = easyButton.buttonMode = true;
+
+    let normalButton = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "normal", 0xb3ecec, 75);
+    normalButton.interactive = normalButton.buttonMode = true;
+
+    let hardButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "hard",   0xb3ecec, 75);
+    hardButton.interactive   = hardButton.buttonMode = true;
+
+    // center the normal button and position the other 2 relative to it
+    normalButton.position.set(CANVAS_WIDTH / 2 - normalButton.width / 2, CANVAS_HEIGHT - TILES_PX * 1.2);
+    hardButton.position.set(normalButton.x + hardButton.width + TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
+    easyButton.position.set(normalButton.x - easyButton.width - TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
+
+    easyButton  .pointertap = goToButton.bind(this, 0);
+    normalButton.pointertap = goToButton.bind(this, 1);
+    hardButton  .pointertap = goToButton.bind(this, 2);
+
     // Options
     let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
     optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 3, CANVAS_HEIGHT - TILES_PX * 1.5);
@@ -296,7 +318,7 @@ function StageSelect() {
         // cleanUpCarousel(); // not needed for locally opened pop-up menu
         OptionsMenu.open(); // -> states/optionsmenu.js
     });
-    
+
     // Fullscreen
     // let fullscreenButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
     // fullscreenButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
@@ -307,7 +329,7 @@ function StageSelect() {
     //     cleanUpCarousel();
     //     toggleFullScreen();
     // });
-    
+
     // More Games
     let moreGamesButton = makeSimpleButton(TILES_PX * 3, TILES_PX, "more games", 0xFFFF66, 75); // -> util.js
     moreGamesButton.position.set(TILES_PX * 0.25, CANVAS_HEIGHT - TILES_PX * 1.25);
@@ -321,8 +343,8 @@ function StageSelect() {
         OptionsMenu.close();
         Affiliate.open(); // -> states/affiliate.js
     });
-    
-    
+
+
     let background = new PIXI.Container(),
         bgFill     = new PIXI.Graphics();
     bgFill.beginFill(0x5d32ea);
@@ -338,6 +360,9 @@ function StageSelect() {
     this.scene.addChild(optionsButton);
     //this.scene.addChild(fullscreenButton);
     this.scene.addChild(moreGamesButton);
+    this.scene.addChild(easyButton);
+    this.scene.addChild(normalButton);
+    this.scene.addChild(hardButton);
     //this.scene.addChild(backToMainMenu);
 
     this.update = () => {
@@ -347,9 +372,9 @@ function StageSelect() {
 
 // Function to open. Stage Select is singleton
 StageSelect.open = () => {
-    
+
     // Make new stage select for progress testing...
-    
+
     //if(StageSelect.instance == null) {
         StageSelect.instance = new StageSelect();
     //}
