@@ -63,6 +63,7 @@ sounds.whenLoaded = () => {
     for(let i in eMusicList) {
         MUSIC_MASTER.push(sounds[eMusicList.Music]);
     }
+    loadResources();
 };
 
 // function PlaySound(sfx, isLooping) {
@@ -80,7 +81,7 @@ function PlaySound(sfx, isLooping) {
 	
     sounds[sfx].loop = isLooping;
 	
-    if(isLooping && sfx === eSFXList.ClockTicking) {
+    if(isLooping) {
         if (sounds[sfx].nPlaying == null) {
             sounds[sfx].nPlaying = 1;
         }
