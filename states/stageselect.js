@@ -293,6 +293,16 @@ function StageSelect() {
         }
     }
 
+    // find first locked level and return its index - 1
+    let firstBeforeLocked = () => {
+        let i = 0;
+        while(i + 1 < LEVEL_PROGRESS.length && LEVEL_PROGRESS[i + 1].unlocked) i++;
+        return i;
+    };
+
+    // jump to first unlocked followed by locked level
+    goToButton(firstBeforeLocked(), false);
+
     let cleanUpCarousel = () => {
         setManually = stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
         swipeDistance = stopWatch = 0;
