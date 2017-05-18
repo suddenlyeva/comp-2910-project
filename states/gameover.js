@@ -58,18 +58,6 @@ function GameOver() {
     // Paused Label
     this.gameOverTxt = new PIXI.Text("game over", this.txtStyle);
     this.gameOverTxt.position.set(this.panel.width / 2 - this.gameOverTxt.width / 2, 0);
-    
-    this.gameOverTxt.update = () => {
-        this.gameOverTxt.x++;
-    }
-    
-    
-    let GOAnim = animate(this.gameOverText,
-    {
-        delay: 0,
-        interval: 1,
-        endCondition: () => {return false;}
-    });
 
     // Style for other labels
     this.txtStyle = new PIXI.TextStyle({
@@ -127,9 +115,7 @@ function GameOver() {
         this.scene.parent.removeChild(this.scene);
     };
 
-    this.update = () => {
-        GOAnim();
-    };
+    this.update = () => {};
 }
 
 // Function to open. Pause Menu is singleton
