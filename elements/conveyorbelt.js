@@ -56,7 +56,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
             this.deltaX -= TILES_PX;
 
             // Add a blank to the end
-            this.addItemAtIndex(makeItem(BLANK, level), this.lastIndex);
+            this.addItemAtIndex(makeItem(BLANK, level), this.lastIndex); // -> elements/ingredients.js
         }
     }
 
