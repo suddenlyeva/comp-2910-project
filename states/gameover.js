@@ -98,6 +98,7 @@ function GameOver() {
 
     this.resetButton.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false);
+        ResumeSoundLoop(eMusicList.Music);
         //sounds[eSFXList.ButtonClick].play();
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
         Level.open(LEVELS[Level.instance.id]); // -> states/levels.js
@@ -106,6 +107,7 @@ function GameOver() {
     this.mainMenuButton.pointertap = () => {
         // this.cleanUp(); // also not needed
         PlaySound(eSFXList.ButtonClick, false);
+        ResumeSoundLoop(eMusicList.Music);
         //sounds[eSFXList.ButtonClick].play();
         StageSelect.open(); // -> states/stageselect.js
     };
@@ -121,6 +123,7 @@ function GameOver() {
 // Function to open. Pause Menu is singleton
 GameOver.open = () => {
     PlaySound(eSFXList.GameOver, false);
+    StopSound(eMusicList.Music, true);
     if(GameOver.instance == null) {
         GameOver.instance = new GameOver();
 
