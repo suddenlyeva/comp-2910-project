@@ -26,14 +26,14 @@ let eSFXList = {
     ItemDropped: "sounds/item-dropped.wav",
     Error: "sounds/error.wav",
     StageComplete: "sounds/stage-complete.wav",
-    GameOver: "sounds/game-over.wav",
-    PPAP: "sounds/ppap.wav"
+    GameOver: "sounds/game-over.wav"
 };
 
 /* This list allows us to change the file names of the music
  * without changing it in the rest of the code*/
 let eMusicList = {
-    Music: "sounds/music.wav"
+    Music: "sounds/music.wav",
+    PPAP: "sounds/ppap.wav"
 };
 
 // Loads the sound effects
@@ -51,7 +51,7 @@ sounds.load([
     eSFXList.Error,
     eSFXList.StageComplete,
     eSFXList.GameOver,
-    eSFXList.PPAP,
+    eMusicList.PPAP,
     eMusicList.Music
 ]);
 
