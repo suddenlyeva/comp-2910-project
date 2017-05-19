@@ -92,6 +92,7 @@ let LEVELS = [
     }
 ];
 
+// PPAP
 let PPAP_UNLOCKED = false;
 let PPAP = {id: LEVELS.length, name: "ppap",
         
@@ -144,6 +145,7 @@ function loadProgress () {
                     console.log("New user detected: " + user.uid);
                     // initialize progress with default values
                     for (let i = 0; i < LEVELS.length; i++) {
+                        // Tutorial starts unlocked
                         if(i <= 0) {
                             LEVEL_PROGRESS[i] = {
                                 unlocked: true,
@@ -163,6 +165,7 @@ function loadProgress () {
             // not signed in.
             console.log("Not logged in");
             // initialize progress with default values
+            // Tutorial starts unlocked
             LEVEL_PROGRESS[0] = {
                unlocked: true,
                highscore: 0
@@ -177,6 +180,7 @@ function loadProgress () {
     });
 }
 
+// Saves progress to database
 function saveProgress() {
     // check user login status again before saving
     firebase.auth().onAuthStateChanged(function(user) {
@@ -196,6 +200,7 @@ function saveProgress() {
     });
 }
 
+// Level constructor reads from JSON array
 function Level(data) {
 
     // Identifiers
@@ -263,11 +268,9 @@ function Level(data) {
     this.pauseButton.interactive = true;
     this.pauseButton.buttonMode = true;
     this.pauseButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        PlaySound(eSFXList.MenuOpen, false);
-        StopSound(eSFXList.ClockTicking, true);
-        //sounds["sounds/menu-open.wav"].play();
-        //sounds["sounds/button-click.wav"].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
+        StopSound(eSFXList.ClockTicking, true); // -> sfx.js
         this.pauseButton.texture = PIXI.loader.resources["images/spritesheet.json"].textures["pause-off.png"];
         this.isPaused = true;
         PauseMenu.open(this); // -> states/pausemenu.js
@@ -275,7 +278,7 @@ function Level(data) {
     this.scene.addChild(this.pauseButton);
 
     // Add HP Bar
-    this.hpBar = makeProgressBar(5*TILES_PX, 60, 10, 0x222222, 0x00d27f);
+    this.hpBar = makeProgressBar(5*TILES_PX, 60, 10, 0x222222, 0x00d27f); // -> util.js
     this.hpBar.xScale(1);
     this.hpBar.x += TILES_PX;
     this.hpBar.y += 10;
@@ -285,7 +288,7 @@ function Level(data) {
     this.hpBar.update = () => {
         // Smoothly Scale HP
         if ( this.hpBar.getScale() > (1 - this.completionData.waste / data.wasteLimit)) {
-            this.hpBar.xScale(this.hpBar.getScale() * 0.975 );
+            this.hpBar.xScale(this.hpBar.getScale() * 0.975 ); // -> util.js
         }
     };
 
@@ -343,7 +346,6 @@ function Level(data) {
                 return true;
             }
         }
-
         return false;
     };
 
@@ -369,7 +371,8 @@ function Level(data) {
 
         return true;
     };
-
+    
+    // Called every frame
     this.update = () => {
 
         // Update scene objects
@@ -402,7 +405,7 @@ function Level(data) {
                     StageComplete.open(this.completionData); // -> states/stagecomplete.js
                 }
                 else {
-                    GameOver.open();
+                    GameOver.open(); // -> states/gameover.js
                 }
             }
         }
@@ -415,9 +418,10 @@ function Level(data) {
 
     };
     
+    // PPAP sound
     if(data.id == PPAP.id) {
-        sounds[eMusicList.PPAP].playFrom(0);
-        StopSound(eMusicList.Music, true);
+        sounds[eMusicList.PPAP].playFrom(0); // -> sfx.js
+        StopSound(eMusicList.Music, true);   // -> sfx.js
     }
     
 }
@@ -429,4 +433,4 @@ Level.open = (data) => {
 
     SCENE = Level.instance.scene;
     STATE = Level.instance.update;
-}
+};
