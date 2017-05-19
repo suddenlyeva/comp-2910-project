@@ -2,6 +2,7 @@
 
 // Main Menu Scene
 // TODO: Probably merge with stage select
+// TODO EDIT: Should now be deprecated.
 function MainMenu() {
     this.scene = new PIXI.Container();
 
