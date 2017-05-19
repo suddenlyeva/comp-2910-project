@@ -128,43 +128,38 @@ function PauseMenu() {
     // Requires "this" context to operate so we use () => {}
     this.resumeButton.pointertap = () => {
 
-        PlaySound(eSFXList.ButtonClick, false);
-        PlaySound(eSFXList.MenuOpen, false);
-        ResumeSoundLoop(eSFXList.ClockTicking);
-        //sounds[eSFXList.ButtonClick].play();
-        //sounds[eSFXList.MenuOpen].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
+        ResumeSoundLoop(eSFXList.ClockTicking); // -> sfx.js
+        
         STATE = this.stateBuffer;
         this.cleanUp();
     };
 
     this.resetButton.pointertap = () => {
         
-        PlaySound(eSFXList.MenuOpen, false);
-        PlaySound(eSFXList.ButtonClick, false);
-        StopSound(eSFXList.ClockTicking, true);
-        StopSound(eMusicList.PPAP, true);
-        ResumeSoundLoop(eMusicList.Music);
+        PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        StopSound(eSFXList.ClockTicking, true); // -> sfx.js
+        StopSound(eMusicList.PPAP, true);       // -> sfx.js
+        ResumeSoundLoop(eMusicList.Music);      // -> sfx.js
         
-        //sounds[eSFXList.ButtonClick].play();
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
         Level.open(LEVELS[Level.instance.id]); // -> states/levels.js
     };
 
     this.optionsButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        PlaySound(eSFXList.MenuOpen, false);
-        //sounds[eSFXList.ButtonClick].play();
-        //sounds[eSFXList.MenuOpen].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         OptionsMenu.open(); // -> states/optionsmenu.js
     });
 
     this.mainMenuButton.pointertap = () => {
         // this.cleanUp(); // also not needed
-        StopSound(eSFXList.ClockTicking, true);
-        StopSound(eMusicList.PPAP, true);
-        PlaySound(eSFXList.ButtonClick, false);
-        ResumeSoundLoop(eMusicList.Music);
-        //sounds[eSFXList.ButtonClick].play();
+        StopSound(eSFXList.ClockTicking, true); // -> sfx.js
+        StopSound(eMusicList.PPAP, true);       // -> sfx.js
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        ResumeSoundLoop(eMusicList.Music);      // -> sfx.js
         StageSelect.open(); // -> states/stageselect.js
     };
 
@@ -182,5 +177,5 @@ PauseMenu.open = () => {
         PauseMenu.instance = new PauseMenu();
     }
     SCENE.addChild(PauseMenu.instance.scene);
-}
+};
 

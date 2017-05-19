@@ -1,5 +1,7 @@
 "use strict";
 
+// Adjusts game frame size. Mostly to fix scrollbars on Chrome.
+
 function resizeIframe() {
     let iframe = document.getElementById("game-window");
     if(window.innerWidth > window.innerHeight) {

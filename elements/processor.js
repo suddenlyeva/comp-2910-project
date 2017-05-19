@@ -246,7 +246,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
                 // ! Change to ====
                 if(droppedIngredient.type == this.mRequiredIngredients[i].type && !this.bRecipeProgress[i])
                 {
-                    this.mRequiredIngredients[i].alpha = this.mAlphaFinished; //TODO: MAGIC NUMBER
+                    this.mRequiredIngredients[i].alpha = this.mAlphaFinished; 
                     this.bRecipeProgress[i] = true;
                     this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
 
@@ -271,7 +271,6 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 			PlaySound(eSFXList.RecipeComplete,false);
 			
             if(level.isFinalItem(this.mOutputItem.type)) {
-                // TODO: level.poof
                 this.mOutputItem.interactive = false;
                 this.mOutputItem.fadeAway();
                 level.completionData.itemsComplete.push(recipeOrder.GetOutput());

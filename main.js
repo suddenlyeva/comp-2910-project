@@ -1,5 +1,6 @@
 "use strict";
 
+// Authentication Check
 let USER;
 
 firebase.auth().onAuthStateChanged(function(user) {
@@ -9,6 +10,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 });
 
+// Database Global
 let DATABASE = firebase.database();
 
 // Load Progress
@@ -51,7 +53,6 @@ window.addEventListener('resize', function(){ // Flag after resize event for opt
 }, true);
 
 // Letterboxing variables
-
 let TOP_MASK,
     BOT_MASK,
     LEFT_MASK,
@@ -118,6 +119,7 @@ function gameLoop() {
   
     STATE(); // Single-state update loop for easy switching
     
+    // Scene resize and centering
     if(WINDOW_RESIZED || SCENE !== previousScene) {
         
         sceneResize(STRETCH_THRESHOLD); // -> util.js
@@ -142,11 +144,13 @@ function gameLoop() {
 function showLoadingProgress(loader, resource) {
 
     // Show progress
-    console.log("loading: " + resource.url);
-    loadingProgressBar.xScale(loader.progress / 200); // Other half of loading bar is in sfx.js sound.onProgress
+    console.log("loading: " + resource.url); 
+    
+    // Other half of loading bar is in sfx.js sound.onProgress
+    loadingProgressBar.xScale(loader.progress / 200); // -> util.js
 
     // Resize loading screen
-    sceneResize(STRETCH_THRESHOLD);
+    sceneResize(STRETCH_THRESHOLD); // -> util.js
     RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
 
     // Draw loading screen

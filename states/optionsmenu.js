@@ -54,14 +54,12 @@ function OptionsMenu() {
     // Back button moves to main menu
     // bind(this) is used to give the function context (which is the current object)
     this.okButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        //sounds[eSFXList.ButtonClick].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         OptionsMenu.close();
     });
 
     // Adjusts the volume for all sfx based on slider position
     this.soundVol.onSliderAdjust = () => {
-
       for (let i in SFX_MASTER) {
           SFX_VOLUME = this.soundVol.value;
           SFX_MASTER[i].volume = SFX_VOLUME;
@@ -70,7 +68,6 @@ function OptionsMenu() {
 
     // Adjusts the volume of bgm music based on slider position
     this.musicVol.onSliderAdjust = () => {
-
         for(let i in MUSIC_MASTER) {
             MUSIC_VOLUME = this.musicVol.value;
             MUSIC_MASTER[i].volume = MUSIC_VOLUME;

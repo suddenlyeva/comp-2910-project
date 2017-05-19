@@ -47,7 +47,7 @@ function StageSelect() {
     // find first locked level and return its index - 1
     let firstBeforeLocked = () => {
         let i = 0;
-        while(i + 1 < LEVEL_PROGRESS.length && LEVEL_PROGRESS[i + 1].unlocked) i++;
+        while(i + 1 < LEVEL_PROGRESS.length && LEVEL_PROGRESS[i + 1].unlocked) i++; // -> states/levels.js
         return i;
     };
 
@@ -92,7 +92,7 @@ function StageSelect() {
 
             wrapper.updateProgress = () => {
                 highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
-                lockedText.text = LEVEL_PROGRESS[i].unlocked ? "" : "locked";
+                lockedText.text = LEVEL_PROGRESS[i].unlocked ? "" : "locked"; // -> states/levels.js
 
                 // scale the button back to 100%, set text positions and scale the button back
                 let scaleMemX = button.scale.x,
@@ -133,9 +133,9 @@ function StageSelect() {
                     // if the current button is at least half way in position, it's clickable
                     if(currentButton === i && posL < refXCenter && refXCenter < posR) {
 
-                        if (LEVEL_PROGRESS[currentButton].unlocked) {
-                            sounds[eSFXList.ButtonClick].play();
-                            sounds[eSFXList.MenuOpen].play();
+                        if (LEVEL_PROGRESS[currentButton].unlocked) { // -> states/levels.js
+                            sounds[eSFXList.ButtonClick].play(); // -> sfx.js
+                            sounds[eSFXList.MenuOpen].play();   // -> sfx.js
                             Level.open(LEVELS[currentButton]); // -> states/levels.js
                         }
 
@@ -312,13 +312,13 @@ function StageSelect() {
     // -------------------------------- End of carousel --------------------------------
 
     // Difficulty buttons
-    let easyButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "easy",   0xb3ecec, 75);
+    let easyButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "easy",   0xb3ecec, 75); // -> util.js
     easyButton.interactive   = easyButton.buttonMode = true;
 
-    let normalButton = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "normal", 0xb3ecec, 75);
+    let normalButton = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "normal", 0xb3ecec, 75); // -> util.js
     normalButton.interactive = normalButton.buttonMode = true;
 
-    let hardButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "hard",   0xb3ecec, 75);
+    let hardButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "hard",   0xb3ecec, 75); // -> util.js
     hardButton.interactive   = hardButton.buttonMode = true;
 
     // center the normal button and position the other 2 relative to it
@@ -327,15 +327,15 @@ function StageSelect() {
     easyButton.position.set(normalButton.x - easyButton.width - TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
 
     easyButton  .pointertap = () => {
-        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         goToButton(0);
     };
     normalButton.pointertap = () => {
-        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         goToButton(1);
     };
     hardButton  .pointertap = () => {
-        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         goToButton(2);
     };
 
@@ -347,13 +347,11 @@ function StageSelect() {
     optionsButton.buttonMode = true;
 
     optionsButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        //sounds[eSFXList.ButtonClick].play();
-        //sounds[eSFXList.MenuOpen].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         // cleanUpCarousel(); // not needed for locally opened pop-up menu
         if(!OptionsMenu.instance || !OptionsMenu.instance.isOpen) { // -> states/optionsmenu.js
             OptionsMenu.open(); // -> states/optionsmenu.js
-            PlaySound(eSFXList.MenuOpen, false);
+            PlaySound(eSFXList.MenuOpen, false); // -> sfx.js
         }
         else {
             OptionsMenu.close(); // -> states/optionsmenu.js
@@ -376,12 +374,10 @@ function StageSelect() {
     moreGamesButton.position.set(TILES_PX * 0.25, CANVAS_HEIGHT - TILES_PX * 1.25);
 
     moreGamesButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        PlaySound(eSFXList.MenuOpen, false);
-        //sounds[eSFXList.ButtonClick].play();
-        //sounds[eSFXList.MenuOpen].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         cleanUpCarousel();
-        OptionsMenu.close();
+        OptionsMenu.close();    // -> states/optionsmenu.js
         Affiliate.open(); // -> states/affiliate.js
     });
 
@@ -419,8 +415,6 @@ function StageSelect() {
 
 // Function to open. Stage Select is singleton
 StageSelect.open = () => {
-
-    // Make new stage select for progress testing...
 
     if(StageSelect.instance == null) {
         StageSelect.instance = new StageSelect();
