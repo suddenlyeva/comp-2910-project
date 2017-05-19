@@ -45,7 +45,7 @@ function Credits() {
     this.affiliateButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
-        
+
         Affiliate.open(); // -> states/affiliate.js
     });
 

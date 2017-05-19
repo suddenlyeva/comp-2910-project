@@ -8,7 +8,7 @@ let TILES_PX = 80;
 let LEVELS = [
 
     {id: 0, name: "tutorial",
-    
+
         clearMessage: "an apple a day is one less apple in the trash.",
         wasteLimit: 3,
         maxScore: 300,
@@ -31,7 +31,7 @@ let LEVELS = [
         finalItems: [APPLE_SLICE]
     },
     {id: 1, name: "apple apple banana",
-        
+
         clearMessage: "this is a test level. don't try this at home.",
         wasteLimit: 5,
         maxScore: 300,
@@ -54,7 +54,7 @@ let LEVELS = [
         finalItems: [BANANA]
     },
     {id: 2, name: "fruit yogurt",
-        
+
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
         maxScore: 2100,
@@ -95,7 +95,7 @@ let LEVELS = [
 // PPAP
 let PPAP_UNLOCKED = false;
 let PPAP = {id: LEVELS.length, name: "ppap",
-        
+
         clearMessage: "now go play the actual levels",
         wasteLimit: 5,
         maxScore: 99999,
@@ -363,7 +363,7 @@ function Level(data) {
                 return false;
             }
         }
-        
+
         // Item Check
         if (this.itemPickedup) {
             return false;
@@ -371,7 +371,7 @@ function Level(data) {
 
         return true;
     };
-    
+
     // Called every frame
     this.update = () => {
 
@@ -417,13 +417,13 @@ function Level(data) {
         }
 
     };
-    
+
     // PPAP sound
     if(data.id == PPAP.id) {
         sounds[eMusicList.PPAP].playFrom(0); // -> sfx.js
         StopSound(eMusicList.Music, true);   // -> sfx.js
     }
-    
+
 }
 
 // Function to open. Level recreates itself

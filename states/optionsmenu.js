@@ -2,7 +2,7 @@
 
 // Options menu overlayable
 function OptionsMenu() {
-    
+
     // Scale proportions
     this.width  = CANVAS_WIDTH  / 1.5;
     this.height = CANVAS_HEIGHT / 1.5;
@@ -85,10 +85,10 @@ OptionsMenu.open = () => {
     if(OptionsMenu.instance == null) {
         OptionsMenu.instance = new OptionsMenu();
     }
-    
+
     // Toggle switch
     OptionsMenu.instance.isOpen = true;
-    
+
     // console.log(SCENE.children.length);
     // only adds one options menu no matter how many times it's called
     SCENE.addChild(OptionsMenu.instance.scene);

@@ -58,7 +58,7 @@ let TOP_MASK,
     LEFT_MASK,
     RIGHT_MASK,
     frameX,
-    frameY, 
+    frameY,
     frameW,
     frameH;
 
@@ -75,10 +75,10 @@ PIXI.loader
     .on("progress", showLoadingProgress)
     .add(thingsToLoad)
     .load(loadSounds); // -> sfx.js
-    
+
 // Starts the game at Intro
 function setup() {
-    
+
     // Create letterbox
     TOP_MASK = new PIXI.extras.TilingSprite(
         PIXI.loader.resources["images/spritesheet.json"].textures["letterbox.png"],
@@ -104,10 +104,10 @@ function setup() {
         0
     );
     RIGHT_MASK.interactive = true;
-    
+
     // Load texture dictionary
     defineItemTextures(); // -> elements/ingredient.js
-    
+
     // Start game
     Intro.open(); // -> states/intro.js
     TICKER.add(gameLoop);
@@ -116,27 +116,27 @@ function setup() {
 
 // Called while the game is running
 function gameLoop() {
-  
+
     STATE(); // Single-state update loop for easy switching
-    
+
     // Scene resize and centering
     if(WINDOW_RESIZED || SCENE !== previousScene) {
-        
+
         sceneResize(STRETCH_THRESHOLD); // -> util.js
         RENDERER.resize(window.innerWidth, window.innerHeight);
-        
+
         frameX = (window.innerWidth - CANVAS_WIDTH * SCENE.scale.x)/2;
         frameY = (window.innerHeight - CANVAS_HEIGHT * SCENE.scale.y)/2;
         SCENE.x = frameX;
         SCENE.y = frameY;
-        
+
         letterbox(frameX, frameY); // -> util.js
-        
+
         WINDOW_RESIZED = false;
     }
-    
+
     previousScene = SCENE; // Reset Scene switch flag
-    
+
     RENDERER.render(SCENE); // Draw the current Scene
 }
 
@@ -144,8 +144,8 @@ function gameLoop() {
 function showLoadingProgress(loader, resource) {
 
     // Show progress
-    console.log("loading: " + resource.url); 
-    
+    console.log("loading: " + resource.url);
+
     // Other half of loading bar is in sfx.js sound.onProgress
     loadingProgressBar.xScale(loader.progress / 200); // -> util.js
 

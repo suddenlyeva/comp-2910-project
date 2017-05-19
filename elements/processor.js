@@ -12,9 +12,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     // On create / Init
     // Variable assignment
     this.Spawn = () => {
-        
+
         this.mTimer = new Timer(level);
-        
+
         // Variable Assignments
         //this.mRequiredIngredients = [];
         this.mNumIngredients = recipeOrder.GetListCount();
@@ -136,7 +136,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
                 this.mTimer.OnKill();
 
                 if(!this.bIsFinishedSpawning) {
-					StopSound(eSFXList.ClockTicking);
+                    StopSound(eSFXList.ClockTicking);
                     this.SpawnOutput();
                     this.mOutputSprite.texture = this.mOutputTexture[this.mOutputState.Yellow];
                     this.bIsFinishedSpawning = true;
@@ -206,7 +206,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
         let inputRight = this.mPosition.x + (this.mWidth - TILES_PX*2);//x2
         let inputTop = this.mPosition.y; // y1
         let inputBottom = this.mPosition.y + TILES_PX*2; //y2
-        
+
         return  ( inputLeft < x
         && x < inputRight
         && inputTop < y
@@ -246,7 +246,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
                 // ! Change to ====
                 if(droppedIngredient.type == this.mRequiredIngredients[i].type && !this.bRecipeProgress[i])
                 {
-                    this.mRequiredIngredients[i].alpha = this.mAlphaFinished; 
+                    this.mRequiredIngredients[i].alpha = this.mAlphaFinished;
                     this.bRecipeProgress[i] = true;
                     this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
 
@@ -268,8 +268,8 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
             this.mOutputItem.x = TILES_PX + this.mOutputSprite.x;
             this.mOutputItem.y = TILES_PX + this.mOutputSprite.y;
 
-			PlaySound(eSFXList.RecipeComplete,false);
-			
+            PlaySound(eSFXList.RecipeComplete,false);
+
             if(level.isFinalItem(this.mOutputItem.type)) {
                 this.mOutputItem.interactive = false;
                 this.mOutputItem.fadeAway();

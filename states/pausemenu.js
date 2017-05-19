@@ -131,19 +131,19 @@ function PauseMenu() {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         ResumeSoundLoop(eSFXList.ClockTicking); // -> sfx.js
-        
+
         STATE = this.stateBuffer;
         this.cleanUp();
     };
 
     this.resetButton.pointertap = () => {
-        
+
         PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         StopSound(eSFXList.ClockTicking, true); // -> sfx.js
         StopSound(eMusicList.PPAP, true);       // -> sfx.js
         ResumeSoundLoop(eMusicList.Music);      // -> sfx.js
-        
+
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
         Level.open(LEVELS[Level.instance.id]); // -> states/levels.js
     };

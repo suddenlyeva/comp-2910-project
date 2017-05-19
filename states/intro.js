@@ -107,7 +107,7 @@ Intro.open = () => {
         Intro.instance = new Intro();
     }
     PlaySound(eMusicList.Music,true); // -> sfx.js
-    
+
     SCENE = Intro.instance.scene;
     STATE = Intro.instance.update;
 };

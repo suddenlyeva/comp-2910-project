@@ -1,5 +1,5 @@
 "use strict";
- 
+
 // Shows when stage is complete
 function StageComplete(data) { // <- states/levels.js
 
@@ -10,7 +10,7 @@ function StageComplete(data) { // <- states/levels.js
     if (data.id < LEVEL_PROGRESS.length - 1) {
         LEVEL_PROGRESS[data.id + 1].unlocked = true;
     }
-  
+
     this.scene = new PIXI.Container();
     this.starContainer = new PIXI.Container();
     this.messageContainer = new PIXI.Container();
@@ -176,7 +176,7 @@ function StageComplete(data) { // <- states/levels.js
 
     // save state
     saveProgress(); // -> states/levels.js
-    
+
     // Called every frame
     this.displayScore = () => {
         if (scoreDisplayed < data.score) {
@@ -187,7 +187,7 @@ function StageComplete(data) { // <- states/levels.js
         }
         this.scoreTxt.position.set(TILES_PX * 3 - this.scoreTxt.width / 2, TILES_PX * 0.5);
     };
-    
+
     // Called every few frames using interval logic
     this.displayWaste = () => {
         if (wasteDisplayed < data.waste) {
@@ -208,7 +208,7 @@ function StageComplete(data) { // <- states/levels.js
     let starTicker = 0;
     let starInterval = 1;
     let delayCounter = 0 ;
-    
+
     // Initialize with different delays
     for(let i = 0; i < stars.length; i++){
         stars[i].currentScale = 0;
@@ -240,7 +240,7 @@ function StageComplete(data) { // <- states/levels.js
     };
 
     PlaySound(eSFXList.StageComplete, false); // -> sfx.js
-    
+
     this.cleanUp = () => {
         if(data.id == PPAP.id) {
             StopSound(eMusicList.PPAP);         // -> sfx.js

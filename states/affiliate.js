@@ -59,7 +59,7 @@ function Affiliate() {
     // When logo is clicked send user to affiliate page
     this.raceToZeroLogo.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        
+
         window.parent.location.href = "http://racetozero.byethost12.com/?i=1";
 
     };
@@ -78,7 +78,7 @@ function Affiliate() {
     // When logo is clicked send user to affiliate page
     this.captainPlanLogo.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        
+
         window.parent.location.href = "http://students.bcitdev.com/A01009216/Captain-Plan-It/index.php";
 
     };
@@ -88,7 +88,7 @@ function Affiliate() {
     this.mainMenuButton.position.set((CANVAS_WIDTH /2) - 100, CANVAS_HEIGHT - 100);
     this.mainMenuButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        
+
         StageSelect.open(); // -> states/stageselect.js
 
     });

@@ -36,7 +36,7 @@ let eMusicList = {
     Music          : "sounds/music.mp3",
     PPAP           : "sounds/ppap.mp3"
 };
-    
+
 // Loads the sound effects
 function loadSounds() {
     sounds.load([
@@ -73,15 +73,15 @@ sounds.whenLoaded = () => {
 sounds.onProgress = (percentage) => {
     // Other half of loading bar is in main.js
     loadingProgressBar.xScale(percentage / 200 + 0.5); // -> util.js
-    
+
     // vv Required vv
-    
+
     // Resize loading screen
     sceneResize(STRETCH_THRESHOLD);
     RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
 
     // Draw loading screen
-    RENDERER.render(SCENE);  
+    RENDERER.render(SCENE);
 };
 
 // function PlaySound(sfx, isLooping) {
@@ -97,9 +97,9 @@ sounds.onProgress = (percentage) => {
 
 // Custom Play Sound call
 function PlaySound(sfx, isLooping) {
-	
+
     sounds[sfx].loop = isLooping;
-	
+
     // Simulate a stack for looping sounds so that they pause and resume comfortably.
     if(isLooping) {
         if (sounds[sfx].nPlaying == null) {
@@ -129,7 +129,7 @@ function ResumeSoundLoop(sfx) {
     // if(sounds[sfx].loop) {
         // sounds[sfx].nPlaying--;
         // if (sounds[sfx].nPlaying < 1) {
-            // sounds[sfx].pause(); 
+            // sounds[sfx].pause();
         // }
     // }
     // else {
@@ -137,10 +137,10 @@ function ResumeSoundLoop(sfx) {
     // }
  // }
 
- 
+
  // Custom pause function to fix some looping issues.
 function StopSound(sfx, isFullStop) {
-    
+
     // When a sound loops, you can choose to pop one "sound" off the stack or stop the whole stack.
     if(sounds[sfx].loop) {
         if(isFullStop) {
@@ -151,34 +151,34 @@ function StopSound(sfx, isFullStop) {
             sounds[sfx].nPlaying--;
         }
         if (sounds[sfx].nPlaying < 1) {
-            sounds[sfx].pause(); 
+            sounds[sfx].pause();
         }
     }
     else {
-        sounds[sfx].pause();        
+        sounds[sfx].pause();
     }
 }
 
 
 // Currently deprecated
 function VolSetSound(level) {
-	for(let i in eSFXList) {
+    for(let i in eSFXList) {
 
-	    if(level < sounds[eSFXList[i]].volume && eSFXList[i] != eSFXList.ClockTicking)
+        if(level < sounds[eSFXList[i]].volume && eSFXList[i] != eSFXList.ClockTicking)
             sounds[eSFXList[i]].fadeOut(0.1);
-	    else if (eSFXList[i] != eSFXList.ClockTicking)
+        else if (eSFXList[i] != eSFXList.ClockTicking)
             sounds[eSFXList[i]].fadeIn(0.5);
 
-		sounds[eSFXList[i]].volume = level;
-	}
+        sounds[eSFXList[i]].volume = level;
+    }
 }
 
 // Currently deprecated
 function ResetSound() {
-    
+
     //Resets the Tick
-    VolSetSound(SFX_VOLUME); 
-    
+    VolSetSound(SFX_VOLUME);
+
     StopSound(eSFXList.ClockTicking, true); // Explicitly Forced
 }
 

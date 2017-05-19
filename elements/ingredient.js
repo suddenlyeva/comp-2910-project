@@ -108,9 +108,9 @@ function makeItem(type, level) { // <- states/levels.js
 
     // When the item is clicked.
     item.onDragStart = (event) => {
-        
+
         if (!level.itemPickedUp) { // -> states/levels.js
-        
+
             PlaySound(eSFXList.ItemPickUp, false); // -> sfx.js
             item.data = event.data;
             item.alpha = 0.5;
@@ -137,7 +137,7 @@ function makeItem(type, level) { // <- states/levels.js
                 level.conveyorBelt.addItemAtX(item, item.x);            // -> elements/conveyorbelt.js
             }
             else {
-                
+
                 // Loop result holders
                 let addedToProcessor = false;
                 let collidedWithProcessor = false;
@@ -149,12 +149,12 @@ function makeItem(type, level) { // <- states/levels.js
                         collidedWithProcessor = true;
                     }
                 }
-                
+
                 // Error sound when dropped on processor but not added
                 if (collidedWithProcessor && !addedToProcessor){
                     PlaySound(eSFXList.Error, false); // -> sfx.js
                 }
-                
+
                 // Waste item if not added
                 if(!addedToProcessor) {
                     item.waste();
