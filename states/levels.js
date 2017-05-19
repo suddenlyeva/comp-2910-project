@@ -3,7 +3,6 @@
 // Size of one tile unit
 // TODO: Move to better spot
 let TILES_PX = 80;
-let test1 = [0,0,0];
 
 // JSON Level Data
 let LEVELS = [
@@ -375,10 +374,6 @@ function Level(data) {
         this.conveyorBelt.update();
         for (let i in this.processors) {
             this.processors[i].update(); // elements/processor.js
-            if(this.processors[i].GetState() != test1[i]){
-                console.log("Processor " + i + " State: " + this.processors[i].GetState());
-                test1[i] = this.processors[i].GetState();
-            }
         }
         this.gear.update();
         this.hpBar.update();
@@ -420,6 +415,7 @@ function Level(data) {
     
     if(data.id == PPAP.id) {
         sounds[eMusicList.PPAP].playFrom(0);
+        StopSound(eMusicList.Music, true);
     }
     
 }
