@@ -218,12 +218,6 @@ function StageSelect() {
             // don't do anything if using multi-touch
             if(stageButtons.pointers.length !== 0) return;
 
-            // prevent division by 0
-            let swipeSpeed = stopWatch === 0 ? 0 : swipeDistance / stopWatch;
-            // raise to power, preserve sign
-            let distAdj    = Math.pow(Math.abs(swipeSpeed), swipeSensitivity) * (swipeSpeed < 0 ? -1 : 1);
-            currentButton  = determineCurrent(distAdj);
-
             cleanUpCarousel();
         };
 
@@ -250,16 +244,21 @@ function StageSelect() {
 
     // determine the current button based on which one is closest to the center point
     // does nothing if current button was set manually (by clicking a button other than current)
-    // adjX modifier changes how much further ahead to look for currentButton
-    let determineCurrent = (adjX) => {
+    let determineCurrent = () => {
         if(setManually) {
             return currentButton;
         }
 
+        // calculate how much further ahead to look for the current button based on swipe speed
+        // prevent division by 0
+        let swipeSpeed = stopWatch === 0 ? 0 : swipeDistance / stopWatch;
+        // raise to power, preserve sign
+        let distAdj    = Math.pow(Math.abs(swipeSpeed), swipeSensitivity) * (swipeSpeed < 0 ? -1 : 1);
+
         for(let i = 0; i < stageButtons.children.length; i++) {
             if(stageButtons.x +
                 stageButtons.children[i].x +
-                stageButtons.children[i].width + adjX
+                stageButtons.children[i].width + distAdj
                 >= refXCenter) {
                 return i;
             }
@@ -303,9 +302,10 @@ function StageSelect() {
         }
     }
 
-    // reset scrolling variables
+    // determine current button and reset scrolling variables
     let cleanUpCarousel = () => {
-        setManually = stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
+        currentButton = determineCurrent();
+        setManually   = stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
         swipeDistance = stopWatch = 0;
     };
 
