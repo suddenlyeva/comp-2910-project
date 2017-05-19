@@ -239,7 +239,8 @@ function StageComplete(data) {
     
     this.cleanUp = () => {
         if(data.id == PPAP.id) {
-            StopSound(eSFXList.PPAP);
+            StopSound(eMusicList.PPAP);
+            ResumeSoundLoop(eMusicList.Music);
         }
     };
 }

@@ -14,27 +14,27 @@ let MUSIC_VOLUME = 1.0;
 /* This list allows us to change the file names of the sfx audio
 * without changing it in the rest of the code*/
 let eSFXList = {
-    MenuOpen : "sounds/menu-open.wav",
-    ButtonClick: "sounds/button-click.wav",
-    ItemPickUp: "sounds/item-pickup.wav",
-    Splat: "sounds/splat.wav",
-    Processing : "sounds/processing.ogg",
-    ClockTicking : "sounds/ticking.wav",
-    IntoProcessor: "sounds/into-processor.wav",
-    RecipeComplete: "sounds/recipe-complete.wav",
-    IntoConveyor: "sounds/into-conveyor.wav",
-    ItemDropped: "sounds/item-dropped.wav",
-    Error: "sounds/error.wav",
-    StageComplete: "sounds/stage-complete.wav",
-    GameOver: "sounds/game-over.wav",
-    PPAP: "sounds/ppap.wav"
+    MenuOpen       : "sounds/menu-open.ogg",
+    ButtonClick    : "sounds/button-click.ogg",
+    ItemPickUp     : "sounds/item-pickup.ogg",
+    Splat          : "sounds/splat.ogg",
+    Processing     : "sounds/processing.ogg",
+    ClockTicking   : "sounds/ticking.ogg",
+    IntoProcessor  : "sounds/into-processor.ogg",
+    RecipeComplete : "sounds/recipe-complete.ogg",
+    IntoConveyor   : "sounds/into-conveyor.ogg",
+    ItemDropped    : "sounds/item-dropped.ogg",
+    Error          : "sounds/error.ogg",
+    StageComplete  : "sounds/stage-complete.ogg",
+    GameOver       : "sounds/game-over.ogg"
 };
 
 
 /* This list allows us to change the file names of the music
  * without changing it in the rest of the code*/
 let eMusicList = {
-    Music: "sounds/music.wav"
+    Music          : "sounds/music.ogg",
+    PPAP           : "sounds/ppap.ogg"
 };
 
 // Loads the sound effects
@@ -52,7 +52,7 @@ sounds.load([
     eSFXList.Error,
     eSFXList.StageComplete,
     eSFXList.GameOver,
-    eSFXList.PPAP,
+    eMusicList.PPAP,
     eMusicList.Music
 ]);
 
