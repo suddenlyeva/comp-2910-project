@@ -60,9 +60,7 @@ function makeItem(type, level) { // <- states/levels.js
         level.updateWasteInfo();        // -> states/levels.js
         item.texture = ITEM_TEXTURES[SPLAT];
         item.interactive = false;
-        PlaySound(eSFXList.Splat, false);
-        //sounds[eSFXList.Splat].play();
-
+        PlaySound(eSFXList.Splat, false); // -> sfx.js
     };
 
     // Item fades into the air
@@ -76,7 +74,7 @@ function makeItem(type, level) { // <- states/levels.js
         fadeAwaySprite.anchor.set(0.5);
         fadeAwaySprite.position.set(item.x, item.y);
 
-        //Resort on scene
+        //Re-sort on scene
         level.scene.removeChild(item);
         level.scene.addChild(item);
 
@@ -110,13 +108,14 @@ function makeItem(type, level) { // <- states/levels.js
 
     // When the item is clicked.
     item.onDragStart = (event) => {
+        
         if (!level.itemPickedUp) { // -> states/levels.js
-            PlaySound(eSFXList.ItemPickUp, false);
-            //sounds[eSFXList.ItemPickUp].play();
+        
+            PlaySound(eSFXList.ItemPickUp, false); // -> sfx.js
             item.data = event.data;
             item.alpha = 0.5;
             item.dragging = true;
-            level.itemPickedup = true;
+            level.itemPickedup = true; // -> states/levels.js
 
             // Replace previous conveyor item with a blank
             if (level.conveyorBelt.collidesWithPoint(item.x, item.y)) {         // -> elements/conveyorbelt.js
@@ -138,35 +137,34 @@ function makeItem(type, level) { // <- states/levels.js
                 level.conveyorBelt.addItemAtX(item, item.x);            // -> elements/conveyorbelt.js
             }
             else {
-
+                
+                // Loop result holders
                 let addedToProcessor = false;
                 let collidedWithProcessor = false;
 
                 // Add to a processor if on one of those
                 for (let i in level.processors) {
-
                     if (level.processors[i].collidesWithPoint(item.x, item.y)) {    // -> elements/processor.js
                         addedToProcessor = level.processors[i].addItem(item);       // -> elements/processor.js
                         collidedWithProcessor = true;
                     }
                 }
-
-                // else waste
-
+                
+                // Error sound when dropped on processor but not added
                 if (collidedWithProcessor && !addedToProcessor){
-                    PlaySound(eSFXList.Error, false);
+                    PlaySound(eSFXList.Error, false); // -> sfx.js
                 }
-
+                
+                // Waste item if not added
                 if(!addedToProcessor) {
                     item.waste();
                 }
+                // Play a sound if it was added
                 else {
-                    // Play "correct" sounds
-                    PlaySound(eSFXList.IntoProcessor, false);
-                    //sounds[eSFXList.IntoProcessor].play();
+                    PlaySound(eSFXList.IntoProcessor, false); // -> sfx.js
                 }
             }
-            PlaySound(eSFXList.ItemDropped, false);
+            PlaySound(eSFXList.ItemDropped, false); // -> sfx.js
             level.itemPickedup = false;
             level.isComplete = level.checkForCompletion(); // -> states/levels.js
         }
