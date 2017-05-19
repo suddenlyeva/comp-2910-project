@@ -36,25 +36,27 @@ let eMusicList = {
     Music          : "sounds/music.ogg",
     PPAP           : "sounds/ppap.ogg"
 };
-
+    
 // Loads the sound effects
-sounds.load([
-    eSFXList.MenuOpen,
-    eSFXList.ButtonClick,
-    eSFXList.ItemPickUp,
-    eSFXList.Splat,
-    eSFXList.Processing,
-    eSFXList.ClockTicking,
-    eSFXList.IntoProcessor,
-    eSFXList.RecipeComplete,
-    eSFXList.IntoConveyor,
-    eSFXList.ItemDropped,
-    eSFXList.Error,
-    eSFXList.StageComplete,
-    eSFXList.GameOver,
-    eMusicList.PPAP,
-    eMusicList.Music
-]);
+function loadSounds() {
+    sounds.load([
+        eSFXList.MenuOpen,
+        eSFXList.ButtonClick,
+        eSFXList.ItemPickUp,
+        eSFXList.Splat,
+        eSFXList.Processing,
+        eSFXList.ClockTicking,
+        eSFXList.IntoProcessor,
+        eSFXList.RecipeComplete,
+        eSFXList.IntoConveyor,
+        eSFXList.ItemDropped,
+        eSFXList.Error,
+        eSFXList.StageComplete,
+        eSFXList.GameOver,
+        eMusicList.PPAP,
+        eMusicList.Music
+    ]);
+}
 
 // Adds the sounds to SFX master to allow volume control of sfx
 sounds.whenLoaded = () => {
@@ -64,7 +66,20 @@ sounds.whenLoaded = () => {
     for(let i in eMusicList) {
         MUSIC_MASTER.push(sounds[eMusicList[i]]);
     }
-    loadResources();
+    setup(); // -> main.js
+};
+
+sounds.onProgress = (percentage) => {
+    loadingProgressBar.xScale(percentage / 200 + 0.5);
+    
+    // vv Required vv
+    
+    // Resize loading screen
+    sceneResize(STRETCH_THRESHOLD);
+    RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
+
+    // Draw loading screen
+    RENDERER.render(SCENE);  
 };
 
 // function PlaySound(sfx, isLooping) {

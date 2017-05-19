@@ -3,7 +3,6 @@
 let USER;
 
 firebase.auth().onAuthStateChanged(function(user) {
-
   if (user) {
       console.log("logged in");
       USER = user;
@@ -13,8 +12,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 let DATABASE = firebase.database();
 
 // Load Progress
-loadProgress();
-
+loadProgress(); // -> levels.js
 
 // Base Canvas Size
 let CANVAS_WIDTH = 1280,
@@ -70,14 +68,13 @@ loadingProgressBar.position.set(CANVAS_WIDTH / 2 - loadingProgressBar.width / 2,
     CANVAS_HEIGHT / 2 - loadingProgressBar.height / 2);
 SCENE.addChild(loadingProgressBar);
 
-function loadResources() {
-// Load game with PIXI loader
-    PIXI.loader
-        .on("progress", showLoadingProgress)
-        .add(thingsToLoad)
-        .load(setup);
-}
 
+// Load game with PIXI loader
+PIXI.loader
+    .on("progress", showLoadingProgress)
+    .add(thingsToLoad)
+    .load(loadSounds); // -> sfx.js
+    
 // Starts the game at Intro
 function setup() {
     
@@ -108,7 +105,7 @@ function setup() {
     RIGHT_MASK.interactive = true;
     
     // Load texture dictionary
-    defineItemTextures();
+    defineItemTextures(); // -> elements/ingredient.js
     
     // Start game
     Intro.open(); // -> states/intro.js
@@ -118,7 +115,7 @@ function setup() {
 
 // Called while the game is running
 function gameLoop() {
-
+  
     STATE(); // Single-state update loop for easy switching
     
     if(WINDOW_RESIZED || SCENE !== previousScene) {
@@ -146,7 +143,7 @@ function showLoadingProgress(loader, resource) {
 
     // Show progress
     console.log("loading: " + resource.url);
-    loadingProgressBar.xScale(loader.progress / 100);
+    loadingProgressBar.xScale(loader.progress / 200); // Other half of loading bar is in sfx.js sound.onProgress
 
     // Resize loading screen
     sceneResize(STRETCH_THRESHOLD);
