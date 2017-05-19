@@ -70,7 +70,8 @@ sounds.whenLoaded = () => {
 };
 
 sounds.onProgress = (percentage) => {
-    loadingProgressBar.xScale(percentage / 200 + 0.5);
+    // Other half of loading bar is in main.js
+    loadingProgressBar.xScale(percentage / 200 + 0.5); // -> util.js
     
     // vv Required vv
     
@@ -93,10 +94,12 @@ sounds.onProgress = (percentage) => {
     // sounds[sfx].loop = false;   // In case if flag is true
 // }
 
+// Custom Play Sound call
 function PlaySound(sfx, isLooping) {
 	
     sounds[sfx].loop = isLooping;
 	
+    // Simulate a stack for looping sounds so that they pause and resume comfortably.
     if(isLooping) {
         if (sounds[sfx].nPlaying == null) {
             sounds[sfx].nPlaying = 1;
@@ -105,17 +108,18 @@ function PlaySound(sfx, isLooping) {
             sounds[sfx].nPlaying++;
         }
         sounds[sfx].restart();
-        sounds[sfx].resume = null;
+        sounds[sfx].resume = null; // Hacky way of rebuilding a full sound stack.
     }
     else {
         sounds[sfx].play();
     }
 }
 
+// Resuming loops neeeds to be slightly different from the normal PlaySound to properly rebuild the stack.
 function ResumeSoundLoop(sfx) {
     if(sounds[sfx].loop && sounds[sfx].resume) {
         sounds[sfx].nPlaying = sounds[sfx].resume;
-        sounds[sfx].resume = null;
+        sounds[sfx].resume = null; // Only resume if previously fullStopped.
         sounds[sfx].play();
     }
 }
@@ -132,10 +136,14 @@ function ResumeSoundLoop(sfx) {
     // }
  // }
 
+ 
+ // Custom pause function to fix some looping issues.
 function StopSound(sfx, isFullStop) {
+    
+    // When a sound loops, you can choose to pop one "sound" off the stack or stop the whole stack.
     if(sounds[sfx].loop) {
         if(isFullStop) {
-            sounds[sfx].resume = sounds[sfx].nPlaying;
+            sounds[sfx].resume = sounds[sfx].nPlaying; // When you stop the whole stack, you have the option to resume the whole thing.
             sounds[sfx].nPlaying = 0;
         }
         if (sounds[sfx].nPlaying > 0) {
@@ -146,10 +154,12 @@ function StopSound(sfx, isFullStop) {
         }
     }
     else {
-        sounds[sfx].pause();        // Pauses it right after reseting playbar
+        sounds[sfx].pause();        
     }
 }
 
+
+// Currently deprecated
 function VolSetSound(level) {
 	for(let i in eSFXList) {
 
@@ -162,6 +172,7 @@ function VolSetSound(level) {
 	}
 }
 
+// Currently deprecated
 function ResetSound() {
     
     //Resets the Tick
