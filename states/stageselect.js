@@ -324,9 +324,18 @@ function StageSelect() {
     hardButton.position.set(normalButton.x + hardButton.width + TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
     easyButton.position.set(normalButton.x - easyButton.width - TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
 
-    easyButton  .pointertap = goToButton.bind(this, 0);
-    normalButton.pointertap = goToButton.bind(this, 1);
-    hardButton  .pointertap = goToButton.bind(this, 2);
+    easyButton  .pointertap = () => {
+        PlaySound(eSFXList.ButtonClick, false);
+        goToButton(0);
+    };
+    normalButton.pointertap = () => {
+        PlaySound(eSFXList.ButtonClick, false);
+        goToButton(1);
+    };
+    hardButton  .pointertap = () => {
+        PlaySound(eSFXList.ButtonClick, false);
+        goToButton(2);
+    };
 
     // Options
     let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
