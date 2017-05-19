@@ -127,6 +127,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
     handle.pointerdown = (eventData) => {
         PlaySound(eSFXList.ButtonClick, false);
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
+        handle.ptrId = eventData.data.identifier;
         handle.tint = colorDrag;
     };
 
@@ -136,15 +137,13 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         clickableArea.pointerup = clickableArea.pointerupoutside =
         (eventData) => {
             PlaySound(eSFXList.ButtonClick, false);
-            handle.dragData = false; // Stop dragging
-            handle.tint = handle.x === slider.x ? colorMuted : colorSound; // IF the handle is on the left edge of slider
+            sliderObj.cleanUp();
         };
 
     // Move the handle on drag
     handle.pointermove = (eventData) => {
-
-        // If it's dragging:
-        if(handle.dragData) {
+        // If it's dragging with the same pointer id:
+        if(handle.ptrId === eventData.data.identifier && handle.dragData) {
 
             // Set the color
             handle.tint = colorDrag;
@@ -174,6 +173,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
     // Also move when clicking anywhere on the clickable area
     // Separate so that clicking on the handle doesn't cause it to snap
     clickableArea.pointerdown = (eventData) => {
+        handle.ptrId = eventData.data.identifier;
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
         let xAdjusted = handle.dragData.x - handle.width / 2;
         if(xAdjusted < slider.x) {
@@ -187,6 +187,12 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
 
         sliderObj.onSliderAdjust();
+    };
+
+    // clears handle data
+    sliderObj.cleanUp = () => {
+        handle.ptrId = handle.dragData = false; // Stop dragging
+        handle.tint = handle.x === slider.x ? colorMuted : colorSound; // IF the handle is on the left edge of slider
     };
 
     sliderObj.onSliderAdjust = () => {};

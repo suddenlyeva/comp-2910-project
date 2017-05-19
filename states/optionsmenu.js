@@ -77,7 +77,10 @@ function OptionsMenu() {
         }
     };
 
-
+    this.scene.on("removed", () => {
+        this.soundVol.cleanUp();
+        this.musicVol.cleanUp();
+    });
 }
 
 // Function to open. Options Menu is singleton
