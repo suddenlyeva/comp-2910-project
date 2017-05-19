@@ -30,7 +30,7 @@ function Credits() {
     this.clickableArea.endFill();
     this.clickableArea.interactive = true;
     this.clickableArea.alpha = 0;
-    this.clickableArea.pointertap = MainMenu.open;
+    this.clickableArea.pointertap = StageSelect.open;
 
     // Create button to affiliate page
 
