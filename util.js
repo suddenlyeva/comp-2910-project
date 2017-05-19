@@ -118,14 +118,14 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
     clickableArea.endFill();
     clickableArea.interactive = clickableArea.buttonMode = true;
 
+
+    sliderObj.value = 1.0; // Access this for controlling things with the slider.
+
     // Functions
-
-    sliderObj.value = 1.0;
-
 
     // Records cursor position inside handle.dragData
     handle.pointerdown = (eventData) => {
-        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
         handle.ptrId = eventData.data.identifier;
         handle.tint = colorDrag;
@@ -136,7 +136,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
     handle.pointerup = handle.pointerupoutside =
         clickableArea.pointerup = clickableArea.pointerupoutside =
         (eventData) => {
-            PlaySound(eSFXList.ButtonClick, false);
+            PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
             sliderObj.cleanUp();
         };
 
@@ -163,9 +163,9 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
                 handle.x = xAdjusted;
                 handle.dragData = newPos;
             }
-
+            
+            // Adjust value based on new positions and request callback
             sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
-
             sliderObj.onSliderAdjust();
         }
     };
@@ -185,7 +185,6 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         }
 
         sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
-
         sliderObj.onSliderAdjust();
     };
 
@@ -194,7 +193,8 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         handle.ptrId = handle.dragData = false; // Stop dragging
         handle.tint = handle.x === slider.x ? colorMuted : colorSound; // IF the handle is on the left edge of slider
     };
-
+    
+    // Function callback for mocing the slider bar.
     sliderObj.onSliderAdjust = () => {};
 
     // Add to container
@@ -213,14 +213,14 @@ function sceneResize(stretchThreshold = 0) {
     let targetAspectRatio  = CANVAS_WIDTH / CANVAS_HEIGHT,
         currentAspectRatio = window.innerWidth / window.innerHeight;
 
-    if(targetAspectRatio < currentAspectRatio) {                         // Preserve Vertical ratio
-        SCENE.scale.y = window.innerHeight / CANVAS_HEIGHT;
-        SCENE.scale.x = Math.min(SCENE.scale.y * (1 + stretchThreshold), // Use aspect ratio if past Stretch Threshold
-            window.innerWidth / CANVAS_WIDTH);                           // Else stretch the screen
+    if(targetAspectRatio < currentAspectRatio) {                         // Wider screen than normal
+        SCENE.scale.y = window.innerHeight / CANVAS_HEIGHT;              // Always stretch height
+        SCENE.scale.x = Math.min(SCENE.scale.y * (1 + stretchThreshold), // Use height ratio if past Stretch Threshold
+            window.innerWidth / CANVAS_WIDTH);                           // Else stretch the width
 
-    } else {                                                             // Preserve Horizontal Ratio
+    } else {                                                             // Taller Screen than normal
         SCENE.scale.x = window.innerWidth / CANVAS_WIDTH;
-        SCENE.scale.y = Math.min(SCENE.scale.x * (1 + stretchThreshold), // Similar Formula as Vertical
+        SCENE.scale.y = Math.min(SCENE.scale.x * (1 + stretchThreshold), // Same as vertical, but inverted x and y
             window.innerHeight / CANVAS_HEIGHT);
     }
 }
@@ -320,6 +320,7 @@ function findIndexById(arr, id) {
     return -1;
 }
 
+// Opens a level based on its data id
 function OpenLevelById(id) {
     Level.open(LEVELS[findIndexById(LEVELS, id)]); // -> states/levels.js
 }
