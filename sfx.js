@@ -69,6 +69,7 @@ sounds.whenLoaded = () => {
     setup(); // -> main.js
 };
 
+// Update loading bar on sound load
 sounds.onProgress = (percentage) => {
     // Other half of loading bar is in main.js
     loadingProgressBar.xScale(percentage / 200 + 0.5); // -> util.js
