@@ -85,7 +85,7 @@ function StageComplete(data) {
     this.clearTxt = new PIXI.Text(data.clearMessage, this.clearTxtStyle);
     this.clearTxt.x = TILES_PX;
     this.clearTxt.y = txtVAlign;
-    this.clearTxt.alpha = 0.8;
+    this.clearTxt.alpha = 0.92;
 
     // message panel
     this.messageLeft = new PIXI.Sprite(PIXI.utils.TextureCache["message-left.png"]);
