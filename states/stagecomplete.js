@@ -1,8 +1,7 @@
 "use strict";
  
-// TODO: Overhaul
-// Shows when stage is complete=]
-function StageComplete(data) {
+// Shows when stage is complete
+function StageComplete(data) { // <- states/levels.js
 
     // Update progress
     if (LEVEL_PROGRESS[data.id].highscore < data.score) {
@@ -148,8 +147,8 @@ function StageComplete(data) {
 
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        PlaySound(eSFXList.MenuOpen, false);
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         this.cleanUp();
         let next = data.id + 1;
         if (next >= LEVELS.length) {
@@ -162,22 +161,23 @@ function StageComplete(data) {
 
     // Home button takes you to the main menu
     this.homeButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         this.cleanUp();
         StageSelect.open(); // -> states/stageselect.js
     });
 
     // Replay button
     this.replayButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        PlaySound(eSFXList.MenuOpen, false);
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         this.cleanUp();
-        Level.open(LEVELS[data.id]);
+        Level.open(LEVELS[data.id]); // -> states/levels.js
     });
 
     // save state
-    saveProgress();
-
+    saveProgress(); // -> states/levels.js
+    
+    // Called every frame
     this.displayScore = () => {
         if (scoreDisplayed < data.score) {
             scoreDisplayed += 13; // 13 is for optimal 10's and 1's digit distribution
@@ -187,7 +187,8 @@ function StageComplete(data) {
         }
         this.scoreTxt.position.set(TILES_PX * 3 - this.scoreTxt.width / 2, TILES_PX * 0.5);
     };
-
+    
+    // Called every few frames using interval logic
     this.displayWaste = () => {
         if (wasteDisplayed < data.waste) {
             wasteTicker += TICKER.deltaTime;
@@ -207,12 +208,15 @@ function StageComplete(data) {
     let starTicker = 0;
     let starInterval = 1;
     let delayCounter = 0 ;
+    
+    // Initialize with different delays
     for(let i = 0; i < stars.length; i++){
         stars[i].currentScale = 0;
         stars[i].scale.x = 0;
         stars[i].scale.y = 0;
         stars[i].delay = i*10;
     }
+    // Uses both interval logic and iterates to check delay
     this.displayStar = () => {
         starTicker += TICKER.deltaTime;
         if(starTicker >= starInterval) {
@@ -235,12 +239,12 @@ function StageComplete(data) {
         this.displayStar();
     };
 
-    PlaySound(eSFXList.StageComplete, false);
+    PlaySound(eSFXList.StageComplete, false); // -> sfx.js
     
     this.cleanUp = () => {
         if(data.id == PPAP.id) {
-            StopSound(eMusicList.PPAP);
-            ResumeSoundLoop(eMusicList.Music);
+            StopSound(eMusicList.PPAP);         // -> sfx.js
+            ResumeSoundLoop(eMusicList.Music);  // -> sfx.js
         }
     };
 }
@@ -250,4 +254,4 @@ StageComplete.open = (completionData) => {
 
     SCENE = StageComplete.instance.scene;
     STATE = StageComplete.instance.update;
-}
+};
