@@ -124,11 +124,12 @@ function loadProgress () {
         if (user) {
             // signed in
             console.log(user.uid);
+            console.log("Loading progress from database, please wait...");
             // check the user existence on db
             DATABASE.ref('users/' + user.uid).once('value').then(function(snapshot){
                 if(snapshot.exists()) {
                     // the user already exists on db
-                    console.log("existing : " + user.uid);
+                    console.log("Found existing user: " + user.uid);
                     // get the user object value
                     let progress = snapshot.val();
                     // load the user's progress
@@ -140,7 +141,7 @@ function loadProgress () {
                     }
                 } else {
                     // the user is not existed on db
-                    console.log("no exiting : " + user.uid);
+                    console.log("New user detected: " + user.uid);
                     // initialize progress with default values
                     for (let i = 0; i < LEVELS.length; i++) {
                         if(i <= 0) {
@@ -156,6 +157,7 @@ function loadProgress () {
                         }
                     }
                 }
+                console.log("Progress loaded.");
             });
         } else {
             // not signed in.
