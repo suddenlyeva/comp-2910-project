@@ -39,8 +39,7 @@ function Affiliate() {
 
     // When logo is clicked send user to affiliates page
     this.foodFallLogo.pointertap = () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        //sounds[eSFXList.ButtonClick].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
 
         window.parent.location.href = "http://foodfall.ca/";
 
@@ -59,8 +58,8 @@ function Affiliate() {
 
     // When logo is clicked send user to affiliate page
     this.raceToZeroLogo.pointertap = () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        //sounds[eSFXList.ButtonClick].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        
         window.parent.location.href = "http://racetozero.byethost12.com/?i=1";
 
     };
@@ -78,8 +77,8 @@ function Affiliate() {
 
     // When logo is clicked send user to affiliate page
     this.captainPlanLogo.pointertap = () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        //sounds[eSFXList.ButtonClick].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        
         window.parent.location.href = "http://students.bcitdev.com/A01009216/Captain-Plan-It/index.php";
 
     };
@@ -88,8 +87,8 @@ function Affiliate() {
     this.mainMenuButton = makeSimpleButton(200, 50, "main menu", 0xFFFF66, 75);
     this.mainMenuButton.position.set((CANVAS_WIDTH /2) - 100, CANVAS_HEIGHT - 100);
     this.mainMenuButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        //sounds[eSFXList.ButtonClick].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        
         StageSelect.open(); // -> states/stageselect.js
 
     });
@@ -150,4 +149,4 @@ Affiliate.open = () => {
 
     SCENE = Affiliate.instance.scene;
     STATE = Affiliate.instance.update;
-}
+};
