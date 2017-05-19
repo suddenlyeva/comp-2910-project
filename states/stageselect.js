@@ -70,6 +70,7 @@ function StageSelect() {
             buttonBg.endFill();
 
             // remember level id
+            // TODO: currently unused
             button.id = LEVELS[i].id;
 
             let buttonImage = new PIXI.Sprite(
@@ -160,8 +161,8 @@ function StageSelect() {
                 let posL = wrapper.x + stageButtons.x,  // wrapper's left  edge position
                     posR = posL      + buttonDisplayWidth;   // wrapper's right edge position
 
-                // Calculate how much of the button is in the spotlight
-                // and divide it by display width to find out the percentage of the button in the spotlight.
+                // Calculate percentage of the button in the spotlight:
+                //  = width in spotlight divided by buttonDisplayWidth
                 // In center position produces numbers like 0.9986321642984926, if rounding is desired
                 // use Math.round( ... * 100) / 100 to round to 2 decimal places
                 let percentageInView =
@@ -302,6 +303,7 @@ function StageSelect() {
         }
     }
 
+    // reset scrolling variables
     let cleanUpCarousel = () => {
         setManually = stageButtons.pointers = stageButtons.moving = stageButtons.pressedDown = false;
         swipeDistance = stopWatch = 0;
