@@ -346,11 +346,16 @@ function StageSelect() {
 
     optionsButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false);
-        PlaySound(eSFXList.MenuOpen, false);
         //sounds[eSFXList.ButtonClick].play();
         //sounds[eSFXList.MenuOpen].play();
         // cleanUpCarousel(); // not needed for locally opened pop-up menu
-        OptionsMenu.open(); // -> states/optionsmenu.js
+        if(!OptionsMenu.instance || !OptionsMenu.instance.isOpen) { // -> states/optionsmenu.js
+            OptionsMenu.open(); // -> states/optionsmenu.js
+            PlaySound(eSFXList.MenuOpen, false);
+        }
+        else {
+            OptionsMenu.close(); // -> states/optionsmenu.js
+        }
     });
 
     // Fullscreen
