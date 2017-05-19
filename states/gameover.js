@@ -1,6 +1,6 @@
 "use strict";
 
-function PauseMenu() {
+function GameOver() {
 
     // Create Scene
     this.scene  = new PIXI.Container();
@@ -34,23 +34,11 @@ function PauseMenu() {
     // this.buttonsDimensions.endFill();
     // console.log(this.buttonsDimensions.width);
 
-    // Resume
-    this.resumeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-play.png"]);
-    this.resumeButton.position.set(TILES_PX * 2, TILES_PX * 2);
-    this.resumeButton.interactive = true;
-    this.resumeButton.buttonMode = true;
-
     // Reset
     this.resetButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-restart.png"]);
-    this.resetButton.position.set(this.resumeButton.x + TILES_PX * 3, TILES_PX * 2);
+    this.resetButton.position.set(this.panel.width / 2 - this.resetButton.width / 2, TILES_PX * 2);
     this.resetButton.interactive = true;
     this.resetButton.buttonMode = true;
-
-    // Options
-    this.optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
-    this.optionsButton.position.set(this.resetButton.x + TILES_PX * 3, TILES_PX * 2);
-    this.optionsButton.interactive = true;
-    this.optionsButton.buttonMode = true;
 
     // Back to Menu
     this.mainMenuButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-back.png"]);
@@ -68,40 +56,25 @@ function PauseMenu() {
     });
 
     // Paused Label
-    this.pauseTxt = new PIXI.Text("paused", this.txtStyle);
-    this.pauseTxt.position.set(this.panel.width / 2 - this.pauseTxt.width / 2, 0);
+    this.gameOverTxt = new PIXI.Text("game over", this.txtStyle);
+    this.gameOverTxt.position.set(this.panel.width / 2 - this.gameOverTxt.width / 2, 0);
 
     // Style for other labels
     this.txtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 96, fill: 0x0
     });
 
-    // Resume
-    this.resumeTxt = new PIXI.Text("continue", this.txtStyle);
-    this.resumeTxt.position.set(this.resumeButton.x + this.resumeButton.width / 2 - this.resumeTxt.width / 2,
-            this.resumeButton.y + this.resumeButton.height - this.resumeTxt.height / txtVAlign);
-
     // Reset
     this.resetTxt = new PIXI.Text("restart", this.txtStyle);
     this.resetTxt.position.set(this.resetButton.x + this.resetButton.width / 2 - this.resetTxt.width / 2,
         this.resetButton.y + this.resetButton.height - this.resetTxt.height / txtVAlign);
 
-    // Options
-    this.optionsTxt = new PIXI.Text("options", this.txtStyle);
-    this.optionsTxt.position.set(this.optionsButton.x + this.optionsButton.width / 2 - this.optionsTxt.width / 2,
-        this.optionsButton.y + this.optionsButton.height - this.optionsTxt.height / txtVAlign);
-
-
     // Add to container
     // this.buttons.addChild(this.buttonsDimensions);
-    this.buttons.addChild(this.resumeButton);
     this.buttons.addChild(this.resetButton);
-    this.buttons.addChild(this.optionsButton);
     this.buttons.addChild(this.mainMenuButton);
-    this.buttons.addChild(this.pauseTxt);
-    this.buttons.addChild(this.resumeTxt);
+    this.buttons.addChild(this.gameOverTxt);
     this.buttons.addChild(this.resetTxt);
-    this.buttons.addChild(this.optionsTxt);
 
     // Create Transparent Overlay
     this.bgFill = new PIXI.Graphics();
@@ -123,45 +96,16 @@ function PauseMenu() {
     // Position Buttons
     this.buttons.position.set(TILES_PX * 2, TILES_PX);
 
-
-    // Play button moves to stage select
-    // Requires "this" context to operate so we use () => {}
-    this.resumeButton.pointertap = () => {
-
-        PlaySound(eSFXList.ButtonClick, false);
-        PlaySound(eSFXList.MenuOpen, false);
-        ResumeSoundLoop(eSFXList.ClockTicking);
-        //sounds[eSFXList.ButtonClick].play();
-        //sounds[eSFXList.MenuOpen].play();
-        STATE = this.stateBuffer;
-        this.cleanUp();
-    };
-
     this.resetButton.pointertap = () => {
-        
-        PlaySound(eSFXList.MenuOpen, false);
         PlaySound(eSFXList.ButtonClick, false);
-        StopSound(eSFXList.ClockTicking, true);
-        StopSound(eMusicList.PPAP, true);
         ResumeSoundLoop(eMusicList.Music);
-        
         //sounds[eSFXList.ButtonClick].play();
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
         Level.open(LEVELS[Level.instance.id]); // -> states/levels.js
     };
 
-    this.optionsButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        PlaySound(eSFXList.MenuOpen, false);
-        //sounds[eSFXList.ButtonClick].play();
-        //sounds[eSFXList.MenuOpen].play();
-        OptionsMenu.open(); // -> states/optionsmenu.js
-    });
-
     this.mainMenuButton.pointertap = () => {
         // this.cleanUp(); // also not needed
-        StopSound(eSFXList.ClockTicking, true);
-        StopSound(eMusicList.PPAP, true);
         PlaySound(eSFXList.ButtonClick, false);
         ResumeSoundLoop(eMusicList.Music);
         //sounds[eSFXList.ButtonClick].play();
@@ -177,10 +121,14 @@ function PauseMenu() {
 }
 
 // Function to open. Pause Menu is singleton
-PauseMenu.open = () => {
-    if(PauseMenu.instance == null) {
-        PauseMenu.instance = new PauseMenu();
+GameOver.open = () => {
+    PlaySound(eSFXList.GameOver, false);
+    StopSound(eMusicList.Music, true);
+    if(GameOver.instance == null) {
+        GameOver.instance = new GameOver();
+
     }
-    SCENE.addChild(PauseMenu.instance.scene);
+
+    SCENE.addChild(GameOver.instance.scene);
 }
 
