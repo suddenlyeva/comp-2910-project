@@ -61,7 +61,7 @@ function Affiliate() {
     this.raceToZeroLogo.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false);
         //sounds[eSFXList.ButtonClick].play();
-        window.location.href = "http://racetozero.byethost12.com/?i=1";
+        window.parent.location.href = "http://racetozero.byethost12.com/?i=1";
 
     };
 
@@ -80,7 +80,7 @@ function Affiliate() {
     this.captainPlanLogo.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false);
         //sounds[eSFXList.ButtonClick].play();
-        window.location.href = "http://students.bcitdev.com/A01009216/Captain-Plan-It/index.php";
+        window.parent.location.href = "http://students.bcitdev.com/A01009216/Captain-Plan-It/index.php";
 
     };
 
