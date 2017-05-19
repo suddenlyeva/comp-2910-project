@@ -98,8 +98,7 @@ function GameOver() {
 
     this.resetButton.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false);
-        ResumeSoundLoop(eMusicList.Music);
-        //sounds[eSFXList.ButtonClick].play();
+        ResumeSoundLoop(eMusicList.Music); // -> sfx.js
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
         Level.open(LEVELS[Level.instance.id]); // -> states/levels.js
     };
@@ -107,8 +106,7 @@ function GameOver() {
     this.mainMenuButton.pointertap = () => {
         // this.cleanUp(); // also not needed
         PlaySound(eSFXList.ButtonClick, false);
-        ResumeSoundLoop(eMusicList.Music);
-        //sounds[eSFXList.ButtonClick].play();
+        ResumeSoundLoop(eMusicList.Music); // -> sfx.js
         StageSelect.open(); // -> states/stageselect.js
     };
 
@@ -130,5 +128,5 @@ GameOver.open = () => {
     }
 
     SCENE.addChild(GameOver.instance.scene);
-}
+};
 
