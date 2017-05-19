@@ -61,10 +61,8 @@ function Intro() {
     this.clickableArea.interactive = true;
     this.clickableArea.pointertap = () => {
 
-        PlaySound(eSFXList.ButtonClick, false);
-        PlaySound(eSFXList.MenuOpen, false);
-        //sounds[eSFXList.ButtonClick].play();
-        //sounds[eSFXList.MenuOpen].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         StageSelect.open(); // -> states/mainmenu.js
 
     }
@@ -108,9 +106,9 @@ Intro.open = () => {
     if(Intro.instance == null) {
         Intro.instance = new Intro();
     }
-    PlaySound(eMusicList.Music,true);
+    PlaySound(eMusicList.Music,true); // -> sfx.js
     
     SCENE = Intro.instance.scene;
     STATE = Intro.instance.update;
-}
+};
 
