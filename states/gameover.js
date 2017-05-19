@@ -120,8 +120,10 @@ function GameOver() {
 
 // Function to open. Pause Menu is singleton
 GameOver.open = () => {
+    PlaySound(eSFXList.GameOver, false);
     if(GameOver.instance == null) {
         GameOver.instance = new GameOver();
+
     }
 
     SCENE.addChild(GameOver.instance.scene);

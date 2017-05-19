@@ -3,6 +3,7 @@
 let USER;
 
 firebase.auth().onAuthStateChanged(function(user) {
+
   if (user) {
       console.log("logged in");
       USER = user;
@@ -71,10 +72,10 @@ SCENE.addChild(loadingProgressBar);
 
 function loadResources() {
 // Load game with PIXI loader
-PIXI.loader
-    .on("progress", showLoadingProgress)
-    .add(thingsToLoad)
-    .load(setup);
+    PIXI.loader
+        .on("progress", showLoadingProgress)
+        .add(thingsToLoad)
+        .load(setup);
 }
 
 // Starts the game at Intro

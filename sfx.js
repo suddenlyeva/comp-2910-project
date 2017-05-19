@@ -29,6 +29,7 @@ let eSFXList = {
     GameOver       : "sounds/game-over.ogg"
 };
 
+
 /* This list allows us to change the file names of the music
  * without changing it in the rest of the code*/
 let eMusicList = {
@@ -61,7 +62,7 @@ sounds.whenLoaded = () => {
         SFX_MASTER.push(sounds[eSFXList[i]]);
     }
     for(let i in eMusicList) {
-        MUSIC_MASTER.push(sounds[eMusicList.Music]);
+        MUSIC_MASTER.push(sounds[eMusicList[i]]);
     }
     loadResources();
 };
