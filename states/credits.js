@@ -43,10 +43,9 @@ function Credits() {
     // Opens affiliate page when the button is pressed or clicked
 
     this.affiliateButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        PlaySound(eSFXList.MenuOpen, false);
-        //sounds[eSFXList.ButtonClick].play();
-        //sounds[eSFXList.MenuOpen].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
+        
         Affiliate.open(); // -> states/affiliate.js
     });
 
@@ -79,4 +78,4 @@ Credits.open = () => {
 
     SCENE = Credits.instance.scene;
     STATE = Credits.instance.update;
-}
+};
