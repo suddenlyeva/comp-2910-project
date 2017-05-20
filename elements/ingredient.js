@@ -143,7 +143,7 @@ function makeItem(type, level) { // <- states/levels.js
                 let collidedWithProcessor = false;
 
                 // Add to a processor if on one of those
-                for (let i in level.processors) {
+                for (let i = 0; !collidedWithProcessor && i < level.processors.length; i++) {
                     if (level.processors[i].collidesWithPoint(item.x, item.y)) {    // -> elements/processor.js
                         addedToProcessor      = level.processors[i].addItem(item);  // -> elements/processor.js
                         collidedWithProcessor = true;
