@@ -250,7 +250,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
                     this.bRecipeProgress[i] = true;
                     this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
 
-                    level.scene.removeChild(droppedIngredient);
+                    droppedIngredient.destroy();
                     return true;
                 }
             }

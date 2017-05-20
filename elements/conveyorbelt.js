@@ -48,7 +48,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
             }
             // Otherwise just remove from stage entirely.
             else {
-                level.scene.removeChild(this.items[0]);
+                this.items[0].destroy();
                 this.items.shift();
             }
 
@@ -65,7 +65,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
 
         // Remove previous blank
         if(this.items[index] != null && this.items[index].type == BLANK) {
-            level.scene.removeChild(this.items[index]);
+            this.items[index].destroy();
         }
 
         // Position
@@ -154,7 +154,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
             if(pen.dragging) {
                 if (pen.x < TILES_PX && pen.y < TILES_PX) {
                     PlaySound(eSFXList.IntoProcessor, false);
-                    level.scene.removeChild(pen);
+                    pen.destroy();
                     LEVELS.push(PPAP);
                     LEVEL_PROGRESS.push({
                         unlocked: true,

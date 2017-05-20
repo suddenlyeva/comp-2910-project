@@ -1,38 +1,38 @@
 "use strict";
 
 // Itemdex
-let BLANK = 0;
-let SPLAT = 1;
-let APPLE = 2;
-let APPLE_SLICE = 3;
-let BANANA = 4;
-let ORANGE = 5;
-let ORANGE_SLICE = 6;
-let KIWI = 7;
-let KIWI_SLICE = 8;
-let YOGURT = 9;
+let BLANK        =  0;
+let SPLAT        =  1;
+let APPLE        =  2;
+let APPLE_SLICE  =  3;
+let BANANA       =  4;
+let ORANGE       =  5;
+let ORANGE_SLICE =  6;
+let KIWI         =  7;
+let KIWI_SLICE   =  8;
+let YOGURT       =  9;
 let FRUIT_YOGURT = 10;
-let PINEAPPLE = 11;
-let PEN = 98;
-let PPAP_ITEM = 99;
+let PINEAPPLE    = 11;
+let PEN          = 98;
+let PPAP_ITEM    = 99;
 
 // Texture dictionary
 let ITEM_TEXTURES = [];
 function defineItemTextures() {
-    ITEM_TEXTURES[SPLAT] = PIXI.loader.resources["images/spritesheet.json"].textures["splat.png"];
-    ITEM_TEXTURES[BLANK] = PIXI.loader.resources["images/spritesheet.json"].textures["blank.png"];
-    ITEM_TEXTURES[APPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"];
-    ITEM_TEXTURES[APPLE_SLICE] = PIXI.loader.resources["images/spritesheet.json"].textures["apple-slice.png"];
-    ITEM_TEXTURES[BANANA] = PIXI.loader.resources["images/spritesheet.json"].textures["banana.png"];
-    ITEM_TEXTURES[ORANGE] = PIXI.loader.resources["images/spritesheet.json"].textures["orange.png"];
+    ITEM_TEXTURES[SPLAT]        = PIXI.loader.resources["images/spritesheet.json"].textures["splat.png"];
+    ITEM_TEXTURES[BLANK]        = PIXI.loader.resources["images/spritesheet.json"].textures["blank.png"];
+    ITEM_TEXTURES[APPLE]        = PIXI.loader.resources["images/spritesheet.json"].textures["apple.png"];
+    ITEM_TEXTURES[APPLE_SLICE]  = PIXI.loader.resources["images/spritesheet.json"].textures["apple-slice.png"];
+    ITEM_TEXTURES[BANANA]       = PIXI.loader.resources["images/spritesheet.json"].textures["banana.png"];
+    ITEM_TEXTURES[ORANGE]       = PIXI.loader.resources["images/spritesheet.json"].textures["orange.png"];
     ITEM_TEXTURES[ORANGE_SLICE] = PIXI.loader.resources["images/spritesheet.json"].textures["orange-slice.png"];
-    ITEM_TEXTURES[KIWI] = PIXI.loader.resources["images/spritesheet.json"].textures["kiwi.png"];
-    ITEM_TEXTURES[KIWI_SLICE] = PIXI.loader.resources["images/spritesheet.json"].textures["kiwi-slice.png"];
-    ITEM_TEXTURES[YOGURT] = PIXI.loader.resources["images/spritesheet.json"].textures["yogurt.png"];
+    ITEM_TEXTURES[KIWI]         = PIXI.loader.resources["images/spritesheet.json"].textures["kiwi.png"];
+    ITEM_TEXTURES[KIWI_SLICE]   = PIXI.loader.resources["images/spritesheet.json"].textures["kiwi-slice.png"];
+    ITEM_TEXTURES[YOGURT]       = PIXI.loader.resources["images/spritesheet.json"].textures["yogurt.png"];
     ITEM_TEXTURES[FRUIT_YOGURT] = PIXI.loader.resources["images/spritesheet.json"].textures["fruit-yogurt.png"];
-    ITEM_TEXTURES[PINEAPPLE] = PIXI.loader.resources["images/spritesheet.json"].textures["pineapple.png"];
-    ITEM_TEXTURES[PEN] = PIXI.loader.resources["images/spritesheet.json"].textures["pen.png"];
-    ITEM_TEXTURES[PPAP_ITEM] = PIXI.loader.resources["images/spritesheet.json"].textures["ppap.png"];
+    ITEM_TEXTURES[PINEAPPLE]    = PIXI.loader.resources["images/spritesheet.json"].textures["pineapple.png"];
+    ITEM_TEXTURES[PEN]          = PIXI.loader.resources["images/spritesheet.json"].textures["pen.png"];
+    ITEM_TEXTURES[PPAP_ITEM]    = PIXI.loader.resources["images/spritesheet.json"].textures["ppap.png"];
 }
 
 // Makes an item in the level
@@ -86,19 +86,19 @@ function makeItem(type, level) { // <- states/levels.js
 
             // Float Up
             fadeAwaySprite.y -= delta;
-            item.y -= delta;
+            item.y           -= delta;
 
             // Fade Out
-            alphaTimeOut -= delta;
+            alphaTimeOut     -= delta;
             if (alphaTimeOut <= 0) {
                 fadeAwaySprite.alpha -= 0.02 * delta
-                item.alpha -= 0.02 * delta;
+                item.alpha           -= 0.02 * delta;
             }
 
             // Kill after faded out.
              if (fadeAwaySprite.alpha <= 0.02) {
-                 level.scene.removeChild(fadeAwaySprite);
-                 level.scene.removeChild(item);
+                 fadeAwaySprite.destroy();
+                 item          .destroy();
                  fadeAwayTicker.destroy();
              }
         });
@@ -112,9 +112,9 @@ function makeItem(type, level) { // <- states/levels.js
         if (!level.itemPickedUp) { // -> states/levels.js
 
             PlaySound(eSFXList.ItemPickUp, false); // -> sfx.js
-            item.data = event.data;
-            item.alpha = 0.5;
-            item.dragging = true;
+            item.data          = event.data;
+            item.alpha         = 0.5;
+            item.dragging      = true;
             level.itemPickedup = true; // -> states/levels.js
 
             // Replace previous conveyor item with a blank
@@ -145,7 +145,7 @@ function makeItem(type, level) { // <- states/levels.js
                 // Add to a processor if on one of those
                 for (let i in level.processors) {
                     if (level.processors[i].collidesWithPoint(item.x, item.y)) {    // -> elements/processor.js
-                        addedToProcessor = level.processors[i].addItem(item);       // -> elements/processor.js
+                        addedToProcessor      = level.processors[i].addItem(item);  // -> elements/processor.js
                         collidedWithProcessor = true;
                     }
                 }
@@ -170,9 +170,9 @@ function makeItem(type, level) { // <- states/levels.js
         }
 
         // Reset visuals and flag
-        item.alpha = 1;
+        item.alpha    = 1;
         item.dragging = false;
-        item.data = null;
+        item.data     = null;
     };
 
     // When you drag the item around
@@ -186,10 +186,10 @@ function makeItem(type, level) { // <- states/levels.js
     };
 
     // Declare event handlers
-    item.on('pointerdown', item.onDragStart)
-        .on('pointerup', item.onDragEnd)
+    item.on('pointerdown'     , item.onDragStart)
+        .on('pointerup'       , item.onDragEnd)
         .on('pointerupoutside', item.onDragEnd)
-        .on('pointermove', item.onDragMove);
+        .on('pointermove'     , item.onDragMove);
 
     // Add to scene
     level.scene.addChild(item);
