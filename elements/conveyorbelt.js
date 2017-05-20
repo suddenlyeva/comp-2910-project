@@ -99,7 +99,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
 
     // Point Collision
     this.collidesWithPoint = (x,y) => {
-        return (0 <= x && x <= CANVAS_WIDTH - TILES_PX) && (CANVAS_HEIGHT - TILES_PX <= y && y <= CANVAS_HEIGHT);
+        return (-TILES_PX <= x && x <= CANVAS_WIDTH - TILES_PX) && (CANVAS_HEIGHT - TILES_PX <= y && y <= CANVAS_HEIGHT);
     }
 
     // Finish Constructor
