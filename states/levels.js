@@ -120,6 +120,25 @@ let PPAP = {id: LEVELS.length, name: "ppap",
 
 let LEVEL_PROGRESS = [];
 function loadProgress () {
+    // write progress to the LEVEL_PROGRESS variable
+    function writeToVar (progress = false) {
+        if(progress) { // fetch from database
+            for (let i = 0; i < LEVELS.length; i++) {
+                LEVEL_PROGRESS[i] = {
+                    unlocked: progress[i].unlocked,
+                    highscore: progress[i].highscore
+                };
+            }
+        } else { // load defaults
+            for (let i = 0; i < LEVELS.length; i++) {
+                LEVEL_PROGRESS[i] = {
+                    unlocked: i === 0, // Tutorial starts unlocked
+                    highscore: 0
+                };
+            }
+        }
+    }
+
     firebase.auth().onAuthStateChanged(function(user) {
         // check user is signed in or not
         if (user) {
@@ -131,51 +150,18 @@ function loadProgress () {
                 if(snapshot.exists()) {
                     // the user already exists on db
                     console.log("Found existing user: " + user.uid);
-                    // get the user object value
-                    let progress = snapshot.val();
-                    // load the user's progress
-                    for (let i = 0; i < LEVELS.length; i++) {
-                        LEVEL_PROGRESS[i] = {
-                            unlocked: progress[i].unlocked,
-                            highscore: progress[i].highscore
-                        };
-                    }
+                    // get the user object value and write the user's progress to an array
+                    writeToVar(snapshot.val());
                 } else {
-                    // the user is not existed on db
+                    // the user does not exist on db
                     console.log("New user detected: " + user.uid);
-                    // initialize progress with default values
-                    for (let i = 0; i < LEVELS.length; i++) {
-                        // Tutorial starts unlocked
-                        if(i <= 0) {
-                            LEVEL_PROGRESS[i] = {
-                                unlocked: true,
-                                highscore: 0
-                            };
-                        } else {
-                            LEVEL_PROGRESS[i] = {
-                                unlocked: false,
-                                highscore: 0
-                            };
-                        }
-                    }
+                    writeToVar(); // initialize progress with default values
                 }
                 console.log("Progress loaded.");
             });
         } else {
-            // not signed in.
             console.log("Not logged in");
-            // initialize progress with default values
-            // Tutorial starts unlocked
-            LEVEL_PROGRESS[0] = {
-               unlocked: true,
-               highscore: 0
-            };
-            for (let i = 1; i < LEVELS.length; i++) {
-                LEVEL_PROGRESS[i] = {
-                    unlocked: false,
-                    highscore: 0
-                };
-            }
+            writeToVar(); // initialize progress with default values
         }
     });
 }
