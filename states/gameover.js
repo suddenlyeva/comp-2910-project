@@ -111,7 +111,7 @@ function GameOver() {
     };
 
     this.cleanUp = () => {
-        OptionsMenu.close();
+        // OptionsMenu.close();
         this.scene.parent.removeChild(this.scene);
     };
 
