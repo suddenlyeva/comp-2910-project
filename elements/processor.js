@@ -203,7 +203,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 
         // Input Box
         let inputLeft = this.mPosition.x; // x1
-        let inputRight = this.mPosition.x + (this.mWidth - TILES_PX*2);//x2
+        let inputRight = this.mPosition.x + (this.mWidth);//x2
         let inputTop = this.mPosition.y; // y1
         let inputBottom = this.mPosition.y + TILES_PX*2; //y2
 
