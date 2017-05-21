@@ -157,8 +157,9 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
                     pen.destroy();
                     LEVELS.push(PPAP);
                     LEVEL_PROGRESS.push({
-                        unlocked: true,
-                        highscore: 0
+                        id        : PPAP.id,
+                        unlocked  : true,
+                        highscore : 0
                     });
                     PPAP_UNLOCKED = true;
                 }
@@ -167,9 +168,9 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
             }
 
             // Reset visuals and flag
-            pen.alpha = 1;
+            pen.alpha    = 1;
             pen.dragging = false;
-            pen.data = null;
+            pen.data     = null;
 
         };
 

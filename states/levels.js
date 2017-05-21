@@ -94,7 +94,7 @@ let LEVELS = [
 
 // PPAP
 let PPAP_UNLOCKED = false;
-let PPAP = {id: LEVELS.length, name: "ppap",
+let PPAP = {id: 99999, name: "ppap",
 
         clearMessage: "now go play the actual levels",
         wasteLimit: 5,
@@ -119,22 +119,55 @@ let PPAP = {id: LEVELS.length, name: "ppap",
 };
 
 let LEVEL_PROGRESS = [];
+// adding a new property must be done in 5 places:
+// this file       -> getDefault, setToDefault, if(progress) loop in writeToVar, saveProgress
+// conveyorbelt.js -> pen.onDragEnd
+
 function loadProgress () {
     // write progress to the LEVEL_PROGRESS variable
+    // in the same order as levels appear in the LEVELS array
     function writeToVar (progress = false) {
+        let getDefault = (prop, index) => {
+            switch(prop) {
+                    case "id"        : return LEVELS[index].id;
+                    // tutorial starts unlocked; assume tutorial is first in the LEVELS arrray
+                    case "unlocked"  : return LEVELS[index].id === LEVELS[0].id;
+                    case "highscore" : return 0;
+                    default          : throw new Error("No default for property: " + prop);
+            }
+        };
+
+        // set entry at index to a default value
+        let setToDefault = (index) => {
+            LEVEL_PROGRESS[index] = {
+                id        : getDefault("id"       , index),
+                unlocked  : getDefault("unlocked" , index),
+                highscore : getDefault("highscore", index)
+            };
+        };
+
+
         if(progress) { // fetch from database
-            for (let i = 0; i < LEVELS.length; i++) {
-                LEVEL_PROGRESS[i] = {
-                    unlocked: progress[i].unlocked,
-                    highscore: progress[i].highscore
-                };
+            for (let i = 0; i < LEVELS.length; i++) { // O(n^2) ...
+                let dbIndex = findIndexById(progress, LEVELS[i].id);
+                if(dbIndex === -1) { // level id not found in the database
+                    setToDefault(i);
+                } else {
+                    let getDbEntry = (prop) => {
+                        // if db entry doesn't have requested property, return default
+                        return progress[dbIndex][prop] == null ? getDefault(prop, i) : progress[dbIndex][prop];
+                    };
+
+                    LEVEL_PROGRESS[i] = {
+                        id        : getDbEntry("id"),
+                        unlocked  : getDbEntry("unlocked"),
+                        highscore : getDbEntry("highscore")
+                    };
+                }
             }
         } else { // load defaults
             for (let i = 0; i < LEVELS.length; i++) {
-                LEVEL_PROGRESS[i] = {
-                    unlocked: i === 0, // Tutorial starts unlocked
-                    highscore: 0
-                };
+                setToDefault(i);
             }
         }
     }
@@ -173,10 +206,11 @@ function saveProgress() {
         if (user) {
             // signed in, then save progress
             console.log("Saving progress...");
-            for (let i = 0; i < LEVELS.length; i++) {
+            for (let i = 0; i < LEVEL_PROGRESS.length; i++) {
                 DATABASE.ref('users/' + user.uid + '/' + i).set({
-                    unlocked: LEVEL_PROGRESS[i].unlocked,
-                    highscore: LEVEL_PROGRESS[i].highscore
+                    id        : LEVEL_PROGRESS[i].id,
+                    unlocked  : LEVEL_PROGRESS[i].unlocked,
+                    highscore : LEVEL_PROGRESS[i].highscore
                 });
             }
         } else {
@@ -227,7 +261,7 @@ function Level(data) {
         fontFamily: FONT_FAMILY, fontSize: 96, fill: 0x0
     });
     this.levelTxt = new PIXI.Text(
-        (this.id !== 0 ? "level " + this.id + " :" : "") + " " + this.name,
+        (this.id !== LEVELS[0].id ? "level " + findIndexById(LEVELS, this.id) + " :" : "") + " " + this.name,
         this.txtStyle);
     this.levelTxt.position.set(TILES_PX * 7, 0);
     this.scene.addChild(this.levelTxt);
