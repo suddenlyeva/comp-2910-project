@@ -320,11 +320,6 @@ function findIndexById(arr, id) {
     return -1;
 }
 
-// Opens a level based on its data id
-function OpenLevelById(id) {
-    Level.open(LEVELS[findIndexById(LEVELS, id)]); // -> states/levels.js
-}
-
 // Adds zeros to the beginning of a number as string
 function padZeroForInt(intToPad, digits) {
     let paddedNum = "" + intToPad;

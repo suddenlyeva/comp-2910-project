@@ -420,3 +420,8 @@ Level.open = (data) => {
     SCENE = Level.instance.scene;
     STATE = Level.instance.update;
 };
+
+// Opens a level based on its data id
+Level.openById = (id) => {
+    Level.open(LEVELS[findIndexById(LEVELS, id)]);
+}

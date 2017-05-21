@@ -145,7 +145,7 @@ function PauseMenu() {
         ResumeSoundLoop(eMusicList.Music);      // -> sfx.js
 
         // this.cleanUp(); // doesn't seem to be needed, because the level is recreated
-        Level.open(LEVELS[Level.instance.id]); // -> states/levels.js
+        Level.openById(Level.instance.id); // -> states/levels.js
     };
 
     this.optionsButton.on("pointertap", () => {

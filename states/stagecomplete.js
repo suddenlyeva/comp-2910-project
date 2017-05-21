@@ -3,24 +3,25 @@
 // Shows when stage is complete
 function StageComplete(data) { // <- states/levels.js
 
+    let levelIndex = findIndexById(LEVELS, data.id);
     // Update progress
-    if (LEVEL_PROGRESS[data.id].highscore < data.score) {
-        LEVEL_PROGRESS[data.id].highscore = data.score;
+    if (LEVEL_PROGRESS[levelIndex].highscore < data.score) {
+        LEVEL_PROGRESS[levelIndex].highscore = data.score;
     }
-    if (data.id < LEVEL_PROGRESS.length - 1) {
-        LEVEL_PROGRESS[data.id + 1].unlocked = true;
+    if (levelIndex < LEVEL_PROGRESS.length - 1) {
+        LEVEL_PROGRESS[levelIndex + 1].unlocked = true;
     }
 
-    this.scene = new PIXI.Container();
-    this.starContainer = new PIXI.Container();
+    this.scene            = new PIXI.Container();
+    this.starContainer    = new PIXI.Container();
     this.messageContainer = new PIXI.Container();
 
     let gradeLists = {
-        perfect: {percentage: 100, text: "perfect!", nStars: 5},
-        excellent: {percentage: 80, text: "excellent!", nStars: 4},
-        great: {percentage: 60, text: "great!", nStars: 3},
-        nice: {percentage: 40, text: "nice!", nStars: 2},
-        good: {percentage: 0, text: "good enough!", nStars: 1}
+        perfect   : {percentage: 100,  text: "perfect!"    ,  nStars: 5},
+        excellent : {percentage:  80,  text: "excellent!"  ,  nStars: 4},
+        great     : {percentage:  60,  text: "great!"      ,  nStars: 3},
+        nice      : {percentage:  40,  text: "nice!"       ,  nStars: 2},
+        good      : {percentage:   0,  text: "good enough!",  nStars: 1}
     };
 
     let gradeRate = (data.score / data.maxScore) * 100;
@@ -39,40 +40,40 @@ function StageComplete(data) { // <- states/levels.js
     }
 
     // variables to display score and waste dynamically
-    let scoreDisplayed = 0;
-    let wasteDisplayed = 0;
-    let wasteInterval = 30;
-    let wasteTicker = 0;
+    let scoreDisplayed =  0;
+    let wasteDisplayed =  0;
+    let wasteInterval  = 30;
+    let wasteTicker    =  0;
 
     // home button
     this.homeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-home.png"]);
     this.homeButton.position.set(TILES_PX * 2.25, TILES_PX * 6.5);
     this.homeButton.interactive = true;
-    this.homeButton.buttonMode = true;
+    this.homeButton.buttonMode  = true;
 
     // continue button
     this.continueButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-next.png"]);
     this.continueButton.position.set(TILES_PX * 4.5, TILES_PX * 6.25);
     this.continueButton.interactive = true;
-    this.continueButton.buttonMode = true;
+    this.continueButton.buttonMode  = true;
 
     // replay button
     this.replayButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-replay.png"]);
     this.replayButton.position.set(TILES_PX * 12.25, TILES_PX * 6.5);
     this.replayButton.interactive = true;
-    this.replayButton.buttonMode = true;
+    this.replayButton.buttonMode  = true;
 
     let txtVAlign = 6; // Magical padding for everything, somehow
 
     // Style for labels
-    this.txtStyle = new PIXI.TextStyle({
-        fontFamily: FONT_FAMILY, fontSize: 96, fill: 0x0
+    this.txtStyle      = new PIXI.TextStyle({
+        fontFamily: FONT_FAMILY, fontSize:  96, fill: 0x0
     });
     this.gradeTxtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 200, fill: 0x0
     });
     this.clearTxtStyle = new PIXI.TextStyle({
-        fontFamily: FONT_FAMILY, fontSize: 80, fill: 0x0
+        fontFamily: FONT_FAMILY, fontSize:  80, fill: 0x0
         // dropShadow: true, dropShadowAngle: 4 * Math.PI / 12, dropShadowDistance: 2
     });
 
@@ -81,21 +82,21 @@ function StageComplete(data) { // <- states/levels.js
     this.gradeTxt.position.set(CANVAS_WIDTH / 2 - this.gradeTxt.width / 2, -txtVAlign);
 
     // ClearMessage
-    this.clearTxt = new PIXI.Text(data.clearMessage, this.clearTxtStyle);
-    this.clearTxt.x = TILES_PX;
-    this.clearTxt.y = txtVAlign;
+    this.clearTxt       = new PIXI.Text(data.clearMessage, this.clearTxtStyle);
+    this.clearTxt.x     = TILES_PX;
+    this.clearTxt.y     = txtVAlign;
     this.clearTxt.alpha = 0.92;
 
     // message panel
-    this.messageLeft = new PIXI.Sprite(PIXI.utils.TextureCache["message-left.png"]);
+    this.messageLeft   = new PIXI.Sprite(PIXI.utils.TextureCache["message-left.png"]);
     this.messageMiddle = new PIXI.extras.TilingSprite(
         PIXI.loader.resources["images/spritesheet.json"].textures["message-middle.png"],
         this.clearTxt.width,
         TILES_PX
     );
-    this.messageRight = new PIXI.Sprite(PIXI.utils.TextureCache["message-right.png"]);
+    this.messageRight    = new PIXI.Sprite(PIXI.utils.TextureCache["message-right.png"]);
     this.messageMiddle.x = TILES_PX;
-    this.messageRight.x = this.messageMiddle.width + TILES_PX;
+    this.messageRight.x  = this.messageMiddle.width + TILES_PX;
     this.messageContainer.addChild(this.messageLeft);
     this.messageContainer.addChild(this.messageMiddle);
     this.messageContainer.addChild(this.messageRight);
@@ -150,7 +151,7 @@ function StageComplete(data) { // <- states/levels.js
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         this.cleanUp();
-        let next = data.id + 1;
+        let next = levelIndex + 1;
         if (next >= LEVELS.length) {
             Credits.open(); // -> states/credits.js
         }
@@ -171,7 +172,7 @@ function StageComplete(data) { // <- states/levels.js
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         this.cleanUp();
-        Level.open(LEVELS[data.id]); // -> states/levels.js
+        Level.open(LEVELS[levelIndex]); // -> states/levels.js
     });
 
     // save state
@@ -204,17 +205,17 @@ function StageComplete(data) { // <- states/levels.js
     };
 
     // Star animation.
-    let limitScale = 1;
-    let starTicker = 0;
+    let limitScale   = 1;
+    let starTicker   = 0;
     let starInterval = 1;
     let delayCounter = 0 ;
 
     // Initialize with different delays
     for(let i = 0; i < stars.length; i++){
         stars[i].currentScale = 0;
-        stars[i].scale.x = 0;
-        stars[i].scale.y = 0;
-        stars[i].delay = i*10;
+        stars[i].scale.x      = 0;
+        stars[i].scale.y      = 0;
+        stars[i].delay        = i * 10;
     }
     // Uses both interval logic and iterates to check delay
     this.displayStar = () => {

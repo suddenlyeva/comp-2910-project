@@ -69,10 +69,6 @@ function StageSelect() {
             buttonBg.drawRect (0, 0, buttonDisplayWidth, buttonDisplayHeight);
             buttonBg.endFill();
 
-            // remember level id
-            // TODO: currently unused
-            button.id = LEVELS[i].id;
-
             let buttonImage = new PIXI.Sprite(
                 PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview.png"]
             );
@@ -136,6 +132,7 @@ function StageSelect() {
                         if (LEVEL_PROGRESS[currentButton].unlocked) { // -> states/levels.js
                             sounds[eSFXList.ButtonClick].play(); // -> sfx.js
                             sounds[eSFXList.MenuOpen].play();   // -> sfx.js
+                            // no need to do id lookup because buttons should always be in the same order as in LEVELS
                             Level.open(LEVELS[currentButton]); // -> states/levels.js
                         }
 
