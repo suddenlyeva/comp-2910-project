@@ -446,3 +446,8 @@ footer {
 .btn:active,
 .btn.active {
   outline: none; }
+
+.btn-customlg {
+  width: 15em;
+  margin: 1em 0;
+}

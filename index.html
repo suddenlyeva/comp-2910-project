@@ -15,6 +15,8 @@
 
     <title>Food Factory Zero</title>
 
+    <!--<link href="./style.css" rel="stylesheet">-->
+
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -24,7 +26,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template -->
-    <link href="css/freelancer.min.css" rel="stylesheet">
+    <link href="css/freelancer.css" rel="stylesheet">
 
     <!-- Temporary navbar container fix -->
     <style>
@@ -53,7 +55,7 @@
             <div class="collapse navbar-collapse" id="navbarExample">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#portfolio">Portfolio</a>
+                        <a class="nav-link" href="#play">Play</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#about">About</a>
@@ -78,26 +80,104 @@
         </div>
     </header>
 
-    <!-- Portfolio Grid Section -->
-    <section id="portfolio">
+    <!-- Play Grid Section -->
+    <section id="play">
         <div class="container">
             <h2 class="text-center">Play our game!</h2>
             <hr class="star-primary">
-            <div class="row">
-                <p>Play in land scape!</p>
-                <p>Play without log-in</p>
-                <p>Play with log-in</p>
-                <!--####################-->
-                <div id="container">
-                <h3>FirebaseUI Demo</h3>
+
+                         <p>
+                         <div id="loading">Loading...</div>
+                         <div id="loaded" class="hidden">
+                         <div id="main">
+                         <div id="user-signed-in" class="hidden">
+                        <!--<p>-->
+                        <button type="button" class="btn btn-success btn-lg btn-customlg btn-block mx-auto" onclick="link()">Play with google account</button>
+                        <!--</p>-->
+                        <!--<div id="user-info">
+                        <div id="name"></div>
+                        <div id="email"></div>
+                        <div class="clearfix"></div>
+                        </div>-->
+                        <!--<p>-->
+                        <button type="button" class="btn btn-success btn-lg btn-customlg btn-block mx-auto" id="sign-out">Sign Out</button>
+                        <!--</p>-->
+                        <!--<p>-->
+                        <!--<button type="button" class="btn btn-success btn-lg btn-customlg btn-block mx-auto" id="delete-account">Delete account</button>-->
+                        <!--</p>-->
+                    </div>
+                    <div id="user-signed-out" class="hidden">
+                        <!--<p>-->
+                          <button type="button" class="btn btn-success btn-lg btn-customlg btn-block mx-auto" onclick="noauthlink()">Play without sign in</button>
+                        <!--</p>-->
+                        <!--<p> or use google acccout to save your progress! </p>-->
+                        <!--<h4>You are signed out.</h4>
+                        <p>
+                        <button id="sign-in-with-redirect">Sign In with Redirect</button>
+                        <button id="sign-in-with-popup">Sign In with Popup</button>
+                        </p>-->
+                        <div id="firebaseui-spa">
+                        <h5 class="text-center">or sign in to save progress:</h5>
+                        <div id="firebaseui-container"></div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                        </p>
+                <script>
+                    function link() {
+                        document.location = "./game_index.html";
+                    }
+                    function noauthlink() {
+                        firebase.auth().signOut();
+                        document.location = "./game_index.html";
+                    }
+                </script>
+                <script>
+                    function authGoogleAc(){
+                        var provider = new firebase.auth.GoogleAuthProvider();
+                        firebase.auth().signInWithRedirect(provider);
+                        firebase.auth().getRedirectResult().then(function(result) {
+                            console.log("getRedirect success");
+                            console.log(result.user);
+                        // The firebase.User instance:
+                        // var user = result.user;
+                        // console.log(user);
+                        // The Facebook firebase.auth.AuthCredential containing the Facebook
+                        // access token:
+                        // var credential = result.credential;
+                        // As this API can be used for sign-in, linking and reauthentication,
+                        // check the operationType to determine what triggered this redirect
+                        // operation.
+                        // var operationType = result.operationType;
+                       document.location =  "./game_index.html";
+                        }, function(error) {
+                            console.log("getRedirect failed");
+                        // The provider's account email, can be used in case of
+                        // auth/account-exists-with-different-credential to fetch the providers
+                        // linked to the email:
+                        var email = error.email;
+                        // The provider's credential:
+                        var credential = error.credential;
+                        // In case of auth/account-exists-with-different-credential error,
+                        // you can fetch the providers using this:
+                        if (error.code === 'auth/account-exists-with-different-credential') {
+                            auth.fetchProvidersForEmail(email).then(function(providers) {
+                            // The returned 'providers' is a list of the available providers
+                            // linked to the email address. Please refer to the guide for a more
+                            // complete explanation on how to recover from this error.
+                            });
+                        }
+                        });
+                    }
+                </script>
+                <!--<h3>FirebaseUI Demo</h3>
                 <div id="loading">Loading...</div>
                 <div id="loaded" class="hidden">
                     <div id="main">
                     <div id="user-signed-in" class="hidden">
                         <div id="user-info">
-                        <div id="photo-container">
-                            <img id="photo"></img>
-                        </div>
                         <div id="name"></div>
                         <div id="email"></div>
                         <div class="clearfix"></div>
@@ -120,71 +200,8 @@
                     </div>
                     </div>
                 </div>
-                </div>
-                <script src="app.js"></script>
-
-                <!--####################-->
-                <!--<div class="col-sm-4 portfolio-item">
-                    <div class="portfolio-link" href="#portfolioModal1" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img class="img-fluid" src="img/portfolio/cabin.png" alt="">
-                    </div>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <div class="portfolio-link" href="#portfolioModal2" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img class="img-fluid" src="img/portfolio/cake.png" alt="">
-                    </div>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <div class="portfolio-link" href="#portfolioModal3" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img class="img-fluid" src="img/portfolio/circus.png" alt="">
-                    </div>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <div class="portfolio-link" href="#portfolioModal4" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img class="img-fluid" src="img/portfolio/game.png" alt="">
-                    </div>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <div class="portfolio-link" href="#portfolioModal5" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img class="img-fluid" src="img/portfolio/safe.png" alt="">
-                    </div>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <div class="portfolio-link" href="#portfolioModal6" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img class="img-fluid" src="img/portfolio/submarine.png" alt="">
-                    </div>
                 </div>-->
-            </div>
+                <script src="app.js"></script>
         </div>
     </section>
 
@@ -194,23 +211,13 @@
             <h2 class="text-center">About</h2>
             <hr class="star-light">
             <div class="row">
-            <!-- 16:9 aspect ratio -->
-                <!--<div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/oa9z1iP0_xQ"></iframe>
-                </div>
-                -->
-                <!-- 4:3 aspect ratio -->
                 <div class="embed-responsive embed-responsive-4by3">
                     <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/oa9z1iP0_xQ"></iframe>
                 </div>
                 <!--<div class="col-lg-4 offset-lg-2">-->
                     <p>Food Factory Zero is an time-based drag and drop game created to make learning process fun.</p>
                 <!--</div>-->
-                <!--<div class="col-lg-8 offset-lg-2 text-center">
-                    <a href="#" class="btn btn-lg btn-outline">
-                        <i class="fa fa-download"></i> Download Theme
-                    </a>
-                </div>-->
+                <!--</div>&ndash;&gt;-->
             </div>
         </div>
     </section>
@@ -294,10 +301,6 @@
                             </li>
                         </ul>
                     </div>
-                    <!--<div class="footer-col col-md-4">-->
-                        <!--<h3>About Freelancer</h3>
-                        <p>Freelance is a free to use, open source Bootstrap theme created by <a href="http://startbootstrap.com">Start Bootstrap</a>.</p>-->
-                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -317,242 +320,6 @@
         <a class="btn btn-primary page-scroll" href="#page-top">
             <i class="fa fa-chevron-up"></i>
         </a>
-    </div>
-
-    <!-- Portfolio Modals -->
-    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <div class="modal-body">
-                                <h2>Project Title</h2>
-                                <hr class="star-primary">
-                                <img class="img-fluid img-centered" src="img/portfolio/cabin.png" alt="">
-                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                                <ul class="list-inline item-details">
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                    </li>
-                                </ul>
-                                <button class="btn btn-success" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <div class="modal-body">
-                                <h2>Project Title</h2>
-                                <hr class="star-primary">
-                                <img class="img-fluid img-centered" src="img/portfolio/cake.png" alt="">
-                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                                <ul class="list-inline item-details">
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                    </li>
-                                </ul>
-                                <button class="btn btn-success" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <div class="modal-body">
-                                <h2>Project Title</h2>
-                                <hr class="star-primary">
-                                <img class="img-fluid img-centered" src="img/portfolio/circus.png" alt="">
-                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                                <ul class="list-inline item-details">
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                    </li>
-                                </ul>
-                                <button class="btn btn-success" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <div class="modal-body">
-                                <h2>Project Title</h2>
-                                <hr class="star-primary">
-                                <img class="img-fluid img-centered" src="img/portfolio/game.png" alt="">
-                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                                <ul class="list-inline item-details">
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                    </li>
-                                </ul>
-                                <button class="btn btn-success" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <div class="modal-body">
-                                <h2>Project Title</h2>
-                                <hr class="star-primary">
-                                <img class="img-fluid img-centered" src="img/portfolio/safe.png" alt="">
-                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                                <ul class="list-inline item-details">
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                    </li>
-                                </ul>
-                                <button class="btn btn-success" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <div class="modal-body">
-                                <h2>Project Title</h2>
-                                <hr class="star-primary">
-                                <img class="img-fluid img-centered" src="img/portfolio/submarine.png" alt="">
-                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                                <ul class="list-inline item-details">
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                    </li>
-                                </ul>
-                                <button class="btn btn-success" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Bootstrap core JavaScript -->
