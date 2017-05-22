@@ -94,5 +94,6 @@ OptionsMenu.close = () => {
     if(OptionsMenu.instance != null && OptionsMenu.instance.scene.parent != null) {
         OptionsMenu.instance.scene.parent.removeChild(OptionsMenu.instance.scene);
         OptionsMenu.instance.isOpen = false;
+        saveOptions(); // -> progress.js
     }
 };
