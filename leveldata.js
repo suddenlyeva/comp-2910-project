@@ -1,4 +1,6 @@
 // JSON Level Data
+let DIFFICULTY = { easy : 1, normal: 11, hard: 21};
+
 let LEVELS = [
 
     // Tutorial
@@ -148,7 +150,7 @@ let LEVELS = [
     },
 
     // Normal - Stage 1
-    {id: 10, name: "fruit yogurt",
+    {id: 11, name: "fruit yogurt",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
