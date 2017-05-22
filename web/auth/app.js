@@ -16,14 +16,12 @@
  * FirebaseUI initialization to be used in a Single Page application context.
  */
 // FirebaseUI config.
-var uiConfig = {
+let uiConfig = {
   'signInSuccessUrl': '../../play.html',
   'callbacks': {
     // Called when the user has been successfully signed in.
     'signInSuccess': function(user, credential, redirectUrl) {
       handleSignedInUser(user);
-      // redirect user to game_index.html by returning true.
-      // document.location = './game_index.html';
         console.log("singInSuccessCalled");
         return true;
     }
@@ -34,14 +32,14 @@ var uiConfig = {
 };
 
 // Initialize the FirebaseUI Widget using Firebase.
-var ui = new firebaseui.auth.AuthUI(firebase.auth());
+let ui = new firebaseui.auth.AuthUI(firebase.auth());
 // Keep track of the currently signed in user.
-var currentUid = null;
+let currentUid = null;
 
 /**
  * Redirects to the FirebaseUI widget.
  */
-var signInWithRedirect = function() {
+let signInWithRedirect = function() {
   window.location.assign('widget.html');
 };
 
@@ -49,7 +47,7 @@ var signInWithRedirect = function() {
 /**
  * Open a popup with the FirebaseUI widget.
  */
-var signInWithPopup = function() {
+let signInWithPopup = function() {
   window.open('widget.html', 'Sign In', 'width=985,height=735');
 };
 
@@ -58,7 +56,7 @@ var signInWithPopup = function() {
  * Displays the UI for a signed in user.
  * @param {!firebase.User} user
  */
-var handleSignedInUser = function(user) {
+let handleSignedInUser = function(user) {
   currentUid = user.uid;
   document.getElementById('user-signed-in').style.display = 'block';
   document.getElementById('user-signed-out').style.display = 'none';
@@ -76,7 +74,7 @@ var handleSignedInUser = function(user) {
 /**
  * Displays the UI for a signed out user.
  */
-var handleSignedOutUser = function() {
+let handleSignedOutUser = function() {
   document.getElementById('user-signed-in').style.display = 'none';
   document.getElementById('user-signed-out').style.display = 'block';
   ui.start('#firebaseui-container', uiConfig);
@@ -99,7 +97,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 /**
  * Deletes the user's account.
  */
-var deleteAccount = function() {
+let deleteAccount = function() {
   firebase.auth().currentUser.delete().catch(function(error) {
     if (error.code == 'auth/requires-recent-login') {
       // The user's credential is too oldfi. She needs to sign in again.
@@ -118,7 +116,7 @@ var deleteAccount = function() {
 /**
  * Initializes the app.
  */
-var initApp = function() {
+let initApp = function() {
 
   // document.getElementById('sign-in-with-redirect').addEventListener(
   //     'click', signInWithRedirect);
