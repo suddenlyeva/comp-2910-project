@@ -1,5 +1,5 @@
 // JSON Level Data
-let DIFFICULTY = { easy : 1, normal: 10, hard: 20};
+let DIFFICULTY = { easy : 1, normal: 10, hard: 0};
 
 let LEVELS = [
 
@@ -94,8 +94,8 @@ let LEVELS = [
         maxScore: 600,
 
         conveyorBelt: {
-            items: [ORANGE, BLANK, KIWI, BLANK, BLANK, YOGURT, ORANGE, BLANK, KIWI, BLANK, ORANGE, BLANK, KIWI,
-                    BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, YOGURT, BLANK, BLANK, YOGURT],
+            items: [ORANGE, ORANGE, BLANK, BLANK, KIWI, ORANGE, BLANK, BLANK, BLANK, KIWI, BLANK, BLANK, BLANK, YOGURT, BLANK,
+                    BLANK, KIWI, BLANK, BLANK, BLANK, YOGURT, BLANK, YOGURT],
             speed: 1.3
         },
 
@@ -121,10 +121,8 @@ let LEVELS = [
         maxScore: 1000,
 
         conveyorBelt: {
-            items: [APPLE, BLANK, BANANA, BLANK, KIWI, BLANK, APPLE, BLANK, BLANK,
-                    KIWI, BLANK, BLANK, BLANK, APPLE, BLANK, BLANK, KIWI, BLANK,
-                    BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BANANA, KIWI,
-                    BLANK, BLANK, BANANA, BLANK],
+            items: [APPLE, BLANK, APPLE, KIWI, APPLE, BLANK, KIWI, BANANA, BLANK,
+                    KIWI, BLANK, BANANA, BLANK, BLANK, BANANA],
             speed: 1.25
         },
 
@@ -168,7 +166,7 @@ let LEVELS = [
     
     },
     
-    {id: 6, name: "Level 6",
+    {id: 6, name: "level 6",
     
         clearMessage: "Nothing new",
         wasteLimit: 5,
@@ -187,7 +185,7 @@ let LEVELS = [
     
     },
     
-    {id: 7, name: "Level 7",
+    {id: 7, name: "level 7",
     
         clearMessage: "Nothing new",
         wasteLimit: 5,
@@ -207,7 +205,7 @@ let LEVELS = [
     
     },
     
-    {id: 8, name: "Level 8",
+    {id: 8, name: "level 8",
     
         clearMessage: "nothing new",
         wasteLimit: 5,
@@ -248,7 +246,7 @@ let LEVELS = [
     },
     
     // Normal - Stage 1
-    {id: 10, name: "stage 11",
+    {id: 10, name: "stage 10",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
@@ -286,8 +284,9 @@ let LEVELS = [
         finalItems: [FRUIT_YOGURT]
     },
 
+    // Normal - Stage 2
     // tomato + lettce = salad, apple, bacon/fish
-    {id: 11, name: "stage 12",
+    {id: 11, name: "stage 11",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
@@ -320,6 +319,46 @@ let LEVELS = [
                 result: FRUIT_YOGURT,
                 score: 500,
                 x: 3*TILES_PX,
+                y: 5*TILES_PX
+            }
+        ],
+
+        finalItems: [FRUIT_YOGURT]
+    },
+
+    // Normal Stage 3
+    //
+    {id: 12, name: "stage 12",
+
+        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        wasteLimit: 5,
+        maxScore: 2100,
+
+        conveyorBelt: {
+            items: [ORANGE, BLANK, KIWI, KIWI, BLANK, ORANGE, YOGURT, ORANGE, BLANK, BLANK, KIWI, YOGURT, BLANK, YOGURT],
+            speed: 1.5
+        },
+
+        processors: [
+            {
+                recipe: [ORANGE],
+                result: ORANGE_SLICE,
+                score: 100,
+                x: 1*TILES_PX,
+                y: 2*TILES_PX
+            },
+            {
+                recipe: [KIWI],
+                result: KIWI_SLICE,
+                score: 100,
+                x: 7*TILES_PX,
+                y: 2*TILES_PX
+            },
+            {
+                recipe: [ORANGE_SLICE, KIWI_SLICE, YOGURT],
+                result: FRUIT_YOGURT,
+                score: 500,
+                x: 1*TILES_PX,
                 y: 5*TILES_PX
             }
         ],
