@@ -8,11 +8,34 @@ function OptionsMenu() {
     let height = 6 * TILES_PX;
 
     // Make Panel and Buttons
+    /*
     let panel = new PIXI.Graphics();
     panel.lineStyle(1, 0, 1);
     panel.beginFill(0xfff3ad);
     panel.drawRect(0, 0, width, height);
     panel.endFill();
+    */
+    
+    let panel = new PIXI.Container();
+    let panelLeft = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["options-left.png"]
+    );
+    let panelRight = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["options-right.png"]
+    );
+    panelRight.x = width - 1.5 * TILES_PX;
+    let panelMiddle = new PIXI.extras.TilingSprite(
+        PIXI.loader.resources["images/spritesheet.json"].textures["options-middle.png"],
+        7*TILES_PX,
+        6 * TILES_PX
+    );
+    panelMiddle.x = 1.5 * TILES_PX;
+    
+    panel.addChild(panelLeft);
+    panel.addChild(panelRight);
+    panel.addChild(panelMiddle);
+    
+    
     
     let okButton = new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["menu-ok.png"]
