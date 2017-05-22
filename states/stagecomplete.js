@@ -15,28 +15,7 @@ function StageComplete(data) { // <- states/levels.js
     let starContainer    = new PIXI.Container();
     let messageContainer = new PIXI.Container();
 
-    let gradeLists = {
-        perfect   : {percentage: 100,  text: "perfect!"    ,  nStars: 5},
-        excellent : {percentage:  80,  text: "excellent!"  ,  nStars: 4},
-        great     : {percentage:  60,  text: "great!"      ,  nStars: 3},
-        nice      : {percentage:  40,  text: "nice!"       ,  nStars: 2},
-        good      : {percentage:   0,  text: "good enough!",  nStars: 1}
-    };
-
-    let gradeRate = (data.score / data.maxScore) * 100;
-    let grade;
-    // Decide grade string
-    if (gradeRate >= gradeLists.perfect.percentage) {
-        grade = gradeLists.perfect;
-    } else if (gradeRate >= gradeLists.excellent.percentage) {
-        grade = gradeLists.excellent;
-    } else if (gradeRate >= gradeLists.great.percentage) {
-        grade = gradeLists.great;
-    } else if (gradeRate >= gradeLists.nice.percentage) {
-        grade = gradeLists.nice;
-    } else if (gradeRate >= gradeLists.good.percentage) {
-        grade = gradeLists.good;
-    }
+    let grade = calculateGrade(data); // -> util.js
 
     // variables to display score and waste dynamically
     let scoreDisplayed =  0;

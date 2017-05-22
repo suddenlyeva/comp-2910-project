@@ -317,6 +317,37 @@ function makeGear(size, speed) {
     return gear;
 }
 
+// takes level data and returns earned grade
+function calculateGrade(data) {
+    // should this be a global ? ...
+    let gradeLists = {
+        perfect   : {percentage: 100,  text: "perfect!"    ,  nStars: 5},
+        excellent : {percentage:  80,  text: "excellent!"  ,  nStars: 4},
+        great     : {percentage:  60,  text: "great!"      ,  nStars: 3},
+        nice      : {percentage:  40,  text: "nice!"       ,  nStars: 2},
+        good      : {percentage:   0,  text: "good enough!",  nStars: 1}
+    };
+
+    let result;
+
+    let gradeRate = (data.score / data.maxScore) * 100;
+
+    // Assign grade
+    if (gradeRate >= gradeLists.perfect.percentage) {
+        result = gradeLists.perfect;
+    } else if (gradeRate >= gradeLists.excellent.percentage) {
+        result = gradeLists.excellent;
+    } else if (gradeRate >= gradeLists.great.percentage) {
+        result = gradeLists.great;
+    } else if (gradeRate >= gradeLists.nice.percentage) {
+        result = gradeLists.nice;
+    } else if (gradeRate >= gradeLists.good.percentage) {
+        result = gradeLists.good;
+    }
+
+    return result;
+}
+
 // returns displayable level name in correct format e.g. "level 1 : something"
 // takes level id and name. Can also take level index if it's known at the time
 function levelDisplayName(id, name, index = null) {
