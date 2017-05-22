@@ -149,6 +149,7 @@ function StageComplete(data) { // <- states/levels.js
     // Continue button moves to next stage
     this.continueButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        PlaySound(eSFXList.StageEnter, false); // -> sfx.js
         PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         this.cleanUp();
         let next = levelIndex + 1;

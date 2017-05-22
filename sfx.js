@@ -25,6 +25,7 @@ let eSFXList = {
     IntoConveyor   : "sounds/into-conveyor.mp3",
     ItemDropped    : "sounds/item-dropped.mp3",
     Error          : "sounds/error.mp3",
+    StageEnter     : "sounds/stage-enter.mp3",
     StageComplete  : "sounds/stage-complete.mp3",
     GameOver       : "sounds/game-over.mp3"
 };
@@ -51,6 +52,7 @@ function loadSounds() {
         eSFXList.IntoConveyor,
         eSFXList.ItemDropped,
         eSFXList.Error,
+        eSFXList.StageEnter,
         eSFXList.StageComplete,
         eSFXList.GameOver,
         eMusicList.PPAP,
