@@ -11,11 +11,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <meta name="author" content="">
 
     <title>Food Factory Zero</title>
-
-    <!--<link href="./style.css" rel="stylesheet">-->
 
     <!-- Bootstrap core CSS -->
     <link href="web/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -113,8 +110,6 @@
                 </div>
             </div>
         </div>
-        <!--</div>-->
-        <!--</p>-->
         <script>
             function link() {
                 document.location = "./play.html";
@@ -122,34 +117,6 @@
             function noauthlink() {
                 firebase.auth().signOut();
                 document.location = "./play.html";
-            }
-        </script>
-        <script>
-            function authGoogleAc() {
-                let provider = new firebase.auth.GoogleAuthProvider();
-                firebase.auth().signInWithRedirect(provider);
-                firebase.auth().getRedirectResult().then(function (result) {
-                    console.log("getRedirect success");
-                    console.log(result.user);
-                    document.location = "./play.html";
-                }, function (error) {
-                    console.log("getRedirect failed");
-                    // The provider's account email, can be used in case of
-                    // auth/account-exists-with-different-credential to fetch the providers
-                    // linked to the email:
-                    let email = error.email;
-                    // The provider's credential:
-                    let credential = error.credential;
-                    // In case of auth/account-exists-with-different-credential error,
-                    // you can fetch the providers using this:
-                    if (error.code === 'auth/account-exists-with-different-credential') {
-                        auth.fetchProvidersForEmail(email).then(function (providers) {
-                            // The returned 'providers' is a list of the available providers
-                            // linked to the email address. Please refer to the guide for a more
-                            // complete explanation on how to recover from this error.
-                        });
-                    }
-                });
             }
         </script>
         <script src="web/auth/app.js"></script>
