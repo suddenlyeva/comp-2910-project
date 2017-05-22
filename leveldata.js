@@ -189,15 +189,15 @@ let LEVELS = [
     },
 
     // tomato + lettce = salad, apple, bacon/fish
-    {id: 11, name: "stage 12",
+    {id: 12, name: "stage 12",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
         maxScore: 2100,
 
         conveyorBelt: {
-            items: [ORANGE, BLANK, KIWI, BLANK, APPLE, BLANK, KIWI, BLANK, ORANGE, ORANGE,
-                    BLANK, BLANK, APPLE, BLANK, KIWI, YOGURT, BLANK, BLANK, APPLE, YOGURT],
+            items: [ORANGE, BLANK, KIWI, BLANK, APPLE, BLANK, KIWI, BLANK, BLANK, ORANGE,
+                    ORANGE, BLANK, APPLE, BLANK, KIWI, YOGURT, BLANK, BLANK, APPLE, YOGURT],
             speed: 1.6
         },
 
