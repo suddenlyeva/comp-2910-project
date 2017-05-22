@@ -12,9 +12,8 @@ function StageComplete(data) { // <- states/levels.js
         LEVEL_PROGRESS[levelIndex + 1].unlocked = true;
     }
 
-    this.scene            = new PIXI.Container();
-    this.starContainer    = new PIXI.Container();
-    this.messageContainer = new PIXI.Container();
+    let starContainer    = new PIXI.Container();
+    let messageContainer = new PIXI.Container();
 
     let gradeLists = {
         perfect   : {percentage: 100,  text: "perfect!"    ,  nStars: 5},
@@ -46,66 +45,63 @@ function StageComplete(data) { // <- states/levels.js
     let wasteTicker    =  0;
 
     // home button
-    this.homeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-home.png"]);
-    this.homeButton.position.set(TILES_PX * 2.25, TILES_PX * 6.5);
-    this.homeButton.interactive = true;
-    this.homeButton.buttonMode  = true;
+    let homeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-home.png"]);
+    homeButton.position.set(TILES_PX * 2.25, TILES_PX * 6.5);
+    homeButton.interactive =  homeButton.buttonMode  = true;
 
     // continue button
-    this.continueButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-next.png"]);
-    this.continueButton.position.set(TILES_PX * 4.5, TILES_PX * 6.25);
-    this.continueButton.interactive = true;
-    this.continueButton.buttonMode  = true;
+    let continueButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-next.png"]);
+    continueButton.position.set(TILES_PX * 4.5, TILES_PX * 6.25);
+    continueButton.interactive = continueButton.buttonMode  = true;
 
     // replay button
-    this.replayButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-replay.png"]);
-    this.replayButton.position.set(TILES_PX * 12.25, TILES_PX * 6.5);
-    this.replayButton.interactive = true;
-    this.replayButton.buttonMode  = true;
+    let replayButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-replay.png"]);
+    replayButton.position.set(TILES_PX * 12.25, TILES_PX * 6.5);
+    replayButton.interactive = replayButton.buttonMode  = true;
 
     let txtVAlign = 6; // Magical padding for everything, somehow
 
     // Style for labels
-    this.txtStyle      = new PIXI.TextStyle({
+    let txtStyle      = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize:  96, fill: 0x0
     });
-    this.gradeTxtStyle = new PIXI.TextStyle({
+    let gradeTxtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 200, fill: 0x0
     });
-    this.clearTxtStyle = new PIXI.TextStyle({
+    let clearTxtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize:  80, fill: 0x0
         // dropShadow: true, dropShadowAngle: 4 * Math.PI / 12, dropShadowDistance: 2
     });
 
     // gradeTxt
-    this.gradeTxt = new PIXI.Text(grade.text, this.gradeTxtStyle);
-    this.gradeTxt.position.set(CANVAS_WIDTH / 2 - this.gradeTxt.width / 2, -txtVAlign);
+    let gradeTxt = new PIXI.Text(grade.text, gradeTxtStyle);
+    gradeTxt.position.set(CANVAS_WIDTH / 2 - gradeTxt.width / 2, -txtVAlign);
 
     // ClearMessage
-    this.clearTxt       = new PIXI.Text(data.clearMessage, this.clearTxtStyle);
-    this.clearTxt.x     = TILES_PX;
-    this.clearTxt.y     = txtVAlign;
-    this.clearTxt.alpha = 0.92;
+    let clearTxt   = new PIXI.Text(data.clearMessage, clearTxtStyle);
+    clearTxt.x     = TILES_PX;
+    clearTxt.y     = txtVAlign;
+    clearTxt.alpha = 0.92;
 
     // message panel
-    this.messageLeft   = new PIXI.Sprite(PIXI.utils.TextureCache["message-left.png"]);
-    this.messageMiddle = new PIXI.extras.TilingSprite(
+    let messageLeft   = new PIXI.Sprite(PIXI.utils.TextureCache["message-left.png"]);
+    let messageMiddle = new PIXI.extras.TilingSprite(
         PIXI.loader.resources["images/spritesheet.json"].textures["message-middle.png"],
-        this.clearTxt.width,
+        clearTxt.width,
         TILES_PX
     );
-    this.messageRight    = new PIXI.Sprite(PIXI.utils.TextureCache["message-right.png"]);
-    this.messageMiddle.x = TILES_PX;
-    this.messageRight.x  = this.messageMiddle.width + TILES_PX;
-    this.messageContainer.addChild(this.messageLeft);
-    this.messageContainer.addChild(this.messageMiddle);
-    this.messageContainer.addChild(this.messageRight);
-    this.messageContainer.addChild(this.clearTxt);
-    this.messageContainer.position.set(CANVAS_WIDTH / 2 - this.messageContainer.width / 2, TILES_PX * 2);
+    let messageRight = new PIXI.Sprite(PIXI.utils.TextureCache["message-right.png"]);
+    messageMiddle.x  = TILES_PX;
+    messageRight.x   = messageMiddle.width + TILES_PX;
+    messageContainer.addChild(messageLeft);
+    messageContainer.addChild(messageMiddle);
+    messageContainer.addChild(messageRight);
+    messageContainer.addChild(clearTxt);
+    messageContainer.position.set(CANVAS_WIDTH / 2 - messageContainer.width / 2, TILES_PX * 2);
 
     // scoreTxt
-    this.scoreTxt = new PIXI.Text("score : " + scoreDisplayed, this.txtStyle);
-    this.scoreTxt.position.set(TILES_PX * 3 - this.scoreTxt.width / 2, TILES_PX * 0.5);
+    let scoreTxt = new PIXI.Text("score : " + scoreDisplayed, txtStyle);
+    scoreTxt.position.set(TILES_PX * 3 - scoreTxt.width / 2, TILES_PX * 0.5);
 
     // Stars
     let stars = [];
@@ -115,63 +111,65 @@ function StageComplete(data) { // <- states/levels.js
         ));
         stars[i].x += i * TILES_PX * 2.5;
         stars[i].anchor.set(0.5);
-        this.starContainer.addChild(stars[i]);
+        starContainer.addChild(stars[i]);
     }
-    this.starContainer.position.set(CANVAS_WIDTH / 2 - this.starContainer.width / 2 + TILES_PX,
+    starContainer.position.set(CANVAS_WIDTH / 2 - starContainer.width / 2 + TILES_PX,
         TILES_PX * 4.5 + txtVAlign);
 
     // wasteTxt
-    this.wasteTxt = new PIXI.Text("waste : " + wasteDisplayed, this.txtStyle);
-    this.wasteTxt.position.set(CANVAS_WIDTH - TILES_PX * 3 - this.wasteTxt.width / 2, TILES_PX * 0.5);
+    let wasteTxt = new PIXI.Text("waste : " + wasteDisplayed, txtStyle);
+    wasteTxt.position.set(CANVAS_WIDTH - TILES_PX * 3 - wasteTxt.width / 2, TILES_PX * 0.5);
 
     // homeTxt for home button
-    this.homeTxt = new PIXI.Text("home", this.txtStyle);
-    this.homeTxt.position.set(this.homeButton.x + this.homeButton.width / 2 - this.homeTxt.width / 2,
-        this.homeButton.y + this.homeButton.height - this.homeTxt.height / txtVAlign);
+    let homeTxt = new PIXI.Text("home", txtStyle);
+    homeTxt.position.set(
+        homeButton.x + homeButton.width / 2 - homeTxt.width / 2,
+        homeButton.y + homeButton.height - homeTxt.height / txtVAlign);
 
     // replayTxt for replay button
-    this.replayTxt = new PIXI.Text("replay", this.txtStyle);
-    this.replayTxt.position.set(this.replayButton.x + this.replayButton.width / 2 - this.replayTxt.width / 2,
-        this.replayButton.y + this.replayButton.height - this.replayTxt.height / txtVAlign);
+    let replayTxt = new PIXI.Text("replay", txtStyle);
+    replayTxt.position.set(
+        replayButton.x + replayButton.width / 2 - replayTxt.width / 2,
+        replayButton.y + replayButton.height - replayTxt.height / txtVAlign);
 
     // Add to scene
-    this.scene.addChild(this.starContainer);
-    this.scene.addChild(this.messageContainer);
-    this.scene.addChild(this.homeButton);
-    this.scene.addChild(this.continueButton);
-    this.scene.addChild(this.replayButton);
-    this.scene.addChild(this.gradeTxt);
-    this.scene.addChild(this.scoreTxt);
-    this.scene.addChild(this.wasteTxt);
-    this.scene.addChild(this.homeTxt);
-    this.scene.addChild(this.replayTxt);
+    this.scene = new PIXI.Container();
+    this.scene.addChild(starContainer);
+    this.scene.addChild(messageContainer);
+    this.scene.addChild(homeButton);
+    this.scene.addChild(continueButton);
+    this.scene.addChild(replayButton);
+    this.scene.addChild(gradeTxt);
+    this.scene.addChild(scoreTxt);
+    this.scene.addChild(wasteTxt);
+    this.scene.addChild(homeTxt);
+    this.scene.addChild(replayTxt);
 
     // Continue button moves to next stage
-    this.continueButton.on("pointertap", () => {
+    continueButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
-        this.cleanUp();
+        cleanUp();
         let next = levelIndex + 1;
         if (next >= LEVELS.length) {
             Credits.open(); // -> states/credits.js
-        }
-        else {
+        } else {
             Level.open(LEVELS[next]); // -> states/levels.js
         }
     });
 
     // Home button takes you to the main menu
-    this.homeButton.on("pointertap", () => {
+    homeButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        this.cleanUp();
+        cleanUp();
         StageSelect.open(); // -> states/stageselect.js
     });
 
     // Replay button
-    this.replayButton.on("pointertap", () => {
+    replayButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
-        this.cleanUp();
+        cleanUp();
         Level.open(LEVELS[levelIndex]); // -> states/levels.js
     });
 
@@ -179,36 +177,36 @@ function StageComplete(data) { // <- states/levels.js
     saveProgress(); // -> states/levels.js
 
     // Called every frame
-    this.displayScore = () => {
+    let displayScore = () => {
         if (scoreDisplayed < data.score) {
             scoreDisplayed += 13; // 13 is for optimal 10's and 1's digit distribution
-            this.scoreTxt.text = "score : " + scoreDisplayed;
+            scoreTxt.text = "score : " + scoreDisplayed;
         } else {
-            this.scoreTxt.text = "score : " + data.score;
+            scoreTxt.text = "score : " + data.score;
         }
-        this.scoreTxt.position.set(TILES_PX * 3 - this.scoreTxt.width / 2, TILES_PX * 0.5);
+        scoreTxt.position.set(TILES_PX * 3 - scoreTxt.width / 2, TILES_PX * 0.5);
     };
 
     // Called every few frames using interval logic
-    this.displayWaste = () => {
+    let displayWaste = () => {
         if (wasteDisplayed < data.waste) {
             wasteTicker += TICKER.deltaTime;
             if (wasteTicker >= wasteInterval) {
                 wasteDisplayed++;
-                this.wasteTxt.text = "waste : " + wasteDisplayed;
-                wasteTicker -= wasteInterval;
+                wasteTxt.text  = "waste : " + wasteDisplayed;
+                wasteTicker   -= wasteInterval;
             }
         } else {
-            this.wasteTxt.text = "waste : " + data.waste;
+            wasteTxt.text = "waste : " + data.waste;
         }
-        this.wasteTxt.position.set(CANVAS_WIDTH - TILES_PX * 3 - this.wasteTxt.width / 2, TILES_PX * 0.5);
+        wasteTxt.position.set(CANVAS_WIDTH - TILES_PX * 3 - wasteTxt.width / 2, TILES_PX * 0.5);
     };
 
     // Star animation.
     let limitScale   = 1;
     let starTicker   = 0;
     let starInterval = 1;
-    let delayCounter = 0 ;
+    let delayCounter = 0;
 
     // Initialize with different delays
     for(let i = 0; i < stars.length; i++){
@@ -218,7 +216,7 @@ function StageComplete(data) { // <- states/levels.js
         stars[i].delay        = i * 10;
     }
     // Uses both interval logic and iterates to check delay
-    this.displayStar = () => {
+    let displayStar = () => {
         starTicker += TICKER.deltaTime;
         if(starTicker >= starInterval) {
             if(delayCounter <= stars[stars.length-1].delay)
@@ -235,14 +233,14 @@ function StageComplete(data) { // <- states/levels.js
     };
 
     this.update = () => {
-        this.displayScore();
-        this.displayWaste();
-        this.displayStar();
+        displayScore();
+        displayWaste();
+        displayStar();
     };
 
     PlaySound(eSFXList.StageComplete, false); // -> sfx.js
 
-    this.cleanUp = () => {
+    let cleanUp = () => {
         if(data.id == PPAP.id) {
             StopSound(eMusicList.PPAP);         // -> sfx.js
             ResumeSoundLoop(eMusicList.Music);  // -> sfx.js
