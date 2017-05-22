@@ -1,5 +1,5 @@
 // JSON Level Data
-let DIFFICULTY = { easy : 1, normal: 11, hard: 21};
+let DIFFICULTY = { easy : 1, normal: 10, hard: 20};
 
 let LEVELS = [
 
@@ -150,7 +150,7 @@ let LEVELS = [
     },
 
     // Normal - Stage 1
-    {id: 11, name: "stage 11",
+    {id: 10, name: "stage 11",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
@@ -189,16 +189,17 @@ let LEVELS = [
     },
 
     // tomato + lettce = salad, apple, bacon/fish
-    {id: 12, name: "stage 12",
+    {id: 11, name: "stage 12",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
         maxScore: 2100,
 
         conveyorBelt: {
-            items: [ORANGE, BLANK, KIWI, BLANK, APPLE, BLANK, KIWI, BLANK, BLANK, ORANGE,
-                    ORANGE, BLANK, APPLE, BLANK, KIWI, YOGURT, BLANK, BLANK, APPLE, YOGURT],
-            speed: 1.6
+            items: [ORANGE, BLANK, APPLE, BLANK, BLANK, KIWI, BLANK, ORANGE, BLANK,
+                    APPLE, BLANK, KIWI, ORANGE, YOGURT, BLANK, APPLE, YOGURT, BLANK,
+                    KIWI, YOGURT],
+            speed: 1.55
         },
 
         processors: [
@@ -213,14 +214,14 @@ let LEVELS = [
                 recipe: [APPLE],
                 result: APPLE_SLICE,
                 score: 100,
-                x: 7*TILES_PX,
-                y: 2*TILES_PX
+                x: 9*TILES_PX,
+                y: 3*TILES_PX
             },
             {
                 recipe: [ORANGE_SLICE, APPLE_SLICE, YOGURT],
                 result: FRUIT_YOGURT,
                 score: 500,
-                x: 1*TILES_PX,
+                x: 3*TILES_PX,
                 y: 5*TILES_PX
             }
         ],
