@@ -5,137 +5,136 @@ links to the pages
 
 function Affiliate() {
 
-    // Scene
-    this.scene = new PIXI.Container();
-
-    // Background
-    this.bg = new PIXI.Graphics();
-    this.bg.beginFill(0x66d2fb);
-    this.bg.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    this.bg.endFill();
+    let foodFallUrl    = "http://foodfall.ca/";
+    let captainPlanUrl = "http://students.bcitdev.com/A01009216/Captain-Plan-It/index.php";
+    let raceToZeroUrl  = "http://racetozero.byethost12.com/?i=1";
 
     //-------- Text Style -------------------------
 
     // Text style for the title
-    this.textStyleTitle = new PIXI.TextStyle({fontFamily: FONT_FAMILY, fontSize: 140, fill: 0x00ad5e,
+    let textStyleTitle = new PIXI.TextStyle({
+        fontFamily: FONT_FAMILY, fontSize: 140, fill: 0x00ad5e,
         dropShadow: true, dropShadowAngle: 7 * Math.PI / 12, dropShadowDistance: 7, dropShadowAlpha: 0.7,
-        stroke: 0xFFFFFF, strokeThickness: 7});
+        stroke: 0xFFFFFF, strokeThickness: 7
+    });
 
     // Text style for the affiliate name
-    this.textStyleAffiliateName = this.textStyleTitle.clone();
-    this.textStyleAffiliateName.fontSize = 100;
-    this.textStyleAffiliateName.strokeThickness = 4;
+    let textStyleAffiliateName             = textStyleTitle.clone();
+    textStyleAffiliateName.fontSize        = 100;
+    textStyleAffiliateName.strokeThickness = 4;
 
     // ------------- Food Fall ----------------------------------
 
     // Create logo
-    this.foodFallLogo = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["foodfalllogo.jpg"]);
+    let foodFallLogo = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["foodfalllogo.jpg"]);
 
     // Set the logo to be interactive as a button
-    this.foodFallLogo.interactive = this.foodFallLogo.buttonMode = true;
+    foodFallLogo.interactive = foodFallLogo.buttonMode = true;
 
     // Set the position of the logo
-    this.foodFallLogo.position.set(100, 200);
+    foodFallLogo.position.set(100, 200);
 
     // When logo is clicked send user to affiliates page
-    this.foodFallLogo.pointertap = () => {
+    foodFallLogo.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
 
-        window.parent.location.href = "http://foodfall.ca/";
-
+        window.parent.location.href = foodFallUrl;
     };
 
     //--------------- Race to Zero ----------------------------
 
     // Create logo
-    this.raceToZeroLogo = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["racetozerologo.png"]);
+    let raceToZeroLogo = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["racetozerologo.png"]);
 
     // Set logo to be interactive as a button
-    this.raceToZeroLogo.interactive = this.raceToZeroLogo.buttonMode = true;
+    raceToZeroLogo.interactive = raceToZeroLogo.buttonMode = true;
 
     // Set position of logo
-    this.raceToZeroLogo.position.set((CANVAS_WIDTH / 2) - (this.raceToZeroLogo.width /2), 200);
+    raceToZeroLogo.position.set((CANVAS_WIDTH / 2) - (raceToZeroLogo.width / 2), 200);
 
     // When logo is clicked send user to affiliate page
-    this.raceToZeroLogo.pointertap = () => {
+    raceToZeroLogo.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
 
-        window.parent.location.href = "http://racetozero.byethost12.com/?i=1";
-
+        window.parent.location.href = raceToZeroUrl;
     };
 
     //----------------- Captain Plan-it ----------------------------
 
     // Make logo
-    this.captainPlanLogo = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["cp2.png"]);
+    let captainPlanLogo = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["cp2.png"]);
 
     // Set logo as interactive as a button
-    this.captainPlanLogo.interactive = this.captainPlanLogo.buttonMode = true;
+    captainPlanLogo.interactive = captainPlanLogo.buttonMode = true;
 
     //Set position of logo
-    this.captainPlanLogo.position.set(CANVAS_WIDTH - 300, 200);
+    captainPlanLogo.position.set(CANVAS_WIDTH - 300, 200);
 
     // When logo is clicked send user to affiliate page
-    this.captainPlanLogo.pointertap = () => {
+    captainPlanLogo.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
 
-        window.parent.location.href = "http://students.bcitdev.com/A01009216/Captain-Plan-It/index.php";
-
+        window.parent.location.href = captainPlanUrl;
     };
 
     // Main menu button
-    this.mainMenuButton = makeSimpleButton(200, 50, "main menu", 0xFFFF66, 75);
-    this.mainMenuButton.position.set((CANVAS_WIDTH /2) - 100, CANVAS_HEIGHT - 100);
-    this.mainMenuButton.on("pointertap", () => {
+    let mainMenuButton = makeSimpleButton(200, 50, "main menu", 0xFFFF66, 75);
+    mainMenuButton.position.set((CANVAS_WIDTH /2) - 100, CANVAS_HEIGHT - 100);
+    mainMenuButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
 
         StageSelect.open(); // -> states/stageselect.js
-
     });
 
     // Shadows for the affiliate logos
-    this.shadows = new PIXI.Graphics();
-    this.shadows.beginFill(0);
-    this.shadows.drawRect(this.foodFallLogo.x + 7, this.foodFallLogo.y + 7,
-                          this.foodFallLogo.width, this.foodFallLogo.height);
-    this.shadows.drawRect(this.raceToZeroLogo.x + 7, this.raceToZeroLogo.y + 7,
-                          this.raceToZeroLogo.width, this.raceToZeroLogo.height);
-    this.shadows.drawRect(this.captainPlanLogo.x + 7, this.captainPlanLogo.y + 7,
-                          this.captainPlanLogo.width, this.captainPlanLogo.height);
-
-    this.shadows.endFill();
-    this.shadows.alpha = 0.7;
+    let shadows = new PIXI.Graphics();
+    shadows.beginFill(0, 0.7);
+    shadows.drawRect(foodFallLogo.x + 7, foodFallLogo.y + 7, foodFallLogo.width, foodFallLogo.height);
+    shadows.drawRect(raceToZeroLogo.x + 7, raceToZeroLogo.y + 7, raceToZeroLogo.width, raceToZeroLogo.height);
+    shadows.drawRect(captainPlanLogo.x + 7, captainPlanLogo.y + 7, captainPlanLogo.width, captainPlanLogo.height);
+    shadows.endFill();
 
     //--------------- Text ------------------------------------
 
     // Title page text
-    this.gamesTxt = new PIXI.Text("games", this.textStyleTitle);
-    this.gamesTxt.position.set(25, 0);
+    let gamesTxt = new PIXI.Text("games", textStyleTitle);
+    gamesTxt.position.set(25, 0);
 
     // Affiliate name texts
-    this.foodFallTxt = new PIXI.Text("food fall", this.textStyleAffiliateName);
-    this.raceToZeroTxt = new PIXI.Text("race to zero", this.textStyleAffiliateName);
-    this.captainPlanTxt = new PIXI.Text("captain plan-it", this.textStyleAffiliateName);
+    let foodFallTxt    = new PIXI.Text("food fall", textStyleAffiliateName);
+    let raceToZeroTxt  = new PIXI.Text("race to zero", textStyleAffiliateName);
+    let captainPlanTxt = new PIXI.Text("captain plan-it", textStyleAffiliateName);
 
     // Position logo texts
-    this.foodFallTxt.position.set(this.foodFallLogo.x + this.foodFallLogo.width / 2 - this.foodFallTxt.width / 2,
-                                  this.foodFallLogo.y + 200);
-    this.raceToZeroTxt.position.set(this.raceToZeroLogo.x + this.raceToZeroLogo.width / 2 - this.raceToZeroTxt.width / 2
-                                     + 10, this.raceToZeroLogo.y + 200);
-    this.captainPlanTxt.position.set(this.captainPlanLogo.x + this.captainPlanLogo.width / 2 - this.captainPlanTxt.width / 2
-                                     + 15, this.captainPlanLogo.y + 200);
+    foodFallTxt.position.set(
+        foodFallLogo.x + foodFallLogo.width / 2 - foodFallTxt.width / 2,
+        foodFallLogo.y + 200);
+    raceToZeroTxt.position.set(
+        raceToZeroLogo.x + raceToZeroLogo.width / 2 - raceToZeroTxt.width / 2 + 10,
+        raceToZeroLogo.y + 200);
+    captainPlanTxt.position.set(
+        captainPlanLogo.x + captainPlanLogo.width / 2 - captainPlanTxt.width / 2 + 15,
+        captainPlanLogo.y + 200);
+
+    // Background
+    let background = new PIXI.Graphics();
+    background.beginFill(0x66d2fb);
+    background.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    background.endFill();
 
     // Add to scene
-    this.scene.addChild(this.bg);
-    this.scene.addChild(this.gamesTxt);
-    this.scene.addChild(this.foodFallTxt);
-    this.scene.addChild(this.raceToZeroTxt);
-    this.scene.addChild(this.captainPlanTxt);
-    this.scene.addChild(this.shadows);
-    this.scene.addChild(this.foodFallLogo);
-    this.scene.addChild(this.raceToZeroLogo);
-    this.scene.addChild(this.captainPlanLogo);
-    this.scene.addChild(this.mainMenuButton);
+    this.scene = new PIXI.Container();
+    this.scene.addChild(background);
+
+    this.scene.addChild(gamesTxt);
+    this.scene.addChild(foodFallTxt);
+    this.scene.addChild(raceToZeroTxt);
+    this.scene.addChild(captainPlanTxt);
+    this.scene.addChild(shadows);
+    this.scene.addChild(foodFallLogo);
+    this.scene.addChild(raceToZeroLogo);
+    this.scene.addChild(captainPlanLogo);
+    this.scene.addChild(mainMenuButton);
 
     // Update function to be called by the main game loop
     this.update = () => {};
