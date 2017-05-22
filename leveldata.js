@@ -25,47 +25,107 @@ let LEVELS = [
         finalItems: [APPLE_SLICE]
     },
 
-    {id: 1, name: "apple apple banana",
+    {id: 1, name: "apple banana kiwi",
 
         clearMessage: "this is a test level. don't try this at home.",
         wasteLimit: 5,
         maxScore: 300,
 
         conveyorBelt: {
-            items: [APPLE, BLANK, APPLE, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
+            items: [APPLE, BLANK, ORANGE, APPLE, BLANK, ORANGE, APPLE, BLANK, BLANK, BLANK, ORANGE],
             speed: 1.2
         },
 
         processors: [
             {
-                recipe: [APPLE, APPLE],
-                result: BANANA,
+                recipe: [APPLE, ORANGE],
+                result: KIWI_SLICE,
                 score: 100,
-                x: 7*TILES_PX,
+                x: 6*TILES_PX,
                 y: 4*TILES_PX
             }
         ],
 
-        finalItems: [BANANA]
+        finalItems: [KIWI_SLICE]
     },
 
-    {id: 2, name: "fruit yogurt",
+    {id: 2, name: "stage 2",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
-        wasteLimit: 5,
-        maxScore: 2100,
+        wasteLimit: 4,
+        maxScore: 600,
 
         conveyorBelt: {
-            items: [ORANGE, BLANK, KIWI, KIWI, BLANK, ORANGE, YOGURT, ORANGE, BLANK, BLANK, KIWI, YOGURT, BLANK, YOGURT],
-            speed: 1.5
+            items: [APPLE, BLANK, KIWI, APPLE, BLANK, KIWI, BLANK, BLANK, APPLE, BLANK, KIWI],
+            speed: 1.2
         },
 
         processors: [
             {
-                recipe: [ORANGE],
-                result: ORANGE_SLICE,
+                recipe: [APPLE],
+                result: APPLE_SLICE,
                 score: 100,
                 x: 1*TILES_PX,
+                y: 3*TILES_PX
+            },
+            {
+                recipe: [KIWI],
+                result: KIWI_SLICE,
+                score: 100,
+                x: 7*TILES_PX,
+                y: 3*TILES_PX
+            }
+
+        ],
+
+        finalItems: [APPLE_SLICE, KIWI_SLICE]
+    },
+
+    {id: 3, name: "stage 3",
+
+        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        wasteLimit: 7,
+        maxScore: 600,
+
+        conveyorBelt: {
+            items: [ORANGE, BLANK, KIWI, BLANK, BLANK, YOGURT, ORANGE, BLANK, KIWI, BLANK, ORANGE, BLANK, KIWI,
+                    BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, YOGURT, BLANK, BLANK, YOGURT],
+            speed: 1.3
+        },
+
+        processors: [
+            {
+                recipe: [ORANGE, KIWI, YOGURT],
+                result: FRUIT_YOGURT,
+                score: 300,
+                x: 5*TILES_PX,
+                y: 3*TILES_PX
+            }
+
+        ],
+
+        finalItems: [FRUIT_YOGURT]
+    },
+
+    {id: 4, name: "stage 4",
+
+        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        wasteLimit: 4,
+        maxScore: 1000,
+
+        conveyorBelt: {
+            items: [APPLE, BLANK, BANANA, BLANK, KIWI, BLANK, KIWI, BLANK, APPLE, BLANK, APPLE,
+                    BLANK, BLANK, KIWI, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK,
+                    BANANA, KIWI, BLANK, BLANK, BANANA, BLANK],
+            speed: 1.3
+        },
+
+        processors: [
+            {
+                recipe: [APPLE, BANANA],
+                result: APPLE_SLICE,
+                score: 200,
+                x: 3*TILES_PX,
                 y: 2*TILES_PX
             },
             {
@@ -73,19 +133,15 @@ let LEVELS = [
                 result: KIWI_SLICE,
                 score: 100,
                 x: 7*TILES_PX,
-                y: 2*TILES_PX
-            },
-            {
-                recipe: [ORANGE_SLICE, KIWI_SLICE, YOGURT],
-                result: FRUIT_YOGURT,
-                score: 500,
-                x: 1*TILES_PX,
                 y: 5*TILES_PX
             }
+
         ],
 
-        finalItems: [FRUIT_YOGURT]
+        finalItems: [APPLE_SLICE, KIWI_SLICE]
     }
+
+
 ];
 
 // PPAP
