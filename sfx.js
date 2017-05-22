@@ -15,6 +15,7 @@ let MUSIC_VOLUME = 1.0;
 * without changing it in the rest of the code*/
 let eSFXList = {
     MenuOpen       : "sounds/menu-open.mp3",
+    MenuScroll     : "sounds/menu-scroll.mp3",
     ButtonClick    : "sounds/button-click.mp3",
     ItemPickUp     : "sounds/item-pickup.mp3",
     Splat          : "sounds/splat.mp3",
@@ -25,6 +26,7 @@ let eSFXList = {
     IntoConveyor   : "sounds/into-conveyor.mp3",
     ItemDropped    : "sounds/item-dropped.mp3",
     Error          : "sounds/error.mp3",
+    StageEnter     : "sounds/stage-enter.mp3",
     StageComplete  : "sounds/stage-complete.mp3",
     GameOver       : "sounds/game-over.mp3"
 };
@@ -41,6 +43,7 @@ let eMusicList = {
 function loadSounds() {
     sounds.load([
         eSFXList.MenuOpen,
+        eSFXList.MenuScroll,
         eSFXList.ButtonClick,
         eSFXList.ItemPickUp,
         eSFXList.Splat,
@@ -51,6 +54,7 @@ function loadSounds() {
         eSFXList.IntoConveyor,
         eSFXList.ItemDropped,
         eSFXList.Error,
+        eSFXList.StageEnter,
         eSFXList.StageComplete,
         eSFXList.GameOver,
         eMusicList.PPAP,
