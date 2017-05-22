@@ -47,9 +47,9 @@ function OptionsMenu() {
     });
     
     let soundTxt = new PIXI.Text("sound", txtStyle);
-    let soundVol = makeSlider(SFX_VOLUME, panel.width - 400, 100); // -> util.js
+    let soundVol = makeSlider(SFX_VOLUME, panel.width - 400, 0xcc2aee); // -> util.js
     let musicTxt = new PIXI.Text("music", txtStyle);
-    let musicVol = makeSlider(MUSIC_VOLUME, soundVol.width, soundVol.height); // -> util.js
+    let musicVol = makeSlider(MUSIC_VOLUME, soundVol.width, 0xcc2aee); // -> util.js
 
     panel.interactive = true;
 
