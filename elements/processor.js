@@ -362,7 +362,7 @@ function Timer(level)
     //-------------------------------------------------------------------------------
     // Stuffs to do on Spawn
     this.OnSpawn = () => {
-        level.scene.addChild(this.mCurrentSprite);
+        this.mCurrentSprite.visible = true;
         this.mCurrentSprite.scale.set(0.25);
         this.isEntering = true;
     };  // Play Animation
@@ -400,7 +400,7 @@ function Timer(level)
     //-------------------------------------------------------------------------------
     // Stuffs on kill
     this.OnKill = () => {
-        level.scene.removeChild(this.mCurrentSprite);
+        this.mCurrentSprite.visible = false;
         this.Reset();
         this.jump = 0;
     } ; // Play Animation
@@ -418,7 +418,8 @@ function Timer(level)
         this.mCurrentSprite = new PIXI.Sprite(this.mSpriteList[0]);
         this.mCurrentSprite.position.set(x, y);
         this.mCurrentSprite.anchor.set(0.5);
-
+        level.scene.addChild(this.mCurrentSprite);
+        this.mCurrentSprite.visible = false;
     };
 
     //==========================================================================================
