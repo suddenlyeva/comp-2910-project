@@ -15,6 +15,7 @@ let MUSIC_VOLUME = 1.0;
 * without changing it in the rest of the code*/
 let eSFXList = {
     MenuOpen       : "sounds/menu-open.mp3",
+    MenuScroll     : "sounds/menu-scroll.mp3",
     ButtonClick    : "sounds/button-click.mp3",
     ItemPickUp     : "sounds/item-pickup.mp3",
     Splat          : "sounds/splat.mp3",
@@ -42,6 +43,7 @@ let eMusicList = {
 function loadSounds() {
     sounds.load([
         eSFXList.MenuOpen,
+        eSFXList.MenuScroll,
         eSFXList.ButtonClick,
         eSFXList.ItemPickUp,
         eSFXList.Splat,
