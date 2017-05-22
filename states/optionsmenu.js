@@ -13,8 +13,12 @@ function OptionsMenu() {
     panel.beginFill(0xfff3ad);
     panel.drawRect(0, 0, width, height);
     panel.endFill();
-    let okButton = makeSimpleButton(150, 90, "ok", 0xf00e46, 120); // -> util.js
-
+    
+    let okButton = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["menu-ok.png"]
+    );
+    okButton.interactive = okButton.buttonMode = true;
+    
     let txtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 200, fill: 0x0
     });
