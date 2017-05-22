@@ -93,29 +93,10 @@
                          <div id="user-signed-in" class="hidden">
                         <!--<p>-->
                         <button type="button" class="btn btn-success btn-lg btn-customlg btn-block mx-auto" onclick="link()">Play with google account</button>
-                        <!--</p>-->
-                        <!--<div id="user-info">
-                        <div id="name"></div>
-                        <div id="email"></div>
-                        <div class="clearfix"></div>
-                        </div>-->
-                        <!--<p>-->
                         <button type="button" class="btn btn-success btn-lg btn-customlg btn-block mx-auto" id="sign-out">Sign Out</button>
-                        <!--</p>-->
-                        <!--<p>-->
-                        <!--<button type="button" class="btn btn-success btn-lg btn-customlg btn-block mx-auto" id="delete-account">Delete account</button>-->
-                        <!--</p>-->
                     </div>
                     <div id="user-signed-out" class="hidden">
-                        <!--<p>-->
                           <button type="button" class="btn btn-success btn-lg btn-customlg btn-block mx-auto" onclick="noauthlink()">Play without sign in</button>
-                        <!--</p>-->
-                        <!--<p> or use google acccout to save your progress! </p>-->
-                        <!--<h4>You are signed out.</h4>
-                        <p>
-                        <button id="sign-in-with-redirect">Sign In with Redirect</button>
-                        <button id="sign-in-with-popup">Sign In with Popup</button>
-                        </p>-->
                         <div id="firebaseui-spa">
                         <h5 class="text-center">or sign in to save progress:</h5>
                         <div id="firebaseui-container"></div>
@@ -141,16 +122,6 @@
                         firebase.auth().getRedirectResult().then(function(result) {
                             console.log("getRedirect success");
                             console.log(result.user);
-                        // The firebase.User instance:
-                        // var user = result.user;
-                        // console.log(user);
-                        // The Facebook firebase.auth.AuthCredential containing the Facebook
-                        // access token:
-                        // var credential = result.credential;
-                        // As this API can be used for sign-in, linking and reauthentication,
-                        // check the operationType to determine what triggered this redirect
-                        // operation.
-                        // var operationType = result.operationType;
                        document.location =  "./play.html";
                         }, function(error) {
                             console.log("getRedirect failed");
@@ -172,35 +143,6 @@
                         });
                     }
                 </script>
-                <!--<h3>FirebaseUI Demo</h3>
-                <div id="loading">Loading...</div>
-                <div id="loaded" class="hidden">
-                    <div id="main">
-                    <div id="user-signed-in" class="hidden">
-                        <div id="user-info">
-                        <div id="name"></div>
-                        <div id="email"></div>
-                        <div class="clearfix"></div>
-                        </div>
-                        <p>
-                        <button id="sign-out">Sign Out</button>
-                        <button id="delete-account">Delete account</button>
-                        </p>
-                    </div>
-                    <div id="user-signed-out" class="hidden">
-                        <h4>You are signed out.</h4>
-                        <p>
-                        <button id="sign-in-with-redirect">Sign In with Redirect</button>
-                        <button id="sign-in-with-popup">Sign In with Popup</button>
-                        </p>
-                        <div id="firebaseui-spa">
-                        <h5>Single Page Application mode:</h5>
-                        <div id="firebaseui-container"></div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                </div>-->
                 <script src="web/auth/app.js"></script>
         </div>
     </section>
@@ -214,10 +156,7 @@
                 <div class="embed-responsive embed-responsive-4by3">
                     <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/oa9z1iP0_xQ"></iframe>
                 </div>
-                <!--<div class="col-lg-4 offset-lg-2">-->
                     <p>Food Factory Zero is an time-based drag and drop game created to make learning process fun.</p>
-                <!--</div>-->
-                <!--</div>&ndash;&gt;-->
             </div>
         </div>
     </section>
