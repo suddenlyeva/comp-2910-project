@@ -18,10 +18,11 @@ function OptionsMenu() {
     let txtStyle = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 200, fill: 0x0
     });
+    
     let soundTxt = new PIXI.Text("sound", txtStyle);
-    let soundVol = makeSlider(panel.width - 400, 100); // -> util.js
+    let soundVol = makeSlider(SFX_VOLUME, panel.width - 400, 100); // -> util.js
     let musicTxt = new PIXI.Text("music", txtStyle);
-    let musicVol = makeSlider(soundVol.width, soundVol.height); // -> util.js
+    let musicVol = makeSlider(MUSIC_VOLUME, soundVol.width, soundVol.height); // -> util.js
 
     panel.interactive = true;
 
@@ -57,25 +58,22 @@ function OptionsMenu() {
     });
 
     // Adjusts the volume for all sfx based on slider position
-    soundVol.onSliderAdjust = () => {
-      for (let i in SFX_MASTER) {
-          SFX_VOLUME = soundVol.value;
-          SFX_MASTER[i].volume = SFX_VOLUME;
-      }
+    soundVol.onSliderAdjust = (value) => {
+        SFX_VOLUME = value;
+        updateVolumeMaster();
     };
 
     // Adjusts the volume of bgm music based on slider position
-    musicVol.onSliderAdjust = () => {
-        for(let i in MUSIC_MASTER) {
-            MUSIC_VOLUME = musicVol.value;
-            MUSIC_MASTER[i].volume = MUSIC_VOLUME;
-        }
+    musicVol.onSliderAdjust = (value) => {
+        MUSIC_VOLUME = value;
+        updateVolumeMaster();
     };
 
     this.scene.on("removed", () => {
         soundVol.cleanUp();
         musicVol.cleanUp();
     });
+    
 }
 
 // Function to open. Options Menu is singleton
@@ -96,5 +94,6 @@ OptionsMenu.close = () => {
     if(OptionsMenu.instance != null && OptionsMenu.instance.scene.parent != null) {
         OptionsMenu.instance.scene.parent.removeChild(OptionsMenu.instance.scene);
         OptionsMenu.instance.isOpen = false;
+        saveOptions(); // -> progress.js
     }
 };

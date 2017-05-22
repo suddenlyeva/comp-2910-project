@@ -17,6 +17,8 @@ function loadProgress () {
                     // tutorial starts unlocked; assume tutorial is first in the LEVELS arrray
                 case "unlocked"  : return index === 0;
                 case "highscore" : return 0;
+                case "soundvol"  : return SFX_VOLUME;
+                case "musicvol"  : return MUSIC_VOLUME;
                 default          : throw new Error("No default for property: " + prop);
             }
         };
@@ -30,6 +32,10 @@ function loadProgress () {
             };
         };
 
+        let getDbProp = (entry, prop) => {
+            // if db entry doesn't have requested property, return default
+            return entry[prop] == null ? getDefault(prop, i) : entry[prop];
+        };
 
         if(progress) { // fetch from database
             for (let i = 0; i < LEVELS.length; i++) {
@@ -37,18 +43,20 @@ function loadProgress () {
                 if(dbEntry == null) { // level id not found in the database
                     setToDefault(i);
                 } else {
-                    let getDbProp = (prop) => {
-                        // if db entry doesn't have requested property, return default
-                        return dbEntry[prop] == null ? getDefault(prop, i) : dbEntry[prop];
-                    };
 
                     LEVEL_PROGRESS[i] = {
                         // id is not stored in database as a property so no point using getDbProp
                         id        : getDefault("id", i),
-                        unlocked  : getDbProp("unlocked"),
-                        highscore : getDbProp("highscore")
+                        unlocked  : getDbProp(dbEntry, "unlocked"),
+                        highscore : getDbProp(dbEntry, "highscore")
                     };
                 }
+            }
+
+            // load options
+            if(progress["options"]) {
+                SFX_VOLUME   = getDbProp(progress["options"], "soundvol");
+                MUSIC_VOLUME = getDbProp(progress["options"], "musicvol");
             }
         } else { // load defaults
             for (let i = 0; i < LEVELS.length; i++) {
@@ -62,7 +70,7 @@ function loadProgress () {
         if (user) {
             // signed in
             console.log(user.uid);
-            console.log("Loading progress from database, please wait...");
+            console.log("Loading user data from database, please wait...");
             // check the user existence on db
             DATABASE.ref('users/' + user.uid).once('value').then(function(snapshot){
                 if(snapshot.exists()) {
@@ -75,7 +83,7 @@ function loadProgress () {
                     console.log("New user detected: " + user.uid);
                     writeToVar(); // initialize progress with default values
                 }
-                console.log("Progress loaded.");
+                console.log("Finished loading user data from database.");
             });
         } else {
             console.log("Not logged in");
@@ -100,6 +108,24 @@ function saveProgress() {
         } else {
             // not signed in, then nothing.
             console.log("Failed to save. Please login.");
+        }
+    });
+}
+
+// Saves progress to database
+function saveOptions() {
+    // check user login status again before saving
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // signed in, then save options
+            console.log("Saving options...");
+            DATABASE.ref('users/' + user.uid + '/options').set({
+                soundvol: SFX_VOLUME,
+                musicvol: MUSIC_VOLUME
+            });
+        } else {
+            // not signed in, then nothing.
+            console.log("Failed to save options. Please login.");
         }
     });
 }
