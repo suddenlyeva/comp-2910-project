@@ -274,10 +274,19 @@ function makeGear(size, speed) {
 
     // Save textures
     let frames = [];
-    for (let i = 0; i < frameCount; i++) {
-        frames.push(
-            PIXI.loader.resources["images/spritesheet.json"].textures["gear-" + size + "-" + i + ".png"]
-        );
+    if (size == "xl") {
+        for (let i = 0; i < frameCount; i++) {
+            frames.push(
+                PIXI.loader.resources["images/gears-xl.json"].textures["gear-xl-" + i + ".png"]
+            );
+        }
+    }
+    else {
+        for (let i = 0; i < frameCount; i++) {
+            frames.push(
+                PIXI.loader.resources["images/spritesheet.json"].textures["gear-" + size + "-" + i + ".png"]
+            );
+        }
     }
 
     // Make gear

@@ -7,15 +7,18 @@ function OptionsMenu() {
     let width  = 10 * TILES_PX;
     let height = 6 * TILES_PX;
 
-    // Make Panel and Buttons
-    /*
-    let panel = new PIXI.Graphics();
-    panel.lineStyle(1, 0, 1);
-    panel.beginFill(0xfff3ad);
-    panel.drawRect(0, 0, width, height);
-    panel.endFill();
-    */
+    // Gears
+    let gearAlign = 60;
     
+    let gear1 = makeGear("xl", 1.1);
+    gear1.x = -145;
+    gear1.y = -145;
+    
+    let gear2 = makeGear("l", 1.5);
+    gear2.x = width + 115 - gear2.width;
+    gear2.y = height - 25 - gear2.height;
+    
+    // Make Panel and Buttons
     let panel = new PIXI.Container();
     let panelLeft = new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["options-left.png"]
@@ -55,6 +58,8 @@ function OptionsMenu() {
 
     // Add to scene
     this.scene = new PIXI.Container();
+    this.scene.addChild(gear1);
+    this.scene.addChild(gear2);
     this.scene.addChild(panel);
     this.scene.addChild(okButton);
     this.scene.addChild(soundTxt);
@@ -95,10 +100,20 @@ function OptionsMenu() {
         MUSIC_VOLUME = value;
         updateVolumeMaster();
     };
+    
+    let updateGears = () => {
+        gear1.update();
+        gear2.update();
+    };
+    
+    this.scene.on("added", () => {
+        TICKER.add(updateGears);
+    });
 
     this.scene.on("removed", () => {
         soundVol.cleanUp();
         musicVol.cleanUp();
+        TICKER.remove(updateGears);
     });
     
 }
