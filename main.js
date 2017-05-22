@@ -2,6 +2,11 @@
 
 let loadingProgressBar;
 function init() {
+    // Stuff for the Loader
+    let thingsToLoad = [
+        "images/spritesheet.json"
+    ];
+
     // Authentication Check
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -11,7 +16,7 @@ function init() {
     });
 
     // Load Progress
-    loadProgress(); // -> levels.js
+    loadProgress(); // -> progress.js
 
     RENDERER.backgroundColor = 0x95d5f5;
 
@@ -25,11 +30,6 @@ function init() {
     loadingProgressBar.position.set(CANVAS_WIDTH / 2 - loadingProgressBar.width / 2,
         CANVAS_HEIGHT / 2 - loadingProgressBar.height / 2);
     SCENE.addChild(loadingProgressBar);
-
-    // Stuff for the Loader
-    let thingsToLoad = [
-        "images/spritesheet.json"
-    ];
 
     // Load game with PIXI loader
     PIXI.loader
