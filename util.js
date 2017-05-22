@@ -208,6 +208,7 @@ function makeSlider(initValue, width, height, sliderThickness = height / 6, hand
     sliderObj.addChild(slider);
     sliderObj.addChild(clickableArea);
     sliderObj.addChild(handle);
+    sliderObj.cleanUp();
 
     // Return to caller
     return sliderObj;

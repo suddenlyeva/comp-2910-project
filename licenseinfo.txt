@@ -14,3 +14,7 @@ yogurt.png - No need to credit. (Source: irasutoya http://www.irasutoya.com/2014
 fade-backing - <a href="http://www.freepik.com">Designed by starline / Freepik</a>
 
 pen <a href="https://www.vexels.com/vectors/preview/128402/pen-flat-icon"> Pen flat icon </a> | designed by Vexels
+
+check mark <a href="https://clipartfest.com/">clipartfest.com</a>
+
+Music note etc. <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
