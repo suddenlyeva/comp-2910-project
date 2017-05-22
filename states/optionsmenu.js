@@ -22,9 +22,9 @@ function OptionsMenu() {
         fontFamily: FONT_FAMILY, fontSize: 200, fill: 0x0
     });
     this.soundTxt = new PIXI.Text("sound", this.txtStyle);
-    this.soundVol = makeSlider(this.panel.width - 400, 100); // -> util.js
+    this.soundVol = makeSlider(SFX_VOLUME, this.panel.width - 400, 100); // -> util.js
     this.musicTxt = new PIXI.Text("music", this.txtStyle);
-    this.musicVol = makeSlider(this.soundVol.width, this.soundVol.height); // -> util.js
+    this.musicVol = makeSlider(MUSIC_VOLUME, this.soundVol.width, this.soundVol.height); // -> util.js
 
     this.panel.interactive = true;
 
@@ -59,25 +59,22 @@ function OptionsMenu() {
     });
 
     // Adjusts the volume for all sfx based on slider position
-    this.soundVol.onSliderAdjust = () => {
-      for (let i in SFX_MASTER) {
-          SFX_VOLUME = this.soundVol.value;
-          SFX_MASTER[i].volume = SFX_VOLUME;
-      }
+    this.soundVol.onSliderAdjust = (value) => {
+        SFX_VOLUME = value;
+        updateVolumeMaster();
     };
 
     // Adjusts the volume of bgm music based on slider position
-    this.musicVol.onSliderAdjust = () => {
-        for(let i in MUSIC_MASTER) {
-            MUSIC_VOLUME = this.musicVol.value;
-            MUSIC_MASTER[i].volume = MUSIC_VOLUME;
-        }
+    this.musicVol.onSliderAdjust = (value) => {
+        MUSIC_VOLUME = value;
+        updateVolumeMaster();
     };
 
     this.scene.on("removed", () => {
         this.soundVol.cleanUp();
         this.musicVol.cleanUp();
     });
+    
 }
 
 // Function to open. Options Menu is singleton

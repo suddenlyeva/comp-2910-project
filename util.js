@@ -81,7 +81,7 @@ function makeProgressBar(width, height, padding, bgColor, fgColor) {
 }
 
 // Builds a Volume Slider
-function makeSlider(width, height, sliderThickness = height / 6, handleWidth = height / 2) {
+function makeSlider(initValue, width, height, sliderThickness = height / 6, handleWidth = height / 2) {
 
     // Create Container
     let sliderObj = new PIXI.Container();
@@ -118,8 +118,15 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
     clickableArea.endFill();
     clickableArea.interactive = clickableArea.buttonMode = true;
 
-
-    sliderObj.value = 1.0; // Access this for controlling things with the slider.
+    // Sets the slider to a given value.
+    sliderObj.setValue = (newValue) => {
+        if(newValue >= 0 && newValue <= 1) {
+            sliderObj.value = newValue;
+            handle.x = slider.x + (endOfSlider - slider.x) * newValue;
+        }
+    };
+    
+    sliderObj.setValue(initValue);
 
     // Functions
 
@@ -166,7 +173,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
 
             // Adjust value based on new positions and request callback
             sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
-            sliderObj.onSliderAdjust();
+            sliderObj.onSliderAdjust(sliderObj.value);
         }
     };
 
@@ -185,7 +192,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         }
 
         sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
-        sliderObj.onSliderAdjust();
+        sliderObj.onSliderAdjust(sliderObj.value);
     };
 
     // clears handle data
@@ -194,9 +201,9 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         handle.tint = handle.x === slider.x ? colorMuted : colorSound; // IF the handle is on the left edge of slider
     };
 
-    // Function callback for mocing the slider bar.
+    // Function callback for moving the slider bar.
     sliderObj.onSliderAdjust = () => {};
-
+    
     // Add to container
     sliderObj.addChild(slider);
     sliderObj.addChild(clickableArea);
