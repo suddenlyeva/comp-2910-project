@@ -75,7 +75,7 @@ function StageSelect() {
             button.addChild(buttonImage);
 
             let buttonText = new PIXI.Text(
-                (i !== 0 ? "level " + i + " :" : "") + " " + LEVELS[i].name,
+                levelDisplayName(LEVELS[i].id, LEVELS[i].name, i), // -> util.js
                 buttonTextStyle);
             button.addChild(buttonText);
             buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);

@@ -309,6 +309,18 @@ function makeGear(size, speed) {
     return gear;
 }
 
+// returns displayable level name in correct format e.g. "level 1 : something"
+// takes level id and name. Can also take level index if it's known at the time
+function levelDisplayName(id, name, index = null) {
+    if(id === LEVELS[0].id)
+        return name;
+    if(id === PPAP.id)
+        return "secret level : " + name;
+    if(index === null)
+        index = findIndexById(LEVELS, id);
+    return "level " + index + " : " + name;
+}
+
 // arr - array of object with property 'id'; id - object id whose index we want to find
 // returns -1 if index not found
 function findIndexById(arr, id) {

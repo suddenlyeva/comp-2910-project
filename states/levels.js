@@ -266,7 +266,7 @@ function Level(data) {
         fontFamily: FONT_FAMILY, fontSize: 96, fill: 0x0
     });
     this.levelTxt = new PIXI.Text(
-        (this.id !== LEVELS[0].id ? "level " + findIndexById(LEVELS, this.id) + " :" : "") + " " + this.name,
+        levelDisplayName(this.id, this.name), // -> util.js
         this.txtStyle);
     this.levelTxt.position.set(TILES_PX * 7, 0);
     this.scene.addChild(this.levelTxt);
