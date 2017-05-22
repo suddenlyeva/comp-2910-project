@@ -340,15 +340,15 @@ function StageSelect() {
 
     easyButton  .pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        goToButton(0);
+        goToButton(DIFFICULTY.easy);   // -> leveldata.js
     };
     normalButton.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        goToButton(1);
+        goToButton(DIFFICULTY.normal); // -> leveldata.js
     };
     hardButton  .pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        goToButton(2);
+        goToButton(DIFFICULTY.hard);   // -> leveldata.js
     };
 
     // Options
