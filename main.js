@@ -1,39 +1,42 @@
 "use strict";
 
-// Authentication Check
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-        console.log("logged in");
-        USER = user;
-    }
-});
+let loadingProgressBar;
+function init() {
+    // Authentication Check
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            console.log("logged in");
+            USER = user;
+        }
+    });
 
-// Load Progress
-loadProgress(); // -> levels.js
+    // Load Progress
+    loadProgress(); // -> levels.js
 
-// Stuff for the Loader
-let thingsToLoad = [
-    "images/spritesheet.json"
-];
-RENDERER.backgroundColor = 0x95d5f5;
+    RENDERER.backgroundColor = 0x95d5f5;
 
-window.addEventListener('resize', function(){ // Flag after resize event for optimization
-    WINDOW_RESIZED = true;
-}, true);
+    window.addEventListener('resize', function(){ // Flag after resize event for optimization
+        WINDOW_RESIZED = true;
+    }, true);
 
-// Create Loading Bar
-let loadingProgressBar = makeProgressBar(
-    CANVAS_WIDTH / 1.5, CANVAS_HEIGHT / 6, 10, 0, 0x00d27f);
-loadingProgressBar.position.set(CANVAS_WIDTH / 2 - loadingProgressBar.width / 2,
-    CANVAS_HEIGHT / 2 - loadingProgressBar.height / 2);
-SCENE.addChild(loadingProgressBar);
+    // Create Loading Bar
+    loadingProgressBar = makeProgressBar(
+        CANVAS_WIDTH / 1.5, CANVAS_HEIGHT / 6, 10, 0, 0x00d27f);
+    loadingProgressBar.position.set(CANVAS_WIDTH / 2 - loadingProgressBar.width / 2,
+        CANVAS_HEIGHT / 2 - loadingProgressBar.height / 2);
+    SCENE.addChild(loadingProgressBar);
 
+    // Stuff for the Loader
+    let thingsToLoad = [
+        "images/spritesheet.json"
+    ];
 
-// Load game with PIXI loader
-PIXI.loader
-    .on("progress", showLoadingProgress)
-    .add(thingsToLoad)
-    .load(loadSounds); // -> sfx.js
+    // Load game with PIXI loader
+    PIXI.loader
+        .on("progress", showLoadingProgress)
+        .add(thingsToLoad)
+        .load(loadSounds); // -> sfx.js
+}
 
 // Starts the game at Intro
 function setup() {
@@ -73,6 +76,23 @@ function setup() {
     TICKER.start();
 }
 
+// Called by loader before the game starts
+function showLoadingProgress(loader, resource) {
+
+    // Show progress
+    console.log("loading: " + resource.url);
+
+    // Other half of loading bar is in sfx.js sound.onProgress
+    loadingProgressBar.xScale(loader.progress / 200); // -> util.js
+
+    // Resize loading screen
+    sceneResize(STRETCH_THRESHOLD); // -> util.js
+    RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
+
+    // Draw loading screen
+    RENDERER.render(SCENE);
+}
+
 // Called while the game is running
 function gameLoop() {
 
@@ -99,19 +119,5 @@ function gameLoop() {
     RENDERER.render(SCENE); // Draw the current Scene
 }
 
-// Called by loader before the game starts
-function showLoadingProgress(loader, resource) {
-
-    // Show progress
-    console.log("loading: " + resource.url);
-
-    // Other half of loading bar is in sfx.js sound.onProgress
-    loadingProgressBar.xScale(loader.progress / 200); // -> util.js
-
-    // Resize loading screen
-    sceneResize(STRETCH_THRESHOLD); // -> util.js
-    RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
-
-    // Draw loading screen
-    RENDERER.render(SCENE);
-}
+// start the game
+init();
