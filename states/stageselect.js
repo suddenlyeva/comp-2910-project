@@ -80,6 +80,9 @@ function StageSelect() {
             button.addChild(buttonText);
             buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
 
+            let starContainer = new PIXI.Container();
+            button.addChild(starContainer);
+
             let highscoreText = new PIXI.Text("", buttonTextStyle);
             button.addChild(highscoreText);
 
@@ -98,6 +101,17 @@ function StageSelect() {
                 // position stuff on the button here
                 lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5);
                 highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
+                if(LEVEL_PROGRESS[i].highscore !== 0) {
+                    let grade = calculateGrade({ maxScore: LEVELS[i].maxScore, score: LEVEL_PROGRESS[i].highscore });
+                    for (let i = 0; i < grade.nStars; i++) {
+                        let star = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["star.png"]);
+                        star.scale.set(0.5);
+                        star.x = i * star.width;
+                        starContainer.addChild(star);
+                    }
+                    starContainer.position.set(button.width / 2 - starContainer.width / 2,
+                        button.height - starContainer.height * 1.5);
+                }
 
                 button.scale.set(scaleMemX, scaleMemY);
             };
