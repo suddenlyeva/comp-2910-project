@@ -96,32 +96,37 @@ let LEVELS = [
 let PPAP_UNLOCKED = false;
 let PPAP = {id: 99999, name: "ppap",
 
-        clearMessage: "now go play the actual levels",
-        wasteLimit: 5,
-        maxScore: 99999,
+    clearMessage: "now go play the actual levels",
+    wasteLimit: 5,
+    maxScore: 99999,
 
-        conveyorBelt: {
-            items: [PEN,BLANK,PINEAPPLE,BLANK,APPLE,BLANK,PEN],
-            speed: 1.3
-        },
+    conveyorBelt: {
+        items: [PEN,BLANK,PINEAPPLE,BLANK,APPLE,BLANK,PEN],
+        speed: 1.3
+    },
 
-        processors: [
-            {
-                recipe: [PEN,PINEAPPLE,APPLE,PEN],
-                result: PPAP_ITEM,
-                score: 99999,
-                x: 4*TILES_PX,
-                y: 3*TILES_PX
-            }
-        ],
+    processors: [
+        {
+            recipe: [PEN,PINEAPPLE,APPLE,PEN],
+            result: PPAP_ITEM,
+            score: 99999,
+            x: 4*TILES_PX,
+            y: 3*TILES_PX
+        }
+    ],
 
-        finalItems: [PPAP_ITEM]
+    finalItems: [PPAP_ITEM]
 };
 
 let LEVEL_PROGRESS = [];
-// adding a new property must be done in 5 places:
-// this file       -> getDefault, setToDefault, if(progress) loop in writeToVar, saveProgress
+// adding or removing a property must be done in 5 places:
+// this file       -> in writeToVar: getDefault, setToDefault, if(progress) loop
+//                 -> saveProgress
 // conveyorbelt.js -> pen.onDragEnd
+
+// technically every getDefault("id", index) can be replaced with LEVELS[index].id and case "id" deleted
+//
+// property "id" is also not strictly necessary
 
 function loadProgress () {
     // write progress to the LEVEL_PROGRESS variable
@@ -129,11 +134,11 @@ function loadProgress () {
     function writeToVar (progress = false) {
         let getDefault = (prop, index) => {
             switch(prop) {
-                    case "id"        : return LEVELS[index].id;
+                case "id"        : return LEVELS[index].id;
                     // tutorial starts unlocked; assume tutorial is first in the LEVELS arrray
-                    case "unlocked"  : return LEVELS[index].id === LEVELS[0].id;
-                    case "highscore" : return 0;
-                    default          : throw new Error("No default for property: " + prop);
+                case "unlocked"  : return index === 0;
+                case "highscore" : return 0;
+                default          : throw new Error("No default for property: " + prop);
             }
         };
 
@@ -148,20 +153,21 @@ function loadProgress () {
 
 
         if(progress) { // fetch from database
-            for (let i = 0; i < LEVELS.length; i++) { // O(n^2) ...
-                let dbIndex = findIndexById(progress, LEVELS[i].id);
-                if(dbIndex === -1) { // level id not found in the database
+            for (let i = 0; i < LEVELS.length; i++) {
+                let dbEntry = progress[LEVELS[i].id];
+                if(dbEntry == null) { // level id not found in the database
                     setToDefault(i);
                 } else {
-                    let getDbEntry = (prop) => {
+                    let getDbProp = (prop) => {
                         // if db entry doesn't have requested property, return default
-                        return progress[dbIndex][prop] == null ? getDefault(prop, i) : progress[dbIndex][prop];
+                        return dbEntry[prop] == null ? getDefault(prop, i) : dbEntry[prop];
                     };
 
                     LEVEL_PROGRESS[i] = {
-                        id        : getDbEntry("id"),
-                        unlocked  : getDbEntry("unlocked"),
-                        highscore : getDbEntry("highscore")
+                        // id is not stored in database as a property so no point using getDbProp
+                        id        : getDefault("id", i),
+                        unlocked  : getDbProp("unlocked"),
+                        highscore : getDbProp("highscore")
                     };
                 }
             }
@@ -207,8 +213,7 @@ function saveProgress() {
             // signed in, then save progress
             console.log("Saving progress...");
             for (let i = 0; i < LEVEL_PROGRESS.length; i++) {
-                DATABASE.ref('users/' + user.uid + '/' + i).set({
-                    id        : LEVEL_PROGRESS[i].id,
+                DATABASE.ref('users/' + user.uid + '/' + LEVEL_PROGRESS[i].id).set({
                     unlocked  : LEVEL_PROGRESS[i].unlocked,
                     highscore : LEVEL_PROGRESS[i].highscore
                 });
