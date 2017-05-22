@@ -75,7 +75,7 @@ function StageSelect() {
             button.addChild(buttonImage);
 
             let buttonText = new PIXI.Text(
-                (i !== 0 ? "level " + i + " :" : "") + " " + LEVELS[i].name,
+                levelDisplayName(LEVELS[i].id, LEVELS[i].name, i), // -> util.js
                 buttonTextStyle);
             button.addChild(buttonText);
             buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
@@ -130,8 +130,9 @@ function StageSelect() {
                     if(currentButton === i && posL < refXCenter && refXCenter < posR) {
 
                         if (LEVEL_PROGRESS[currentButton].unlocked) { // -> states/levels.js
-                            sounds[eSFXList.ButtonClick].play(); // -> sfx.js
-                            sounds[eSFXList.MenuOpen].play();   // -> sfx.js
+                            PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+                            PlaySound(eSFXList.StageEnter, false); // -> sfx.js
+                            PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
                             // no need to do id lookup because buttons should always be in the same order as in LEVELS
                             Level.open(LEVELS[currentButton]); // -> states/levels.js
                         }
