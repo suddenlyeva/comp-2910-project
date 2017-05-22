@@ -1,66 +1,25 @@
 "use strict";
 
 // Authentication Check
-let USER;
-
 firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-      console.log("logged in");
-      USER = user;
-  }
+    if (user) {
+        console.log("logged in");
+        USER = user;
+    }
 });
-
-// Database Global
-let DATABASE = firebase.database();
 
 // Load Progress
 loadProgress(); // -> levels.js
-
-// Base Canvas Size
-let CANVAS_WIDTH = 1280,
-    CANVAS_HEIGHT = 720;
-
-// Font Global
-let FONT_FAMILY = "JMH-HarryDicksonOne";
-
-// State Machine Globals
-let SCENE = new PIXI.Container();
-let STATE, previousScene;
 
 // Stuff for the Loader
 let thingsToLoad = [
     "images/spritesheet.json"
 ];
-
-// Renderer Global
-let RENDERER = PIXI.autoDetectRenderer({
-    width: CANVAS_WIDTH,
-    height: CANVAS_HEIGHT,
-    view: document.getElementById("display"),
-    transparent: false,
-    autoResize: true
-});
 RENDERER.backgroundColor = 0x95d5f5;
 
-// Ticker Global for deltaTime interpolation
-let TICKER = new PIXI.ticker.Ticker();
-
-// Resize Information
-let WINDOW_RESIZED = true;
-let STRETCH_THRESHOLD = 0.1;
 window.addEventListener('resize', function(){ // Flag after resize event for optimization
     WINDOW_RESIZED = true;
 }, true);
-
-// Letterboxing variables
-let TOP_MASK,
-    BOT_MASK,
-    LEFT_MASK,
-    RIGHT_MASK,
-    frameX,
-    frameY,
-    frameW,
-    frameH;
 
 // Create Loading Bar
 let loadingProgressBar = makeProgressBar(

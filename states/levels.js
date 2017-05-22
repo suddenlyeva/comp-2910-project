@@ -1,10 +1,5 @@
 "use strict";
 
-// Size of one tile unit
-// TODO: Move to better spot
-let TILES_PX = 80;
-let PPAP_UNLOCKED = false;
-
 // Level constructor reads from JSON array
 function Level(data) {
 

@@ -1,4 +1,3 @@
-let LEVEL_PROGRESS = [];
 // adding or removing a property must be done in 5 places:
 // this file       -> in writeToVar: getDefault, setToDefault, if(progress) loop
 //                 -> saveProgress
