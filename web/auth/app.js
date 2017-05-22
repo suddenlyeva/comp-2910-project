@@ -17,7 +17,7 @@
  */
 // FirebaseUI config.
 var uiConfig = {
-  'signInSuccessUrl': '../play.html',
+  'signInSuccessUrl': '../../play.html',
   'callbacks': {
     // Called when the user has been successfully signed in.
     'signInSuccess': function(user, credential, redirectUrl) {
