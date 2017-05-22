@@ -4,8 +4,8 @@
 function OptionsMenu() {
 
     // Scale proportions
-    let width  = CANVAS_WIDTH  / 1.5;
-    let height = CANVAS_HEIGHT / 1.5;
+    let width  = 10 * TILES_PX;
+    let height = 6 * TILES_PX;
 
     // Make Panel and Buttons
     let panel = new PIXI.Graphics();
