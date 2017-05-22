@@ -150,7 +150,7 @@ let LEVELS = [
     },
 
     // Normal - Stage 1
-    {id: 11, name: "fruit yogurt",
+    {id: 11, name: "stage 11",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
@@ -196,9 +196,9 @@ let LEVELS = [
         maxScore: 2100,
 
         conveyorBelt: {
-            items: [ORANGE, BLANK, KIWI, BLANK, APPLE, BLANK, KIWI, BLANK, ORANGE, YOGURT, ORANGE,
+            items: [ORANGE, BLANK, KIWI, BLANK, APPLE, BLANK, KIWI, BLANK, ORANGE, ORANGE,
                     BLANK, BLANK, APPLE, BLANK, KIWI, YOGURT, BLANK, BLANK, APPLE, YOGURT],
-            speed: 1.5
+            speed: 1.6
         },
 
         processors: [
