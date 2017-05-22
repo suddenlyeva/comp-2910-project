@@ -4,15 +4,41 @@
 function OptionsMenu() {
 
     // Scale proportions
-    let width  = CANVAS_WIDTH  / 1.5;
-    let height = CANVAS_HEIGHT / 1.5;
+    let width  = 10 * TILES_PX;
+    let height = 6 * TILES_PX;
 
+    // Gears
+    let gearAlign = 60;
+    
+    let gear1 = makeGear("xl", 1.1);
+    gear1.x = -145;
+    gear1.y = -145;
+    
+    let gear2 = makeGear("l", 1.5);
+    gear2.x = width + 115 - gear2.width;
+    gear2.y = height - 25 - gear2.height;
+    
     // Make Panel and Buttons
-    let panel = new PIXI.Graphics();
-    panel.lineStyle(1, 0, 1);
-    panel.beginFill(0xfff3ad);
-    panel.drawRect(0, 0, width, height);
-    panel.endFill();
+    let panel = new PIXI.Container();
+    let panelLeft = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["options-left.png"]
+    );
+    let panelRight = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["options-right.png"]
+    );
+    panelRight.x = width - 1.5 * TILES_PX;
+    let panelMiddle = new PIXI.extras.TilingSprite(
+        PIXI.loader.resources["images/spritesheet.json"].textures["options-middle.png"],
+        7*TILES_PX,
+        6 * TILES_PX
+    );
+    panelMiddle.x = 1.5 * TILES_PX;
+    
+    panel.addChild(panelLeft);
+    panel.addChild(panelRight);
+    panel.addChild(panelMiddle);
+    
+    
     
     let okButton = new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["menu-ok.png"]
@@ -24,14 +50,16 @@ function OptionsMenu() {
     });
     
     let soundTxt = new PIXI.Text("sound", txtStyle);
-    let soundVol = makeSlider(SFX_VOLUME, panel.width - 400, 100); // -> util.js
+    let soundVol = makeSlider(SFX_VOLUME, panel.width - 400, 0xcc2aee); // -> util.js
     let musicTxt = new PIXI.Text("music", txtStyle);
-    let musicVol = makeSlider(MUSIC_VOLUME, soundVol.width, soundVol.height); // -> util.js
+    let musicVol = makeSlider(MUSIC_VOLUME, soundVol.width, 0xcc2aee); // -> util.js
 
     panel.interactive = true;
 
     // Add to scene
     this.scene = new PIXI.Container();
+    this.scene.addChild(gear1);
+    this.scene.addChild(gear2);
     this.scene.addChild(panel);
     this.scene.addChild(okButton);
     this.scene.addChild(soundTxt);
@@ -72,10 +100,20 @@ function OptionsMenu() {
         MUSIC_VOLUME = value;
         updateVolumeMaster();
     };
+    
+    let updateGears = () => {
+        gear1.update();
+        gear2.update();
+    };
+    
+    this.scene.on("added", () => {
+        TICKER.add(updateGears);
+    });
 
     this.scene.on("removed", () => {
         soundVol.cleanUp();
         musicVol.cleanUp();
+        TICKER.remove(updateGears);
     });
     
 }

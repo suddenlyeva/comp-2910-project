@@ -81,40 +81,41 @@ function makeProgressBar(width, height, padding, bgColor, fgColor) {
 }
 
 // Builds a Volume Slider
-function makeSlider(initValue, width, height, sliderThickness = height / 6, handleWidth = height / 2) {
+function makeSlider(initValue, width, colorSound, sliderThickness = 20) {
 
     // Create Container
     let sliderObj = new PIXI.Container();
 
     // Define Colors
-    let colorSound = 0x77f441,
-        colorMuted = 0xff1a1a,
+    let colorMuted = 0xff3a3a,
         colorDrag  = 0xd7f442;
 
-    // Using handleWidth because handle.width is for some reason inaccurate
-    let endOfSlider = width - handleWidth;
-
     // Style and Draw Handle
+    /*
     let handle = new PIXI.Graphics();
     handle.lineStyle(4, 0x0, 1);
     handle.beginFill(0xFFFFFF);
     handle.drawRect(0, 0, handleWidth, height);
     handle.endFill();
-    handle.x = endOfSlider;
-    handle.tint = colorSound;
+    */
+    let handle = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["slider-handle.png"]
+    );
     handle.interactive = handle.buttonMode = true;
+        
+    let endOfSlider = width - handle.width;
 
     // Style and draw Slider
     let slider = new PIXI.Graphics();
     slider.beginFill(0x0);
     slider.drawRect(0, 0, width, sliderThickness);
     slider.endFill();
-    slider.y = height / 2 - slider.height / 2;
+    slider.y = handle.height / 2 - slider.height / 2;
 
     // Clicking on the slider brings handle position to that point
     let clickableArea = new PIXI.Graphics();
     clickableArea.beginFill(0, 0);
-    clickableArea.drawRect(0, 0, width, height)
+    clickableArea.drawRect(0, 0, width, handle.height)
     clickableArea.endFill();
     clickableArea.interactive = clickableArea.buttonMode = true;
 
@@ -273,10 +274,19 @@ function makeGear(size, speed) {
 
     // Save textures
     let frames = [];
-    for (let i = 0; i < frameCount; i++) {
-        frames.push(
-            PIXI.loader.resources["images/spritesheet.json"].textures["gear-" + size + "-" + i + ".png"]
-        );
+    if (size == "xl") {
+        for (let i = 0; i < frameCount; i++) {
+            frames.push(
+                PIXI.loader.resources["images/gears-xl.json"].textures["gear-xl-" + i + ".png"]
+            );
+        }
+    }
+    else {
+        for (let i = 0; i < frameCount; i++) {
+            frames.push(
+                PIXI.loader.resources["images/spritesheet.json"].textures["gear-" + size + "-" + i + ".png"]
+            );
+        }
     }
 
     // Make gear

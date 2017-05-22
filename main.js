@@ -4,7 +4,8 @@ let loadingProgressBar;
 function init() {
     // Stuff for the Loader
     let thingsToLoad = [
-        "images/spritesheet.json"
+        "images/spritesheet.json",
+        "images/gears-xl.json"
     ];
 
     // Authentication Check
