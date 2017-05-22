@@ -53,6 +53,8 @@ function StageSelect() {
 
     // index of the current displayed button
     let currentButton = firstBeforeLocked();
+    // button in the spotlight position
+    let currentInView = currentButton;
 
     stageButtons.position.set(refXLeft - (buttonDisplayWidth * currentButton),
         CANVAS_HEIGHT / 2 - buttonDisplayHeight / 2);
@@ -189,6 +191,11 @@ function StageSelect() {
                     (buttonScale.primary - buttonScale.secondary) * percentageInView);
                 button.x = leftOfView ? buttonDisplayWidth - button.width - buttonPadding : buttonPadding;
                 button.y = buttonDisplayHeight / 2 - button.height / 2;
+
+                // help the difficultyGear see the the button in view
+                if(percentageInView > 0.5) {
+                    currentInView = i;
+                }
             };
             // --------------------
 
@@ -338,6 +345,59 @@ function StageSelect() {
     hardButton.position.set(normalButton.x + hardButton.width + TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
     easyButton.position.set(normalButton.x - easyButton.width - TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
 
+    // --------------------------- Shifting difficulty gear ----------------------------
+    let difficultyGear = makeGear("s", 1);
+
+    let diffGearPos = {
+        easy: {
+            x: easyButton.x + easyButton.width  / 2 - difficultyGear.width  / 2,
+            y: easyButton.y + easyButton.height / 2 - difficultyGear.height / 2
+        },
+        normal: {
+            x: normalButton.x + normalButton.width  / 2 - difficultyGear.width  / 2,
+            y: normalButton.y + normalButton.height / 2 - difficultyGear.height / 2
+        },
+        hard: {
+            x: hardButton.x + hardButton.width  / 2 - difficultyGear.width  / 2,
+            y: hardButton.y + hardButton.height / 2 - difficultyGear.height / 2
+        }
+    };
+
+    // determine difficulty gear target position
+    // override true means the target is the currentButton, false - current button in view
+    let diffGearTargetPos = (override = false) => {
+        // currentButton/currentInView provided by carousel; DIFFICULTY is found in leveldata.js
+        let target = override ? currentButton : currentInView;
+        if(target >= DIFFICULTY.hard) {
+            return diffGearPos.hard;
+        } else if(target >= DIFFICULTY.normal) {
+            return diffGearPos.normal;
+        } else if(target >= DIFFICULTY.easy) {
+            return diffGearPos.easy;
+        }
+    };
+
+    // set initial position
+    let diffGearInitialPos = diffGearTargetPos();
+    difficultyGear.position.set(diffGearInitialPos.x, diffGearInitialPos.y);
+
+    difficultyGear.updatePos = () => {
+        let targetPos = diffGearTargetPos(!stageButtons.pressedDown && !stageButtons.moving);
+        let posDiff = {
+            x: difficultyGear.x - targetPos.x,
+            y: difficultyGear.y - targetPos.y
+        };
+
+        if(Math.abs(posDiff.x) > positionEpsilon) {
+            difficultyGear.x -= (posDiff.x / deceleration) * TICKER.deltaTime;
+        }
+
+        if(Math.abs(posDiff.y) > positionEpsilon) {
+            difficultyGear.y -= (posDiff.y / deceleration) * TICKER.deltaTime;
+        }
+    };
+    // ------------------------ End of shifting difficulty gear ------------------------
+
     easyButton  .pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         goToButton(DIFFICULTY.easy);   // -> leveldata.js
@@ -408,6 +468,7 @@ function StageSelect() {
     this.scene.addChild(stageButtons);
     this.scene.addChild(optionsButton);
     //this.scene.addChild(fullscreenButton);
+    this.scene.addChild(difficultyGear);
     this.scene.addChild(moreGamesButton);
     this.scene.addChild(easyButton);
     this.scene.addChild(normalButton);
@@ -422,6 +483,8 @@ function StageSelect() {
 
     this.update = () => {
         updateCarousel();
+        difficultyGear.update();
+        difficultyGear.updatePos();
     };
 }
 
