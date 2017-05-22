@@ -57,6 +57,7 @@ function loadProgress () {
             if(progress["options"]) {
                 SFX_VOLUME   = getDbProp(progress["options"], "soundvol");
                 MUSIC_VOLUME = getDbProp(progress["options"], "musicvol");
+                updateVolumeMaster();
             }
         } else { // load defaults
             for (let i = 0; i < LEVELS.length; i++) {
@@ -114,15 +115,16 @@ function saveProgress() {
 
 // Saves progress to database
 function saveOptions() {
+    // signed in, then save options
+    console.log("Saving options...");
     // check user login status again before saving
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-            // signed in, then save options
-            console.log("Saving options...");
             DATABASE.ref('users/' + user.uid + '/options').set({
                 soundvol: SFX_VOLUME,
                 musicvol: MUSIC_VOLUME
             });
+            console.log("Options saved.");
         } else {
             // not signed in, then nothing.
             console.log("Failed to save options. Please login.");
