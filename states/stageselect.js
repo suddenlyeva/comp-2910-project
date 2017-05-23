@@ -104,10 +104,11 @@ function StageSelect() {
                 lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5);
                 highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
                 if(LEVEL_PROGRESS[i].highscore !== 0) {
+                    // find the number of stars to display
                     let grade = calculateGrade({ maxScore: LEVELS[i].maxScore, score: LEVEL_PROGRESS[i].highscore });
+                    // add the correct number of stars to the star container
                     for (let i = 0; i < grade.nStars; i++) {
-                        let star = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["star.png"]);
-                        star.scale.set(0.5);
+                        let star = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["star-small.png"]);
                         star.x = i * star.width;
                         starContainer.addChild(star);
                     }
