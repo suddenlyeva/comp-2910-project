@@ -33,6 +33,8 @@ function defineItemTextures() {
     ITEM_TEXTURES[PINEAPPLE]    = PIXI.loader.resources["images/spritesheet.json"].textures["pineapple.png"];
     ITEM_TEXTURES[PEN]          = PIXI.loader.resources["images/spritesheet.json"].textures["pen.png"];
     ITEM_TEXTURES[PPAP_ITEM]    = PIXI.loader.resources["images/spritesheet.json"].textures["ppap.png"];
+    
+    // Use PIXI.loader.resources["images/food.json"].textures["*.png"]; for new sprites.
 }
 
 // Makes an item in the level
