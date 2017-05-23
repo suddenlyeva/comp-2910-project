@@ -370,6 +370,14 @@ function levelDisplayName(id, name, index = null) {
     return "level " + index + " : " + name;
 }
 
+// returns an array conataining types to be made into the level preview.
+// get with the level id number.
+function getPreviewFromId(id) {
+    let preview = [];
+    
+}
+
+
 // arr - array of object with property 'id'; id - object id whose index we want to find
 // returns -1 if index not found
 function findIndexById(arr, id) {
