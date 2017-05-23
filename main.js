@@ -103,10 +103,10 @@ function gameLoop() {
     if(WINDOW_RESIZED || SCENE !== previousScene) {
 
         sceneResize(STRETCH_THRESHOLD); // -> util.js
-        RENDERER.resize(window.innerWidth, window.innerHeight);
+        RENDERER.resize(document.documentElement.clientWidth, document.documentElement.clientHeight);
 
-        frameX = (window.innerWidth - CANVAS_WIDTH * SCENE.scale.x)/2;
-        frameY = (window.innerHeight - CANVAS_HEIGHT * SCENE.scale.y)/2;
+        frameX = (document.documentElement.clientWidth - CANVAS_WIDTH * SCENE.scale.x)/2;
+        frameY = (document.documentElement.clientHeight - CANVAS_HEIGHT * SCENE.scale.y)/2;
         SCENE.x = frameX;
         SCENE.y = frameY;
 

@@ -220,17 +220,17 @@ function sceneResize(stretchThreshold = 0) {
     // stretchThreshold - how much scene dimensions can deviate from the desired aspect ratio
     // 0.2 means the scene can be stretched by a maximum of 20% vertically or horizontally
     let targetAspectRatio  = CANVAS_WIDTH / CANVAS_HEIGHT,
-        currentAspectRatio = window.innerWidth / window.innerHeight;
+        currentAspectRatio = document.documentElement.clientWidth / document.documentElement.clientHeight;
 
     if(targetAspectRatio < currentAspectRatio) {                         // Wider screen than normal
-        SCENE.scale.y = window.innerHeight / CANVAS_HEIGHT;              // Always stretch height
+        SCENE.scale.y = document.documentElement.clientHeight / CANVAS_HEIGHT;              // Always stretch height
         SCENE.scale.x = Math.min(SCENE.scale.y * (1 + stretchThreshold), // Use height ratio if past Stretch Threshold
-            window.innerWidth / CANVAS_WIDTH);                           // Else stretch the width
+            document.documentElement.clientWidth / CANVAS_WIDTH);                           // Else stretch the width
 
     } else {                                                             // Taller Screen than normal
-        SCENE.scale.x = window.innerWidth / CANVAS_WIDTH;
+        SCENE.scale.x = document.documentElement.clientWidth / CANVAS_WIDTH;
         SCENE.scale.y = Math.min(SCENE.scale.x * (1 + stretchThreshold), // Same as vertical, but inverted x and y
-            window.innerHeight / CANVAS_HEIGHT);
+            document.documentElement.clientHeight / CANVAS_HEIGHT);
     }
 }
 
@@ -239,8 +239,8 @@ function sceneResize(stretchThreshold = 0) {
 function letterbox(frameX, frameY) {
     frameX /= SCENE.scale.x;
     frameY /= SCENE.scale.y;
-    frameW = window.innerWidth/SCENE.scale.x * (1 + STRETCH_THRESHOLD);
-    frameH = window.innerHeight/SCENE.scale.y * (1 + STRETCH_THRESHOLD);
+    frameW = document.documentElement.clientWidth/SCENE.scale.x * (1 + STRETCH_THRESHOLD);
+    frameH = document.documentElement.clientHeight/SCENE.scale.y * (1 + STRETCH_THRESHOLD);
 
     LEFT_MASK.width = frameX;
     LEFT_MASK.height = frameH;
