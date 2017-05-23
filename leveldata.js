@@ -365,27 +365,130 @@ let LEVELS = [
 
         finalItems: [FRUIT_YOGURT]
     },
-
-    {id: 20, name: ":)",
+    
+    {id: 16, name: "careful",
     
         clearMessage: "nothing new",
         wasteLimit: 4,
-        maxScore: 1400,
+        maxScore: 2300,
     
         conveyorBelt: {
-            items: [BLANK     , ORANGE_SLICE, APPLE     , BLANK
-                  , BLANK     , APPLE       , KIWI_SLICE, BLANK
-                  , BLANK     , ORANGE      , BLANK     , APPLE
-                  , KIWI_SLICE, BLANK       , ORANGE    , APPLE
-                  , ORANGE                  ], 
+            items:[ BLANK       , APPLE       , ORANGE      , BLANK       , KIWI        
+                  , KIWI_SLICE  , BLANK       , ORANGE_SLICE, BLANK       , APPLE       
+                  , BLANK       , ORANGE      , BLANK       , KIWI_SLICE  , APPLE       
+                  , ORANGE      , BLANK       , KIWI
+                  ], 
+            speed: 2.5
+        },
+    
+        processors: [
+            { recipe:[APPLE, ORANGE],               result: APPLE_SLICE,    score: 200, x: 2*TILES_PX, y: 2*TILES_PX },
+            { recipe:[KIWI_SLICE, KIWI],            result: ORANGE_SLICE,   score: 200, x: 8*TILES_PX, y: 2*TILES_PX },
+            { recipe:[APPLE_SLICE, ORANGE_SLICE],   result: YOGURT,         score: 250, x: 6*TILES_PX, y: 5*TILES_PX }
+            
+        ],
+        finalItems: [YOGURT]
+    
+    },
+    
+    
+    {id: 17, name: "don't slip",
+    
+        clearMessage: "nothing new",
+        wasteLimit: 4,
+        maxScore: 2300,
+    
+        conveyorBelt: {
+            items:[ BLANK       , APPLE       , ORANGE      , BLANK       , KIWI        
+                  , KIWI_SLICE  , BLANK       , ORANGE_SLICE, BLANK       , APPLE       
+                  , BLANK       , ORANGE      , BLANK       , KIWI_SLICE  , APPLE       
+                  , ORANGE      , BLANK       , KIWI
+                  ], 
+            speed: 2.5
+        },
+    
+        processors: [
+            { recipe:[APPLE, ORANGE],               result: APPLE_SLICE,    score: 200, x: 2*TILES_PX, y: 2*TILES_PX },
+            { recipe:[KIWI_SLICE, KIWI],            result: ORANGE_SLICE,   score: 200, x: 8*TILES_PX, y: 2*TILES_PX },
+            { recipe:[APPLE_SLICE, ORANGE_SLICE],   result: YOGURT,         score: 250, x: 6*TILES_PX, y: 5*TILES_PX }
+            
+        ],
+        finalItems: [YOGURT]
+    
+    },
+    
+    {id: 18, name: "waste not want not",
+    
+        clearMessage: "nothing new",
+        wasteLimit: 4,
+        maxScore: 2300,
+    
+        conveyorBelt: {
+            items:[ BLANK       , BLANK       , APPLE       , BLANK , APPLE     
+                  , BLANK       , ORANGE_SLICE, BLANK       , APPLE , BLANK       
+                  , APPLE_SLICE , ORANGE_SLICE, BLANK       , APPLE , ORANGE_SLICE 
+                  , BLANK       , BLANK       , APPLE       , APPLE , APPLE       
+                  , BLANK       , APPLE       , APPLE       , BLANK , ORANGE_SLICE
+                  ], 
             speed: 2
         },
     
         processors: [
-            { recipe:[APPLE], result: APPLE_SLICE, score: 100, x: 1*TILES_PX, y: 2*TILES_PX }, // 
-            { recipe:[ORANGE], result: ORANGE_SLICE, score: 100, x: 1*TILES_PX, y: 5*TILES_PX }, // 
-            { recipe:[ORANGE_SLICE, APPLE_SLICE], result: KIWI_SLICE, score: 200, x: 5*TILES_PX, y: 2*TILES_PX }, // [1,1]
-            { recipe:[ORANGE_SLICE, KIWI_SLICE, APPLE_SLICE], result: YOGURT, score: 300, x: 5*TILES_PX, y: 5*TILES_PX } // [,1,]
+            { recipe:[APPLE],                       result: APPLE_SLICE,    score: 100, x: 2*TILES_PX, y: 2*TILES_PX },
+            { recipe:[APPLE],                       result: APPLE_SLICE,    score: 100, x: 2*TILES_PX, y: 5*TILES_PX },
+            { recipe:[APPLE_SLICE, APPLE_SLICE],    result: YOGURT,         score: 200, x: 8*TILES_PX, y: 2*TILES_PX },
+            { recipe:[APPLE_SLICE, ORANGE_SLICE],   result: YOGURT,         score: 200, x: 8*TILES_PX, y: 5*TILES_PX }
+            
+        ],
+        finalItems: [YOGURT]
+    
+    },
+    
+    {id: 19, name: ":)",
+    
+        clearMessage: "nothing new",
+        wasteLimit: 4,
+        maxScore: 1900,
+    
+        conveyorBelt: {
+            items:[ BLANK       , ORANGE_SLICE, ORANGE      , BLANK , BLANK     
+                  , ORANGE      , BLANK       , ORANGE      , BLANK , BLANK       
+                  , APPLE_SLICE , BLANK       , ORANGE      , BLANK , APPLE_SLICE 
+                  , BLANK       , BLANK       , KIWI_SLICE  , ORANGE, BLANK       
+                  , BLANK       , APPLE_SLICE , BLANK       , BLANK , ORANGE_SLICE
+                  ], 
+            speed: 2
+        },
+    
+        processors: [
+            { recipe:[ORANGE],                      result: ORANGE_SLICE,   score: 100, x: 1*TILES_PX, y: 2*TILES_PX },
+            { recipe:[ORANGE],                      result: ORANGE_SLICE,   score: 100, x: 1*TILES_PX, y: 5*TILES_PX },
+            { recipe:[ORANGE_SLICE, APPLE_SLICE],   result: KIWI_SLICE,     score: 200, x: 5*TILES_PX, y: 2*TILES_PX }, 
+            { recipe:[ORANGE_SLICE, KIWI_SLICE],    result: YOGURT,         score: 200, x: 5*TILES_PX, y: 5*TILES_PX }
+        ],
+        finalItems: [YOGURT]
+    
+    },
+    
+    {id: 20, name: "havoc",
+    
+        clearMessage: "nothing new",
+        wasteLimit: 4,
+        maxScore: 1800,
+    
+        conveyorBelt: {
+            items: [BLANK, ORANGE_SLICE, APPLE     , BLANK, BLANK     
+                  , APPLE, KIWI_SLICE  , BLANK     , BLANK, ORANGE      
+                  , BLANK, APPLE       , KIWI_SLICE, BLANK, ORANGE    
+                  , APPLE, ORANGE     ], 
+            speed: 2
+        },
+    
+        processors: [
+            { recipe:[APPLE],                                   result: APPLE_SLICE,    score: 100, x: 1*TILES_PX, y: 2*TILES_PX },
+            { recipe:[ORANGE],                                  result: ORANGE_SLICE,   score: 100, x: 1*TILES_PX, y: 5*TILES_PX },
+            { recipe:[ORANGE_SLICE, APPLE_SLICE],               result: KIWI_SLICE,     score: 200, x: 5*TILES_PX, y: 2*TILES_PX }, 
+            { recipe:[ORANGE_SLICE, KIWI_SLICE, APPLE_SLICE],   result: YOGURT,         score: 400, x: 5*TILES_PX, y: 5*TILES_PX }
         ],
         finalItems: [YOGURT]
     
