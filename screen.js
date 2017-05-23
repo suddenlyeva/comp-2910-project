@@ -13,13 +13,14 @@ function resizeGameWindow() {
         iframe.style.height = window.innerWidth + "px";
         iframe.style.width = window.innerHeight + "px";
     }
-    console.log("hello");
+
+    window.location.hash = '';
 }
 
 function resizeTwice() {
     resizeGameWindow();
     clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(resizeGameWindow, 1000);
+    resizeTimeout = setTimeout(resizeGameWindow, 500);
 }
 
 window.addEventListener("resize", resizeTwice);
