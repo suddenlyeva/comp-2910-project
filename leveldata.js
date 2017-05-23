@@ -29,34 +29,34 @@ let LEVELS = [
     },
 
     // Stage 1
-    {id: 1, name: "apple banana kiwi",
+    {id: 1, name: "apple pie",
 
-        clearMessage: "this is a test level. don't try this at home.",
+        clearMessage: "set your fridge temperature to 4 degrees celsius or lower to keep food fresh",
         wasteLimit: 5,
         maxScore: 300,
 
         conveyorBelt: {
-            items: [APPLE, BLANK, ORANGE, APPLE, BLANK, ORANGE, APPLE, BLANK, BLANK, BLANK, ORANGE],
+            items: [APPLE, BLANK, FLOUR, APPLE, BLANK, FLOUR, APPLE, BLANK, BLANK, FLOUR],
             speed: 1.2
         },
 
         processors: [
             {
-                recipe: [APPLE, ORANGE],
-                result: KIWI_SLICE,
+                recipe: [APPLE, FLOUR],
+                result: PIE,
                 score: 100,
                 x: 6*TILES_PX,
                 y: 4*TILES_PX
             }
         ],
 
-        finalItems: [KIWI_SLICE]
+        finalItems: [PIE]
     },
 
     //Stage 2
-    {id: 2, name: "stage 2",
+    {id: 2, name: "fruit slices",
 
-        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        clearMessage: "55,000 apples are wasted every day in metro vancouver",
         wasteLimit: 4,
         maxScore: 600,
 
@@ -116,20 +116,20 @@ let LEVELS = [
     //Stage 4
     {id: 4, name: "stage 4",
 
-        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        clearMessage: "fruits should go in the low humidity drawer",
         wasteLimit: 7,
         maxScore: 1000,
 
         conveyorBelt: {
-            items: [APPLE, BLANK, APPLE, KIWI, APPLE, BLANK, KIWI, BANANA, BLANK,
-                    KIWI, BLANK, BANANA, BLANK, BLANK, BANANA],
+            items: [APPLE, BLANK, APPLE, KIWI, APPLE, BLANK, KIWI, FLOUR, BLANK,
+                    KIWI, BLANK, FLOUR, BLANK, BLANK, FLOUR],
             speed: 1.25
         },
 
         processors: [
             {
-                recipe: [APPLE, BANANA],
-                result: APPLE_SLICE,
+                recipe: [APPLE, FLOUR],
+                result: PIE,
                 score: 200,
                 x: 3*TILES_PX,
                 y: 2*TILES_PX
@@ -144,7 +144,7 @@ let LEVELS = [
 
         ],
 
-        finalItems: [APPLE_SLICE, KIWI_SLICE]
+        finalItems: [PIE, KIWI_SLICE]
     },
 
     {id: 5, name: "level 5",
