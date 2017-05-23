@@ -285,7 +285,6 @@ let LEVELS = [
     },
 
     // Normal - Stage 2
-    // tomato + lettce = salad, apple, bacon/fish
     {id: 11, name: "stage 11",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
@@ -293,37 +292,37 @@ let LEVELS = [
         maxScore: 2100,
 
         conveyorBelt: {
-            items: [TOMATO, BLANK, APPLE, BLANK, BLANK, CABBAGE, BLANK, TOMATO, BLANK,
-                    APPLE, BLANK, CABBAGE, ORANGE, OCTOPUS, BLANK, APPLE, OCTOPUS, BLANK,
-                    KIWI, OCTOPUS],
+            items: [TOMATO, BLANK, CUCUMBER, BLANK, BLANK, CABBAGE, BLANK, TOMATO, BLANK,
+                    CUCUMBER, BLANK, CABBAGE, TOMATO, OCTOPUS, BLANK, CUCUMBER, OCTOPUS, BLANK,
+                    CABBAGE, OCTOPUS],
             speed: 1.55
         },
 
         processors: [
             {
-                recipe: [ORANGE, KIWI],
-                result: ORANGE_SLICE,
+                recipe: [TOMATO, CABBAGE],
+                result: SALAD,
                 score: 100,
                 x: 1*TILES_PX,
                 y: 2*TILES_PX
             },
             {
-                recipe: [APPLE],
-                result: APPLE_SLICE,
+                recipe: [CUCUMBER],
+                result: CUCUMBER_SLICE,
                 score: 100,
                 x: 9*TILES_PX,
                 y: 3*TILES_PX
             },
             {
-                recipe: [ORANGE_SLICE, APPLE_SLICE, YOGURT],
-                result: FRUIT_YOGURT,
+                recipe: [SALAD, CUCUMBER_SLICE, OCTOPUS],
+                result: SALAD_2,
                 score: 500,
                 x: 3*TILES_PX,
                 y: 5*TILES_PX
             }
         ],
 
-        finalItems: [FRUIT_YOGURT]
+        finalItems: [SALAD_2]
     },
 
     // Normal Stage 3
@@ -332,35 +331,29 @@ let LEVELS = [
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
-        maxScore: 2100,
+        maxScore: 9999,
 
         conveyorBelt: {
-            items: [ORANGE, BLANK, KIWI, KIWI, BLANK, ORANGE, YOGURT, ORANGE, BLANK, BLANK, KIWI, YOGURT, BLANK, YOGURT],
+            items: [RICE, BLANK, NORI, NORI, BLANK, RICE, YOGURT, ORANGE, BLANK, BLANK, KIWI, YOGURT, BLANK, YOGURT],
             speed: 1.5
         },
 
         processors: [
             {
-                recipe: [ORANGE],
-                result: ORANGE_SLICE,
+                recipe: [RICE, NORI],
+                result: ONIGIRI,
                 score: 100,
                 x: 1*TILES_PX,
                 y: 2*TILES_PX
             },
             {
-                recipe: [KIWI],
-                result: KIWI_SLICE,
+                recipe: [RICE, NORI, FISH_STEAK],
+                result: SUSHI_ROLL,
                 score: 100,
                 x: 7*TILES_PX,
                 y: 2*TILES_PX
             },
-            {
-                recipe: [ORANGE_SLICE, KIWI_SLICE, YOGURT],
-                result: FRUIT_YOGURT,
-                score: 500,
-                x: 1*TILES_PX,
-                y: 5*TILES_PX
-            }
+
         ],
 
         finalItems: [FRUIT_YOGURT]
