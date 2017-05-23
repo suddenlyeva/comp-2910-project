@@ -33,8 +33,13 @@ let LOBSTER_2     = 28;
 let LOBSTER_SOUP  = 29;
 let CABBAGE       = 30;
 let CABBAGE_SLICE = 31;
-let PEN          = 98;
-let PPAP_ITEM    = 99;
+let TOMATO        = 32;
+let TOMATO_SLICE  = 33;
+let SALAD         = 34;
+let SALAD_2       = 35;
+let OCTOPUS       = 36;
+let PEN           = 98;
+let PPAP_ITEM     = 99;
 // Texture dictionary
 let ITEM_TEXTURES = [];
 function defineItemTextures() {
@@ -72,6 +77,11 @@ function defineItemTextures() {
     ITEM_TEXTURES[LOBSTER_SOUP]  = PIXI.loader.resources["images/food.json"].textures["lobster_soup.png"];
     ITEM_TEXTURES[CABBAGE]       = PIXI.loader.resources["images/food.json"].textures["cabbage.png"];
     ITEM_TEXTURES[CABBAGE_SLICE] = PIXI.loader.resources["images/food.json"].textures["salad.png"];
+    ITEM_TEXTURES[TOMATO]        = PIXI.loader.resources["images/food.json"].textures["tomato.png"];
+    ITEM_TEXTURES[TOMATO_SLICE]  = PIXI.loader.resources["images/food.json"].textures["tomato.png"];
+    ITEM_TEXTURES[SALAD]         = PIXI.loader.resources["images/food.json"].textures["salad_2.png"];
+    ITEM_TEXTURES[SALAD_2]       = PIXI.loader.resources["images/food.json"].textures["salad_3.png"];
+    ITEM_TEXTURES[OCTOPUS]       = PIXI.loader.resources["images/food.json"].textures["octopulus.png"];
 
     // Use PIXI.loader.resources["images/food.json"].textures["*.png"]; for new sprites.
 }

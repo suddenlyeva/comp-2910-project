@@ -94,9 +94,9 @@ let LEVELS = [
         maxScore: 600,
 
         conveyorBelt: {
-            items: [ORANGE, ORANGE, BLANK, BLANK, KIWI, ORANGE, BLANK, BLANK, BLANK, KIWI, BLANK, BLANK, BLANK, YOGURT, BLANK,
-                    BLANK, KIWI, BLANK, BLANK, BLANK, YOGURT, BLANK, YOGURT],
-            speed: 1.3
+            items: [ORANGE, ORANGE, BLANK, BLANK, KIWI, ORANGE, BLANK, BLANK, BLANK, YOGURT, BLANK, BLANK,
+                    BLANK, KIWI, BLANK, BLANK, KIWI, BLANK, BLANK, BLANK, YOGURT, BLANK, YOGURT],
+            speed: 1.2
         },
 
         processors: [
@@ -293,9 +293,9 @@ let LEVELS = [
         maxScore: 2100,
 
         conveyorBelt: {
-            items: [ORANGE, BLANK, APPLE, BLANK, BLANK, KIWI, BLANK, ORANGE, BLANK,
-                    APPLE, BLANK, KIWI, ORANGE, YOGURT, BLANK, APPLE, YOGURT, BLANK,
-                    KIWI, YOGURT],
+            items: [TOMATO, BLANK, APPLE, BLANK, BLANK, CABBAGE, BLANK, TOMATO, BLANK,
+                    APPLE, BLANK, CABBAGE, ORANGE, OCTOPUS, BLANK, APPLE, OCTOPUS, BLANK,
+                    KIWI, OCTOPUS],
             speed: 1.55
         },
 
