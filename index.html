@@ -1,30 +1,41 @@
+<!--
+ This site design theme is using
+ Start Bootstrap - Freelancer v4.0.0-alpha (http://startbootstrap.com/template-overviews/freelancer)
+ Copyright 2013-2017 Start Bootstrap
+ The design theme is licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-freelancer/blob/master/LICENSE)
+ -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description"
+          content="Food Factory Zero is a game to raise the awareness of Food Waste and educate in fun way!">
+
+    <!-- Firebase components -->
     <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/ui/0.4.0/firebase-ui-auth.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/0.4.0/firebase-ui-auth.css"/>
-    <script src="web/auth/config.js"></script>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
+    <!-- Config file for Firebase auth -->
+    <script src="./login/config.js"></script>
 
     <title>Food Factory Zero</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="web/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./web/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template -->
-    <link href="web/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="./web/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
           type="text/css">
 
     <!-- Custom styles for this template -->
-    <link href="web/css/freelancer.css" rel="stylesheet">
+    <link href="./web/css/freelancer.css" rel="stylesheet">
 
     <!-- Temporary navbar container fix -->
     <style>
@@ -43,10 +54,11 @@
     <meta property="og:url" content="https://foodfactoryzero.firebaseapp.com"/>
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="Food Factory Zero"/>
-    <meta property="og:description" content="Food Factory Zero is a game to raise the awareness of Food Waste and educate in fun way!"/>
+    <meta property="og:description"
+          content="Food Factory Zero is a game to raise awareness of Food Waste and educate in fun way!"/>
     <meta property="og:image" content="http://foodfactoryzero.firebaseapp.com/web/images/og-logo.png"/>
 
-    <!--Google+ platform for Google+ share button put head or body end-->
+    <!--Google+ platform for Google+ share button -->
     <script src="https://apis.google.com/js/platform.js" async defer>
         {
             lang: 'en_US'
@@ -55,7 +67,7 @@
 </head>
 
 <body class="index" id="page-top">
-// FB javascript SDK for share button
+<!-- FB javascript SDK for share button -->
 <div id="fb-root"></div>
 <script>(function (d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -65,7 +77,6 @@
     js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=1403380076386976";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-
 
 <!-- Navigation -->
 <nav class="navbar fixed-top navbar-toggleable-md navbar-light" id="mainNav">
@@ -79,27 +90,30 @@
         <div class="collapse navbar-collapse" id="navbarExample">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
+                    <a class="nav-link" href="#home">Home</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#play">Play</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#about">About</a>
                 </li>
-                <li class="nav-item">
+<!--                <li class="nav-item">
                     <a class="nav-link" href="#contact">Contact</a>
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>
 </nav>
 
 <!-- Header -->
-<header class="masthead">
+<header id="home" class="masthead">
     <div class="container">
         <img class="img-fluid" src="web/images/logo.png" alt="">
         <div class="intro-text">
             <span class="name">Food Factory Zero</span>
             <hr class="star-light">
-            <span class="skills">Make learning about Food Waste fun!</span>
+            <span class="summary">Make learning about Food Waste fun!</span>
         </div>
     </div>
 </header>
@@ -110,20 +124,19 @@
         <h2 class="text-center">Play our game!</h2>
         <hr class="star-primary">
 
-        <p>
         <div id="loading">Loading...</div>
         <div id="loaded" class="hidden">
             <div id="main">
                 <div id="user-signed-in" class="hidden">
-                    <button type="button" class="btn btn-success btn-lg btn-customlg btn-block mx-auto"
+                    <button type="button" class="btn btn-play btn-lg btn-customlg btn-block mx-auto"
                             onclick="link()">Play with google account
                     </button>
-                    <button type="button" class="btn btn-success btn-lg btn-customlg btn-block mx-auto" id="sign-out">
+                    <button type="button" class="btn btn-play btn-lg btn-customlg btn-block mx-auto" id="sign-out">
                         Sign Out
                     </button>
                 </div>
                 <div id="user-signed-out" class="hidden">
-                    <button type="button" class="btn btn-success btn-lg btn-customlg btn-block mx-auto"
+                    <button type="button" class="btn btn-play btn-lg btn-customlg btn-block mx-auto"
                             onclick="noauthlink()">Play without sign in
                     </button>
                     <div id="firebaseui-spa">
@@ -142,33 +155,41 @@
                 document.location = "./play.html";
             }
         </script>
-        <script src="web/auth/app.js"></script>
+        <script src="./web/auth/app.js"></script>
     </div>
 </section>
 
 <!-- About Section -->
-<section class="success" id="about">
+<section class="about" id="about">
     <div class="container">
         <h2 class="text-center">About</h2>
         <hr class="star-light">
         <div class="row">
+            <p class="art-body">
+                Food Factory Zero is an educational, time-based drag and drop game created by a BCIT student group!
+                The game raises awareness of Food Waste and educates players about the importance to use ingredients
+                without wasting them!
+            </p>
+            <div id="intro-video" class="col-md-8 col-md-offset-2">
+
             <div class="embed-responsive embed-responsive-4by3">
                 <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/oa9z1iP0_xQ"></iframe>
             </div>
-            <p>Food Factory Zero is an time-based drag and drop game created to make learning process fun.</p>
+
+            </div>
         </div>
     </div>
 </section>
 
 <!-- Contact Section -->
-<section id="contact">
+<!--<section id="contact">
     <div class="container">
         <h2 class="text-center">Contact us</h2>
         <hr class="star-primary">
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
-                <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
-                <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
+                &lt;!&ndash; To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. &ndash;&gt;
+                &lt;!&ndash; The form should work on most web servers, but if the form is not working you may need to configure your web server differently. &ndash;&gt;
                 <form name="sentMessage" id="contactForm" novalidate>
                     <div class="control-group">
                         <div class="form-group floating-label-form-group controls">
@@ -211,7 +232,7 @@
             </div>
         </div>
     </div>
-</section>
+</section>-->
 
 <!-- Footer -->
 <footer class="text-center">
@@ -242,7 +263,10 @@
                             </a>
                         </li>
                         <li class="list-inline-item">
-                            <a class="btn-social btn-outline" href="https://twitter.com/intent/tweet?text=Great app to learn about Food Waste with fun! &url=https://foodfactoryzero.firebaseapp.com"><i class="fa fa-fw fa-twitter"></i></a>
+                            <a class="btn-social btn-outline"
+                               target="_blank"
+                               href="https://twitter.com/intent/tweet?text=Great app to learn about Food Waste with fun! &url=https://foodfactoryzero.firebaseapp.com"><i
+                                    class="fa fa-fw fa-twitter"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -267,19 +291,19 @@
 </div>
 
 <!-- Bootstrap core JavaScript -->
-<script src="web/vendor/jquery/jquery.min.js"></script>
-<script src="web/vendor/tether/tether.min.js"></script>
-<script src="web/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="./web/vendor/jquery/jquery.min.js"></script>
+<script src="./web/vendor/tether/tether.min.js"></script>
+<script src="./web/vendor/bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Plugin JavaScript -->
-<script src="web/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="./web/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Contact Form JavaScript -->
-<script src="web/js/jqBootstrapValidation.js"></script>
-<script src="web/js/contact_me.js"></script>
+<script src="./web/js/jqBootstrapValidation.js"></script>
+<script src="./web/js/contact_me.js"></script>
 
 <!-- Custom scripts for this template -->
-<script src="web/js/freelancer.min.js"></script>
+<script src="./web/js/freelancer.min.js"></script>
 
 </body>
 
