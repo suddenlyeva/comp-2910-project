@@ -372,7 +372,7 @@ function StageSelect() {
             return diffGearPos.hard;
         } else if(target >= DIFFICULTY.normal) {
             return diffGearPos.normal;
-        } else if(target >= DIFFICULTY.easy) {
+        } else { // if(target >= DIFFICULTY.easy)
             return diffGearPos.easy;
         }
     };
