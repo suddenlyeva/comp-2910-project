@@ -77,7 +77,44 @@ function Intro() {
     let appearSpeed = 0.02;
     let flashFreq   = 0.03;
     let counter     = 0;
+    
+    // Creates a burst of every food item on the screen
+    /* 
+    data = {
+        x    : The x position of the burst,
+        y    : The y position of the burst,
+        xMax : The maximum x distance that particles will fly.
+        yMax : The maximum y distance that particles will fly.
+    }
+    */
+    let makeItemBurst = (x,y) => {
+        let sprites = [];
+        let secretItems = 2;
+        console.log(Object.keys(ITEM_TEXTURES).length - secretItems);
+        for (let i = APPLE; i < Object.keys(ITEM_TEXTURES).length - secretItems; i++) {
+            sprites.push(new PIXI.Sprite(ITEM_TEXTURES[i]));
+        }
+        for (let i in sprites) {
+            sprites[i].scale = 0;
+            sprites[i].x = x;
+            sprites[i].y = y;
+            
+            sprites[i].initDeltaX;
+            sprites[i].initDeltaY;
+            sprites[i].deceleration;
+            sprites[i].limitX;
+            sprites[i].limitY;
+            sprites[i].deltaScale;
+            sprites[i].limitScale;
+            sprites[i].initRotationFactor;
+            sprites[i].deltaRotationFactor;
+            
+            this.scene.addChild(sprites[i]);
+        }
+    };
 
+    makeItemBurst(100,100);
+    
     // Update the scene
     this.update = () => {
         if(txtFood.alpha < 1) {
