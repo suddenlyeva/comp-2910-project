@@ -50,8 +50,12 @@ let MEAT           = 47;
 let MEAT_2         = 48;
 let MEAT_3         = 49;
 let STEAK          = 50;
+let APPLE_PIE      = 51;
+let WHEAT          = 52;
+
 let PEN            = 98;
 let PPAP_ITEM      = 99;
+
 
 // Texture dictionary
 let ITEM_TEXTURES = [];
@@ -107,8 +111,8 @@ function defineItemTextures() {
     ITEM_TEXTURES[MEAT_2]         = PIXI.loader.resources["images/food.json"].textures["meat_2.png"];
     ITEM_TEXTURES[MEAT_3]         = PIXI.loader.resources["images/food.json"].textures["meat_3.png"];
     ITEM_TEXTURES[STEAK]          = PIXI.loader.resources["images/food.json"].textures["steak.png"];
-
-
+/*!*/  ITEM_TEXTURES[APPLE_PIE]        = PIXI.loader.resources["images/food.json"].textures["applepie.png"];
+/*!*/  ITEM_TEXTURES[WHEAT]          = PIXI.loader.resources["images/food.json"].textures["flour.png"];
     // Use PIXI.loader.resources["images/food.json"].textures["*.png"]; for new sprites.
 }
 

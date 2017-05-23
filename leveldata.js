@@ -334,7 +334,7 @@ let LEVELS = [
         maxScore: 9999,
 
         conveyorBelt: {
-            items: [RICE, BLANK, NORI, NORI, BLANK, RICE, YOGURT, ORANGE, BLANK, BLANK, KIWI, YOGURT, BLANK, YOGURT],
+            items: [RICE, BLANK, NORI, NORI, BLANK, RICE, FISH_STEAK, ORANGE, BLANK, BLANK, KIWI, FISH_STEAK, BLANK, FISH_STEAK],
             speed: 1.5
         },
 
@@ -356,34 +356,34 @@ let LEVELS = [
 
         ],
 
-        finalItems: [FRUIT_YOGURT]
+        finalItems: [SUSHI_ROLL, ONIGIRI]
     },
     
     {id: 16, name: "careful",
     
         clearMessage: "nothing new",
         wasteLimit: 4,
-        maxScore: 2300,
+        maxScore: 2600,
     
         conveyorBelt: {
-            items:[ BLANK       , APPLE       , ORANGE      , BLANK       , KIWI        
-                  , KIWI_SLICE  , BLANK       , ORANGE_SLICE, BLANK       , APPLE       
-                  , BLANK       , ORANGE      , BLANK       , KIWI_SLICE  , APPLE       
-                  , ORANGE      , BLANK       , KIWI
+            items:[ KIWI        , YOGURT      , BLANK       , APPLE       , ORANGE        
+                  , BLANK       , KIWI_SLICE  , BLANK       , BLANK       , APPLE       
+                  , BLANK       , ORANGE      , APPLE       , BLANK       , BLANK       
+                  , KIWI        , BLANK       , YOGURT      , BLANK       , KIWI_SLICE
+                  , APPLE
                   ], 
             speed: 2.5
         },
     
         processors: [
-            { recipe:[APPLE, ORANGE],               result: APPLE_SLICE,    score: 200, x: 2*TILES_PX, y: 2*TILES_PX },
-            { recipe:[KIWI_SLICE, KIWI],            result: ORANGE_SLICE,   score: 200, x: 8*TILES_PX, y: 2*TILES_PX },
-            { recipe:[APPLE_SLICE, ORANGE_SLICE],   result: YOGURT,         score: 250, x: 6*TILES_PX, y: 5*TILES_PX }
+            { recipe:[APPLE, ORANGE],                      result: APPLE_SLICE,    score: 400, x: 2*TILES_PX, y: 2*TILES_PX },
+            { recipe:[KIWI_SLICE, KIWI, APPLE],            result: ORANGE_SLICE,   score: 450, x: 8*TILES_PX, y: 2*TILES_PX },
+            { recipe:[APPLE_SLICE, ORANGE_SLICE, YOGURT],  result: YOGURT,         score: 450, x: 5*TILES_PX, y: 5*TILES_PX }
             
         ],
         finalItems: [YOGURT]
     
     },
-    
     
     {id: 17, name: "don't slip",
     
@@ -470,21 +470,21 @@ let LEVELS = [
         maxScore: 1800,
     
         conveyorBelt: {
-            items: [BLANK, ORANGE_SLICE, APPLE     , BLANK, BLANK     
-                  , APPLE, KIWI_SLICE  , BLANK     , BLANK, ORANGE      
-                  , BLANK, APPLE       , KIWI_SLICE, BLANK, ORANGE    
-                  , APPLE, ORANGE     ], 
+            items: [BLANK, FLOUR, APPLE, BLANK, FLOUR     
+                  , APPLE, EGGS, BLANK, BLANK, ORANGE      
+                  , BLANK, APPLE, PIE,EGGS, BLANK, ORANGE    
+                  , FLOUR   ], 
             speed: 2
         },
     
         processors: [
-            { recipe:[APPLE],                                   result: APPLE_SLICE,    score: 100, x: 1*TILES_PX, y: 2*TILES_PX },
-            { recipe:[ORANGE],                                  result: ORANGE_SLICE,   score: 100, x: 1*TILES_PX, y: 5*TILES_PX },
-            { recipe:[ORANGE_SLICE, APPLE_SLICE],               result: KIWI_SLICE,     score: 200, x: 5*TILES_PX, y: 2*TILES_PX }, 
-            { recipe:[ORANGE_SLICE, KIWI_SLICE, APPLE_SLICE],   result: YOGURT,         score: 400, x: 5*TILES_PX, y: 5*TILES_PX }
+            { recipe:[APPLE],                     result: APPLE_SLICE,    score: 100, x: 1*TILES_PX, y: 2*TILES_PX },
+            { recipe:[ORANGE],                     result: FLOUR,          score: 100, x: 1*TILES_PX, y: 5*TILES_PX },
+            { recipe:[FLOUR, EGGS],                result: PIE,            score: 200, x: 5*TILES_PX, y: 2*TILES_PX }, 
+            { recipe:[FLOUR, APPLE_SLICE, PIE],   result: APPLE_PIE,      score: 400, x: 5*TILES_PX, y: 5*TILES_PX }
         ],
-        finalItems: [YOGURT]
-    
+        finalItems: [APPLE_PIE]
+        //ORANGE = WHEAT
     },
 
 ];
