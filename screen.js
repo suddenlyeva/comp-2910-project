@@ -13,8 +13,6 @@ function resizeGameWindow() {
         iframe.style.height = window.innerWidth + "px";
         iframe.style.width = window.innerHeight + "px";
     }
-
-    window.location.hash = '';
 }
 
 function resizeTwice() {
