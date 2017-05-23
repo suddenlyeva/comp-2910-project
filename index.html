@@ -41,17 +41,20 @@
 
     // Google+ platform for Google+ share button put head or body end
     <script src="https://apis.google.com/js/platform.js" async defer>
-        {lang: 'en_US'}
+        {
+            lang: 'en_US'
+        }
     </script>
 </head>
 
 <body class="index" id="page-top">
 // FB javascript SDK for share button
 <div id="fb-root"></div>
-<script>(function(d, s, id) {
+<script>(function (d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
+    js = d.createElement(s);
+    js.id = id;
     js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=1403380076386976";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
@@ -219,22 +222,17 @@
                         <li class="list-inline-item">
                             <div data-href="https://foodfactoryzero.firebaseapp.com" data-mobile-iframe="true">
                                 <a class="fb-xfbml-parse-ignore btn-social btn-outline"
-                                   target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffoodfactoryzero.firebaseapp.com%2F&amp;src=sdkpreparse">
+                                   target="_blank"
+                                   href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffoodfactoryzero.firebaseapp.com%2F&amp;src=sdkpreparse">
                                     <i class="fa fa-fw fa-facebook"></i>
                                 </a>
                             </div>
                         </li>
                         <li class="list-inline-item">
-                            <a class="btn-social btn-outline" href="#"><i class="fa fa-fw fa-google-plus"></i></a>
-                            <!--<div class="g-plus" data-action="share" data-annotation="none" data-height="15" data-href="https://foodfactoryzero.firebaseapp.com"></div>-->
-                            <div data-action="share" data-annotation="none" data-height="15" data-href="https://foodfactoryzero.firebaseapp.com">
-                                <a class="btn-social btn-outline"
-                                   target="_blank" href="https://plus.google.com/share?url=foodfactoryzero.firebaseapp.com">
-                                    <i class="fa fa-fw fa-google-plus"></i>
-                                </a>
-
-
-                            </div>
+                            <a class="btn-social btn-outline"
+                               target="_blank" href="https://plus.google.com/share?url=foodfactoryzero.firebaseapp.com">
+                                <i class="fa fa-fw fa-google-plus"></i>
+                            </a>
                         </li>
                         <li class="list-inline-item">
                             <a class="btn-social btn-outline" href="#"><i class="fa fa-fw fa-twitter"></i></a>
