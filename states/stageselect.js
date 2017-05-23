@@ -61,8 +61,9 @@ function StageSelect() {
     stageButtons.interactive = stageButtons.buttonMode = true;
 
     // initialize buttons
-    this.initButtons = () => {
-        for(let i = stageButtons.children.length; i < LEVELS.length; i++) {
+    // forceReinit - if true, all buttons will be recreated
+    this.initButtons = (forceReinit = false) => {
+        for(let i = forceReinit ? 0 : stageButtons.children.length; i < LEVELS.length; i++) {
             let wrapper  = new PIXI.Container(),
                 button   = new PIXI.Container(),
                 buttonBg = new PIXI.Graphics();
@@ -81,9 +82,6 @@ function StageSelect() {
                 buttonTextStyle);
             button.addChild(buttonText);
             buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
-
-            let starContainer = new PIXI.Container();
-            button.addChild(starContainer);
 
             let highscoreText = new PIXI.Text("", buttonTextStyle);
             button.addChild(highscoreText);
@@ -126,9 +124,12 @@ function StageSelect() {
 
                 if(!(lockedContainer.visible = lockedOverlay.visible = !LEVEL_PROGRESS[i].unlocked)) { // assignment intentional
                     highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
+                    highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 1.7);
 
-                    // position stuff on the button here
                     if(LEVEL_PROGRESS[i].highscore !== 0) {
+                        let starContainer = new PIXI.Container();
+                        button.addChild(starContainer);
+
                         // find the number of stars to display
                         let grade = calculateGrade({ maxScore: LEVELS[i].maxScore, score: LEVEL_PROGRESS[i].highscore });
                         // add the correct number of stars to the star container
@@ -138,15 +139,13 @@ function StageSelect() {
                             star.x = i * star.width + i * 15;
                             starContainer.addChild(star);
                         }
+                        starContainer.position.set(button.width / 2 - starContainer.width / 2,
+                            button.height - starContainer.height * 1.7);
                     }
-                } else {
+                } // else {
                     // unnecessary to do this because it's currently impossible to lock levels
-                    highscoreText.text = "";
-                }
-
-                highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 1.7);
-                starContainer.position.set(button.width / 2 - starContainer.width / 2,
-                    button.height - starContainer.height * 1.7);
+                // highscoreText.text = "";
+                // }
 
                 button.scale.set(scaleMemX, scaleMemY);
             };
@@ -364,14 +363,14 @@ function StageSelect() {
     // -------------------------------- End of carousel --------------------------------
 
     // Difficulty buttons
-    let easyButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["difficulty-easy.png"]);
-    easyButton.interactive   = easyButton.buttonMode = true;
+    let easyButton   = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["difficulty-easy.png"]);
+    easyButton.interactive   = easyButton.buttonMode   = true;
 
     let normalButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["difficulty-normal.png"]);
     normalButton.interactive = normalButton.buttonMode = true;
 
-    let hardButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["difficulty-hard.png"]);
-    hardButton.interactive   = hardButton.buttonMode = true;
+    let hardButton   = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["difficulty-hard.png"]);
+    hardButton.interactive   = hardButton.buttonMode   = true;
 
     // center the normal button and position the other 2 relative to it
     normalButton.position.set(CANVAS_WIDTH / 2 - normalButton.width / 2, CANVAS_HEIGHT - TILES_PX * 1.2);
