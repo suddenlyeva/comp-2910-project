@@ -91,6 +91,18 @@ function StageSelect() {
             let lockedText = new PIXI.Text("", buttonTextStyle);
             button.addChild(lockedText);
 
+            // let previewArray = getPreviewFromId(LEVELS[i].id, i);
+            let previewArray = LEVELS[i].finalItems;
+            let previewContainer = new PIXI.Container();
+            for(let itemIndex = 0; itemIndex < previewArray.length; itemIndex++) {
+                let previewItem = new PIXI.Sprite(ITEM_TEXTURES[previewArray[itemIndex]]);
+                previewItem.scale.set(1.5);
+                previewItem.x = previewContainer.width;
+                previewContainer.addChild(previewItem);
+            }
+            button.addChild(previewContainer);
+            previewContainer.position.set(button.width / 2 - previewContainer.width / 2, TILES_PX * 2.1);
+
             wrapper.updateProgress = () => {
                 highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
                 lockedText.text = LEVEL_PROGRESS[i].unlocked ? "" : "locked"; // -> states/levels.js
@@ -102,18 +114,19 @@ function StageSelect() {
 
                 // position stuff on the button here
                 lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5);
-                highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
+                highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 1.7);
                 if(LEVEL_PROGRESS[i].highscore !== 0) {
                     // find the number of stars to display
                     let grade = calculateGrade({ maxScore: LEVELS[i].maxScore, score: LEVEL_PROGRESS[i].highscore });
                     // add the correct number of stars to the star container
                     for (let i = 0; i < grade.nStars; i++) {
                         let star = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["star-small.png"]);
-                        star.x = i * star.width;
+                        star.scale.set(0.8);
+                        star.x = i * star.width + i * 15;
                         starContainer.addChild(star);
                     }
                     starContainer.position.set(button.width / 2 - starContainer.width / 2,
-                        button.height - starContainer.height * 1.5);
+                        button.height - starContainer.height * 1.7);
                 }
 
                 button.scale.set(scaleMemX, scaleMemY);
