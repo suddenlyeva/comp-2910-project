@@ -32,7 +32,12 @@
             }
             /* hide scrollbars */
             html, body { overflow: hidden }
-            body { text-align: center }
+            body {
+                text-align: center;
+                width: 1px;
+                min-width: 100%;
+                *width: 100%;
+            }
         </style>
     </head>
 
