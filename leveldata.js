@@ -147,7 +147,7 @@ let LEVELS = [
         finalItems: [APPLE_SLICE, KIWI_SLICE]
     },
 
-    {id: 5, name: "Level 5",
+    {id: 5, name: "level 5",
     
         clearMessage: "set for now",
         wasteLimit: 5,
