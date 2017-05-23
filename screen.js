@@ -4,7 +4,7 @@
 
 let resizeTimeout;
 
-function resizeIframe() {
+function resizeGameWindow() {
     let iframe = document.getElementById("game-window");
     if(window.innerWidth > window.innerHeight) {
         iframe.style.width = window.innerWidth + "px";
@@ -16,10 +16,11 @@ function resizeIframe() {
     console.log("hello");
 }
 
-function waitToResize() {
+function resizeTwice() {
+    resizeGameWindow();
     clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(resizeIframe, 500);
+    resizeTimeout = setTimeout(resizeGameWindow, 1000);
 }
 
-window.addEventListener("resize", resizeIframe);
-window.addEventListener("orientationchange", waitToResize);
+window.addEventListener("resize", resizeTwice);
+window.addEventListener("orientationchange", resizeTwice);
