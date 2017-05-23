@@ -29,9 +29,9 @@ let LEVELS = [
     },
 
     // Stage 1
-    {id: 1, name: "apple pie",
+    {id: 1, name: "stage 1",
 
-        clearMessage: "set your fridge temperature to 4 degrees celsius or lower to keep food fresh",
+        clearMessage: "",
         wasteLimit: 5,
         maxScore: 300,
 
@@ -54,7 +54,7 @@ let LEVELS = [
     },
 
     //Stage 2
-    {id: 2, name: "fruit slices",
+    {id: 2, name: "stage 2",
 
         clearMessage: "55,000 apples are wasted every day in metro vancouver",
         wasteLimit: 4,
@@ -116,7 +116,7 @@ let LEVELS = [
     //Stage 4
     {id: 4, name: "stage 4",
 
-        clearMessage: "fruits should go in the low humidity drawer",
+        clearMessage: "apples last 4 weeks in the fridge before they go bad",
         wasteLimit: 7,
         maxScore: 1000,
 
@@ -334,7 +334,7 @@ let LEVELS = [
         maxScore: 9999,
 
         conveyorBelt: {
-            items: [RICE, BLANK, NORI, NORI, BLANK, RICE, YOGURT, ORANGE, BLANK, BLANK, KIWI, YOGURT, BLANK, YOGURT],
+            items: [],
             speed: 1.5
         },
 
