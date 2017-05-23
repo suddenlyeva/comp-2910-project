@@ -188,7 +188,7 @@ function StageSelect() {
 
                     } else {
                         setManually = true;
-                        goToButton(i);
+                        this.goToButton(i);
                     }
                 }
 
@@ -343,7 +343,7 @@ function StageSelect() {
         if(stageButtons.moving) stopWatch += TICKER.deltaTime;
     };
 
-    let goToButton = (n, scroll = true) => {
+    this.goToButton = (n, scroll = true) => {
         if(n < 0 || n >= stageButtons.children.length) throw new Error("goToButton: requested button doesn't exist.");
 
         currentButton = n;
@@ -364,13 +364,13 @@ function StageSelect() {
     // -------------------------------- End of carousel --------------------------------
 
     // Difficulty buttons
-    let easyButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "easy",   0xb3ecec, 75); // -> util.js
+    let easyButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["difficulty-easy.png"]);
     easyButton.interactive   = easyButton.buttonMode = true;
 
-    let normalButton = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "normal", 0xb3ecec, 75); // -> util.js
+    let normalButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["difficulty-normal.png"]);
     normalButton.interactive = normalButton.buttonMode = true;
 
-    let hardButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "hard",   0xb3ecec, 75); // -> util.js
+    let hardButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["difficulty-hard.png"]);
     hardButton.interactive   = hardButton.buttonMode = true;
 
     // center the normal button and position the other 2 relative to it
@@ -434,23 +434,22 @@ function StageSelect() {
 
     easyButton  .pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        goToButton(DIFFICULTY.easy);   // -> leveldata.js
+        this.goToButton(DIFFICULTY.easy);   // -> leveldata.js
     };
     normalButton.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        goToButton(DIFFICULTY.normal); // -> leveldata.js
+        this.goToButton(DIFFICULTY.normal); // -> leveldata.js
     };
     hardButton  .pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        goToButton(DIFFICULTY.hard);   // -> leveldata.js
+        this.goToButton(DIFFICULTY.hard);   // -> leveldata.js
     };
 
     // Options
     let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
     optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
-    optionsButton.scale.set(2/3, 2/3);
-    optionsButton.interactive = true;
-    optionsButton.buttonMode = true;
+    optionsButton.scale.set(2/3);
+    optionsButton.interactive = optionsButton.buttonMode = true;
 
     optionsButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
@@ -476,8 +475,10 @@ function StageSelect() {
     // });
 
     // More Games
-    let moreGamesButton = makeSimpleButton(TILES_PX * 3, TILES_PX, "more games", 0xFFFF66, 75); // -> util.js
-    moreGamesButton.position.set(TILES_PX * 0.25, CANVAS_HEIGHT - TILES_PX * 1.25);
+    let moreGamesButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-games.png"]);
+    moreGamesButton.interactive = moreGamesButton.buttonMode = true;
+    moreGamesButton.position.set(TILES_PX * 0.135, CANVAS_HEIGHT - TILES_PX * 1.5);
+    moreGamesButton.scale.set(2/3);
 
     moreGamesButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js

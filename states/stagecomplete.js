@@ -4,6 +4,12 @@
 function StageComplete(data) { // <- states/levels.js
 
     let levelIndex = findIndexById(LEVELS, data.id);
+    let nextLevelIndex = levelIndex + 1;
+    if(StageSelect.instance == null) throw new Error("Stage select not initialized."); // should be impossible
+    // advance the carousel to current level
+    StageSelect.instance.goToButton(
+        nextLevelIndex >= LEVELS.length ? levelIndex : nextLevelIndex, false); // -> states/stageselect.js
+
     // Update progress
     if (LEVEL_PROGRESS[levelIndex].highscore < data.score) {
         LEVEL_PROGRESS[levelIndex].highscore = data.score;
@@ -130,11 +136,10 @@ function StageComplete(data) { // <- states/levels.js
         PlaySound(eSFXList.StageEnter, false); // -> sfx.js
         PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         cleanUp();
-        let next = levelIndex + 1;
-        if (next >= LEVELS.length) {
+        if (nextLevelIndex >= LEVELS.length) {
             Credits.open(); // -> states/credits.js
         } else {
-            Level.open(LEVELS[next]); // -> states/levels.js
+            Level.open(LEVELS[nextLevelIndex]); // -> states/levels.js
         }
     });
 
