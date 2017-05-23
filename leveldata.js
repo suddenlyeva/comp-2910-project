@@ -334,29 +334,79 @@ let LEVELS = [
         maxScore: 9999,
 
         conveyorBelt: {
-            items: [RICE, BLANK, NORI, NORI, BLANK, RICE, FISH_STEAK, ORANGE, BLANK, BLANK, KIWI, FISH_STEAK, BLANK, FISH_STEAK],
-            speed: 1.5
+            items: [FISH, BLANK, FISH, NORI, BLANK, CUCUMBER, RICE, FISH, FISH, RICE, BLANK,
+                    FISH, NORI, BLANK, RICE, CUCUMBER, BLANK, NORI],
+            speed: 1.65
         },
 
         processors: [
             {
-                recipe: [RICE, NORI],
-                result: ONIGIRI,
+                recipe: [FISH],
+                result: FISH_STEAK,
                 score: 100,
-                x: 1*TILES_PX,
+                x: 3*TILES_PX,
                 y: 2*TILES_PX
             },
             {
-                recipe: [RICE, NORI, FISH_STEAK],
+                recipe: [FISH_STEAK, NORI, RICE],
                 result: SUSHI_ROLL,
-                score: 100,
+                score: 300,
                 x: 7*TILES_PX,
-                y: 2*TILES_PX
+                y: 4*TILES_PX
             },
+
+            {
+                recipe: [FISH, CUCUMBER],
+                result: FISH_SOUP,
+                score: 200,
+                x: 2*TILES_PX,
+                y: 5*TILES_PX
+            }
 
         ],
 
-        finalItems: [SUSHI_ROLL, ONIGIRI]
+        finalItems: [SUSHI_ROLL, FISH_SOUP]
+    },
+
+    {id: 13, name: "stage 13",
+
+        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        wasteLimit: 5,
+        maxScore: 9999,
+
+        conveyorBelt: {
+            items: [MILK, BLANK, BLANK, BREAD, BLANK, MILK, BLANK, MILK, BREAD, BLANK, MILK,
+                    BREAD, BLANK, BREAD],
+            speed: 1.65
+        },
+
+        processors: [
+            {
+                recipe: [MILK],
+                result: CHEESE,
+                score: 100,
+                x: 3*TILES_PX,
+                y: 2*TILES_PX
+            },
+            {
+                recipe: [CHEESE],
+                result: CHEESE_SLICE,
+                score: 100,
+                x: 7*TILES_PX,
+                y: 4*TILES_PX
+            },
+
+            {
+                recipe: [BREAD, CHEESE_SLICE],
+                result: SANDWICH,
+                score: 200,
+                x: 2*TILES_PX,
+                y: 5*TILES_PX
+            }
+
+        ],
+
+        finalItems: [SANDWICH]
     },
     
     {id: 16, name: "careful",
