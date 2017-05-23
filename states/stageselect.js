@@ -88,9 +88,6 @@ function StageSelect() {
             let highscoreText = new PIXI.Text("", buttonTextStyle);
             button.addChild(highscoreText);
 
-            let lockedText = new PIXI.Text("", buttonTextStyle);
-            button.addChild(lockedText);
-
             // let previewArray = getPreviewFromId(LEVELS[i].id, i);
             let previewArray = LEVELS[i].finalItems;
             let previewContainer = new PIXI.Container();
@@ -103,31 +100,53 @@ function StageSelect() {
             button.addChild(previewContainer);
             previewContainer.position.set(button.width / 2 - previewContainer.width / 2, TILES_PX * 2.1);
 
-            wrapper.updateProgress = () => {
-                highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
-                lockedText.text = LEVEL_PROGRESS[i].unlocked ? "" : "locked"; // -> states/levels.js
+            // stuff visible when the level is locked
+            let lockedContainer = new PIXI.Container();
+            let lockedImg = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["lock.png"]);
+            lockedContainer.addChild(lockedImg);
+            let lockedText = new PIXI.Text("locked", buttonTextStyle.clone());
+            lockedText.style.fontSize = 200; // bigger font
+            // set position using container width before the container is stretched out
+            lockedText.x = lockedContainer.width + TILES_PX / 3.2;
+            lockedImg.y = TILES_PX / 3.8;
+            lockedContainer.addChild(lockedText);
+            lockedContainer.position.set(button.width / 2 - lockedContainer.width / 2,
+                button.height - lockedContainer.height * 1.24);
+            button.addChild(lockedContainer);
 
+            let lockedOverlay = new PIXI.Sprite(
+                PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview-overlay.png"]);
+            button.addChild(lockedOverlay);
+
+            wrapper.updateProgress = () => {
                 // scale the button back to 100%, set text positions and scale the button back
                 let scaleMemX = button.scale.x,
                     scaleMemY = button.scale.y;
                 button.scale.set(buttonScale.primary);
 
-                // position stuff on the button here
-                lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5);
-                highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 1.7);
-                if(LEVEL_PROGRESS[i].highscore !== 0) {
-                    // find the number of stars to display
-                    let grade = calculateGrade({ maxScore: LEVELS[i].maxScore, score: LEVEL_PROGRESS[i].highscore });
-                    // add the correct number of stars to the star container
-                    for (let i = 0; i < grade.nStars; i++) {
-                        let star = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["star-small.png"]);
-                        star.scale.set(0.8);
-                        star.x = i * star.width + i * 15;
-                        starContainer.addChild(star);
+                if(!(lockedContainer.visible = lockedOverlay.visible = !LEVEL_PROGRESS[i].unlocked)) { // assignment intentional
+                    highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
+
+                    // position stuff on the button here
+                    if(LEVEL_PROGRESS[i].highscore !== 0) {
+                        // find the number of stars to display
+                        let grade = calculateGrade({ maxScore: LEVELS[i].maxScore, score: LEVEL_PROGRESS[i].highscore });
+                        // add the correct number of stars to the star container
+                        for (let i = 0; i < grade.nStars; i++) {
+                            let star = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["star-small.png"]);
+                            star.scale.set(0.8);
+                            star.x = i * star.width + i * 15;
+                            starContainer.addChild(star);
+                        }
                     }
-                    starContainer.position.set(button.width / 2 - starContainer.width / 2,
-                        button.height - starContainer.height * 1.7);
+                } else {
+                    // unnecessary to do this because it's currently impossible to lock levels
+                    highscoreText.text = "";
                 }
+
+                highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 1.7);
+                starContainer.position.set(button.width / 2 - starContainer.width / 2,
+                    button.height - starContainer.height * 1.7);
 
                 button.scale.set(scaleMemX, scaleMemY);
             };
@@ -360,7 +379,8 @@ function StageSelect() {
     easyButton.position.set(normalButton.x - easyButton.width - TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
 
     // --------------------------- Shifting difficulty gear ----------------------------
-    let difficultyGear = makeGear("s", 1);
+    let difficultyGear = makeGear("m", 1);
+    difficultyGear.scale.set(0.7);
 
     let diffGearPos = {
         easy: {
