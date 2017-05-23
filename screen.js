@@ -4,12 +4,12 @@
 
 function resizeIframe() {
     let iframe = document.getElementById("game-window");
-    if(document.documentElement.clientWidth > document.documentElement.clientHeight) {
-        iframe.style.width = document.documentElement.clientWidth + "px";
-        iframe.style.height = document.documentElement.clientHeight + "px";
+    if(window.innerWidth > window.innerHeight) {
+        iframe.style.width = window.innerWidth + "px";
+        iframe.style.height = window.innerHeight + "px";
     } else {
-        iframe.style.height = document.documentElement.clientWidth + "px";
-        iframe.style.width = document.documentElement.clientHeight + "px";
+        iframe.style.height = window.innerWidth + "px";
+        iframe.style.width = window.innerHeight + "px";
     }
 }
 
