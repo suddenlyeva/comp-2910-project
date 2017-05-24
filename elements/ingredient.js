@@ -63,6 +63,7 @@ let GRAPE_JUICE    = 60;
 let GRAPE          = 61;
 let CAKE           = 62;
 let STRAWBERRY     = 63;
+let ASPARAGUS      = 64;
 
 let PEN            = 98;
 let PPAP_ITEM      = 99;
@@ -128,12 +129,13 @@ function defineItemTextures() {
     ITEM_TEXTURES[CAPPUCCINO]     = PIXI.loader.resources["images/food.json"].textures["cappuccino.png"];
     ITEM_TEXTURES[SOUP]           = PIXI.loader.resources["images/food.json"].textures["pumpkin_soup.png"];
     ITEM_TEXTURES[WATER]          = PIXI.loader.resources["images/food.json"].textures["water.png"];
-/*!*/    ITEM_TEXTURES[ORANGE_JUICE]   = PIXI.loader.resources["images/food.json"].textures["bottle.png"];
+    ITEM_TEXTURES[ORANGE_JUICE]   = PIXI.loader.resources["images/food.json"].textures["orange-juice.png"];
 /*!*/    ITEM_TEXTURES[APPLE_JUICE]   = PIXI.loader.resources["images/food.json"].textures["bottle.png"];
 /*!*/    ITEM_TEXTURES[GRAPE_JUICE]   = PIXI.loader.resources["images/food.json"].textures["bottle.png"];
     ITEM_TEXTURES[GRAPE]              = PIXI.loader.resources["images/food.json"].textures["red_grapes.png"];
     ITEM_TEXTURES[CAKE]               = PIXI.loader.resources["images/food.json"].textures["cake_2.png"];
     ITEM_TEXTURES[STRAWBERRY]         = PIXI.loader.resources["images/food.json"].textures["straberry.png"];
+    ITEM_TEXTURES[ASPARAGUS]         = PIXI.loader.resources["images/food.json"].textures["asparagus.png"];
     // Use PIXI.loader.resources["images/food.json"].textures["*.png"]; for new sprites.
 }
 
