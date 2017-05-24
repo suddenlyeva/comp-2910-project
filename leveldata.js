@@ -1,5 +1,5 @@
 // JSON Level Data
-let DIFFICULTY = { easy : 1, normal: 10, hard: 12};
+let DIFFICULTY = { easy : 1, normal: 10, hard: 20};
 
 let LEVELS = [
 
@@ -452,30 +452,24 @@ let LEVELS = [
         maxScore: 9999,
 
         conveyorBelt: {
-            items: [CHEESE, BLANK, SAUSAGE, BREAD, BREAD, CABBAGE, BLANK, SAUSAGE, BLANK, BLANK, CABBAGE,
-                    CHEESE, BLANK, BREAD, SAUSAGE, BLANK, CHEESE, BLANK, CABBAGE],
-            speed: 1.7
+            items: [RICE, BLANK, NORI, NORI, BLANK, BLANK, FISH_STEAK, RICE, RICE, BLANK, NORI,
+                    RICE, BLANK, RICE, BLANK],
+            speed: 2.0
         },
 
         processors: [
+
             {
-                recipe: [CABBAGE],
-                result: CABBAGE_SLICE,
-                score: 100,
-                x: 2*TILES_PX,
-                y: 2*TILES_PX
-            },
-            {
-                recipe: [CHEESE],
-                result: CHEESE_SLICE,
+                recipe: [RICE, RICE, NORI],
+                result: ONIGIRI,
                 score: 100,
                 x: 7*TILES_PX,
                 y: 2*TILES_PX
             },
 
             {
-                recipe: [BREAD, CHEESE_SLICE, CABBAGE_SLICE, SAUSAGE],
-                result: SANDWICH,
+                recipe: [RICE, NORI, FISH_STEAK],
+                result: SUSHI_ROLL,
                 score: 400,
                 x: 5*TILES_PX,
                 y: 5*TILES_PX
@@ -483,7 +477,7 @@ let LEVELS = [
 
         ],
 
-        finalItems: [SANDWICH]
+        finalItems: [SUSHI_ROLL, ONIGIRI]
     },
     
     {id: 16, name: "careful",
