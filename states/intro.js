@@ -79,6 +79,7 @@ function Intro() {
     let counter     = 0;
     
     // Creates a burst of every food item on the screen
+    // RECONSIDERING...
     /* 
     data = {
         x    : The x position of the burst,
@@ -86,7 +87,6 @@ function Intro() {
         xMax : The maximum x distance that particles will fly.
         yMax : The maximum y distance that particles will fly.
     }
-    */
     let makeItemBurst = (x,y) => {
         let sprites = [];
         let secretItems = 2;
@@ -114,6 +114,9 @@ function Intro() {
     };
 
     makeItemBurst(100,100);
+    
+    */
+    
     
     // Update the scene
     this.update = () => {
