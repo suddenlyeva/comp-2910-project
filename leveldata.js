@@ -456,38 +456,44 @@ let LEVELS = [
         maxScore: 9999,
 
         conveyorBelt: {
-            items: [CHEESE, BLANK, SAUSAGE, BREAD, BREAD, CABBAGE, BLANK, SAUSAGE, BLANK, BLANK, CABBAGE,
-                    CHEESE, BLANK, BREAD, SAUSAGE, BLANK, CHEESE, BLANK, CABBAGE],
+            items: [WATER, BLANK, LOBSTER, LOBSTER, BLANK, CUCUMBER, BLANK, LOBSTER, BLANK, WATER, BLANK
+                    CUCUMBER, BLANK, WATER, BLANK, BLANK, CUCUMBER],
             speed: 1.7
         },
 
         processors: [
             {
-                recipe: [CABBAGE],
-                result: CABBAGE_SLICE,
+                recipe: [LOBSTER],
+                result: LOBSTER_BOILED,
                 score: 100,
                 x: 2*TILES_PX,
                 y: 2*TILES_PX
             },
             {
-                recipe: [CHEESE],
-                result: CHEESE_SLICE,
+                recipe: [CUCUMBER],
+                result: CUCUMBER_SLICE,
                 score: 100,
-                x: 7*TILES_PX,
+                x: 5*TILES_PX,
                 y: 2*TILES_PX
             },
-
             {
-                recipe: [BREAD, CHEESE_SLICE, CABBAGE_SLICE, SAUSAGE],
-                result: SANDWICH,
+                recipe: [WATER],
+                result: SOUP,
+                score: 100,
+                x: 2*TILES_PX,
+                y: 5*TILES_PX
+            },
+            {
+                recipe: [LOBSTER_BOILED, CUCUMBER_SLICE, SOUP],
+                result: LOBSTER_SOUP,
                 score: 400,
-                x: 5*TILES_PX,
+                x: 6*TILES_PX,
                 y: 5*TILES_PX
             }
 
         ],
 
-        finalItems: [SANDWICH]
+        finalItems: [LOBSTER_SOUP]
     },
     
     {id: 16, name: "careful",
