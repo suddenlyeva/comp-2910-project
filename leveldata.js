@@ -337,7 +337,7 @@ let LEVELS = [
         conveyorBelt: {
             items: [FISH, BLANK, FISH, NORI, BLANK, SOUP, RICE, FISH, FISH, RICE, BLANK,
                     FISH, NORI, BLANK, RICE, SOUP, BLANK, NORI],
-            speed: 1.65
+            speed: 1.8
         },
 
         processors: [
@@ -372,13 +372,13 @@ let LEVELS = [
     {id: 13, name: "sandwich",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
-        wasteLimit: 5,
+        wasteLimit: 8,
         maxScore: 9999,
 
         conveyorBelt: {
             items: [CHEESE, BLANK, SAUSAGE, BREAD, BREAD, CABBAGE, BLANK, SAUSAGE, BLANK, BLANK, CABBAGE,
                     CHEESE, BLANK, BREAD, SAUSAGE, BLANK, CHEESE, BLANK, CABBAGE],
-            speed: 1.7
+            speed: 1.9
         },
 
         processors: [
@@ -411,45 +411,37 @@ let LEVELS = [
     },
 
     // Normal Stage 5
-    {id: 14, name: "14",
+    {id: 14, name: "onigiri",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
-        wasteLimit: 5,
+        wasteLimit: 8,
         maxScore: 9999,
 
         conveyorBelt: {
-            items: [CHEESE, BLANK, SAUSAGE, BREAD, BREAD, CABBAGE, BLANK, SAUSAGE, BLANK, BLANK, CABBAGE,
-                    CHEESE, BLANK, BREAD, SAUSAGE, BLANK, CHEESE, BLANK, CABBAGE],
-            speed: 1.7
+            items: [RICE, RICE, RICE, NORI, NORI, RICE, NORI, RICE, NORI, NORI,
+                    BLANK, RICE, RICE, NORI, NORI, RICE, NORI],
+            speed: 2.2
         },
 
         processors: [
             {
-                recipe: [CABBAGE],
-                result: CABBAGE_SLICE,
-                score: 100,
+                recipe: [RICE, NORI],
+                result: ONIGIRI,
+                score: 200,
                 x: 2*TILES_PX,
-                y: 2*TILES_PX
-            },
-            {
-                recipe: [CHEESE],
-                result: CHEESE_SLICE,
-                score: 100,
-                x: 7*TILES_PX,
-                y: 2*TILES_PX
+                y: 4*TILES_PX
             },
 
             {
-                recipe: [BREAD, CHEESE_SLICE, CABBAGE_SLICE, SAUSAGE],
-                result: SANDWICH,
-                score: 400,
-                x: 5*TILES_PX,
-                y: 5*TILES_PX
+                recipe: [RICE, NORI],
+                result: ONIGIRI,
+                score: 200,
+                x: 8*TILES_PX,
+                y: 4*TILES_PX
             }
-
         ],
 
-        finalItems: [SANDWICH]
+        finalItems: [ONIGIRI]
     },
 
     // Normal Stage 6
