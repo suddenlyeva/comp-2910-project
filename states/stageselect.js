@@ -22,6 +22,8 @@ function StageSelect() {
         buttonTextStyle    = new PIXI.TextStyle({
             fontFamily: FONT_FAMILY, fontSize: 100
         });
+    // background width is calculated by multiplying number of buttons by bgWidthPerButton
+    let bgWidthPerButton   = 2 * TILES_PX;
     // clicking current button takes you to the stage if refXCenter is within the button's bounds
     // currentPosLimiter limits these bounds
     // values of buttonWidth / 2 and above will cause the current button to be unclickable
@@ -56,13 +58,25 @@ function StageSelect() {
     // button in the spotlight position
     let currentInView = currentButton;
 
+    let background = new PIXI.extras.TilingSprite(
+        PIXI.utils.TextureCache["images/background-stageselect.png"],
+        0, 9*TILES_PX
+    );
+
+    // initialized in initButtons because they rely on stageButtons.width
+    let bgRatio; // background width to carousel width ratio
+    let bgXmax;  // maximum background x position
+
     stageButtons.position.set(refXLeft - (buttonDisplayWidth * currentButton),
         CANVAS_HEIGHT / 2 - buttonDisplayHeight / 2);
     stageButtons.interactive = stageButtons.buttonMode = true;
 
     // initialize buttons
-    this.initButtons = () => {
-        for(let i = stageButtons.children.length; i < LEVELS.length; i++) {
+    // forceReinit - if true, all buttons will be recreated even if they already exist
+    // otherwise initialize any additional buttons; if there aren't any new buttons, do nothing
+    this.initButtons = (forceReinit = false) => {
+        if(LEVELS.length === stageButtons.children.length) return;
+        for(let i = forceReinit ? 0 : stageButtons.children.length; i < LEVELS.length; i++) {
             let wrapper  = new PIXI.Container(),
                 button   = new PIXI.Container(),
                 buttonBg = new PIXI.Graphics();
@@ -82,38 +96,69 @@ function StageSelect() {
             button.addChild(buttonText);
             buttonText.position.set(button.width / 2 - buttonText.width / 2, button.height / 5);
 
-            let starContainer = new PIXI.Container();
-            button.addChild(starContainer);
-
             let highscoreText = new PIXI.Text("", buttonTextStyle);
             button.addChild(highscoreText);
 
-            let lockedText = new PIXI.Text("", buttonTextStyle);
-            button.addChild(lockedText);
+            // let previewArray = getPreviewFromId(LEVELS[i].id, i);
+            let previewArray = LEVELS[i].finalItems;
+            let previewContainer = new PIXI.Container();
+            for(let itemIndex = 0; itemIndex < previewArray.length; itemIndex++) {
+                let previewItem = new PIXI.Sprite(ITEM_TEXTURES[previewArray[itemIndex]]);
+                previewItem.scale.set(1.5);
+                previewItem.x = previewContainer.width;
+                previewContainer.addChild(previewItem);
+            }
+            button.addChild(previewContainer);
+            previewContainer.position.set(button.width / 2 - previewContainer.width / 2, TILES_PX * 2.1);
+
+            // stuff visible when the level is locked
+            let lockedContainer = new PIXI.Container();
+            let lockedImg = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["lock.png"]);
+            lockedContainer.addChild(lockedImg);
+            let lockedText = new PIXI.Text("locked", buttonTextStyle.clone());
+            lockedText.style.fontSize = 200; // bigger font
+            // set position using container width before the container is stretched out
+            lockedText.x = lockedContainer.width + TILES_PX / 3.2;
+            lockedImg.y = TILES_PX / 3.8;
+            lockedContainer.addChild(lockedText);
+            lockedContainer.position.set(button.width / 2 - lockedContainer.width / 2,
+                button.height - lockedContainer.height * 1.24);
+            button.addChild(lockedContainer);
+
+            let lockedOverlay = new PIXI.Sprite(
+                PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview-overlay.png"]);
+            button.addChild(lockedOverlay);
 
             wrapper.updateProgress = () => {
-                highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
-                lockedText.text = LEVEL_PROGRESS[i].unlocked ? "" : "locked"; // -> states/levels.js
-
                 // scale the button back to 100%, set text positions and scale the button back
                 let scaleMemX = button.scale.x,
                     scaleMemY = button.scale.y;
                 button.scale.set(buttonScale.primary);
 
-                // position stuff on the button here
-                lockedText.position.set(button.width / 2 - lockedText.width / 2, button.height - lockedText.height * 1.5);
-                highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 2);
-                if(LEVEL_PROGRESS[i].highscore !== 0) {
-                    let grade = calculateGrade({ maxScore: LEVELS[i].maxScore, score: LEVEL_PROGRESS[i].highscore });
-                    for (let i = 0; i < grade.nStars; i++) {
-                        let star = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["star.png"]);
-                        star.scale.set(0.5);
-                        star.x = i * star.width;
-                        starContainer.addChild(star);
+                if(!(lockedContainer.visible = lockedOverlay.visible = !LEVEL_PROGRESS[i].unlocked)) { // assignment intentional
+                    highscoreText.text = "highscore: " + padZeroForInt(LEVEL_PROGRESS[i].highscore, 5);
+                    highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 1.7);
+
+                    if(LEVEL_PROGRESS[i].highscore !== 0) {
+                        let starContainer = new PIXI.Container();
+                        button.addChild(starContainer);
+
+                        // find the number of stars to display
+                        let grade = calculateGrade({ maxScore: LEVELS[i].maxScore, score: LEVEL_PROGRESS[i].highscore });
+                        // add the correct number of stars to the star container
+                        for (let i = 0; i < grade.nStars; i++) {
+                            let star = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["star-small.png"]);
+                            star.scale.set(0.8);
+                            star.x = i * star.width + i * 15;
+                            starContainer.addChild(star);
+                        }
+                        starContainer.position.set(button.width / 2 - starContainer.width / 2,
+                            button.height - starContainer.height * 1.7);
                     }
-                    starContainer.position.set(button.width / 2 - starContainer.width / 2,
-                        button.height - starContainer.height * 1.5);
-                }
+                } // else {
+                    // unnecessary to do this because it's currently impossible to lock levels
+                // highscoreText.text = "";
+                // }
 
                 button.scale.set(scaleMemX, scaleMemY);
             };
@@ -155,7 +200,7 @@ function StageSelect() {
 
                     } else {
                         setManually = true;
-                        goToButton(i);
+                        this.goToButton(i);
                     }
                 }
 
@@ -203,6 +248,11 @@ function StageSelect() {
 
             stageButtons.addChild(wrapper);
         }
+
+        // background variables are based on the number of buttons
+        background.width = Math.max(stageButtons.children.length * bgWidthPerButton, CANVAS_WIDTH);
+        bgRatio          = (background.width - CANVAS_WIDTH) / (stageButtons.width - buttonDisplayWidth);
+        bgXmax           = CANVAS_WIDTH - background.width;
     }
 
     this.initButtons();
@@ -295,6 +345,8 @@ function StageSelect() {
                 stageButtons.children[i].update(pos < refXLeft);
             }
         }
+        // move background
+        background.x = Math.max(Math.min(stageButtons.x - refXLeft, 0) * bgRatio, bgXmax);
     };
 
     let updateCarousel = () => {
@@ -310,7 +362,7 @@ function StageSelect() {
         if(stageButtons.moving) stopWatch += TICKER.deltaTime;
     };
 
-    let goToButton = (n, scroll = true) => {
+    this.goToButton = (n, scroll = true) => {
         if(n < 0 || n >= stageButtons.children.length) throw new Error("goToButton: requested button doesn't exist.");
 
         currentButton = n;
@@ -331,22 +383,23 @@ function StageSelect() {
     // -------------------------------- End of carousel --------------------------------
 
     // Difficulty buttons
-    let easyButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "easy",   0xb3ecec, 75); // -> util.js
-    easyButton.interactive   = easyButton.buttonMode = true;
+    let easyButton   = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["difficulty-easy.png"]);
+    easyButton.interactive   = easyButton.buttonMode   = true;
 
-    let normalButton = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "normal", 0xb3ecec, 75); // -> util.js
+    let normalButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["difficulty-normal.png"]);
     normalButton.interactive = normalButton.buttonMode = true;
 
-    let hardButton   = makeSimpleButton(TILES_PX * 1.7, TILES_PX * 0.7, "hard",   0xb3ecec, 75); // -> util.js
-    hardButton.interactive   = hardButton.buttonMode = true;
+    let hardButton   = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["difficulty-hard.png"]);
+    hardButton.interactive   = hardButton.buttonMode   = true;
 
     // center the normal button and position the other 2 relative to it
-    normalButton.position.set(CANVAS_WIDTH / 2 - normalButton.width / 2, CANVAS_HEIGHT - TILES_PX * 1.2);
-    hardButton.position.set(normalButton.x + hardButton.width + TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
-    easyButton.position.set(normalButton.x - easyButton.width - TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
+    normalButton.position.set(CANVAS_WIDTH / 2 - normalButton.width / 2, CANVAS_HEIGHT - TILES_PX * 1.3);
+    hardButton.position.set(normalButton.x + hardButton.width + TILES_PX * 0.6, normalButton.y);
+    easyButton.position.set(normalButton.x - easyButton.width - TILES_PX * 0.6, normalButton.y);
 
     // --------------------------- Shifting difficulty gear ----------------------------
-    let difficultyGear = makeGear("s", 1);
+    let difficultyGear = makeGear("m", 1);
+    difficultyGear.scale.set(0.7);
 
     let diffGearPos = {
         easy: {
@@ -372,7 +425,7 @@ function StageSelect() {
             return diffGearPos.hard;
         } else if(target >= DIFFICULTY.normal) {
             return diffGearPos.normal;
-        } else if(target >= DIFFICULTY.easy) {
+        } else { // if(target >= DIFFICULTY.easy)
             return diffGearPos.easy;
         }
     };
@@ -400,23 +453,22 @@ function StageSelect() {
 
     easyButton  .pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        goToButton(DIFFICULTY.easy);   // -> leveldata.js
+        this.goToButton(DIFFICULTY.easy);   // -> leveldata.js
     };
     normalButton.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        goToButton(DIFFICULTY.normal); // -> leveldata.js
+        this.goToButton(DIFFICULTY.normal); // -> leveldata.js
     };
     hardButton  .pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        goToButton(DIFFICULTY.hard);   // -> leveldata.js
+        this.goToButton(DIFFICULTY.hard);   // -> leveldata.js
     };
 
     // Options
     let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
     optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
-    optionsButton.scale.set(2/3, 2/3);
-    optionsButton.interactive = true;
-    optionsButton.buttonMode = true;
+    optionsButton.scale.set(2/3);
+    optionsButton.interactive = optionsButton.buttonMode = true;
 
     optionsButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
@@ -442,8 +494,10 @@ function StageSelect() {
     // });
 
     // More Games
-    let moreGamesButton = makeSimpleButton(TILES_PX * 3, TILES_PX, "more games", 0xFFFF66, 75); // -> util.js
-    moreGamesButton.position.set(TILES_PX * 0.25, CANVAS_HEIGHT - TILES_PX * 1.25);
+    let moreGamesButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-games.png"]);
+    moreGamesButton.interactive = moreGamesButton.buttonMode = true;
+    moreGamesButton.position.set(TILES_PX * 0.135, CANVAS_HEIGHT - TILES_PX * 1.5);
+    moreGamesButton.scale.set(2/3);
 
     moreGamesButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
@@ -453,14 +507,6 @@ function StageSelect() {
         Affiliate.open(); // -> states/affiliate.js
     });
 
-
-    let background = new PIXI.Container(),
-        bgFill     = new PIXI.Graphics();
-    bgFill.beginFill(0x5d32ea);
-    bgFill.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    bgFill.endFill();
-
-    background.addChild(bgFill);
 
     // Create Scene
     this.scene = new PIXI.Container();

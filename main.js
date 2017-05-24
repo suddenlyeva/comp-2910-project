@@ -6,7 +6,8 @@ function init() {
     let thingsToLoad = [
         "images/spritesheet.json",
         "images/gears-xl.json",
-        "images/food.json"
+        "images/food.json",
+        "images/background-stageselect.png"
     ];
 
     // Authentication Check

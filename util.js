@@ -370,6 +370,18 @@ function levelDisplayName(id, name, index = null) {
     return "level " + index + " : " + name;
 }
 
+// returns an array conataining types to be made into the level preview.
+// get with the level id number.
+function getPreviewFromId(id, index = null) {
+   
+    if (index === null) {
+        index = findIndexById(LEVELS, id);
+    }
+    return LEVELS[index].conveyorBelt.items.filter((v, i, a) => 
+        (v !== BLANK) && (a.indexOf(v) === i)
+    );
+}
+
 // arr - array of object with property 'id'; id - object id whose index we want to find
 // returns -1 if index not found
 function findIndexById(arr, id) {

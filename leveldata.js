@@ -1,5 +1,5 @@
 // JSON Level Data
-let DIFFICULTY = { easy : 1, normal: 10, hard: 0};
+let DIFFICULTY = { easy : 1, normal: 10, hard: 12};
 
 let LEVELS = [
 
