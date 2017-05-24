@@ -402,6 +402,88 @@ function padZeroForInt(intToPad, digits) {
     return paddedNum;
 }
 
+// Adds projectile properties to a sprite
+/*
+data = {
+    speed:,
+    angle:,
+    acceleration:,
+    limitSpeed:
+}
+*/
+function addProjectileProperties(object, data) {
+    
+    object.speed = data.speed;
+    object.acceleration = data.acceleration;
+    object.limitSpeed = data.limitSpeed;
+    
+    object.deltaX = Math.cos(data.angle) * object.speed * TICKER.deltaTime;
+    object.deltaY = Math.sin(data.angle) * object.speed * TICKER.deltaTime;
+    
+    object.move = () => {
+        if(object.speed) {
+            if (object.acceleration != null && object.limitSpeed != null) {
+                if (object.acceleration > 0 && object.speed < object.limitSpeed) {
+                    object.speed = Math.min(object.speed + object.acceleration * TICKER.deltaTime, object.limitSpeed);
+                    object.deltaX = Math.cos(data.angle) * object.speed;
+                    object.deltaY = Math.sin(data.angle) * object.speed;
+                }
+                else if (object.acceleration < 0 && object.speed > object.limitSpeed) {
+                    object.speed = Math.max(object.speed + object.acceleration * TICKER.deltaTime, object.limitSpeed);
+                    object.deltaX = Math.cos(data.angle) * object.speed;
+                    object.deltaY = Math.sin(data.angle) * object.speed;
+                }
+            }
+            object.x += object.deltaX * TICKER.deltaTime;
+            object.y += object.deltaY * TICKER.deltaTime;
+        }
+    };
+}
+
+function makeItemBurst(x,y,numberOfItems = Object.keys(ITEM_TEXTURES).length - 2) { // 2 is the number of secret items
+    
+    let itemBurst = new PIXI.Container();
+    
+    itemBurst.sprites = [];
+    for (let i = APPLE; i < numberOfItems; i++) {
+        itemBurst.sprites.push(new PIXI.Sprite(ITEM_TEXTURES[i]));
+    }
+    for (let i in itemBurst.sprites) {
+        itemBurst.sprites[i].x = x;
+        itemBurst.sprites[i].y = y;
+        itemBurst.sprites[i].scale.set(0);
+        itemBurst.sprites[i].anchor.set(0.5);
+        itemBurst.sprites[i].deltaScale = Math.random() * 0.08 + 0.03;
+        itemBurst.sprites[i].deltaRotation = Math.random() * 0.8 - 0.4;
+        
+        itemBurst.addChild(itemBurst.sprites[i]);
+        
+        addProjectileProperties( itemBurst.sprites[i], {
+            speed: Math.random() * 28 + 25,
+            angle: Math.random() * Math.PI * 2,
+            acceleration: (Math.random() * -2) - 1,
+            limitSpeed: 0
+        });
+    }
+    
+    itemBurst.update = () => {
+        for(let i in itemBurst.sprites) {
+            itemBurst.sprites[i].move();
+            if(itemBurst.sprites[i].speed > 3) {
+                itemBurst.sprites[i].scale.x += itemBurst.sprites[i].deltaScale * TICKER.deltaTime;
+                itemBurst.sprites[i].scale.y += itemBurst.sprites[i].deltaScale * TICKER.deltaTime;
+            }
+            if (Math.abs(itemBurst.sprites[i].deltaRotation) > 0.02) {
+                itemBurst.sprites[i].deltaRotation *= 0.97;
+            }
+            itemBurst.sprites[i].rotation += itemBurst.sprites[i].deltaRotation * TICKER.deltaTime;
+        }
+    };
+    
+    return itemBurst;
+    
+}
+
 // TODO: Well supported fullscreen functionality
 
 // function toggleFullScreen() {
