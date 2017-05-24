@@ -70,15 +70,15 @@ let LEVELS = [
                 recipe: [APPLE],
                 result: APPLE_SLICE,
                 score: 100,
-                x: 1*TILES_PX,
-                y: 3*TILES_PX
+                x: 3*TILES_PX,
+                y: 4*TILES_PX
             },
             {
                 recipe: [ORANGE],
                 result: ORANGE_SLICE,
                 score: 100,
-                x: 7*TILES_PX,
-                y: 3*TILES_PX
+                x: 9*TILES_PX,
+                y: 4*TILES_PX
             }
 
         ],
@@ -290,7 +290,7 @@ let LEVELS = [
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
-        maxScore: 2100,
+        maxScore: 1800,
 
         conveyorBelt: {
             items: [TOMATO, BLANK, CUCUMBER, BLANK, BLANK, CABBAGE, BLANK, TOMATO, BLANK,
@@ -303,7 +303,7 @@ let LEVELS = [
             {
                 recipe: [TOMATO, CABBAGE],
                 result: SALAD,
-                score: 100,
+                score: 200,
                 x: 1*TILES_PX,
                 y: 2*TILES_PX
             },
@@ -317,7 +317,7 @@ let LEVELS = [
             {
                 recipe: [SALAD, CUCUMBER_SLICE, OCTOPUS],
                 result: SALAD_2,
-                score: 500,
+                score: 300,
                 x: 3*TILES_PX,
                 y: 5*TILES_PX
             }
@@ -335,9 +335,9 @@ let LEVELS = [
         maxScore: 9999,
 
         conveyorBelt: {
-            items: [FISH, BLANK, FISH, NORI, BLANK, WATER, RICE, FISH, FISH, RICE, BLANK,
-                    FISH, NORI, BLANK, RICE, WATER, BLANK, NORI],
-            speed: 1.55
+            items: [FISH, BLANK, FISH, NORI, BLANK, SOUP, RICE, FISH, FISH, RICE, BLANK,
+                    FISH, NORI, BLANK, RICE, SOUP, BLANK, NORI],
+            speed: 1.65
         },
 
         processors: [
@@ -352,11 +352,11 @@ let LEVELS = [
                 recipe: [FISH_STEAK, NORI, RICE],
                 result: SUSHI_ROLL,
                 score: 300,
-                x: 7*TILES_PX,
+                x: 8*TILES_PX,
                 y: 4*TILES_PX
             },
             {
-                recipe: [FISH, WATER],
+                recipe: [FISH, SOUP],
                 result: FISH_SOUP,
                 score: 200,
                 x: 2*TILES_PX,
@@ -368,22 +368,23 @@ let LEVELS = [
         finalItems: [SUSHI_ROLL, FISH_SOUP]
     },
 
-    {id: 13, name: "stage 13",
+    // Normal Stage 4
+    {id: 13, name: "sandwich",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
         maxScore: 9999,
 
         conveyorBelt: {
-            items: [MILK, BLANK, BLANK, BREAD, BLANK, MILK, BLANK, MILK, BREAD, BLANK, MILK,
-                    BREAD, BLANK, BREAD],
-            speed: 1.55
+            items: [CHEESE, BLANK, SAUSAGE, BREAD, BREAD, CABBAGE, BLANK, SAUSAGE, BLANK, BLANK, CABBAGE,
+                    CHEESE, BLANK, BREAD, SAUSAGE, BLANK, CHEESE, BLANK, CABBAGE],
+            speed: 1.7
         },
 
         processors: [
             {
-                recipe: [MILK],
-                result: CHEESE,
+                recipe: [CABBAGE],
+                result: CABBAGE_SLICE,
                 score: 100,
                 x: 2*TILES_PX,
                 y: 2*TILES_PX
@@ -397,9 +398,93 @@ let LEVELS = [
             },
 
             {
-                recipe: [BREAD, CHEESE_SLICE],
+                recipe: [BREAD, CHEESE_SLICE, CABBAGE_SLICE, SAUSAGE],
                 result: SANDWICH,
-                score: 200,
+                score: 400,
+                x: 5*TILES_PX,
+                y: 5*TILES_PX
+            }
+
+        ],
+
+        finalItems: [SANDWICH]
+    },
+
+    // Normal Stage 5
+    {id: 14, name: "14",
+
+        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        wasteLimit: 5,
+        maxScore: 9999,
+
+        conveyorBelt: {
+            items: [CHEESE, BLANK, SAUSAGE, BREAD, BREAD, CABBAGE, BLANK, SAUSAGE, BLANK, BLANK, CABBAGE,
+                CHEESE, BLANK, BREAD, SAUSAGE, BLANK, CHEESE, BLANK, CABBAGE],
+            speed: 1.7
+        },
+
+        processors: [
+            {
+                recipe: [CABBAGE],
+                result: CABBAGE_SLICE,
+                score: 100,
+                x: 2*TILES_PX,
+                y: 2*TILES_PX
+            },
+            {
+                recipe: [CHEESE],
+                result: CHEESE_SLICE,
+                score: 100,
+                x: 7*TILES_PX,
+                y: 2*TILES_PX
+            },
+
+            {
+                recipe: [BREAD, CHEESE_SLICE, CABBAGE_SLICE, SAUSAGE],
+                result: SANDWICH,
+                score: 400,
+                x: 5*TILES_PX,
+                y: 5*TILES_PX
+            }
+
+        ],
+
+        finalItems: [SANDWICH]
+    },
+
+    // Normal Stage 6
+    {id: 15, name: "15",
+
+        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        wasteLimit: 5,
+        maxScore: 9999,
+
+        conveyorBelt: {
+            items: [CHEESE, BLANK, SAUSAGE, BREAD, BREAD, CABBAGE, BLANK, SAUSAGE, BLANK, BLANK, CABBAGE,
+                CHEESE, BLANK, BREAD, SAUSAGE, BLANK, CHEESE, BLANK, CABBAGE],
+            speed: 1.7
+        },
+
+        processors: [
+            {
+                recipe: [CABBAGE],
+                result: CABBAGE_SLICE,
+                score: 100,
+                x: 2*TILES_PX,
+                y: 2*TILES_PX
+            },
+            {
+                recipe: [CHEESE],
+                result: CHEESE_SLICE,
+                score: 100,
+                x: 7*TILES_PX,
+                y: 2*TILES_PX
+            },
+
+            {
+                recipe: [BREAD, CHEESE_SLICE, CABBAGE_SLICE, SAUSAGE],
+                result: SANDWICH,
+                score: 400,
                 x: 5*TILES_PX,
                 y: 5*TILES_PX
             }

@@ -106,12 +106,12 @@ function defineItemTextures() {
     ITEM_TEXTURES[CABBAGE]        = PIXI.loader.resources["images/food.json"].textures["cabbage.png"];
     ITEM_TEXTURES[CABBAGE_SLICE]  = PIXI.loader.resources["images/food.json"].textures["salad.png"];
     ITEM_TEXTURES[TOMATO]         = PIXI.loader.resources["images/food.json"].textures["tomato.png"];
-/*!*/ ITEM_TEXTURES[TOMATO_SLICE]   = PIXI.loader.resources["images/food.json"].textures["tomato.png"];
+    ITEM_TEXTURES[TOMATO_SLICE]   = PIXI.loader.resources["images/food.json"].textures["tomato-slice.png"];
     ITEM_TEXTURES[SALAD]          = PIXI.loader.resources["images/food.json"].textures["salad_2.png"];
     ITEM_TEXTURES[SALAD_2]        = PIXI.loader.resources["images/food.json"].textures["salad_3.png"];
     ITEM_TEXTURES[OCTOPUS]        = PIXI.loader.resources["images/food.json"].textures["octopulus.png"];
     ITEM_TEXTURES[CUCUMBER]       = PIXI.loader.resources["images/food.json"].textures["cucumber .png"];
-/*!*/ ITEM_TEXTURES[CUCUMBER_SLICE] = PIXI.loader.resources["images/food.json"].textures["cucumber .png"];
+    ITEM_TEXTURES[CUCUMBER_SLICE] = PIXI.loader.resources["images/food.json"].textures["cucumber-slice.png"];
     ITEM_TEXTURES[RICE]           = PIXI.loader.resources["images/food.json"].textures["rice.png"];
     ITEM_TEXTURES[NORI]           = PIXI.loader.resources["images/food.json"].textures["nori.png"];
     ITEM_TEXTURES[SUSHI_ROLL]     = PIXI.loader.resources["images/food.json"].textures["rolls.png"];
