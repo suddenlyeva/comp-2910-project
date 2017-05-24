@@ -98,9 +98,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#about">About</a>
                 </li>
-<!--                <li class="nav-item">
+                <!--    <li class="nav-item">
                     <a class="nav-link" href="#contact">Contact</a>
-                </li>-->
+                </li>   -->
             </ul>
         </div>
     </div>
@@ -124,38 +124,30 @@
         <h2 class="text-center">Play our game!</h2>
         <hr class="star-primary">
 
-        <div id="loading">Loading...</div>
-        <div id="loaded" class="hidden">
+        <!--<div id="loading"></div>-->
+        <div id="loadArea" class="hidden">
             <div id="main">
-                <div id="user-signed-in" class="hidden">
-                    <button type="button" class="btn btn-play btn-lg btn-customlg btn-block mx-auto"
-                            onclick="link()">Play with google account
+                <div id="signedInUI" class="hidden">
+                    <button type="button" class="btn btn-play btn-lg btn-customlg btn-block mx-auto" id="runWithId">
+                        Play with google account
                     </button>
-                    <button type="button" class="btn btn-play btn-lg btn-customlg btn-block mx-auto" id="sign-out">
+                    <button type="button" class="btn btn-play btn-lg btn-customlg btn-block mx-auto" id="signOut">
                         Sign Out
                     </button>
                 </div>
-                <div id="user-signed-out" class="hidden">
-                    <button type="button" class="btn btn-play btn-lg btn-customlg btn-block mx-auto"
-                            onclick="noauthlink()">Play without sign in
+                <div id="signedOutUI" class="hidden">
+                    <button type="button" class="btn btn-play btn-lg btn-customlg btn-block mx-auto" id="runWithoutId">
+                        Play without sign in
                     </button>
                     <div id="firebaseui-spa">
                         <h5 class="text-center">or sign in to save progress:</h5>
-                        <div id="firebaseui-container"></div>
+                        <div id="authMethods"></div>
                     </div>
                 </div>
             </div>
         </div>
-        <script>
-            function link() {
-                document.location = "./play.html";
-            }
-            function noauthlink() {
-                firebase.auth().signOut();
-                document.location = "./play.html";
-            }
-        </script>
-        <script src="./web/auth/app.js"></script>
+
+        <script src="./web/js/authentication.js"></script>
     </div>
 </section>
 
