@@ -45,29 +45,30 @@ function PauseMenu() {
     let txtVAlign = 6; // Vertical padding on button labels
 
     // Style for Pause Label
-    let txtStyle = new PIXI.TextStyle({
+    let txtStyleLarge = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 200, fill: 0x0
     });
 
     // Paused Label
-    let pauseTxt = new PIXI.Text("paused", txtStyle);
+    let pauseTxt = new PIXI.Text("paused", txtStyleLarge);
     pauseTxt.position.set(panel.width / 2 - pauseTxt.width / 2, 0);
 
     // Style for other labels
-    txtStyle.fontSize = 96
+    let txtStyleSmall = txtStyleLarge.clone();
+    txtStyleSmall.fontSize = 96
 
     // Resume
-    let resumeTxt = new PIXI.Text("continue", txtStyle);
+    let resumeTxt = new PIXI.Text("continue", txtStyleSmall);
     resumeTxt.position.set(resumeButton.x + resumeButton.width / 2 - resumeTxt.width / 2,
             resumeButton.y + resumeButton.height - resumeTxt.height / txtVAlign);
 
     // Reset
-    let resetTxt = new PIXI.Text("restart", txtStyle);
+    let resetTxt = new PIXI.Text("restart", txtStyleSmall);
     resetTxt.position.set(resetButton.x + resetButton.width / 2 - resetTxt.width / 2,
         resetButton.y + resetButton.height - resetTxt.height / txtVAlign);
 
     // Options
-    let optionsTxt = new PIXI.Text("options", txtStyle);
+    let optionsTxt = new PIXI.Text("options", txtStyleSmall);
     optionsTxt.position.set(optionsButton.x + optionsButton.width / 2 - optionsTxt.width / 2,
         optionsButton.y + optionsButton.height - optionsTxt.height / txtVAlign);
 

@@ -1,80 +1,45 @@
 "use strict";
 
-// Authentication Check
-let USER;
+let loadingProgressBar;
+function init() {
+    // Stuff for the Loader
+    let thingsToLoad = [
+        "images/spritesheet.json",
+        "images/gears-xl.json",
+        "images/food.json",
+        "images/background-stageselect.png"
+    ];
 
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-      console.log("logged in");
-      USER = user;
-  }
-});
+    // Authentication Check
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            console.log("logged in");
+            USER = user;
+        }
+    });
 
-// Database Global
-let DATABASE = firebase.database();
+    // Load Progress
+    loadProgress(); // -> progress.js
 
-// Load Progress
-loadProgress(); // -> levels.js
+    RENDERER.backgroundColor = 0x95d5f5;
 
-// Base Canvas Size
-let CANVAS_WIDTH = 1280,
-    CANVAS_HEIGHT = 720;
+    window.addEventListener('resize', function(){ // Flag after resize event for optimization
+        WINDOW_RESIZED = true;
+    }, true);
 
-// Font Global
-let FONT_FAMILY = "JMH-HarryDicksonOne";
+    // Create Loading Bar
+    loadingProgressBar = makeProgressBar(
+        CANVAS_WIDTH / 1.5, CANVAS_HEIGHT / 6, 10, 0, 0x00d27f);
+    loadingProgressBar.position.set(CANVAS_WIDTH / 2 - loadingProgressBar.width / 2,
+        CANVAS_HEIGHT / 2 - loadingProgressBar.height / 2);
+    SCENE.addChild(loadingProgressBar);
 
-// State Machine Globals
-let SCENE = new PIXI.Container();
-let STATE, previousScene;
-
-// Stuff for the Loader
-let thingsToLoad = [
-    "images/spritesheet.json"
-];
-
-// Renderer Global
-let RENDERER = PIXI.autoDetectRenderer({
-    width: CANVAS_WIDTH,
-    height: CANVAS_HEIGHT,
-    view: document.getElementById("display"),
-    transparent: false,
-    autoResize: true
-});
-RENDERER.backgroundColor = 0x95d5f5;
-
-// Ticker Global for deltaTime interpolation
-let TICKER = new PIXI.ticker.Ticker();
-
-// Resize Information
-let WINDOW_RESIZED = true;
-let STRETCH_THRESHOLD = 0.1;
-window.addEventListener('resize', function(){ // Flag after resize event for optimization
-    WINDOW_RESIZED = true;
-}, true);
-
-// Letterboxing variables
-let TOP_MASK,
-    BOT_MASK,
-    LEFT_MASK,
-    RIGHT_MASK,
-    frameX,
-    frameY,
-    frameW,
-    frameH;
-
-// Create Loading Bar
-let loadingProgressBar = makeProgressBar(
-    CANVAS_WIDTH / 1.5, CANVAS_HEIGHT / 6, 10, 0, 0x00d27f);
-loadingProgressBar.position.set(CANVAS_WIDTH / 2 - loadingProgressBar.width / 2,
-    CANVAS_HEIGHT / 2 - loadingProgressBar.height / 2);
-SCENE.addChild(loadingProgressBar);
-
-
-// Load game with PIXI loader
-PIXI.loader
-    .on("progress", showLoadingProgress)
-    .add(thingsToLoad)
-    .load(loadSounds); // -> sfx.js
+    // Load game with PIXI loader
+    PIXI.loader
+        .on("progress", showLoadingProgress)
+        .add(thingsToLoad)
+        .load(loadSounds); // -> sfx.js
+}
 
 // Starts the game at Intro
 function setup() {
@@ -114,6 +79,23 @@ function setup() {
     TICKER.start();
 }
 
+// Called by loader before the game starts
+function showLoadingProgress(loader, resource) {
+
+    // Show progress
+    console.log("loading: " + resource.url);
+
+    // Other half of loading bar is in sfx.js sound.onProgress
+    loadingProgressBar.xScale(loader.progress / 200); // -> util.js
+
+    // Resize loading screen
+    sceneResize(STRETCH_THRESHOLD); // -> util.js
+    RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
+
+    // Draw loading screen
+    RENDERER.render(SCENE);
+}
+
 // Called while the game is running
 function gameLoop() {
 
@@ -140,19 +122,5 @@ function gameLoop() {
     RENDERER.render(SCENE); // Draw the current Scene
 }
 
-// Called by loader before the game starts
-function showLoadingProgress(loader, resource) {
-
-    // Show progress
-    console.log("loading: " + resource.url);
-
-    // Other half of loading bar is in sfx.js sound.onProgress
-    loadingProgressBar.xScale(loader.progress / 200); // -> util.js
-
-    // Resize loading screen
-    sceneResize(STRETCH_THRESHOLD); // -> util.js
-    RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
-
-    // Draw loading screen
-    RENDERER.render(SCENE);
-}
+// start the game
+init();

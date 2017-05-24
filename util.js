@@ -81,45 +81,53 @@ function makeProgressBar(width, height, padding, bgColor, fgColor) {
 }
 
 // Builds a Volume Slider
-function makeSlider(width, height, sliderThickness = height / 6, handleWidth = height / 2) {
+function makeSlider(initValue, width, colorSound, sliderThickness = 20) {
 
     // Create Container
     let sliderObj = new PIXI.Container();
 
     // Define Colors
-    let colorSound = 0x77f441,
-        colorMuted = 0xff1a1a,
+    let colorMuted = 0xff3a3a,
         colorDrag  = 0xd7f442;
 
-    // Using handleWidth because handle.width is for some reason inaccurate
-    let endOfSlider = width - handleWidth;
-
     // Style and Draw Handle
+    /*
     let handle = new PIXI.Graphics();
     handle.lineStyle(4, 0x0, 1);
     handle.beginFill(0xFFFFFF);
     handle.drawRect(0, 0, handleWidth, height);
     handle.endFill();
-    handle.x = endOfSlider;
-    handle.tint = colorSound;
+    */
+    let handle = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["slider-handle.png"]
+    );
     handle.interactive = handle.buttonMode = true;
+        
+    let endOfSlider = width - handle.width;
 
     // Style and draw Slider
     let slider = new PIXI.Graphics();
     slider.beginFill(0x0);
     slider.drawRect(0, 0, width, sliderThickness);
     slider.endFill();
-    slider.y = height / 2 - slider.height / 2;
+    slider.y = handle.height / 2 - slider.height / 2;
 
     // Clicking on the slider brings handle position to that point
     let clickableArea = new PIXI.Graphics();
     clickableArea.beginFill(0, 0);
-    clickableArea.drawRect(0, 0, width, height)
+    clickableArea.drawRect(0, 0, width, handle.height)
     clickableArea.endFill();
     clickableArea.interactive = clickableArea.buttonMode = true;
 
-
-    sliderObj.value = 1.0; // Access this for controlling things with the slider.
+    // Sets the slider to a given value.
+    sliderObj.setValue = (newValue) => {
+        if(newValue >= 0 && newValue <= 1) {
+            sliderObj.value = newValue;
+            handle.x = slider.x + (endOfSlider - slider.x) * newValue;
+        }
+    };
+    
+    sliderObj.setValue(initValue);
 
     // Functions
 
@@ -166,7 +174,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
 
             // Adjust value based on new positions and request callback
             sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
-            sliderObj.onSliderAdjust();
+            sliderObj.onSliderAdjust(sliderObj.value);
         }
     };
 
@@ -185,7 +193,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         }
 
         sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
-        sliderObj.onSliderAdjust();
+        sliderObj.onSliderAdjust(sliderObj.value);
     };
 
     // clears handle data
@@ -194,13 +202,14 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         handle.tint = handle.x === slider.x ? colorMuted : colorSound; // IF the handle is on the left edge of slider
     };
 
-    // Function callback for mocing the slider bar.
+    // Function callback for moving the slider bar.
     sliderObj.onSliderAdjust = () => {};
-
+    
     // Add to container
     sliderObj.addChild(slider);
     sliderObj.addChild(clickableArea);
     sliderObj.addChild(handle);
+    sliderObj.cleanUp();
 
     // Return to caller
     return sliderObj;
@@ -265,10 +274,19 @@ function makeGear(size, speed) {
 
     // Save textures
     let frames = [];
-    for (let i = 0; i < frameCount; i++) {
-        frames.push(
-            PIXI.loader.resources["images/spritesheet.json"].textures["gear-" + size + "-" + i + ".png"]
-        );
+    if (size == "xl") {
+        for (let i = 0; i < frameCount; i++) {
+            frames.push(
+                PIXI.loader.resources["images/gears-xl.json"].textures["gear-xl-" + i + ".png"]
+            );
+        }
+    }
+    else {
+        for (let i = 0; i < frameCount; i++) {
+            frames.push(
+                PIXI.loader.resources["images/spritesheet.json"].textures["gear-" + size + "-" + i + ".png"]
+            );
+        }
     }
 
     // Make gear
@@ -309,6 +327,37 @@ function makeGear(size, speed) {
     return gear;
 }
 
+// takes level data and returns earned grade
+function calculateGrade(data) {
+    // should this be a global ? ...
+    let gradeLists = {
+        perfect   : {percentage: 100,  text: "perfect!"    ,  nStars: 5},
+        excellent : {percentage:  80,  text: "excellent!"  ,  nStars: 4},
+        great     : {percentage:  60,  text: "great!"      ,  nStars: 3},
+        nice      : {percentage:  40,  text: "nice!"       ,  nStars: 2},
+        good      : {percentage:   0,  text: "good enough!",  nStars: 1}
+    };
+
+    let result;
+
+    let gradeRate = (data.score / data.maxScore) * 100;
+
+    // Assign grade
+    if (gradeRate >= gradeLists.perfect.percentage) {
+        result = gradeLists.perfect;
+    } else if (gradeRate >= gradeLists.excellent.percentage) {
+        result = gradeLists.excellent;
+    } else if (gradeRate >= gradeLists.great.percentage) {
+        result = gradeLists.great;
+    } else if (gradeRate >= gradeLists.nice.percentage) {
+        result = gradeLists.nice;
+    } else if (gradeRate >= gradeLists.good.percentage) {
+        result = gradeLists.good;
+    }
+
+    return result;
+}
+
 // returns displayable level name in correct format e.g. "level 1 : something"
 // takes level id and name. Can also take level index if it's known at the time
 function levelDisplayName(id, name, index = null) {
@@ -319,6 +368,18 @@ function levelDisplayName(id, name, index = null) {
     if(index === null)
         index = findIndexById(LEVELS, id);
     return "level " + index + " : " + name;
+}
+
+// returns an array conataining types to be made into the level preview.
+// get with the level id number.
+function getPreviewFromId(id, index = null) {
+   
+    if (index === null) {
+        index = findIndexById(LEVELS, id);
+    }
+    return LEVELS[index].conveyorBelt.items.filter((v, i, a) => 
+        (v !== BLANK) && (a.indexOf(v) === i)
+    );
 }
 
 // arr - array of object with property 'id'; id - object id whose index we want to find

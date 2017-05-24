@@ -7,9 +7,9 @@ let SFX_MASTER = [];
 let MUSIC_MASTER = [];
 
 // Default volume
-let SFX_VOLUME = 1.0;
+let SFX_VOLUME = 0.5;
 
-let MUSIC_VOLUME = 1.0;
+let MUSIC_VOLUME = 0.5;
 
 /* This list allows us to change the file names of the sfx audio
 * without changing it in the rest of the code*/
@@ -70,6 +70,7 @@ sounds.whenLoaded = () => {
     for(let i in eMusicList) {
         MUSIC_MASTER.push(sounds[eMusicList[i]]);
     }
+    updateVolumeMaster();
     setup(); // -> main.js
 };
 
@@ -163,6 +164,15 @@ function StopSound(sfx, isFullStop) {
     }
 }
 
+// Enforces the sound volume to match the variables.
+function updateVolumeMaster() {
+    for (let i in SFX_MASTER) {
+      SFX_MASTER[i].volume = SFX_VOLUME;
+    }
+    for(let i in MUSIC_MASTER) {
+        MUSIC_MASTER[i].volume = MUSIC_VOLUME;
+    }
+}
 
 // Currently deprecated
 function VolSetSound(level) {

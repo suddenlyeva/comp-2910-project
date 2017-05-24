@@ -29,19 +29,20 @@ function GameOver() {
     let txtVAlign = 6; // Vertical padding on button labels
 
     // Style for Pause Label
-    let txtStyle = new PIXI.TextStyle({
+    let txtStyleLarge = new PIXI.TextStyle({
         fontFamily: FONT_FAMILY, fontSize: 200, fill: 0x0
     });
 
     // Paused Label
-    let gameOverTxt = new PIXI.Text("game over", txtStyle);
+    let gameOverTxt = new PIXI.Text("game over", txtStyleLarge);
     gameOverTxt.position.set(panel.width / 2 - gameOverTxt.width / 2, 0);
 
     // Style for other labels
-    txtStyle.fontSize = 96;
+    let txtStyleSmall = txtStyleLarge.clone();
+    txtStyleSmall.fontSize = 96;
 
     // Reset
-    let resetTxt = new PIXI.Text("restart", txtStyle);
+    let resetTxt = new PIXI.Text("restart", txtStyleSmall);
     resetTxt.position.set(resetButton.x + resetButton.width / 2 - resetTxt.width / 2,
         resetButton.y + resetButton.height - resetTxt.height / txtVAlign);
 

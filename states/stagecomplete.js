@@ -4,6 +4,15 @@
 function StageComplete(data) { // <- states/levels.js
 
     let levelIndex = findIndexById(LEVELS, data.id);
+    let nextLevelIndex = levelIndex + 1;
+    if(StageSelect.instance == null) throw new Error("Stage select not initialized."); // should be impossible
+    // add buttons to the carousel if number of levels increased
+    // cheap operation if no changes need to be made
+    StageSelect.instance.initButtons();
+    // advance the carousel to current level
+    StageSelect.instance.goToButton(
+        nextLevelIndex >= LEVELS.length ? levelIndex : nextLevelIndex, false); // -> states/stageselect.js
+
     // Update progress
     if (LEVEL_PROGRESS[levelIndex].highscore < data.score) {
         LEVEL_PROGRESS[levelIndex].highscore = data.score;
@@ -15,28 +24,7 @@ function StageComplete(data) { // <- states/levels.js
     let starContainer    = new PIXI.Container();
     let messageContainer = new PIXI.Container();
 
-    let gradeLists = {
-        perfect   : {percentage: 100,  text: "perfect!"    ,  nStars: 5},
-        excellent : {percentage:  80,  text: "excellent!"  ,  nStars: 4},
-        great     : {percentage:  60,  text: "great!"      ,  nStars: 3},
-        nice      : {percentage:  40,  text: "nice!"       ,  nStars: 2},
-        good      : {percentage:   0,  text: "good enough!",  nStars: 1}
-    };
-
-    let gradeRate = (data.score / data.maxScore) * 100;
-    let grade;
-    // Decide grade string
-    if (gradeRate >= gradeLists.perfect.percentage) {
-        grade = gradeLists.perfect;
-    } else if (gradeRate >= gradeLists.excellent.percentage) {
-        grade = gradeLists.excellent;
-    } else if (gradeRate >= gradeLists.great.percentage) {
-        grade = gradeLists.great;
-    } else if (gradeRate >= gradeLists.nice.percentage) {
-        grade = gradeLists.nice;
-    } else if (gradeRate >= gradeLists.good.percentage) {
-        grade = gradeLists.good;
-    }
+    let grade = calculateGrade(data); // -> util.js
 
     // variables to display score and waste dynamically
     let scoreDisplayed =  0;
@@ -151,11 +139,10 @@ function StageComplete(data) { // <- states/levels.js
         PlaySound(eSFXList.StageEnter, false); // -> sfx.js
         PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         cleanUp();
-        let next = levelIndex + 1;
-        if (next >= LEVELS.length) {
+        if (nextLevelIndex >= LEVELS.length) {
             Credits.open(); // -> states/credits.js
         } else {
-            Level.open(LEVELS[next]); // -> states/levels.js
+            Level.open(LEVELS[nextLevelIndex]); // -> states/levels.js
         }
     });
 
