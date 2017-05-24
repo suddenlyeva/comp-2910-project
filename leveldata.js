@@ -179,9 +179,9 @@ let LEVELS = [
     
         processors: [
             { recipe:[WATER], result: SOUP, score: 100, x: 6*TILES_PX, y: 2*TILES_PX },
-            { recipe:[SOUP, FISH_STEAK, FISH_STEAK], result: SOUP, score: 200, x: 5*TILES_PX, y: 5*TILES_PX }
+            { recipe:[SOUP, FISH_STEAK, FISH_STEAK], result: FISH_SOUP, score: 200, x: 5*TILES_PX, y: 5*TILES_PX }
         ],
-        finalItems: [SOUP]
+        finalItems: [FISH_SOUP]
     
     },
     
@@ -212,7 +212,7 @@ let LEVELS = [
         maxScore: 800,
     
         conveyorBelt: {
-            items: [FLOUR, CHEESE, BLANK, STRAWBERRY, BLANK, FLOUR, CHEESE, BLANK,STRAWBERRY],
+            items: [FLOUR, CHEESE, BLANK, STRAWBERRY, BLANK, FLOUR, CHEESE, BLANK, STRAWBERRY],
             speed: 1.5
         },
     
