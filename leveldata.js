@@ -435,7 +435,6 @@ let LEVELS = [
                 x: 2*TILES_PX,
                 y: 4*TILES_PX
             },
-
             {
                 recipe: [RICE, NORI],
                 result: ONIGIRI,
@@ -490,7 +489,6 @@ let LEVELS = [
                 x: 8*TILES_PX,
                 y: 5*TILES_PX
             }
-
         ],
 
         finalItems: [LOBSTER_SOUP]
