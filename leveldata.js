@@ -36,13 +36,13 @@ let LEVELS = [
         maxScore: 300,
 
         conveyorBelt: {
-            items: [APPLE, BLANK, FLOUR, APPLE, BLANK, FLOUR, APPLE, BLANK, BLANK, FLOUR],
+            items: [APPLE_SLICE, BLANK, FLOUR, APPLE_SLICE, BLANK, FLOUR, APPLE_SLICE, BLANK, BLANK, FLOUR],
             speed: 1.2
         },
 
         processors: [
             {
-                recipe: [APPLE, FLOUR],
+                recipe: [APPLE_SLICE, FLOUR],
                 result: PIE,
                 score: 100,
                 x: 6*TILES_PX,
@@ -61,7 +61,7 @@ let LEVELS = [
         maxScore: 600,
 
         conveyorBelt: {
-            items: [APPLE, BLANK, KIWI, APPLE, BLANK, KIWI, BLANK, BLANK, APPLE, BLANK, KIWI],
+            items: [APPLE, BLANK, ORANGE, APPLE, BLANK, ORANGE, BLANK, BLANK, APPLE, BLANK, ORANGE],
             speed: 1.2
         },
 
@@ -74,8 +74,8 @@ let LEVELS = [
                 y: 3*TILES_PX
             },
             {
-                recipe: [KIWI],
-                result: KIWI_SLICE,
+                recipe: [ORANGE],
+                result: ORANGE_SLICE,
                 score: 100,
                 x: 7*TILES_PX,
                 y: 3*TILES_PX
@@ -83,7 +83,7 @@ let LEVELS = [
 
         ],
 
-        finalItems: [APPLE_SLICE, KIWI_SLICE]
+        finalItems: [APPLE_SLICE, ORANGE_SLICE]
     },
 
     //Stage 3
@@ -94,14 +94,15 @@ let LEVELS = [
         maxScore: 600,
 
         conveyorBelt: {
-            items: [ORANGE, ORANGE, BLANK, BLANK, KIWI, ORANGE, BLANK, BLANK, BLANK, YOGURT, BLANK, BLANK,
-                    BLANK, KIWI, BLANK, BLANK, KIWI, BLANK, BLANK, BLANK, YOGURT, BLANK, YOGURT],
+            items: [ORANGE_SLICE, ORANGE_SLICE, BLANK, BLANK, KIWI_SLICE, ORANGE_SLICE, BLANK, BLANK, BLANK,
+                    YOGURT, BLANK, BLANK, BLANK, KIWI_SLICE, BLANK, BLANK, KIWI_SLICE, BLANK, BLANK, BLANK,
+                    YOGURT, BLANK, YOGURT],
             speed: 1.2
         },
 
         processors: [
             {
-                recipe: [ORANGE, KIWI, YOGURT],
+                recipe: [ORANGE_SLICE, KIWI_SLICE, YOGURT],
                 result: FRUIT_YOGURT,
                 score: 300,
                 x: 5*TILES_PX,
@@ -121,14 +122,14 @@ let LEVELS = [
         maxScore: 1000,
 
         conveyorBelt: {
-            items: [APPLE, BLANK, APPLE, KIWI, APPLE, BLANK, KIWI, FLOUR, BLANK,
+            items: [APPLE_SLICE, BLANK, APPLE_SLICE, KIWI, APPLE_SLICE, BLANK, KIWI, FLOUR, BLANK,
                     KIWI, BLANK, FLOUR, BLANK, BLANK, FLOUR],
             speed: 1.25
         },
 
         processors: [
             {
-                recipe: [APPLE, FLOUR],
+                recipe: [APPLE_SLICE, FLOUR],
                 result: PIE,
                 score: 200,
                 x: 3*TILES_PX,
@@ -334,8 +335,8 @@ let LEVELS = [
         maxScore: 9999,
 
         conveyorBelt: {
-            items: [FISH, BLANK, FISH, NORI, BLANK, CUCUMBER, RICE, FISH, FISH, RICE, BLANK,
-                    FISH, NORI, BLANK, RICE, CUCUMBER, BLANK, NORI],
+            items: [FISH, BLANK, FISH, NORI, BLANK, WATER, RICE, FISH, FISH, RICE, BLANK,
+                    FISH, NORI, BLANK, RICE, WATER, BLANK, NORI],
             speed: 1.55
         },
 
@@ -355,7 +356,7 @@ let LEVELS = [
                 y: 4*TILES_PX
             },
             {
-                recipe: [FISH, CUCUMBER],
+                recipe: [FISH, WATER],
                 result: FISH_SOUP,
                 score: 200,
                 x: 2*TILES_PX,
