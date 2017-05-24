@@ -70,7 +70,7 @@ let PPAP_ITEM      = 99;
 
 
 // Texture dictionary
-let ITEM_TEXTURES = [];
+let ITEM_TEXTURES = {};
 function defineItemTextures() {
     ITEM_TEXTURES[SPLAT]          = PIXI.loader.resources["images/spritesheet.json"].textures["splat.png"];
     ITEM_TEXTURES[BLANK]          = PIXI.loader.resources["images/spritesheet.json"].textures["blank.png"];

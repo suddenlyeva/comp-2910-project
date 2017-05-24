@@ -24,3 +24,5 @@ Game Controller: http://pixelkit.com
 Stage-select background: lavarmsg on vecteezy
 
 Milk: Madebyoliver on flaticon
+
+intro background: <a hre='https://sirgo.org'>https://sirgo.org</a>
