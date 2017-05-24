@@ -87,7 +87,7 @@ let LEVELS = [
     },
 
     //Stage 3
-    {id: 3, name: "stage 3",
+    {id: 3, name: "fruit yogurt",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 7,
@@ -115,7 +115,7 @@ let LEVELS = [
     },
 
     //Stage 4
-    {id: 4, name: "stage 4",
+    {id: 4, name: " apple pie and kiwi slice",
 
         clearMessage: "fruits should go in the low humidity drawer",
         wasteLimit: 7,
@@ -148,7 +148,7 @@ let LEVELS = [
         finalItems: [PIE, KIWI_SLICE]
     },
 
-    {id: 5, name: "level 5",
+    {id: 5, name: "bread and cappuccino",
     
         clearMessage: "set for now",
         wasteLimit: 5,
@@ -167,7 +167,7 @@ let LEVELS = [
     
     },
     
-    {id: 6, name: "level 6",
+    {id: 6, name: "fish soup",
     
         clearMessage: "nothing new",
         wasteLimit: 5,
@@ -186,7 +186,7 @@ let LEVELS = [
     
     },
     
-    {id: 7, name: "level 7",
+    {id: 7, name: "orange juice",
     
         clearMessage: "nothing new",
         wasteLimit: 5,
@@ -206,7 +206,7 @@ let LEVELS = [
     
     },
     
-    {id: 8, name: "level 8",
+    {id: 8, name: "cake",
     
         clearMessage: "nothing new",
         wasteLimit: 5,
@@ -226,7 +226,7 @@ let LEVELS = [
     
     },
     
-    {id: 9, name: "long",
+    {id: 9, name: "steak",
     
         clearMessage: "nothing new",
         wasteLimit: 5,
@@ -247,7 +247,7 @@ let LEVELS = [
     },
     
     // Normal - Stage 1
-    {id: 10, name: "stage 10",
+    {id: 10, name: "fruit yogurt 2",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
@@ -286,7 +286,7 @@ let LEVELS = [
     },
 
     // Normal - Stage 2
-    {id: 11, name: "stage 11",
+    {id: 11, name: "octopus salad",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
@@ -328,7 +328,7 @@ let LEVELS = [
 
     // Normal Stage 3
     //
-    {id: 12, name: "stage 12",
+    {id: 12, name: "fish soup and sushi",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
@@ -419,7 +419,7 @@ let LEVELS = [
 
         conveyorBelt: {
             items: [CHEESE, BLANK, SAUSAGE, BREAD, BREAD, CABBAGE, BLANK, SAUSAGE, BLANK, BLANK, CABBAGE,
-                CHEESE, BLANK, BREAD, SAUSAGE, BLANK, CHEESE, BLANK, CABBAGE],
+                    CHEESE, BLANK, BREAD, SAUSAGE, BLANK, CHEESE, BLANK, CABBAGE],
             speed: 1.7
         },
 
@@ -461,7 +461,7 @@ let LEVELS = [
 
         conveyorBelt: {
             items: [CHEESE, BLANK, SAUSAGE, BREAD, BREAD, CABBAGE, BLANK, SAUSAGE, BLANK, BLANK, CABBAGE,
-                CHEESE, BLANK, BREAD, SAUSAGE, BLANK, CHEESE, BLANK, CABBAGE],
+                    CHEESE, BLANK, BREAD, SAUSAGE, BLANK, CHEESE, BLANK, CABBAGE],
             speed: 1.7
         },
 
