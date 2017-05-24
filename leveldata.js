@@ -1,10 +1,13 @@
 // JSON Level Data
-let DIFFICULTY = { easy : 1, normal: 10, hard: 12};
+
+// Manually updated
+// Assert indices: 0 <= easy < normal < hard < totalLevels
+let DIFFICULTY = { easy : 0, normal: 10, hard: 12};
 
 let LEVELS = [
 
     // Tutorial
-    {id: 0, name: "tutorial",
+    {id: 0, name: "apples",
 
         clearMessage: "an apple a day is one less apple in the trash.",
         wasteLimit: 3,
