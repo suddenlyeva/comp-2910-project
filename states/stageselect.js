@@ -22,6 +22,8 @@ function StageSelect() {
         buttonTextStyle    = new PIXI.TextStyle({
             fontFamily: FONT_FAMILY, fontSize: 100
         });
+    // background width is calculated by multiplying number of buttons by bgWidthPerButton
+    let bgWidthPerButton   = 2 * TILES_PX;
     // clicking current button takes you to the stage if refXCenter is within the button's bounds
     // currentPosLimiter limits these bounds
     // values of buttonWidth / 2 and above will cause the current button to be unclickable
@@ -56,13 +58,24 @@ function StageSelect() {
     // button in the spotlight position
     let currentInView = currentButton;
 
+    let background = new PIXI.extras.TilingSprite(
+        PIXI.utils.TextureCache["images/background-stageselect.png"],
+        0, 9*TILES_PX
+    );
+
+    // initialized in initButtons because they rely on stageButtons.width
+    let bgRatio; // background width to carousel width ratio
+    let bgXmax;  // maximum background x position
+
     stageButtons.position.set(refXLeft - (buttonDisplayWidth * currentButton),
         CANVAS_HEIGHT / 2 - buttonDisplayHeight / 2);
     stageButtons.interactive = stageButtons.buttonMode = true;
 
     // initialize buttons
-    // forceReinit - if true, all buttons will be recreated
+    // forceReinit - if true, all buttons will be recreated even if they already exist
+    // otherwise initialize any additional buttons; if there aren't any new buttons, do nothing
     this.initButtons = (forceReinit = false) => {
+        if(LEVELS.length === stageButtons.children.length) return;
         for(let i = forceReinit ? 0 : stageButtons.children.length; i < LEVELS.length; i++) {
             let wrapper  = new PIXI.Container(),
                 button   = new PIXI.Container(),
@@ -235,6 +248,11 @@ function StageSelect() {
 
             stageButtons.addChild(wrapper);
         }
+
+        // background variables are based on the number of buttons
+        background.width = Math.max(stageButtons.children.length * bgWidthPerButton, CANVAS_WIDTH);
+        bgRatio          = (background.width - CANVAS_WIDTH) / (stageButtons.width - buttonDisplayWidth);
+        bgXmax           = CANVAS_WIDTH - background.width;
     }
 
     this.initButtons();
@@ -327,6 +345,8 @@ function StageSelect() {
                 stageButtons.children[i].update(pos < refXLeft);
             }
         }
+        // move background
+        background.x = Math.max(Math.min(stageButtons.x - refXLeft, 0) * bgRatio, bgXmax);
     };
 
     let updateCarousel = () => {
@@ -373,9 +393,9 @@ function StageSelect() {
     hardButton.interactive   = hardButton.buttonMode   = true;
 
     // center the normal button and position the other 2 relative to it
-    normalButton.position.set(CANVAS_WIDTH / 2 - normalButton.width / 2, CANVAS_HEIGHT - TILES_PX * 1.2);
-    hardButton.position.set(normalButton.x + hardButton.width + TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
-    easyButton.position.set(normalButton.x - easyButton.width - TILES_PX * 0.6, CANVAS_HEIGHT - TILES_PX * 1.2);
+    normalButton.position.set(CANVAS_WIDTH / 2 - normalButton.width / 2, CANVAS_HEIGHT - TILES_PX * 1.3);
+    hardButton.position.set(normalButton.x + hardButton.width + TILES_PX * 0.6, normalButton.y);
+    easyButton.position.set(normalButton.x - easyButton.width - TILES_PX * 0.6, normalButton.y);
 
     // --------------------------- Shifting difficulty gear ----------------------------
     let difficultyGear = makeGear("m", 1);
@@ -487,14 +507,6 @@ function StageSelect() {
         Affiliate.open(); // -> states/affiliate.js
     });
 
-
-    let background = new PIXI.Container(),
-        bgFill     = new PIXI.Graphics();
-    bgFill.beginFill(0x5d32ea);
-    bgFill.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    bgFill.endFill();
-
-    background.addChild(bgFill);
 
     // Create Scene
     this.scene = new PIXI.Container();
