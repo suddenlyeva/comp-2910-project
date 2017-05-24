@@ -2,7 +2,7 @@
 
 "acorn.png":
 {
-	"frame": {"x":1,"y":83,"w":80,"h":80},
+	"frame": {"x":83,"y":1,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -10,7 +10,7 @@
 },
 "amanita.png":
 {
-	"frame": {"x":165,"y":165,"w":79,"h":80},
+	"frame": {"x":329,"y":1204,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":80},
@@ -18,7 +18,7 @@
 },
 "apple.png":
 {
-	"frame": {"x":165,"y":247,"w":79,"h":80},
+	"frame": {"x":247,"y":1261,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":79,"h":80},
@@ -26,7 +26,7 @@
 },
 "applepie.png":
 {
-	"frame": {"x":411,"y":81,"w":80,"h":77},
+	"frame": {"x":411,"y":817,"w":80,"h":77},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":80,"h":77},
@@ -34,7 +34,7 @@
 },
 "asparagus.png":
 {
-	"frame": {"x":1,"y":165,"w":80,"h":80},
+	"frame": {"x":165,"y":1,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -42,7 +42,7 @@
 },
 "avocado.png":
 {
-	"frame": {"x":165,"y":1559,"w":80,"h":79},
+	"frame": {"x":247,"y":575,"w":80,"h":79},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":79},
@@ -50,7 +50,7 @@
 },
 "banana.png":
 {
-	"frame": {"x":1,"y":247,"w":80,"h":80},
+	"frame": {"x":247,"y":1,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -58,7 +58,7 @@
 },
 "beer.png":
 {
-	"frame": {"x":1,"y":329,"w":80,"h":80},
+	"frame": {"x":329,"y":1,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -66,7 +66,7 @@
 },
 "beet.png":
 {
-	"frame": {"x":1,"y":411,"w":80,"h":80},
+	"frame": {"x":411,"y":1,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -74,7 +74,7 @@
 },
 "blueberry.png":
 {
-	"frame": {"x":165,"y":1313,"w":78,"h":80},
+	"frame": {"x":407,"y":1516,"w":78,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":80},
@@ -82,7 +82,7 @@
 },
 "bobs.png":
 {
-	"frame": {"x":1,"y":493,"w":80,"h":80},
+	"frame": {"x":1,"y":83,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -90,7 +90,7 @@
 },
 "boiled_lobster.png":
 {
-	"frame": {"x":1,"y":575,"w":80,"h":80},
+	"frame": {"x":83,"y":83,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -98,7 +98,7 @@
 },
 "bones.png":
 {
-	"frame": {"x":1,"y":657,"w":80,"h":80},
+	"frame": {"x":165,"y":83,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -106,7 +106,7 @@
 },
 "bottle.png":
 {
-	"frame": {"x":246,"y":165,"w":77,"h":80},
+	"frame": {"x":81,"y":1740,"w":77,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":77,"h":80},
@@ -114,7 +114,7 @@
 },
 "bow.png":
 {
-	"frame": {"x":165,"y":329,"w":79,"h":80},
+	"frame": {"x":165,"y":1271,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":80},
@@ -122,7 +122,7 @@
 },
 "bowl.png":
 {
-	"frame": {"x":407,"y":320,"w":80,"h":76},
+	"frame": {"x":329,"y":897,"w":80,"h":76},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":80,"h":76},
@@ -130,7 +130,7 @@
 },
 "bread.png":
 {
-	"frame": {"x":327,"y":734,"w":80,"h":76},
+	"frame": {"x":329,"y":975,"w":80,"h":76},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":3,"w":80,"h":76},
@@ -138,7 +138,7 @@
 },
 "bread_2.png":
 {
-	"frame": {"x":325,"y":324,"w":80,"h":77},
+	"frame": {"x":411,"y":896,"w":80,"h":77},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":80,"h":77},
@@ -146,7 +146,7 @@
 },
 "broccoli.png":
 {
-	"frame": {"x":1,"y":739,"w":80,"h":80},
+	"frame": {"x":247,"y":83,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -154,7 +154,7 @@
 },
 "bun.png":
 {
-	"frame": {"x":327,"y":812,"w":80,"h":76},
+	"frame": {"x":411,"y":975,"w":80,"h":76},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":80,"h":76},
@@ -162,7 +162,7 @@
 },
 "butter.png":
 {
-	"frame": {"x":322,"y":575,"w":80,"h":78},
+	"frame": {"x":247,"y":737,"w":80,"h":78},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":78},
@@ -170,7 +170,7 @@
 },
 "cabbage.png":
 {
-	"frame": {"x":1,"y":821,"w":80,"h":80},
+	"frame": {"x":329,"y":83,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -178,7 +178,7 @@
 },
 "cake.png":
 {
-	"frame": {"x":246,"y":978,"w":80,"h":77},
+	"frame": {"x":1,"y":818,"w":80,"h":77},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":80,"h":77},
@@ -186,7 +186,7 @@
 },
 "cake_2.png":
 {
-	"frame": {"x":409,"y":726,"w":80,"h":72},
+	"frame": {"x":247,"y":1129,"w":80,"h":72},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":72},
@@ -194,7 +194,7 @@
 },
 "cappuccino.png":
 {
-	"frame": {"x":246,"y":411,"w":75,"h":80},
+	"frame": {"x":318,"y":1738,"w":75,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":75,"h":80},
@@ -202,7 +202,7 @@
 },
 "carrot.png":
 {
-	"frame": {"x":329,"y":1606,"w":80,"h":75},
+	"frame": {"x":411,"y":1053,"w":80,"h":75},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":75},
@@ -210,7 +210,7 @@
 },
 "cheese.png":
 {
-	"frame": {"x":410,"y":946,"w":80,"h":65},
+	"frame": {"x":83,"y":1270,"w":80,"h":65},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":8,"w":80,"h":65},
@@ -218,7 +218,7 @@
 },
 "cheese_2.png":
 {
-	"frame": {"x":245,"y":1313,"w":80,"h":79},
+	"frame": {"x":329,"y":575,"w":80,"h":79},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":79},
@@ -226,7 +226,7 @@
 },
 "cherry.png":
 {
-	"frame": {"x":1,"y":903,"w":80,"h":80},
+	"frame": {"x":411,"y":83,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -234,7 +234,7 @@
 },
 "cherry_2.png":
 {
-	"frame": {"x":323,"y":411,"w":80,"h":78},
+	"frame": {"x":329,"y":737,"w":80,"h":78},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":78},
@@ -242,7 +242,7 @@
 },
 "chicken.png":
 {
-	"frame": {"x":1,"y":985,"w":80,"h":80},
+	"frame": {"x":1,"y":165,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -250,7 +250,7 @@
 },
 "chocolate.png":
 {
-	"frame": {"x":323,"y":491,"w":80,"h":78},
+	"frame": {"x":411,"y":737,"w":80,"h":78},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":78},
@@ -258,7 +258,7 @@
 },
 "clover.png":
 {
-	"frame": {"x":1,"y":1067,"w":80,"h":80},
+	"frame": {"x":83,"y":165,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -266,7 +266,7 @@
 },
 "cocktail.png":
 {
-	"frame": {"x":329,"y":1,"w":80,"h":78},
+	"frame": {"x":1,"y":738,"w":80,"h":78},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":80,"h":78},
@@ -274,7 +274,7 @@
 },
 "coconut.png":
 {
-	"frame": {"x":245,"y":1394,"w":80,"h":79},
+	"frame": {"x":411,"y":575,"w":80,"h":79},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":79},
@@ -282,7 +282,7 @@
 },
 "coffee.png":
 {
-	"frame": {"x":245,"y":1475,"w":80,"h":79},
+	"frame": {"x":247,"y":656,"w":80,"h":79},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":79},
@@ -290,7 +290,7 @@
 },
 "cookies.png":
 {
-	"frame": {"x":246,"y":738,"w":79,"h":78},
+	"frame": {"x":1,"y":1561,"w":79,"h":78},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":78},
@@ -298,7 +298,7 @@
 },
 "corn.png":
 {
-	"frame": {"x":1,"y":1149,"w":80,"h":80},
+	"frame": {"x":165,"y":165,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -306,15 +306,23 @@
 },
 "cucumber .png":
 {
-	"frame": {"x":1,"y":1231,"w":80,"h":80},
+	"frame": {"x":247,"y":165,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
 	"sourceSize": {"w":80,"h":80}
 },
+"cucumber-slice.png":
+{
+	"frame": {"x":405,"y":1598,"w":61,"h":65},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":7,"w":61,"h":65},
+	"sourceSize": {"w":80,"h":80}
+},
 "cup.png":
 {
-	"frame": {"x":165,"y":411,"w":79,"h":80},
+	"frame": {"x":83,"y":1337,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":79,"h":80},
@@ -322,7 +330,7 @@
 },
 "cup_2.png":
 {
-	"frame": {"x":246,"y":247,"w":77,"h":80},
+	"frame": {"x":160,"y":1740,"w":77,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":77,"h":80},
@@ -330,7 +338,7 @@
 },
 "dill.png":
 {
-	"frame": {"x":1,"y":1313,"w":80,"h":80},
+	"frame": {"x":329,"y":165,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -338,7 +346,7 @@
 },
 "dish.png":
 {
-	"frame": {"x":1,"y":1395,"w":80,"h":80},
+	"frame": {"x":411,"y":165,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -346,7 +354,7 @@
 },
 "donuts.png":
 {
-	"frame": {"x":165,"y":493,"w":79,"h":80},
+	"frame": {"x":1,"y":1397,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":80},
@@ -354,7 +362,7 @@
 },
 "eggplant.png":
 {
-	"frame": {"x":247,"y":1638,"w":80,"h":79},
+	"frame": {"x":329,"y":656,"w":80,"h":79},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":79},
@@ -362,7 +370,7 @@
 },
 "eggs.png":
 {
-	"frame": {"x":246,"y":1057,"w":80,"h":77},
+	"frame": {"x":83,"y":818,"w":80,"h":77},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":80,"h":77},
@@ -370,7 +378,7 @@
 },
 "eggs_2.png":
 {
-	"frame": {"x":409,"y":1683,"w":80,"h":75},
+	"frame": {"x":411,"y":1130,"w":80,"h":75},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":80,"h":75},
@@ -378,7 +386,7 @@
 },
 "eye.png":
 {
-	"frame": {"x":165,"y":575,"w":79,"h":80},
+	"frame": {"x":410,"y":1207,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":79,"h":80},
@@ -386,7 +394,7 @@
 },
 "feather.png":
 {
-	"frame": {"x":246,"y":657,"w":79,"h":79},
+	"frame": {"x":163,"y":1435,"w":79,"h":79},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":1,"w":79,"h":79},
@@ -394,7 +402,7 @@
 },
 "feathers.png":
 {
-	"frame": {"x":1,"y":1477,"w":80,"h":80},
+	"frame": {"x":1,"y":247,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -402,7 +410,7 @@
 },
 "fish.png":
 {
-	"frame": {"x":245,"y":1719,"w":80,"h":79},
+	"frame": {"x":411,"y":656,"w":80,"h":79},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":79},
@@ -410,7 +418,7 @@
 },
 "fish_2.png":
 {
-	"frame": {"x":1,"y":1559,"w":80,"h":80},
+	"frame": {"x":83,"y":247,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -418,7 +426,7 @@
 },
 "fish_3.png":
 {
-	"frame": {"x":1,"y":1641,"w":80,"h":80},
+	"frame": {"x":165,"y":247,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -426,7 +434,7 @@
 },
 "fish_4.png":
 {
-	"frame": {"x":329,"y":81,"w":80,"h":78},
+	"frame": {"x":83,"y":738,"w":80,"h":78},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":78},
@@ -434,7 +442,7 @@
 },
 "fish_soup.png":
 {
-	"frame": {"x":1,"y":1723,"w":80,"h":80},
+	"frame": {"x":247,"y":247,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -442,7 +450,7 @@
 },
 "fish_steak.png":
 {
-	"frame": {"x":327,"y":890,"w":80,"h":76},
+	"frame": {"x":1,"y":976,"w":80,"h":76},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":76},
@@ -450,7 +458,7 @@
 },
 "flour.png":
 {
-	"frame": {"x":83,"y":1,"w":80,"h":80},
+	"frame": {"x":329,"y":247,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -458,7 +466,7 @@
 },
 "Fried_fish.png":
 {
-	"frame": {"x":411,"y":1620,"w":80,"h":59},
+	"frame": {"x":1,"y":1336,"w":80,"h":59},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":12,"w":80,"h":59},
@@ -466,7 +474,7 @@
 },
 "fruit_plate.png":
 {
-	"frame": {"x":409,"y":1273,"w":80,"h":68},
+	"frame": {"x":1,"y":1131,"w":80,"h":68},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":68},
@@ -474,7 +482,7 @@
 },
 "fruit_porridge .png":
 {
-	"frame": {"x":411,"y":1552,"w":80,"h":66},
+	"frame": {"x":165,"y":1203,"w":80,"h":66},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":7,"w":80,"h":66},
@@ -490,7 +498,7 @@
 },
 "garlic.png":
 {
-	"frame": {"x":83,"y":83,"w":80,"h":80},
+	"frame": {"x":411,"y":247,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -498,7 +506,7 @@
 },
 "granat.png":
 {
-	"frame": {"x":165,"y":1395,"w":78,"h":80},
+	"frame": {"x":325,"y":1530,"w":78,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":80},
@@ -506,7 +514,7 @@
 },
 "green_grapes.png":
 {
-	"frame": {"x":83,"y":165,"w":80,"h":80},
+	"frame": {"x":1,"y":329,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -514,7 +522,7 @@
 },
 "grilled_chicken.png":
 {
-	"frame": {"x":410,"y":1079,"w":80,"h":63},
+	"frame": {"x":1,"y":1271,"w":80,"h":63},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":8,"w":80,"h":63},
@@ -522,7 +530,7 @@
 },
 "honey.png":
 {
-	"frame": {"x":405,"y":482,"w":79,"h":77},
+	"frame": {"x":244,"y":1507,"w":79,"h":77},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":1,"w":79,"h":77},
@@ -530,7 +538,7 @@
 },
 "ice.png":
 {
-	"frame": {"x":83,"y":247,"w":80,"h":80},
+	"frame": {"x":83,"y":329,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -538,7 +546,7 @@
 },
 "ice_cream.png":
 {
-	"frame": {"x":409,"y":1483,"w":80,"h":67},
+	"frame": {"x":83,"y":1201,"w":80,"h":67},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":6,"w":80,"h":67},
@@ -546,7 +554,7 @@
 },
 "jelly.png":
 {
-	"frame": {"x":327,"y":1719,"w":80,"h":79},
+	"frame": {"x":1,"y":657,"w":80,"h":79},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":79},
@@ -554,7 +562,7 @@
 },
 "kiwi.png":
 {
-	"frame": {"x":247,"y":1,"w":80,"h":79},
+	"frame": {"x":83,"y":657,"w":80,"h":79},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":79},
@@ -562,7 +570,7 @@
 },
 "lard.png":
 {
-	"frame": {"x":325,"y":244,"w":80,"h":78},
+	"frame": {"x":165,"y":738,"w":80,"h":78},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":78},
@@ -570,7 +578,7 @@
 },
 "leg_chicken.png":
 {
-	"frame": {"x":83,"y":329,"w":80,"h":80},
+	"frame": {"x":165,"y":329,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -578,15 +586,23 @@
 },
 "lemon.png":
 {
-	"frame": {"x":165,"y":1477,"w":78,"h":80},
+	"frame": {"x":244,"y":1586,"w":78,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":80},
 	"sourceSize": {"w":80,"h":80}
 },
+"lettuce-slice.png":
+{
+	"frame": {"x":223,"y":1677,"w":67,"h":59},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":10,"w":67,"h":59},
+	"sourceSize": {"w":80,"h":80}
+},
 "lime.png":
 {
-	"frame": {"x":246,"y":818,"w":79,"h":78},
+	"frame": {"x":408,"y":1371,"w":79,"h":78},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":1,"w":79,"h":78},
@@ -594,7 +610,7 @@
 },
 "lobster.png":
 {
-	"frame": {"x":83,"y":411,"w":80,"h":80},
+	"frame": {"x":247,"y":329,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -602,7 +618,7 @@
 },
 "lobster_soup.png":
 {
-	"frame": {"x":327,"y":1294,"w":80,"h":76},
+	"frame": {"x":83,"y":976,"w":80,"h":76},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":76},
@@ -610,7 +626,7 @@
 },
 "lollipop.png":
 {
-	"frame": {"x":83,"y":493,"w":80,"h":80},
+	"frame": {"x":329,"y":329,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -618,7 +634,7 @@
 },
 "mandgragora.png":
 {
-	"frame": {"x":83,"y":575,"w":80,"h":80},
+	"frame": {"x":411,"y":329,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -626,7 +642,7 @@
 },
 "mango.png":
 {
-	"frame": {"x":165,"y":657,"w":79,"h":80},
+	"frame": {"x":328,"y":1286,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":79,"h":80},
@@ -634,7 +650,7 @@
 },
 "meat_1.png":
 {
-	"frame": {"x":246,"y":575,"w":74,"h":80},
+	"frame": {"x":395,"y":1735,"w":74,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":2,"y":0,"w":74,"h":80},
@@ -642,7 +658,7 @@
 },
 "meat_2.png":
 {
-	"frame": {"x":247,"y":82,"w":80,"h":79},
+	"frame": {"x":165,"y":657,"w":80,"h":79},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":79},
@@ -650,7 +666,7 @@
 },
 "meat_3.png":
 {
-	"frame": {"x":83,"y":657,"w":80,"h":80},
+	"frame": {"x":1,"y":411,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -658,7 +674,7 @@
 },
 "melone.png":
 {
-	"frame": {"x":409,"y":1343,"w":80,"h":68},
+	"frame": {"x":83,"y":1131,"w":80,"h":68},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":7,"w":80,"h":68},
@@ -666,15 +682,23 @@
 },
 "milk.png":
 {
-	"frame": {"x":328,"y":1122,"w":80,"h":74},
+	"frame": {"x":165,"y":1054,"w":80,"h":74},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":5,"w":80,"h":74},
 	"sourceSize": {"w":80,"h":80}
 },
+"mushroom-slice.png":
+{
+	"frame": {"x":324,"y":1612,"w":68,"h":52},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":13,"w":68,"h":52},
+	"sourceSize": {"w":80,"h":80}
+},
 "mushroom.png":
 {
-	"frame": {"x":165,"y":739,"w":79,"h":80},
+	"frame": {"x":246,"y":1343,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":80},
@@ -682,7 +706,7 @@
 },
 "mushroom2.png":
 {
-	"frame": {"x":83,"y":739,"w":80,"h":80},
+	"frame": {"x":83,"y":411,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -690,7 +714,7 @@
 },
 "nori.png":
 {
-	"frame": {"x":83,"y":821,"w":80,"h":80},
+	"frame": {"x":165,"y":411,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -698,7 +722,7 @@
 },
 "octopulus.png":
 {
-	"frame": {"x":246,"y":1136,"w":80,"h":77},
+	"frame": {"x":165,"y":818,"w":80,"h":77},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":3,"w":80,"h":77},
@@ -706,7 +730,7 @@
 },
 "oil.png":
 {
-	"frame": {"x":83,"y":903,"w":80,"h":80},
+	"frame": {"x":247,"y":411,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -714,7 +738,7 @@
 },
 "omelette.png":
 {
-	"frame": {"x":246,"y":329,"w":77,"h":80},
+	"frame": {"x":239,"y":1738,"w":77,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":77,"h":80},
@@ -722,7 +746,7 @@
 },
 "onigiri.png":
 {
-	"frame": {"x":246,"y":1215,"w":80,"h":77},
+	"frame": {"x":1,"y":897,"w":80,"h":77},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":77},
@@ -730,15 +754,15 @@
 },
 "onion.png":
 {
-	"frame": {"x":83,"y":985,"w":80,"h":80},
+	"frame": {"x":162,"y":1677,"w":59,"h":61},
 	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":9,"w":59,"h":61},
 	"sourceSize": {"w":80,"h":80}
 },
 "orange.png":
 {
-	"frame": {"x":327,"y":655,"w":80,"h":77},
+	"frame": {"x":83,"y":897,"w":80,"h":77},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":80,"h":77},
@@ -746,7 +770,7 @@
 },
 "oysters.png":
 {
-	"frame": {"x":409,"y":650,"w":79,"h":74},
+	"frame": {"x":82,"y":1582,"w":79,"h":74},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":3,"w":79,"h":74},
@@ -754,7 +778,7 @@
 },
 "pancakes.png":
 {
-	"frame": {"x":409,"y":800,"w":80,"h":71},
+	"frame": {"x":329,"y":1131,"w":80,"h":71},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":4,"w":80,"h":71},
@@ -762,7 +786,7 @@
 },
 "papaya.png":
 {
-	"frame": {"x":83,"y":1067,"w":80,"h":80},
+	"frame": {"x":329,"y":411,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -770,7 +794,7 @@
 },
 "peach.png":
 {
-	"frame": {"x":406,"y":161,"w":80,"h":78},
+	"frame": {"x":247,"y":817,"w":80,"h":78},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":78},
@@ -778,7 +802,7 @@
 },
 "pear.png":
 {
-	"frame": {"x":83,"y":1149,"w":80,"h":80},
+	"frame": {"x":411,"y":411,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -786,23 +810,31 @@
 },
 "peas.png":
 {
-	"frame": {"x":165,"y":821,"w":79,"h":80},
+	"frame": {"x":164,"y":1353,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":80},
 	"sourceSize": {"w":80,"h":80}
 },
-"pepper.png":
+"pepper-slice.png":
 {
-	"frame": {"x":246,"y":493,"w":75,"h":80},
+	"frame": {"x":362,"y":1666,"w":53,"h":67},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":4,"y":0,"w":75,"h":80},
+	"spriteSourceSize": {"x":15,"y":6,"w":53,"h":67},
+	"sourceSize": {"w":80,"h":80}
+},
+"pepper.png":
+{
+	"frame": {"x":417,"y":1665,"w":53,"h":64},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":7,"w":53,"h":64},
 	"sourceSize": {"w":80,"h":80}
 },
 "pizza.png":
 {
-	"frame": {"x":83,"y":1231,"w":80,"h":80},
+	"frame": {"x":1,"y":493,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -810,7 +842,7 @@
 },
 "potato.png":
 {
-	"frame": {"x":83,"y":1313,"w":80,"h":80},
+	"frame": {"x":83,"y":493,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -818,7 +850,7 @@
 },
 "pumpkin.png":
 {
-	"frame": {"x":328,"y":968,"w":80,"h":75},
+	"frame": {"x":1,"y":1054,"w":80,"h":75},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":5,"w":80,"h":75},
@@ -826,7 +858,7 @@
 },
 "pumpkin_soup.png":
 {
-	"frame": {"x":410,"y":1013,"w":79,"h":64},
+	"frame": {"x":1,"y":1641,"w":79,"h":64},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":10,"w":79,"h":64},
@@ -834,7 +866,7 @@
 },
 "red_caviar.png":
 {
-	"frame": {"x":409,"y":873,"w":80,"h":71},
+	"frame": {"x":165,"y":1130,"w":80,"h":71},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":5,"w":80,"h":71},
@@ -842,7 +874,7 @@
 },
 "red_grapes.png":
 {
-	"frame": {"x":83,"y":1395,"w":80,"h":80},
+	"frame": {"x":165,"y":493,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -850,7 +882,7 @@
 },
 "red_pepper.png":
 {
-	"frame": {"x":165,"y":903,"w":79,"h":80},
+	"frame": {"x":82,"y":1419,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":80},
@@ -858,7 +890,7 @@
 },
 "rice.png":
 {
-	"frame": {"x":327,"y":1372,"w":80,"h":76},
+	"frame": {"x":165,"y":976,"w":80,"h":76},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":4,"w":80,"h":76},
@@ -866,7 +898,7 @@
 },
 "rolls.png":
 {
-	"frame": {"x":246,"y":898,"w":79,"h":78},
+	"frame": {"x":326,"y":1450,"w":79,"h":78},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":2,"w":79,"h":78},
@@ -874,7 +906,7 @@
 },
 "salad.png":
 {
-	"frame": {"x":325,"y":163,"w":79,"h":79},
+	"frame": {"x":82,"y":1501,"w":79,"h":79},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":79,"h":79},
@@ -882,7 +914,7 @@
 },
 "salad_2.png":
 {
-	"frame": {"x":327,"y":1450,"w":80,"h":76},
+	"frame": {"x":247,"y":976,"w":80,"h":76},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":76},
@@ -890,7 +922,7 @@
 },
 "salad_3.png":
 {
-	"frame": {"x":328,"y":1198,"w":80,"h":73},
+	"frame": {"x":247,"y":1054,"w":80,"h":73},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":3,"w":80,"h":73},
@@ -898,7 +930,7 @@
 },
 "sandwich.png":
 {
-	"frame": {"x":404,"y":571,"w":80,"h":77},
+	"frame": {"x":165,"y":897,"w":80,"h":77},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":3,"w":80,"h":77},
@@ -906,7 +938,7 @@
 },
 "sausage.png":
 {
-	"frame": {"x":83,"y":1477,"w":80,"h":80},
+	"frame": {"x":247,"y":493,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -914,7 +946,7 @@
 },
 "shells.png":
 {
-	"frame": {"x":165,"y":985,"w":79,"h":80},
+	"frame": {"x":1,"y":1479,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":79,"h":80},
@@ -922,7 +954,7 @@
 },
 "shrimp.png":
 {
-	"frame": {"x":165,"y":1067,"w":79,"h":80},
+	"frame": {"x":409,"y":1289,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":80},
@@ -930,7 +962,7 @@
 },
 "spice.png":
 {
-	"frame": {"x":407,"y":241,"w":79,"h":77},
+	"frame": {"x":163,"y":1516,"w":79,"h":77},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":79,"h":77},
@@ -938,7 +970,7 @@
 },
 "star.png":
 {
-	"frame": {"x":83,"y":1559,"w":80,"h":80},
+	"frame": {"x":329,"y":493,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -946,7 +978,7 @@
 },
 "steak.png":
 {
-	"frame": {"x":410,"y":1209,"w":80,"h":56},
+	"frame": {"x":247,"y":1203,"w":80,"h":56},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":14,"w":80,"h":56},
@@ -954,7 +986,7 @@
 },
 "straberry.png":
 {
-	"frame": {"x":247,"y":1556,"w":78,"h":80},
+	"frame": {"x":163,"y":1595,"w":78,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":80},
@@ -962,7 +994,7 @@
 },
 "sugar.png":
 {
-	"frame": {"x":410,"y":1144,"w":79,"h":63},
+	"frame": {"x":407,"y":1451,"w":79,"h":63},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":7,"w":79,"h":63},
@@ -970,7 +1002,7 @@
 },
 "tea.png":
 {
-	"frame": {"x":165,"y":1149,"w":79,"h":80},
+	"frame": {"x":327,"y":1368,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":79,"h":80},
@@ -978,15 +1010,23 @@
 },
 "tea_2.png":
 {
-	"frame": {"x":165,"y":1640,"w":78,"h":80},
+	"frame": {"x":82,"y":1658,"w":78,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":80},
 	"sourceSize": {"w":80,"h":80}
 },
+"tomato-slice.png":
+{
+	"frame": {"x":292,"y":1668,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":5,"w":68,"h":68},
+	"sourceSize": {"w":80,"h":80}
+},
 "tomato.png":
 {
-	"frame": {"x":405,"y":403,"w":80,"h":77},
+	"frame": {"x":247,"y":897,"w":80,"h":77},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":2,"w":80,"h":77},
@@ -994,7 +1034,7 @@
 },
 "tooth.png":
 {
-	"frame": {"x":165,"y":1722,"w":78,"h":80},
+	"frame": {"x":1,"y":1707,"w":78,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":78,"h":80},
@@ -1002,7 +1042,7 @@
 },
 "vat.png":
 {
-	"frame": {"x":165,"y":1231,"w":79,"h":80},
+	"frame": {"x":245,"y":1425,"w":79,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":80},
@@ -1010,7 +1050,7 @@
 },
 "water.png":
 {
-	"frame": {"x":83,"y":1641,"w":80,"h":80},
+	"frame": {"x":411,"y":493,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -1018,7 +1058,7 @@
 },
 "watermelon.png":
 {
-	"frame": {"x":411,"y":1,"w":80,"h":78},
+	"frame": {"x":329,"y":817,"w":80,"h":78},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":1,"w":80,"h":78},
@@ -1026,7 +1066,7 @@
 },
 "wheat.png":
 {
-	"frame": {"x":83,"y":1723,"w":80,"h":80},
+	"frame": {"x":1,"y":575,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -1034,7 +1074,7 @@
 },
 "white_chocolate.png":
 {
-	"frame": {"x":328,"y":1045,"w":80,"h":75},
+	"frame": {"x":83,"y":1054,"w":80,"h":75},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":4,"w":80,"h":75},
@@ -1042,7 +1082,7 @@
 },
 "wine.png":
 {
-	"frame": {"x":165,"y":1,"w":80,"h":80},
+	"frame": {"x":83,"y":575,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -1050,7 +1090,7 @@
 },
 "wine_2.png":
 {
-	"frame": {"x":165,"y":83,"w":80,"h":80},
+	"frame": {"x":165,"y":575,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -1058,7 +1098,7 @@
 },
 "yeast.png":
 {
-	"frame": {"x":409,"y":1413,"w":80,"h":68},
+	"frame": {"x":1,"y":1201,"w":80,"h":68},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":7,"w":80,"h":68},
@@ -1066,7 +1106,7 @@
 },
 "zucchini.png":
 {
-	"frame": {"x":327,"y":1528,"w":80,"h":76},
+	"frame": {"x":329,"y":1053,"w":80,"h":76},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":3,"w":80,"h":76},
@@ -1077,8 +1117,8 @@
 	"version": "1.0",
 	"image": "food.png",
 	"format": "RGBA8888",
-	"size": {"w":492,"h":1804},
+	"size": {"w":492,"h":1821},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:7dd70634fe845ceac7aab454d18e9736:9126503e055b0c9413dc5d065d194a02:dc56c85744751b4d97b97a9b9d1306ba$"
+	"smartupdate": "$TexturePacker:SmartUpdate:c8e89c1cd70e86a6a0efc68242334989:d4921c3d8781a5ddd5c26d1ad40069c3:dc56c85744751b4d97b97a9b9d1306ba$"
 }
 }
