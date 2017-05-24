@@ -2,7 +2,7 @@
 
 // Manually updated
 // Assert indices: 0 <= easy < normal < hard < totalLevels
-let DIFFICULTY = { easy : 0, normal: 10, hard: 12};
+let DIFFICULTY = { easy : 0, normal: 10, hard: 18};
 
 let LEVELS = [
 
