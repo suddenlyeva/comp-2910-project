@@ -16,6 +16,9 @@ let fbConf = {
     ]
 };
 
+// variables
+let unameDispMessage = "Signed in as : ";
+
 // Initialize Firebase UI
 let fbUI = new firebaseui.auth.AuthUI(firebase.auth());
 let currentUid = null;
@@ -41,6 +44,9 @@ let displaySignedInUI = function (user) {
     currentUid = user.uid;
     document.getElementById('signedInUI').style.display = 'block';
     document.getElementById('signedOutUI').style.display = 'none';
+    document.getElementById('username').textContent = unameDispMessage + user.providerData[0].displayName;
+    console.log(user.providerData[0].displayName);
+    console.log(user.providerData[0]);
 };
 
 // Display the buttons for sign out users
@@ -53,7 +59,6 @@ let displaySignedOutUI = function () {
 // Observe user sign in state and invoke the function when the state changed
 firebase.auth().onAuthStateChanged(function(user) {
     if (user && user.uid == currentUid) {
-        console.log("test");
         return;
     }
     document.getElementById('loadArea').style.display = 'block';
