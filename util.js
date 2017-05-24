@@ -296,6 +296,7 @@ function makeGear(size, speed) {
     gear.ticker = 0;
     gear.currentFrame = 0;
     gear.isNextFrame = false;
+    gear.speed = speed;
 
     // Functions
 
@@ -303,7 +304,7 @@ function makeGear(size, speed) {
     gear.update = () => {
 
         // Tick up
-        gear.ticker += speed * TICKER.deltaTime;
+        gear.ticker += gear.speed * TICKER.deltaTime;
 
         // Increment frames, iterate if very fast
         while (gear.ticker >= timeOut) {
