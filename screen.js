@@ -2,7 +2,9 @@
 
 // Adjusts game frame size. Mostly to fix scrollbars on Chrome.
 
-function resizeIframe() {
+let resizeTimeout;
+
+function resizeGameWindow() {
     let iframe = document.getElementById("game-window");
     if(window.innerWidth > window.innerHeight) {
         iframe.style.width = window.innerWidth + "px";
@@ -13,5 +15,11 @@ function resizeIframe() {
     }
 }
 
-window.addEventListener("resize", resizeIframe);
-window.addEventListener("orientationchange", resizeIframe);
+function resizeTwice() {
+    resizeGameWindow();
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(resizeGameWindow, 500);
+}
+
+window.addEventListener("resize", resizeTwice);
+window.addEventListener("orientationchange", resizeTwice);

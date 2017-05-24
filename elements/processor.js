@@ -326,7 +326,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     this.mHeight;
 
     this.mScore = 0;                    // Game Score
-    this.mAlphaUnfinished = 0.5;        // Item Incompleted Fade
+    this.mAlphaUnfinished = 0.6;        // Item Incompleted Fade
     this.mAlphaFinished = 0.8;          // Item Completed Fade
 
     // Ingredients / Item
