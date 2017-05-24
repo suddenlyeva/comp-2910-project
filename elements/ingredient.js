@@ -146,7 +146,7 @@ function defineItemTextures() {
 /*!*/    ITEM_TEXTURES[GRAPE_JUICE]   = PIXI.loader.resources["images/food.json"].textures["bottle.png"];
     ITEM_TEXTURES[GRAPE]              = PIXI.loader.resources["images/food.json"].textures["red_grapes.png"];
     ITEM_TEXTURES[CAKE]               = PIXI.loader.resources["images/food.json"].textures["cake_2.png"];
-    ITEM_TEXTURES[STRAWBERRY]         = PIXI.loader.resources["images/food.json"].textures["straberry.png"];
+    ITEM_TEXTURES[STRAWBERRY]         = PIXI.loader.resources["images/food.json"].textures["strawberry.png"];
     ITEM_TEXTURES[ASPARAGUS]          = PIXI.loader.resources["images/food.json"].textures["asparagus.png"];
 /*!*/ITEM_TEXTURES[TOMATO_SOUP]       = PIXI.loader.resources["images/food.json"].textures["pumpkin_soup.png"];
     ITEM_TEXTURES[BREAD_2]            = PIXI.loader.resources["images/food.json"].textures["bread_2.png"];
