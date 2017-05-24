@@ -7,7 +7,8 @@ function init() {
         "images/spritesheet.json",
         "images/gears-xl.json",
         "images/food.json",
-        "images/background-stageselect.png"
+        "images/background-stageselect.png",
+        "images/background-intro.png"
     ];
 
     // Authentication Check
