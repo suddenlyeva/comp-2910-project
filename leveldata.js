@@ -2,7 +2,7 @@
 
 // Manually updated
 // Assert indices: 0 <= easy < normal < hard < totalLevels
-let DIFFICULTY = { easy : 0, normal: 10, hard: 18};
+let DIFFICULTY = { easy : 0, normal: 7, hard: 16};
 
 let LEVELS = [
 
@@ -377,7 +377,7 @@ let LEVELS = [
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 8,
-        maxScore: 9999,
+        maxScore: 1800,
 
         conveyorBelt: {
             items: [CHEESE, BLANK, SAUSAGE, BREAD, BREAD, CABBAGE, BLANK, SAUSAGE, BLANK, BLANK, CABBAGE,
@@ -419,12 +419,12 @@ let LEVELS = [
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 8,
-        maxScore: 9999,
+        maxScore: 1600,
 
         conveyorBelt: {
             items: [RICE, RICE, RICE, NORI, NORI, RICE, NORI, RICE, NORI, NORI,
                     BLANK, RICE, RICE, NORI, NORI, RICE, NORI],
-            speed: 2.1
+            speed: 2.0
         },
 
         processors: [
@@ -453,12 +453,12 @@ let LEVELS = [
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
-        maxScore: 9999,
+        maxScore: 1800,
 
         conveyorBelt: {
             items: [WATER, BLANK, LOBSTER, LOBSTER, BLANK, CUCUMBER, LOBSTER, BLANK, WATER, BLANK,
                     CUCUMBER, BLANK, WATER, BLANK, CUCUMBER],
-            speed: 2.25
+            speed: 1.8
         },
 
         processors: [
