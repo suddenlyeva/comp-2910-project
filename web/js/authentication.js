@@ -47,7 +47,7 @@ let displaySignedInUI = function (user) {
     // if displayName is not available, show email instead
     let nameShown = user.providerData[0].displayName != null ? user.providerData[0].displayName : user.providerData[0].email;
     document.getElementById('username').textContent = unameDispMessage + nameShown;
-    console.log(user.providerData[0]);
+    // console.log(user.providerData[0]);
 };
 
 // Display the buttons for sign out users
