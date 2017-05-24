@@ -62,7 +62,7 @@ let APPLE_JUICE    = 59;
 let GRAPE_JUICE    = 60;
 let GRAPE          = 61;
 let CAKE           = 62;
-let STRAWBERRY     = 64;
+let STRAWBERRY     = 63;
 
 let PEN            = 98;
 let PPAP_ITEM      = 99;
@@ -133,7 +133,7 @@ function defineItemTextures() {
 /*!*/    ITEM_TEXTURES[GRAPE_JUICE]   = PIXI.loader.resources["images/food.json"].textures["bottle.png"];
     ITEM_TEXTURES[GRAPE]              = PIXI.loader.resources["images/food.json"].textures["red_grapes.png"];
     ITEM_TEXTURES[CAKE]               = PIXI.loader.resources["images/food.json"].textures["cake_2.png"];
-    ITEM_TEXTURES[STRAWBERRY]         = PIXI.loader.resources["images/food.json"].textures["strawberry.png"];
+    ITEM_TEXTURES[STRAWBERRY]         = PIXI.loader.resources["images/food.json"].textures["straberry.png"];
     // Use PIXI.loader.resources["images/food.json"].textures["*.png"]; for new sprites.
 }
 

@@ -336,7 +336,7 @@ let LEVELS = [
         conveyorBelt: {
             items: [FISH, BLANK, FISH, NORI, BLANK, CUCUMBER, RICE, FISH, FISH, RICE, BLANK,
                     FISH, NORI, BLANK, RICE, CUCUMBER, BLANK, NORI],
-            speed: 1.65
+            speed: 1.55
         },
 
         processors: [
@@ -354,7 +354,6 @@ let LEVELS = [
                 x: 7*TILES_PX,
                 y: 4*TILES_PX
             },
-
             {
                 recipe: [FISH, CUCUMBER],
                 result: FISH_SOUP,
@@ -377,7 +376,7 @@ let LEVELS = [
         conveyorBelt: {
             items: [MILK, BLANK, BLANK, BREAD, BLANK, MILK, BLANK, MILK, BREAD, BLANK, MILK,
                     BREAD, BLANK, BREAD],
-            speed: 1.65
+            speed: 1.55
         },
 
         processors: [
@@ -385,7 +384,7 @@ let LEVELS = [
                 recipe: [MILK],
                 result: CHEESE,
                 score: 100,
-                x: 3*TILES_PX,
+                x: 2*TILES_PX,
                 y: 2*TILES_PX
             },
             {
@@ -393,14 +392,14 @@ let LEVELS = [
                 result: CHEESE_SLICE,
                 score: 100,
                 x: 7*TILES_PX,
-                y: 4*TILES_PX
+                y: 2*TILES_PX
             },
 
             {
                 recipe: [BREAD, CHEESE_SLICE],
                 result: SANDWICH,
                 score: 200,
-                x: 2*TILES_PX,
+                x: 5*TILES_PX,
                 y: 5*TILES_PX
             }
 
