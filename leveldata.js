@@ -332,16 +332,16 @@ let LEVELS = [
 
     // Normal Stage 3
     //
-    {id: 12, name: "fish soup and sushi",
+    {id: 12, name: "fish soup, sushi",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
-        maxScore: 9999,
+        maxScore: 1600,
 
         conveyorBelt: {
             items: [FISH, BLANK, FISH, NORI, BLANK, SOUP, RICE, FISH, FISH, RICE, BLANK,
                     FISH, NORI, BLANK, RICE, SOUP, BLANK, NORI],
-            speed: 1.8
+            speed: 1.7
         },
 
         processors: [
@@ -382,7 +382,7 @@ let LEVELS = [
         conveyorBelt: {
             items: [CHEESE, BLANK, SAUSAGE, BREAD, BREAD, CABBAGE, BLANK, SAUSAGE, BLANK, BLANK, CABBAGE,
                     CHEESE, BLANK, BREAD, SAUSAGE, BLANK, CHEESE, BLANK, CABBAGE],
-            speed: 1.9
+            speed: 1.7
         },
 
         processors: [
@@ -424,7 +424,7 @@ let LEVELS = [
         conveyorBelt: {
             items: [RICE, RICE, RICE, NORI, NORI, RICE, NORI, RICE, NORI, NORI,
                     BLANK, RICE, RICE, NORI, NORI, RICE, NORI],
-            speed: 2.2
+            speed: 2.1
         },
 
         processors: [
@@ -449,16 +449,16 @@ let LEVELS = [
     },
 
     // Normal Stage 6
-    {id: 15, name: "15",
+    {id: 15, name: "lobster soup",
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
         maxScore: 9999,
 
         conveyorBelt: {
-            items: [WATER, BLANK, LOBSTER, LOBSTER, BLANK, CUCUMBER, BLANK, LOBSTER, BLANK, WATER, BLANK
-                    CUCUMBER, BLANK, WATER, BLANK, BLANK, CUCUMBER],
-            speed: 1.7
+            items: [WATER, BLANK, LOBSTER, LOBSTER, BLANK, CUCUMBER, LOBSTER, BLANK, WATER, BLANK,
+                    CUCUMBER, BLANK, WATER, BLANK, CUCUMBER],
+            speed: 2.25
         },
 
         processors: [
@@ -473,7 +473,7 @@ let LEVELS = [
                 recipe: [CUCUMBER],
                 result: CUCUMBER_SLICE,
                 score: 100,
-                x: 5*TILES_PX,
+                x: 7*TILES_PX,
                 y: 2*TILES_PX
             },
             {
@@ -486,8 +486,8 @@ let LEVELS = [
             {
                 recipe: [LOBSTER_BOILED, CUCUMBER_SLICE, SOUP],
                 result: LOBSTER_SOUP,
-                score: 400,
-                x: 6*TILES_PX,
+                score: 300,
+                x: 8*TILES_PX,
                 y: 5*TILES_PX
             }
 
