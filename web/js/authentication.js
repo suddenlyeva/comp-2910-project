@@ -17,7 +17,7 @@ let fbConf = {
 };
 
 // Initialize Firebase UI
-let ui = new firebaseui.auth.AuthUI(firebase.auth());
+let fbUI = new firebaseui.auth.AuthUI(firebase.auth());
 let currentUid = null;
 
 // Initialize game related buttons for index.html
@@ -25,6 +25,7 @@ let initButtons = function () {
     document.getElementById('signOut').addEventListener('click', function() {
         firebase.auth().signOut();
     });
+
     document.getElementById('runWithId').addEventListener('click', function() {
         document.location = "../../play.html";
     });
@@ -46,12 +47,13 @@ let displaySignedInUI = function (user) {
 let displaySignedOutUI = function () {
     document.getElementById('signedInUI').style.display = 'none';
     document.getElementById('signedOutUI').style.display = 'block';
-    ui.start('#authMethods', fbConf);
+    fbUI.start('#authMethods', fbConf);
 };
 
-// Observe user sign in state and invoke the func whe the state changed
-firebase.auth().onAuthStateChanged(function (user) {
+// Observe user sign in state and invoke the function when the state changed
+firebase.auth().onAuthStateChanged(function(user) {
     if (user && user.uid == currentUid) {
+        console.log("test");
         return;
     }
     document.getElementById('loadArea').style.display = 'block';
