@@ -408,30 +408,33 @@ data = {
     speed:,
     angle:,
     acceleration:,
-    limitSpeed:
+    limitSpeed:,
+    reflect:
 }
 */
 function addProjectileProperties(object, data) {
     
     object.speed = data.speed;
+    object.angle = data.angle;
     object.acceleration = data.acceleration;
     object.limitSpeed = data.limitSpeed;
+    object.reflect = data.reflect;
     
-    object.deltaX = Math.cos(data.angle) * object.speed * TICKER.deltaTime;
-    object.deltaY = Math.sin(data.angle) * object.speed * TICKER.deltaTime;
+    object.deltaX = Math.cos(object.angle) * object.speed * TICKER.deltaTime;
+    object.deltaY = Math.sin(object.angle) * object.speed * TICKER.deltaTime;
     
     object.move = () => {
         if(object.speed) {
             if (object.acceleration != null && object.limitSpeed != null) {
                 if (object.acceleration > 0 && object.speed < object.limitSpeed) {
                     object.speed = Math.min(object.speed + object.acceleration * TICKER.deltaTime, object.limitSpeed);
-                    object.deltaX = Math.cos(data.angle) * object.speed;
-                    object.deltaY = Math.sin(data.angle) * object.speed;
+                    object.deltaX = Math.cos(object.angle) * object.speed;
+                    object.deltaY = Math.sin(object.angle) * object.speed;
                 }
                 else if (object.acceleration < 0 && object.speed > object.limitSpeed) {
                     object.speed = Math.max(object.speed + object.acceleration * TICKER.deltaTime, object.limitSpeed);
-                    object.deltaX = Math.cos(data.angle) * object.speed;
-                    object.deltaY = Math.sin(data.angle) * object.speed;
+                    object.deltaX = Math.cos(object.angle) * object.speed;
+                    object.deltaY = Math.sin(object.angle) * object.speed;
                 }
             }
             object.x += object.deltaX * TICKER.deltaTime;
@@ -460,7 +463,7 @@ function makeItemBurst(x,y,numberOfItems = Object.keys(ITEM_TEXTURES).length - 2
         
         addProjectileProperties( itemBurst.sprites[i], {
             speed: Math.random() * 28 + 25,
-            angle: Math.random() * Math.PI * 2,
+            angle: Math.random() * Math.PI * 1.5 - Math.PI * 1.25,
             acceleration: (Math.random() * -2) - 1,
             limitSpeed: 0
         });
