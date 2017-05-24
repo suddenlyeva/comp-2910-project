@@ -44,8 +44,9 @@ let displaySignedInUI = function (user) {
     currentUid = user.uid;
     document.getElementById('signedInUI').style.display = 'block';
     document.getElementById('signedOutUI').style.display = 'none';
-    document.getElementById('username').textContent = unameDispMessage + user.providerData[0].displayName;
-    console.log(user.providerData[0].displayName);
+    // if displayName is not available, show email instead
+    let nameShown = user.providerData[0].displayName != null ? user.providerData[0].displayName : user.providerData[0].email;
+    document.getElementById('username').textContent = unameDispMessage + nameShown;
     console.log(user.providerData[0]);
 };
 
