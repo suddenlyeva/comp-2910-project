@@ -129,6 +129,9 @@ function StageSelect() {
                 PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview-overlay.png"]);
             button.addChild(lockedOverlay);
 
+            let starContainer = new PIXI.Container();
+            button.addChild(starContainer);
+
             wrapper.updateProgress = () => {
                 // scale the button back to 100%, set text positions and scale the button back
                 let scaleMemX = button.scale.x,
@@ -140,16 +143,13 @@ function StageSelect() {
                     highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 1.7);
 
                     if(LEVEL_PROGRESS[i].highscore !== 0) {
-                        let starContainer = new PIXI.Container();
-                        button.addChild(starContainer);
-
                         // find the number of stars to display
                         let grade = calculateGrade({ maxScore: LEVELS[i].maxScore, score: LEVEL_PROGRESS[i].highscore });
                         // add the correct number of stars to the star container
-                        for (let i = 0; i < grade.nStars; i++) {
+                        for (let j = starContainer.children.length; j < grade.nStars; j++) {
                             let star = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["star-small.png"]);
                             star.scale.set(0.8);
-                            star.x = i * star.width + i * 15;
+                            star.x = starContainer.width + (j === 0 ? 0 : 15);
                             starContainer.addChild(star);
                         }
                         starContainer.position.set(button.width / 2 - starContainer.width / 2,
