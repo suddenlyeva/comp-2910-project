@@ -361,13 +361,12 @@ function calculateGrade(data) {
 // returns displayable level name in correct format e.g. "level 1 : something"
 // takes level id and name. Can also take level index if it's known at the time
 function levelDisplayName(id, name, index = null) {
-    if(id === LEVELS[0].id)
-        return name;
     if(id === PPAP.id)
-        return "secret level : " + name;
+        return "secret stage : " + name;
     if(index === null)
         index = findIndexById(LEVELS, id);
-    return "level " + index + " : " + name;
+    // count levels from 1 so (index + 1)
+    return "stage " + (index + 1) + " : " + name;
 }
 
 // returns an array conataining types to be made into the level preview.

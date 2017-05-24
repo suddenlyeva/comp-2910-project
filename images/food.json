@@ -106,7 +106,7 @@
 },
 "bottle.png":
 {
-	"frame": {"x":81,"y":1740,"w":77,"h":80},
+	"frame": {"x":405,"y":1598,"w":77,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":77,"h":80},
@@ -194,7 +194,7 @@
 },
 "cappuccino.png":
 {
-	"frame": {"x":318,"y":1738,"w":75,"h":80},
+	"frame": {"x":162,"y":1677,"w":75,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":75,"h":80},
@@ -304,6 +304,14 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
 	"sourceSize": {"w":80,"h":80}
 },
+"cream.png":
+{
+	"frame": {"x":165,"y":1054,"w":80,"h":74},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":5,"w":80,"h":74},
+	"sourceSize": {"w":80,"h":80}
+},
 "cucumber .png":
 {
 	"frame": {"x":247,"y":165,"w":80,"h":80},
@@ -314,7 +322,7 @@
 },
 "cucumber-slice.png":
 {
-	"frame": {"x":405,"y":1598,"w":61,"h":65},
+	"frame": {"x":255,"y":1750,"w":61,"h":65},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":11,"y":7,"w":61,"h":65},
@@ -330,7 +338,7 @@
 },
 "cup_2.png":
 {
-	"frame": {"x":160,"y":1740,"w":77,"h":80},
+	"frame": {"x":324,"y":1612,"w":77,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":77,"h":80},
@@ -594,7 +602,7 @@
 },
 "lettuce-slice.png":
 {
-	"frame": {"x":223,"y":1677,"w":67,"h":59},
+	"frame": {"x":322,"y":1694,"w":67,"h":59},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":8,"y":10,"w":67,"h":59},
@@ -650,7 +658,7 @@
 },
 "meat_1.png":
 {
-	"frame": {"x":395,"y":1735,"w":74,"h":80},
+	"frame": {"x":81,"y":1759,"w":74,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":2,"y":0,"w":74,"h":80},
@@ -682,15 +690,15 @@
 },
 "milk.png":
 {
-	"frame": {"x":165,"y":1054,"w":80,"h":74},
+	"frame": {"x":207,"y":1759,"w":46,"h":74},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":5,"w":80,"h":74},
+	"spriteSourceSize": {"x":17,"y":3,"w":46,"h":74},
 	"sourceSize": {"w":80,"h":80}
 },
 "mushroom-slice.png":
 {
-	"frame": {"x":324,"y":1612,"w":68,"h":52},
+	"frame": {"x":1,"y":1789,"w":68,"h":52},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":7,"y":13,"w":68,"h":52},
@@ -738,7 +746,7 @@
 },
 "omelette.png":
 {
-	"frame": {"x":239,"y":1738,"w":77,"h":80},
+	"frame": {"x":243,"y":1668,"w":77,"h":80},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":77,"h":80},
@@ -754,10 +762,18 @@
 },
 "onion.png":
 {
-	"frame": {"x":162,"y":1677,"w":59,"h":61},
+	"frame": {"x":428,"y":1750,"w":59,"h":61},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":12,"y":9,"w":59,"h":61},
+	"sourceSize": {"w":80,"h":80}
+},
+"orange-juice.png":
+{
+	"frame": {"x":157,"y":1759,"w":48,"h":74},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":16,"y":3,"w":48,"h":74},
 	"sourceSize": {"w":80,"h":80}
 },
 "orange.png":
@@ -818,7 +834,7 @@
 },
 "pepper-slice.png":
 {
-	"frame": {"x":362,"y":1666,"w":53,"h":67},
+	"frame": {"x":318,"y":1755,"w":53,"h":67},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":15,"y":6,"w":53,"h":67},
@@ -826,7 +842,7 @@
 },
 "pepper.png":
 {
-	"frame": {"x":417,"y":1665,"w":53,"h":64},
+	"frame": {"x":373,"y":1755,"w":53,"h":64},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":15,"y":7,"w":53,"h":64},
@@ -1018,7 +1034,7 @@
 },
 "tomato-slice.png":
 {
-	"frame": {"x":292,"y":1668,"w":68,"h":68},
+	"frame": {"x":403,"y":1680,"w":68,"h":68},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":7,"y":5,"w":68,"h":68},
@@ -1117,8 +1133,8 @@
 	"version": "1.0",
 	"image": "food.png",
 	"format": "RGBA8888",
-	"size": {"w":492,"h":1821},
+	"size": {"w":492,"h":1842},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:c8e89c1cd70e86a6a0efc68242334989:d4921c3d8781a5ddd5c26d1ad40069c3:dc56c85744751b4d97b97a9b9d1306ba$"
+	"smartupdate": "$TexturePacker:SmartUpdate:4b038709a6380a294b005c0655d7b976:171961c24727c07d003d654440791cad:dc56c85744751b4d97b97a9b9d1306ba$"
 }
 }

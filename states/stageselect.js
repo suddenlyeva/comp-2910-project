@@ -507,6 +507,10 @@ function StageSelect() {
         Affiliate.open(); // -> states/affiliate.js
     });
 
+    // Title Text
+    let titleTxt = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["text-stageselect.png"]);
+    titleTxt.anchor.set(0.5);
+    titleTxt.position.set(CANVAS_WIDTH / 2, TILES_PX );
 
     // Create Scene
     this.scene = new PIXI.Container();
@@ -519,6 +523,7 @@ function StageSelect() {
     this.scene.addChild(easyButton);
     this.scene.addChild(normalButton);
     this.scene.addChild(hardButton);
+    this.scene.addChild(titleTxt);
     //this.scene.addChild(backToMainMenu);
 
     this.updateProgress = () => {
