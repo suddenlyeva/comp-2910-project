@@ -78,7 +78,7 @@ function Affiliate() {
     };
 
     // Main menu button
-    let mainMenuButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-back.png"]);
+    let mainMenuButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-back.png"]);
     mainMenuButton.interactive = mainMenuButton.buttonMode = true;
     mainMenuButton.position.set((CANVAS_WIDTH - mainMenuButton.width) / 2, CANVAS_HEIGHT - mainMenuButton.height - 60);
     mainMenuButton.on("pointertap", () => {

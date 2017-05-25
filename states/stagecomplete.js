@@ -34,12 +34,12 @@ function StageComplete(data) { // <- states/levels.js
     let wasteTicker    =  0;
 
     // home button
-    let homeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-home.png"]);
+    let homeButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-home.png"]);
     homeButton.position.set(TILES_PX * 2.25, TILES_PX * 6.5);
     homeButton.interactive =  homeButton.buttonMode  = true;
 
     // replay button
-    let replayButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-replay.png"]);
+    let replayButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-replay.png"]);
     replayButton.position.set(TILES_PX * 12.25, TILES_PX * 6.5);
     replayButton.interactive = replayButton.buttonMode  = true;
 
@@ -73,13 +73,13 @@ function StageComplete(data) { // <- states/levels.js
     clearTxt.alpha = 0.92;
 
     // message panel
-    let messageLeft   = new PIXI.Sprite(PIXI.utils.TextureCache["message-left.png"]);
+    let messageLeft   = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["message-left.png"]);
     let messageMiddle = new PIXI.extras.TilingSprite(
         PIXI.loader.resources["images/spritesheet.json"].textures["message-middle.png"],
         clearTxt.width,
         TILES_PX
     );
-    let messageRight = new PIXI.Sprite(PIXI.utils.TextureCache["message-right.png"]);
+    let messageRight = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["message-right.png"]);
     messageMiddle.x  = TILES_PX;
     messageRight.x   = messageMiddle.width + TILES_PX;
     messageContainer.addChild(messageLeft);
@@ -151,7 +151,7 @@ function StageComplete(data) { // <- states/levels.js
         this.scene.addChild(txtThankYou);
     } else {
         // continue button
-        let continueButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-next.png"]);
+        let continueButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-next.png"]);
         continueButton.position.set(TILES_PX * 4.5, TILES_PX * 6.25);
         continueButton.interactive = continueButton.buttonMode = true;
 

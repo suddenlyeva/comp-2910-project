@@ -17,25 +17,25 @@ function PauseMenu() {
     // Make Buttons
 
     // Resume
-    let resumeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-play.png"]);
+    let resumeButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-play.png"]);
     resumeButton.position.set(TILES_PX * 2, TILES_PX * 2);
     resumeButton.interactive = true;
     resumeButton.buttonMode = true;
 
     // Reset
-    let resetButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-restart.png"]);
+    let resetButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-restart.png"]);
     resetButton.position.set(resumeButton.x + TILES_PX * 3, TILES_PX * 2);
     resetButton.interactive = true;
     resetButton.buttonMode = true;
 
     // Options
-    let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
+    let optionsButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-options.png"]);
     optionsButton.position.set(resetButton.x + TILES_PX * 3, TILES_PX * 2);
     optionsButton.interactive = true;
     optionsButton.buttonMode = true;
 
     // Back to Menu
-    let mainMenuButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-back.png"]);
+    let mainMenuButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-back.png"]);
     mainMenuButton.position.set(panel.width / 2 - mainMenuButton.width / 2, TILES_PX * 5);
     mainMenuButton.interactive = true;
     mainMenuButton.buttonMode = true;

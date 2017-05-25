@@ -15,12 +15,12 @@ function GameOver() {
     // Make Buttons
 
     // Reset
-    let resetButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-restart.png"]);
+    let resetButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-restart.png"]);
     resetButton.position.set(panel.width / 2 - resetButton.width / 2, TILES_PX * 2);
     resetButton.interactive = resetButton.buttonMode = true;
 
     // Back to Menu
-    let mainMenuButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-back.png"]);
+    let mainMenuButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-back.png"]);
     mainMenuButton.position.set(panel.width / 2 - mainMenuButton.width / 2, TILES_PX * 5);
     mainMenuButton.interactive = mainMenuButton.buttonMode = true;
 
