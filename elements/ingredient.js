@@ -14,7 +14,7 @@ let YOGURT         =  9;
 let FRUIT_YOGURT   = 10;
 let PINEAPPLE      = 11;
 let FLOUR          = 12;
-let PIE            = 13;
+let APPLE_PIE            = 13;
 let BREAD          = 14;
 let FISH           = 15;
 let FISH_STEAK     = 16;
@@ -73,6 +73,10 @@ let FRUIT_PLATE    = 68;
 let BLUEBERRY      = 69;
 let PIZZA          = 70;
 let PEPPER_SLICE   = 71;
+let CHILI_PEPPER   = 72;
+let SPICE          = 73;
+let PEPPER         = 74;
+let PIE            = 75;
 
 let PEN            = 98;
 let PPAP_ITEM      = 99;
@@ -96,7 +100,7 @@ function defineItemTextures() {
     ITEM_TEXTURES[PEN]            = PIXI.loader.resources["images/spritesheet.json"].textures["pen.png"];
     ITEM_TEXTURES[PPAP_ITEM]      = PIXI.loader.resources["images/spritesheet.json"].textures["ppap.png"];
     ITEM_TEXTURES[FLOUR]          = PIXI.loader.resources["images/food.json"].textures["flour.png"];
-    ITEM_TEXTURES[PIE]            = PIXI.loader.resources["images/food.json"].textures["applepie.png"];
+    ITEM_TEXTURES[APPLE_PIE]            = PIXI.loader.resources["images/food.json"].textures["applepie.png"];
     ITEM_TEXTURES[BREAD]          = PIXI.loader.resources["images/food.json"].textures["bread.png"];
     ITEM_TEXTURES[FISH]           = PIXI.loader.resources["images/food.json"].textures["fish_2.png"];
     ITEM_TEXTURES[FISH_STEAK]     = PIXI.loader.resources["images/food.json"].textures["fish_steak.png"];
@@ -155,6 +159,10 @@ function defineItemTextures() {
     ITEM_TEXTURES[BLUEBERRY]      = PIXI.loader.resources["images/food.json"].textures["blueberry.png"];
     ITEM_TEXTURES[PIZZA]          = PIXI.loader.resources["images/food.json"].textures["pizza.png"];
     ITEM_TEXTURES[PEPPER_SLICE]   = PIXI.loader.resources["images/food.json"].textures["pepper-slice.png"];
+    ITEM_TEXTURES[CHILI_PEPPER]   = PIXI.loader.resources["images/food.json"].textures["red_pepper.png"];
+    ITEM_TEXTURES[SPICE]          = PIXI.loader.resources["images/food.json"].textures["spice.png"];
+    ITEM_TEXTURES[PEPPER]          = PIXI.loader.resources["images/food.json"].textures["pepper.png"];
+    ITEM_TEXTURES[PIE]          = PIXI.loader.resources["images/food.json"].textures["pie.png"];
     // Use PIXI.loader.resources["images/food.json"].textures["*.png"]; for new sprites.
 }
 

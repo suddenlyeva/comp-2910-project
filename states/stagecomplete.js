@@ -188,7 +188,7 @@ function StageComplete(data) { // <- states/levels.js
     // Called every frame
     let displayScore = () => {
         if (scoreDisplayed < data.score) {
-            scoreDisplayed += 13; // 13 is for optimal 10's and 1's digit distribution
+            scoreDisplayed += 137; // weird number is for digit distribution
             scoreTxt.text = "score : " + scoreDisplayed;
         } else {
             scoreTxt.text = "score : " + data.score;
