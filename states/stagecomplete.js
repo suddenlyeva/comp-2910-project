@@ -60,6 +60,11 @@ function StageComplete(data) { // <- states/levels.js
     // gradeTxt
     let gradeTxt = new PIXI.Text(grade.text, gradeTxtStyle);
     gradeTxt.position.set(CANVAS_WIDTH / 2 - gradeTxt.width / 2, -txtVAlign);
+    
+    // Top Glow
+    let menuGlow = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-glow.png"]);
+    menuGlow.scale.set(3.5,1.1);
+    menuGlow.position.x = CANVAS_WIDTH / 2 - menuGlow.width / 2;
 
     // ClearMessage
     let clearTxt   = new PIXI.Text(data.clearMessage, clearTxtStyle);
@@ -121,6 +126,7 @@ function StageComplete(data) { // <- states/levels.js
     // Add to scene
     this.scene = new PIXI.Container();
     this.scene.addChild(background);
+    this.scene.addChild(menuGlow);
     this.scene.addChild(starContainer);
     this.scene.addChild(messageContainer);
     this.scene.addChild(homeButton);

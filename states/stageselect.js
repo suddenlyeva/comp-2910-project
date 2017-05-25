@@ -211,6 +211,7 @@ function StageSelect() {
 
                     } else {
                         setManually = true;
+                        PlaySound(eSFXList.ButtonClick, false);
                         this.goToButton(i);
                     }
                 }

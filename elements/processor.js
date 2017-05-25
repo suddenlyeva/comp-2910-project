@@ -74,8 +74,12 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
         this.mHeight = TILES_PX;
 
         // -- Last Tray is the Processor output --
-
-        this.mOutputTexture.push(PIXI.loader.resources["images/spritesheet.json"].textures["output.png"]);
+        if(level.isFinalItem(recipeOrder.GetOutput())) {
+            this.mOutputTexture.push(PIXI.loader.resources["images/spritesheet.json"].textures["output.png"]);
+        }
+        else {
+            this.mOutputTexture.push(PIXI.loader.resources["images/spritesheet.json"].textures["output-chain.png"]);
+        }
         this.mOutputTexture.push(PIXI.loader.resources["images/spritesheet.json"].textures["output-ready.png"]);
 
         this.mOutputSprite = new PIXI.Sprite(this.mOutputTexture[this.mOutputState.Blue]);
