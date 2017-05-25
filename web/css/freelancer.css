@@ -539,6 +539,9 @@ section.manual {
     .figure-caption-custom {
         font-size: 1.5em;
     }
+    .art-body {
+        margin-left: 8%;
+    }
 }
 
 
