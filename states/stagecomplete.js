@@ -187,12 +187,8 @@ function StageComplete(data) { // <- states/levels.js
 
     // Called every frame
     let displayScore = () => {
-        if (scoreDisplayed < data.score) {
-            scoreDisplayed += 137; // weird number is for digit distribution
-            scoreTxt.text = "score : " + scoreDisplayed;
-        } else {
-            scoreTxt.text = "score : " + data.score;
-        }
+        scoreDisplayed = Math.min(scoreDisplayed + 137, data.score); // weird number is for digit distribution
+        scoreTxt.text = "score : " + scoreDisplayed;
         scoreTxt.position.set(TILES_PX * 3 - scoreTxt.width / 2, TILES_PX * 0.5);
     };
 
