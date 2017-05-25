@@ -152,14 +152,15 @@ function Intro() {
             contFoodFactory.alpha += appearSpeed * TICKER.deltaTime;
         } else if(!gearMove.finalY.reached) {
             gearAppleContainer.updatePos();
-        } else { // Then the continue text flashes based on a sin function
-            txtPress.alpha = Math.pow(Math.sin(counter), 4);
-            counter        = (counter + flashFreq * TICKER.deltaTime) % Math.PI;
+        } else {
             if(txtZero.alpha < 1) {
                 txtZero.alpha += appearSpeed * TICKER.deltaTime;
             }
             spinningGear.updateSpeed();
             if(gearSpin.max.reached) {
+                // Then the continue text flashes based on a sin function
+                txtPress.alpha = Math.pow(Math.sin(counter), 4);
+                counter        = (counter + flashFreq * TICKER.deltaTime) % Math.PI;
                 foodBurst.update();
                 if(byTeam19.scale.x < 1) {
                     byTeam19.scale.set(byTeam19.scale.x + (1 - byTeam19.scale.x) / scaleDecel * TICKER.deltaTime);
