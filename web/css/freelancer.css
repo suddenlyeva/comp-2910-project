@@ -527,6 +527,9 @@ section.manual {
     .section-title {
         font-size: 4.75em;
     }
+    #about .section-title {
+        font-size: 4em;
+    }
     .section-heading {
         font-size: 2em;
     }
