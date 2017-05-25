@@ -7,11 +7,6 @@
     "orientation": "landscape",
     "scope": "/",
     "start_url": "/index.html",
-    "serviceworker": {
-        "src" : "firebase-messaging-sw.js",
-        "scope" : "/",
-        "use_cache" : false
-    },
     "icons": [
         {
             "src": "icons/android-icon-36x36.png",
