@@ -121,6 +121,16 @@ function Level(data) {
         }
     };
 
+    // Check if an item is the level's final item.
+    this.isFinalItem = (itemType) => {
+        for (let i in data.finalItems) {
+            if (itemType == data.finalItems[i]) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     // Load processors
     this.processors = [];
     for (let i in data.processors) {
@@ -138,16 +148,6 @@ function Level(data) {
     this.isComplete = false;
     this.timeOut = 120;
     this.itemPickedup = false;
-
-    // Check if an item is the level's final item.
-    this.isFinalItem = (itemType) => {
-        for (let i in data.finalItems) {
-            if (itemType == data.finalItems[i]) {
-                return true;
-            }
-        }
-        return false;
-    };
 
     // Checks if the level is over
     this.checkForCompletion = () => {
