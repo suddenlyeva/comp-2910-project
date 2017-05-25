@@ -494,7 +494,7 @@ let LEVELS = [
         finalItems: [LOBSTER_SOUP]
     },
     
-    {id: 16, name: " oats and fruits ",
+    {id: 16, name: " oats and fruits",
     
         clearMessage: "nothing new",
         wasteLimit: 4,
@@ -528,7 +528,7 @@ let LEVELS = [
     
         conveyorBelt: {
             items:[ BLANK       , MILK        , FLOUR    , BLANK        , BLANK     , PEPPER_SLICE  , BLANK , BLANK, SAUSAGE   
-                  , TOMATO      , BLANK       , BLANK    , SALAD_2      , BLANK     , SAUSAGE       , BLANK , MILK       
+                  , TOMATO      , BLANK       , BLANK    , SALAD      , BLANK     , SAUSAGE       , BLANK , MILK       
                   , BLANK       , FLOUR       , BLANK    , BLANK        , TOMATO    , MILK          , BLANK
                   , FLOUR       , BLANK       , BLANK    , PEPPER_SLICE , BLANK     ,SAUSAGE
                   ], 
@@ -537,8 +537,8 @@ let LEVELS = [
     
         processors: [
             { recipe:[MILK, FLOUR],               result: BREAD,    score: 200, x: 2*TILES_PX, y: 2*TILES_PX },
-            { recipe:[TOMATO, PEPPER_SLICE],      result: SALAD_2,   score: 200, x: 8*TILES_PX, y: 2*TILES_PX },
-            { recipe:[SAUSAGE ,BREAD, SALAD_2],   result: PIZZA,         score: 250, x: 6*TILES_PX, y: 5*TILES_PX }
+            { recipe:[TOMATO, PEPPER_SLICE],      result: SALAD,   score: 200, x: 8*TILES_PX, y: 2*TILES_PX },
+            { recipe:[SAUSAGE ,BREAD, SALAD],   result: PIZZA,         score: 250, x: 6*TILES_PX, y: 5*TILES_PX }
             
         ],
         finalItems: [PIZZA]
@@ -572,7 +572,7 @@ let LEVELS = [
     
     },
     
-    {id: 19, name: " loaf of bread",
+    {id: 19, name: "loaf of bread",
     
         clearMessage: "nothing new",
         wasteLimit: 4,
