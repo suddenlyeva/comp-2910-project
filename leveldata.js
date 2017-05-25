@@ -455,8 +455,8 @@ let LEVELS = [
         maxScore: 2100,
 
         conveyorBelt: {
-            items: [WATER, BLANK, LOBSTER, LOBSTER, BLANK, CUCUMBER, LOBSTER, BLANK, WATER, BLANK,
-                    CUCUMBER, BLANK, WATER, BLANK, CUCUMBER],
+            items: [WATER, BLANK, LOBSTER, LOBSTER, BLANK, CHILI_PEPPER, LOBSTER, BLANK, WATER, BLANK,
+                    CHILI_PEPPER, BLANK, WATER, BLANK, CHILI_PEPPER],
             speed: 1.8
         },
 
@@ -469,8 +469,8 @@ let LEVELS = [
                 y: 2*TILES_PX
             },
             {
-                recipe: [CUCUMBER],
-                result: CUCUMBER_SLICE,
+                recipe: [CHILI_PEPPER],
+                result: SPICE,
                 score: 150,
                 x: 7*TILES_PX,
                 y: 2*TILES_PX
@@ -483,7 +483,7 @@ let LEVELS = [
                 y: 5*TILES_PX
             },
             {
-                recipe: [LOBSTER_BOILED, CUCUMBER_SLICE, SOUP],
+                recipe: [LOBSTER_BOILED, SPICE, SOUP],
                 result: LOBSTER_SOUP,
                 score: 300,
                 x: 8*TILES_PX,
