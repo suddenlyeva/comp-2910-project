@@ -8,7 +8,7 @@ function StageSelect() {
     let deceleration       = 12;  // ... of the movement animation
     let positionEpsilon    = 1;   // for position comparison
     // primary - button in spotlight, secondary - buttons not in spotlight
-    let buttonAlpha        = { primary : 1, secondary : 0.4 };
+    let buttonAlpha        = { primary : 1, secondary : 0.6 };
     let buttonScale        = { primary : 1, secondary : 0.6 };
     // from pointerup to pointerdown: if moved less than the number of units(x and y)
     // specified by tapSensitivity, consider it a tap/click
@@ -63,9 +63,20 @@ function StageSelect() {
         0, 9*TILES_PX
     );
 
-    // initialized in initButtons because they rely on stageButtons.width
-    let bgRatio; // background width to carousel width ratio
-    let bgXmax;  // maximum background x position
+    // set background width and necessary values to calculate background position
+    background.set = () => {
+        background.width   = Math.max(stageButtons.children.length * bgWidthPerButton, CANVAS_WIDTH);
+        // background width to carousel width ratio
+        background.ratio = (background.width - CANVAS_WIDTH) / (stageButtons.width - buttonDisplayWidth);
+        // maximum background x position
+        background.xMax  = CANVAS_WIDTH - background.width;
+        return background;
+    };
+
+    // update background position; don't use before calling background.set()
+    background.update = () => {
+        background.x = Math.max(Math.min(stageButtons.x - refXLeft, 0) * background.ratio, background.xMax);
+    };
 
     stageButtons.position.set(refXLeft - (buttonDisplayWidth * currentButton),
         CANVAS_HEIGHT / 2 - buttonDisplayHeight / 2);
@@ -75,7 +86,7 @@ function StageSelect() {
     // forceReinit - if true, all buttons will be recreated even if they already exist
     // otherwise initialize any additional buttons; if there aren't any new buttons, do nothing
     this.initButtons = (forceReinit = false) => {
-        if(LEVELS.length === stageButtons.children.length) return;
+        if(LEVELS.length === stageButtons.children.length && !forceReinit) return;
         for(let i = forceReinit ? 0 : stageButtons.children.length; i < LEVELS.length; i++) {
             let wrapper  = new PIXI.Container(),
                 button   = new PIXI.Container(),
@@ -129,6 +140,9 @@ function StageSelect() {
                 PIXI.loader.resources["images/spritesheet.json"].textures["stage-preview-overlay.png"]);
             button.addChild(lockedOverlay);
 
+            let starContainer = new PIXI.Container();
+            button.addChild(starContainer);
+
             wrapper.updateProgress = () => {
                 // scale the button back to 100%, set text positions and scale the button back
                 let scaleMemX = button.scale.x,
@@ -140,16 +154,13 @@ function StageSelect() {
                     highscoreText.position.set(button.width / 2 - highscoreText.width / 2, button.height / 1.7);
 
                     if(LEVEL_PROGRESS[i].highscore !== 0) {
-                        let starContainer = new PIXI.Container();
-                        button.addChild(starContainer);
-
                         // find the number of stars to display
                         let grade = calculateGrade({ maxScore: LEVELS[i].maxScore, score: LEVEL_PROGRESS[i].highscore });
                         // add the correct number of stars to the star container
-                        for (let i = 0; i < grade.nStars; i++) {
+                        for (let j = starContainer.children.length; j < grade.nStars; j++) {
                             let star = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["star-small.png"]);
                             star.scale.set(0.8);
-                            star.x = i * star.width + i * 15;
+                            star.x = starContainer.width + (j === 0 ? 0 : 15);
                             starContainer.addChild(star);
                         }
                         starContainer.position.set(button.width / 2 - starContainer.width / 2,
@@ -200,6 +211,7 @@ function StageSelect() {
 
                     } else {
                         setManually = true;
+                        PlaySound(eSFXList.ButtonClick, false);
                         this.goToButton(i);
                     }
                 }
@@ -249,10 +261,8 @@ function StageSelect() {
             stageButtons.addChild(wrapper);
         }
 
-        // background variables are based on the number of buttons
-        background.width = Math.max(stageButtons.children.length * bgWidthPerButton, CANVAS_WIDTH);
-        bgRatio          = (background.width - CANVAS_WIDTH) / (stageButtons.width - buttonDisplayWidth);
-        bgXmax           = CANVAS_WIDTH - background.width;
+        // set background variables and update it's position
+        background.set().update();
     }
 
     this.initButtons();
@@ -346,7 +356,7 @@ function StageSelect() {
             }
         }
         // move background
-        background.x = Math.max(Math.min(stageButtons.x - refXLeft, 0) * bgRatio, bgXmax);
+        background.update();
     };
 
     let updateCarousel = () => {

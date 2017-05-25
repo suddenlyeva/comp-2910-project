@@ -296,6 +296,7 @@ function makeGear(size, speed) {
     gear.ticker = 0;
     gear.currentFrame = 0;
     gear.isNextFrame = false;
+    gear.speed = speed;
 
     // Functions
 
@@ -303,7 +304,7 @@ function makeGear(size, speed) {
     gear.update = () => {
 
         // Tick up
-        gear.ticker += speed * TICKER.deltaTime;
+        gear.ticker += gear.speed * TICKER.deltaTime;
 
         // Increment frames, iterate if very fast
         while (gear.ticker >= timeOut) {
@@ -399,6 +400,123 @@ function padZeroForInt(intToPad, digits) {
         paddedNum = "0" + paddedNum;
     }
     return paddedNum;
+}
+
+// Adds projectile properties to a sprite
+/*
+data = {
+    speed: The speed that the object will move,
+    angle: The direction in radians the object will move - 0 is directly right,
+    acceleration: The amount the object's speed will change each frame, +/- a small decimal
+    limitSpeed: The point at which the object will stop accelerating.
+}
+*/
+function addProjectileProperties(object, data) {
+    
+    // Store parameter data inside the object
+    object.speed = data.speed;
+    object.angle = data.angle;
+    object.acceleration = data.acceleration;
+    object.limitSpeed = data.limitSpeed;
+    object.reflect = data.reflect;
+    
+    // Calculate initial X/Y speeds
+    object.deltaX = Math.cos(object.angle) * object.speed * TICKER.deltaTime;
+    object.deltaY = Math.sin(object.angle) * object.speed * TICKER.deltaTime;
+    
+    // Call to move object one step
+    object.move = () => {
+        
+        // Only do calculations if object is actually moving
+        if(object.speed) {
+            
+            // Do Acceleration calculations if both acceleration and limitSpeed exist
+            if (object.acceleration != null && object.limitSpeed != null) {
+                
+                // Positive accceleration approaches the limit from below.
+                if (object.acceleration > 0 && object.speed < object.limitSpeed) {
+                    object.speed = Math.min(object.speed + object.acceleration * TICKER.deltaTime, object.limitSpeed);
+                    object.deltaX = Math.cos(object.angle) * object.speed;
+                    object.deltaY = Math.sin(object.angle) * object.speed;
+                }
+                // Negative accceleration approaches the limit from above.
+                else if (object.acceleration < 0 && object.speed > object.limitSpeed) {
+                    object.speed = Math.max(object.speed + object.acceleration * TICKER.deltaTime, object.limitSpeed);
+                    object.deltaX = Math.cos(object.angle) * object.speed;
+                    object.deltaY = Math.sin(object.angle) * object.speed;
+                }
+                
+            }
+            // Move the object
+            object.x += object.deltaX * TICKER.deltaTime;
+            object.y += object.deltaY * TICKER.deltaTime;
+        }
+        
+    };
+}
+
+// Creates a burst of every item in the game at desired location.
+// Lots of magic numbers.
+function makeItemBurst(x,y,numberOfItems = Object.keys(ITEM_TEXTURES).length - 2) { // 2 is the number of secret items
+    
+    // Create object
+    let itemBurst = new PIXI.Container();
+    
+    // Load sprites
+    itemBurst.sprites = [];
+    for (let i = APPLE; i < numberOfItems; i++) {
+        itemBurst.sprites.push(new PIXI.Sprite(ITEM_TEXTURES[i]));
+    }
+    
+    // Assign initial properties
+    for (let i in itemBurst.sprites) {
+        
+        itemBurst.sprites[i].x = x;
+        itemBurst.sprites[i].y = y;
+        itemBurst.sprites[i].scale.set(0);
+        itemBurst.sprites[i].anchor.set(0.5);
+        
+        itemBurst.sprites[i].deltaScale = Math.random() * 0.08 + 0.03;
+        itemBurst.sprites[i].deltaRotation = Math.random() * 0.8 - 0.4;
+        
+        itemBurst.addChild(itemBurst.sprites[i]);
+        
+        addProjectileProperties( itemBurst.sprites[i], {
+            speed: Math.random() * 28 + 25,
+            angle: Math.random() * Math.PI * 1.5 - Math.PI * 1.25,
+            acceleration: (Math.random() * -2) - 1,
+            limitSpeed: 0
+        });
+    }
+    
+    // Call update to advance one frame.
+    itemBurst.update = () => {
+        
+        for(let i in itemBurst.sprites) {
+            
+            // Move every item using projectile logic
+            itemBurst.sprites[i].move();
+            
+            // Increase scale while object is movign at a reasonable speed.
+            if(itemBurst.sprites[i].speed > 3) {
+                itemBurst.sprites[i].scale.x += itemBurst.sprites[i].deltaScale * TICKER.deltaTime;
+                itemBurst.sprites[i].scale.y += itemBurst.sprites[i].deltaScale * TICKER.deltaTime;
+            }
+            
+            // Smoothly decrease rotation speed down to a minimum limit
+            if (Math.abs(itemBurst.sprites[i].deltaRotation) > 0.02) {
+                itemBurst.sprites[i].deltaRotation *= 0.97;
+            }
+            
+            // Rotate
+            itemBurst.sprites[i].rotation += itemBurst.sprites[i].deltaRotation * TICKER.deltaTime;
+            
+        }
+        
+    };
+    
+    return itemBurst;
+    
 }
 
 // TODO: Well supported fullscreen functionality

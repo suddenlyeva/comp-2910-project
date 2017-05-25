@@ -40,8 +40,10 @@ let SALAD_2        = 35;
 let OCTOPUS        = 36;
 let CUCUMBER       = 37;
 let CUCUMBER_SLICE = 38;
+let PANCAKES       = 39;
 let RICE           = 40;
 let NORI           = 41;
+let LEMON          = 42;
 let SUSHI_ROLL     = 43;
 let ONIGIRI        = 44;
 let SANDWICH       = 45;
@@ -50,7 +52,7 @@ let MEAT           = 47;
 let MEAT_2         = 48;
 let MEAT_3         = 49;
 let STEAK          = 50;
-let APPLE_PIE      = 51;
+let LEMON_SLICE    = 51;
 let WHEAT          = 52;
 let SAUSAGE        = 53;
 let COFFEE_BEAN    = 54;
@@ -64,13 +66,20 @@ let GRAPE          = 61;
 let CAKE           = 62;
 let STRAWBERRY     = 63;
 let ASPARAGUS      = 64;
+let TOMATO_SOUP    = 65;
+let BREAD_2        = 66;
+let PORRIDGE       = 67;
+let FRUIT_PLATE    = 68;
+let BLUEBERRY      = 69;
+let PIZZA          = 70;
+let PEPPER_SLICE   = 71;
 
 let PEN            = 98;
 let PPAP_ITEM      = 99;
 
 
 // Texture dictionary
-let ITEM_TEXTURES = [];
+let ITEM_TEXTURES = {};
 function defineItemTextures() {
     ITEM_TEXTURES[SPLAT]          = PIXI.loader.resources["images/spritesheet.json"].textures["splat.png"];
     ITEM_TEXTURES[BLANK]          = PIXI.loader.resources["images/spritesheet.json"].textures["blank.png"];
@@ -113,8 +122,10 @@ function defineItemTextures() {
     ITEM_TEXTURES[OCTOPUS]        = PIXI.loader.resources["images/food.json"].textures["octopulus.png"];
     ITEM_TEXTURES[CUCUMBER]       = PIXI.loader.resources["images/food.json"].textures["cucumber .png"];
     ITEM_TEXTURES[CUCUMBER_SLICE] = PIXI.loader.resources["images/food.json"].textures["cucumber-slice.png"];
+    ITEM_TEXTURES[PANCAKES]       = PIXI.loader.resources["images/food.json"].textures["pancakes.png"];
     ITEM_TEXTURES[RICE]           = PIXI.loader.resources["images/food.json"].textures["rice.png"];
     ITEM_TEXTURES[NORI]           = PIXI.loader.resources["images/food.json"].textures["nori.png"];
+    ITEM_TEXTURES[LEMON]          = PIXI.loader.resources["images/food.json"].textures["lemon.png"];
     ITEM_TEXTURES[SUSHI_ROLL]     = PIXI.loader.resources["images/food.json"].textures["rolls.png"];
     ITEM_TEXTURES[ONIGIRI]        = PIXI.loader.resources["images/food.json"].textures["onigiri.png"];
     ITEM_TEXTURES[SANDWICH]       = PIXI.loader.resources["images/food.json"].textures["sandwich.png"];
@@ -123,7 +134,8 @@ function defineItemTextures() {
     ITEM_TEXTURES[MEAT_2]         = PIXI.loader.resources["images/food.json"].textures["meat_2.png"];
     ITEM_TEXTURES[MEAT_3]         = PIXI.loader.resources["images/food.json"].textures["meat_3.png"];
     ITEM_TEXTURES[STEAK]          = PIXI.loader.resources["images/food.json"].textures["steak.png"];
-/*!*/  ITEM_TEXTURES[WHEAT]          = PIXI.loader.resources["images/food.json"].textures["flour.png"];
+    ITEM_TEXTURES[LEMON_SLICE]    = PIXI.loader.resources["images/food.json"].textures["lemon_slice.png"];
+    ITEM_TEXTURES[WHEAT]          = PIXI.loader.resources["images/food.json"].textures["wheat.png"];
     ITEM_TEXTURES[SAUSAGE]        = PIXI.loader.resources["images/food.json"].textures["sausage.png"];
     ITEM_TEXTURES[COFFEE_BEAN]    = PIXI.loader.resources["images/food.json"].textures["coffee.png"];
     ITEM_TEXTURES[CAPPUCCINO]     = PIXI.loader.resources["images/food.json"].textures["cappuccino.png"];
@@ -134,8 +146,15 @@ function defineItemTextures() {
 /*!*/    ITEM_TEXTURES[GRAPE_JUICE]   = PIXI.loader.resources["images/food.json"].textures["bottle.png"];
     ITEM_TEXTURES[GRAPE]              = PIXI.loader.resources["images/food.json"].textures["red_grapes.png"];
     ITEM_TEXTURES[CAKE]               = PIXI.loader.resources["images/food.json"].textures["cake_2.png"];
-    ITEM_TEXTURES[STRAWBERRY]         = PIXI.loader.resources["images/food.json"].textures["straberry.png"];
-    ITEM_TEXTURES[ASPARAGUS]         = PIXI.loader.resources["images/food.json"].textures["asparagus.png"];
+    ITEM_TEXTURES[STRAWBERRY]         = PIXI.loader.resources["images/food.json"].textures["strawberry.png"];
+    ITEM_TEXTURES[ASPARAGUS]          = PIXI.loader.resources["images/food.json"].textures["asparagus.png"];
+/*!*/ITEM_TEXTURES[TOMATO_SOUP]       = PIXI.loader.resources["images/food.json"].textures["pumpkin_soup.png"];
+    ITEM_TEXTURES[BREAD_2]            = PIXI.loader.resources["images/food.json"].textures["bread_2.png"];
+/*!*/    ITEM_TEXTURES[PORRIDGE]      = PIXI.loader.resources["images/food.json"].textures["pumpkin_soup.png"];
+    ITEM_TEXTURES[FRUIT_PLATE]        = PIXI.loader.resources["images/food.json"].textures["fruit_plate.png"];
+    ITEM_TEXTURES[BLUEBERRY]         = PIXI.loader.resources["images/food.json"].textures["blueberry.png"];
+    ITEM_TEXTURES[PIZZA]         = PIXI.loader.resources["images/food.json"].textures["pizza.png"];
+    ITEM_TEXTURES[PEPPER_SLICE]         = PIXI.loader.resources["images/food.json"].textures["pepper-slice.png"];
     // Use PIXI.loader.resources["images/food.json"].textures["*.png"]; for new sprites.
 }
 
