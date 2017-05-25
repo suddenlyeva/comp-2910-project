@@ -628,7 +628,7 @@ let LEVELS = [
 // PPAP
 let PPAP = {id: 99999, name: "ppap",
 
-    clearMessage: "now go play the actual levels",
+    clearMessage: "pen pineapple apple pen",
     wasteLimit: 5,
     maxScore: 99999,
 
