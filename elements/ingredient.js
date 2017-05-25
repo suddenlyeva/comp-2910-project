@@ -73,6 +73,8 @@ let FRUIT_PLATE    = 68;
 let BLUEBERRY      = 69;
 let PIZZA          = 70;
 let PEPPER_SLICE   = 71;
+let CHILI_PEPPER   = 72;
+let SPICE          = 73;
 
 let PEN            = 98;
 let PPAP_ITEM      = 99;
@@ -155,6 +157,8 @@ function defineItemTextures() {
     ITEM_TEXTURES[BLUEBERRY]      = PIXI.loader.resources["images/food.json"].textures["blueberry.png"];
     ITEM_TEXTURES[PIZZA]          = PIXI.loader.resources["images/food.json"].textures["pizza.png"];
     ITEM_TEXTURES[PEPPER_SLICE]   = PIXI.loader.resources["images/food.json"].textures["pepper-slice.png"];
+    ITEM_TEXTURES[CHILI_PEPPER]   = PIXI.loader.resources["images/food.json"].textures["red_pepper.png"];
+    ITEM_TEXTURES[SPICE]          = PIXI.loader.resources["images/food.json"].textures["spice.png"];
     // Use PIXI.loader.resources["images/food.json"].textures["*.png"]; for new sprites.
 }
 
