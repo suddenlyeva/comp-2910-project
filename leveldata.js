@@ -292,7 +292,7 @@ let LEVELS = [
     // Normal - Stage 2
     {id: 11, name: "octopus salad",
 
-        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        clearMessage: "soak wilted lettuce in ice water to turn it crisp again.",
         wasteLimit: 5,
         maxScore: 1800,
 
@@ -334,7 +334,7 @@ let LEVELS = [
     //
     {id: 12, name: "fish soup, sushi",
 
-        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        clearMessage: "rice can be used in almost everything",
         wasteLimit: 5,
         maxScore: 1600,
 
@@ -375,7 +375,7 @@ let LEVELS = [
     // Normal Stage 4
     {id: 13, name: "sandwich",
 
-        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        clearMessage: "",
         wasteLimit: 8,
         maxScore: 1800,
 
