@@ -120,8 +120,11 @@ function StageComplete(data) { // <- states/levels.js
         replayButton.x + replayButton.width / 2 - replayTxt.width / 2,
         replayButton.y + replayButton.height - replayTxt.height / txtVAlign);
 
+    let background = new PIXI.Sprite(PIXI.utils.TextureCache["images/background-intro.png"]);
+
     // Add to scene
     this.scene = new PIXI.Container();
+    this.scene.addChild(background);
     this.scene.addChild(starContainer);
     this.scene.addChild(messageContainer);
     this.scene.addChild(homeButton);
