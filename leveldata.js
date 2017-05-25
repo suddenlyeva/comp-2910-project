@@ -553,10 +553,10 @@ let LEVELS = [
     
         conveyorBelt: {
             items:[ BLANK        , BLANK        , TOMATO        , BLANK         , TOMATO     
-                  , BLANK        , SALAD        , BLANK         , TOMATO        , BLANK       
-                  , TOMATO_SLICE , SALAD        , BLANK         , TOMATO        , SALAD 
+                  , BLANK        , CABBAGE_SLICE        , BLANK         , TOMATO        , BLANK       
+                  , TOMATO_SLICE , CABBAGE_SLICE        , BLANK         , TOMATO        , CABBAGE_SLICE 
                   , BLANK        , BLANK        , TOMATO        , TOMATO        , TOMATO       
-                  , BLANK        , TOMATO       , BLANK         , TOMATO        , BLANK     , SALAD
+                  , BLANK        , TOMATO       , BLANK         , TOMATO        , BLANK     , CABBAGE_SLICE
                   ], 
             speed: 1.75
         },
@@ -565,10 +565,10 @@ let LEVELS = [
             { recipe:[TOMATO],                       result: TOMATO_SLICE,    score: 100, x: 2*TILES_PX, y: 2*TILES_PX },
             { recipe:[TOMATO],                       result: TOMATO_SLICE,    score: 100, x: 2*TILES_PX, y: 5*TILES_PX },
             { recipe:[TOMATO_SLICE, TOMATO_SLICE],   result: TOMATO_SOUP,     score: 200, x: 8*TILES_PX, y: 2*TILES_PX },
-            { recipe:[TOMATO_SLICE, SALAD],          result: SALAD_2,         score: 200, x: 8*TILES_PX, y: 5*TILES_PX }
+            { recipe:[TOMATO_SLICE, CABBAGE_SLICE],          result: SALAD,           score: 200, x: 8*TILES_PX, y: 5*TILES_PX }
             
         ],
-        finalItems: [TOMATO_SOUP, SALAD_2]
+        finalItems: [TOMATO_SOUP, SALAD]
     
     },
     

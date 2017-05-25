@@ -117,8 +117,12 @@ function Intro() {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
         PlaySound(eSFXList.StageEnter, false);
+        if(!musicOnce) {
+            PlaySound(eMusicList.Music,true); // -> sfx.js
+            musicOnce = true;
+        }
         StageSelect.open(); // -> states/mainmenu.js
-    }
+    };
 
     let foodBurst = makeItemBurst(gearAppleContainer.x + gearAppleContainer.width / 2, gearMove.finalY.val + gearAppleContainer.height / 2);
 
