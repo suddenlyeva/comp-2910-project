@@ -452,7 +452,7 @@ let LEVELS = [
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
-        maxScore: 1800,
+        maxScore: 2100,
 
         conveyorBelt: {
             items: [WATER, BLANK, LOBSTER, LOBSTER, BLANK, CUCUMBER, LOBSTER, BLANK, WATER, BLANK,
@@ -464,14 +464,14 @@ let LEVELS = [
             {
                 recipe: [LOBSTER],
                 result: LOBSTER_BOILED,
-                score: 100,
+                score: 150,
                 x: 2*TILES_PX,
                 y: 2*TILES_PX
             },
             {
                 recipe: [CUCUMBER],
                 result: CUCUMBER_SLICE,
-                score: 100,
+                score: 150,
                 x: 7*TILES_PX,
                 y: 2*TILES_PX
             },
