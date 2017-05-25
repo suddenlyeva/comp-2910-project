@@ -122,7 +122,7 @@ let LEVELS = [
 
         clearMessage: "fruits are a healthier way to end every meal.",
         wasteLimit: 7,
-        maxScore: 1000,
+        maxScore: 1050,
 
         conveyorBelt: {
             items: [APPLE_SLICE, BLANK, APPLE_SLICE, KIWI, BLANK, APPLE_SLICE, BLANK, KIWI, FLOUR, BLANK,
@@ -253,7 +253,7 @@ let LEVELS = [
     // Normal - Stage 1
     {id: 10, name: "fruit yogurt 2",
 
-        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        clearMessage: "now with more preparation involved.",
         wasteLimit: 5,
         maxScore: 2100,
 
@@ -332,14 +332,14 @@ let LEVELS = [
 
     // Normal Stage 3
     //
-    {id: 12, name: "fish soup, sushi",
+    {id: 12, name: "seafood",
 
-        clearMessage: "rice can be used in almost everything",
+        clearMessage: "sushi is surprisingly easy to make at home.",
         wasteLimit: 5,
         maxScore: 1600,
 
         conveyorBelt: {
-            items: [FISH, BLANK, FISH, NORI, BLANK, SOUP, RICE, FISH, FISH, RICE, BLANK,
+            items: [FISH, BLANK, FISH_STEAK, NORI, BLANK, SOUP, RICE, BLANK, FISH_STEAK, FISH, RICE, BLANK,
                     FISH, NORI, BLANK, RICE, SOUP, BLANK, NORI],
             speed: 1.7
         },
@@ -360,7 +360,7 @@ let LEVELS = [
                 y: 4*TILES_PX
             },
             {
-                recipe: [FISH, SOUP],
+                recipe: [FISH_STEAK, SOUP],
                 result: FISH_SOUP,
                 score: 200,
                 x: 2*TILES_PX,
@@ -375,7 +375,7 @@ let LEVELS = [
     // Normal Stage 4
     {id: 13, name: "sandwich",
 
-        clearMessage: "",
+        clearMessage: "you can call anything between two slices of bread a sandwich.",
         wasteLimit: 8,
         maxScore: 1800,
 
@@ -415,9 +415,9 @@ let LEVELS = [
     },
 
     // Normal Stage 5
-    {id: 14, name: "onigiri",
+    {id: 14, name: "rice balls",
 
-        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        clearMessage: "rice from yesterday is the delicious lunch of today.",
         wasteLimit: 8,
         maxScore: 1600,
 
@@ -450,7 +450,7 @@ let LEVELS = [
     // Normal Stage 6
     {id: 15, name: "lobster soup",
 
-        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
+        clearMessage: "seafood expires quickly, cook it sooner rather than later.",
         wasteLimit: 5,
         maxScore: 2100,
 
@@ -501,10 +501,10 @@ let LEVELS = [
         maxScore: 2600,
     
         conveyorBelt: {
-            items:[ BLUEBERRY       , YOGURT    , BLANK       , MILK        , WHEAT        
-                  , BLANK           , BANANA    , BLANK       , BLANK       , MILK       
-                  , BLANK           , WHEAT     , WHEAT       , BLANK       , BLANK       
-                  , BLUEBERRY       , BLANK     , YOGURT      , BLANK       , BANANA
+            items:[ BLUEBERRY       , YOGURT    , BLANK       , MILK        , WHEAT      , BLANK  , WHEAT  
+                  , BLUEBERRY       , BLANK     , BANANA      , BLANK       , MILK       , BLANK  , MILK   
+                  , WHEAT           , BLANK     , WHEAT       , WHEAT       , BLANK      , BLANK   , YOGURT
+                  , BLUEBERRY       , BLANK     , YOGURT      , BLANK       , BANANA     , BLANK  , BANANA
                   , WHEAT
                   ], 
             speed: 1.85
