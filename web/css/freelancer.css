@@ -495,16 +495,43 @@ section.manual {
     background: #38c3d1;
 }
 
-.figure-caption-custom {
+section.manual .section-title {
+    font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 2em;
+    font-weight: 700;
+    display: block;
+    text-transform: uppercase;
+}
+
+section.manual .section-heading {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+
+}
+
+section.manual .figure-caption-custom {
     color: white;
     line-height: 1em;
     margin: 0;
     margin-bottom: 1em;
-    font-size: 1.5em;
+    font-size: 1.25em;
+}
+
+@media (min-width: 768px) {
+    section.manual .section-title {
+        font-size: 4.75em;
+    }
+    section.manual .section-heading {
+        font-size: 2em;
+    }
+    section.manual .figure-caption-custom {
+        font-size: 1.5em;
+    }
 }
 
 .h3-custom {
-    margin-top: 0.3em;
+    margin-top: 0.9em;
     margin-bottom: 0.7em;
 }
 
