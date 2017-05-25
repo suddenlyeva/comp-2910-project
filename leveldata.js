@@ -572,7 +572,7 @@ let LEVELS = [
         finalItems: [TOMATO_SOUP, SALAD]
     
     },
-    
+    /*
     {id: 19, name: "loaf of bread",
     
         clearMessage: "nothing new",
@@ -598,8 +598,8 @@ let LEVELS = [
         finalItems: [SANDWICH]
     
     },
-    
-    {id: 20, name: "apple pie 2",
+    */
+    {id: 19, name: "apple pie 2",
     
         clearMessage: "pie is a lot harder to make from scratch",
         wasteLimit: 4,
