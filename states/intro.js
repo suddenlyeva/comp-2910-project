@@ -116,12 +116,23 @@ function Intro() {
     clickableArea.pointertap = () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
+        PlaySound(eSFXList.StageEnter, false);
         StageSelect.open(); // -> states/mainmenu.js
     }
 
     let foodBurst = makeItemBurst(gearAppleContainer.x + gearAppleContainer.width / 2, gearMove.finalY.val + gearAppleContainer.height / 2);
 
     let background = new PIXI.Sprite(PIXI.utils.TextureCache["images/background-intro.png"]);
+    
+    // Sound controls
+    let musicOnce   = false;
+    let musicStart  = 160;
+    let musicTicker = 0;
+    
+    let dropSFXOnce = false;
+    let gearSFXOnce = false;
+    let burstSFXOnce = false;
+    
 
     // Add to scene
     this.scene = new PIXI.Container();
@@ -151,13 +162,31 @@ function Intro() {
         if(contFoodFactory.alpha < 1) {
             contFoodFactory.alpha += appearSpeed * TICKER.deltaTime;
         } else if(!gearMove.finalY.reached) {
+            
+            if (!dropSFXOnce) {
+                PlaySound(eSFXList.IntoProcessor, false);
+                dropSFXOnce = true;
+            }
+            
             gearAppleContainer.updatePos();
         } else {
+            
+            if (!gearSFXOnce) {
+                PlaySound(eSFXList.Processing, false);
+                gearSFXOnce = true;
+            }
+            
             if(txtZero.alpha < 1) {
                 txtZero.alpha += appearSpeed * TICKER.deltaTime;
             }
             spinningGear.updateSpeed();
             if(gearSpin.max.reached) {
+                
+                if (!burstSFXOnce) {
+                    PlaySound(eSFXList.RecipeComplete, false);
+                    burstSFXOnce = true;
+                }
+                
                 // Then the continue text flashes based on a sin function
                 txtPress.alpha = Math.pow(Math.sin(counter), 4);
                 counter        = (counter + flashFreq * TICKER.deltaTime) % Math.PI;
@@ -171,6 +200,14 @@ function Intro() {
             }
         }
         spinningGear.update();
+        
+        if(!musicOnce) {
+            musicTicker += TICKER.deltaTime;
+            if (musicTicker >= musicStart) {
+                PlaySound(eMusicList.Music,true); // -> sfx.js
+                musicOnce = true;
+            }
+        }
     };
 }
 
@@ -179,8 +216,6 @@ Intro.open = () => {
     if(Intro.instance == null) {
         Intro.instance = new Intro();
     }
-
-    PlaySound(eMusicList.Music,true); // -> sfx.js
 
     SCENE = Intro.instance.scene;
     STATE = Intro.instance.update;
