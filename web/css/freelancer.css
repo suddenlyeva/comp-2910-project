@@ -250,13 +250,20 @@ header.masthead .intro-text .summary {
     }
 
     header.masthead .intro-text .name {
-        font-size: 4.75em;
+        font-size: 3.8em;
     }
 
     header.masthead .intro-text .summary {
         font-size: 1.75em;
     }
 }
+
+@media (min-width: 992px) {
+    header.masthead .intro-text .name {
+        font-size: 4.75em;
+    }
+}
+
 
 .floating-label-form-group {
     position: relative;
@@ -525,7 +532,7 @@ section.manual {
 
 @media (min-width: 768px) {
     .section-title {
-        font-size: 4.75em;
+        font-size: 3.8em;
     }
     #about .section-title {
         font-size: 4em;
@@ -539,9 +546,13 @@ section.manual {
     .figure-caption-custom {
         font-size: 1.5em;
     }
-    .art-body {
-        margin-left: 8%;
-    }
 }
 
-
+@media (min-width: 992px) {
+    header.masthead .intro-text .name {
+        font-size: 4.75em;
+    }
+    section#about .art-body {
+        padding-left: 10%;
+    }
+}
