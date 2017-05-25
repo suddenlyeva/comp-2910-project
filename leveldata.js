@@ -603,12 +603,12 @@ let LEVELS = [
     
         clearMessage: "pie is a lot harder to make from scratch",
         wasteLimit: 4,
-        maxScore: 1800,
+        maxScore: 2400,
     
         conveyorBelt: {
-            items: [APPLE   , APPLE     , BLANK     , WHEAT     , BLANK     , FLOUR , WHEAT   , WATER 
-                  , WATER   , BLANK     , EGGS      , BLANK     , BLANK     , WHEAT , WHEAT   , EGGS   
-                  , BLANK   , BLANK     , APPLE     , BREAD     , EGGS      , BLANK , WHEAT    
+            items: [APPLE   , APPLE     , BLANK     , WHEAT     , BLANK     , FLOUR , WHEAT   , BLANK 
+                  , WATER   , WATER     , BLANK     , EGGS      , BLANK     , BLANK , WHEAT   , WHEAT   , EGGS   
+                  , BLANK   , BLANK     , APPLE     , EGGS      , BLANK     , WHEAT    
                   , WHEAT   , BLANK     , WATER 
                   ], 
             speed: 2
