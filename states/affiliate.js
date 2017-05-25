@@ -78,8 +78,9 @@ function Affiliate() {
     };
 
     // Main menu button
-    let mainMenuButton = makeSimpleButton(200, 50, "main menu", 0xFFFF66, 75);
-    mainMenuButton.position.set((CANVAS_WIDTH /2) - 100, CANVAS_HEIGHT - 100);
+    let mainMenuButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-back.png"]);
+    mainMenuButton.interactive = mainMenuButton.buttonMode = true;
+    mainMenuButton.position.set((CANVAS_WIDTH - mainMenuButton.width) / 2, CANVAS_HEIGHT - mainMenuButton.height - 60);
     mainMenuButton.on("pointertap", () => {
         PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
 
@@ -97,8 +98,8 @@ function Affiliate() {
     //--------------- Text ------------------------------------
 
     // Title page text
-    let gamesTxt = new PIXI.Text("games", textStyleTitle);
-    gamesTxt.position.set(25, 0);
+    let gamesTxt = new PIXI.Text("more games", textStyleTitle);
+    gamesTxt.position.set((CANVAS_WIDTH - gamesTxt.width) / 2, 37);
 
     // Affiliate name texts
     let foodFallTxt    = new PIXI.Text("food fall", textStyleAffiliateName);
@@ -117,10 +118,7 @@ function Affiliate() {
         captainPlanLogo.y + 200);
 
     // Background
-    let background = new PIXI.Graphics();
-    background.beginFill(0x66d2fb);
-    background.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    background.endFill();
+    let background = new PIXI.Sprite(PIXI.utils.TextureCache["images/background-intro.png"]);
 
     // Add to scene
     this.scene = new PIXI.Container();
