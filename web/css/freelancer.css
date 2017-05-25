@@ -80,7 +80,7 @@ hr.star-primary:after {
 }
 
 section {
-    padding: 100px 0;
+    padding: 50px 0;
 }
 
 section h2 {
@@ -89,17 +89,18 @@ section h2 {
 }
 
 section.about {
-    color: white;
-    background: #38c3d1;
+    /*color: white;*/
+    /*background: #38c3d1;*/
 }
 
 section.about .art-body{
-    margin: 0 1em;
+    /*margin: 0 1em;*/
 }
 
 @media (min-width: 768px) {
     section.about .art-body {
-        font-size: 1.75em;
+        /*font-size: 1.75em;*/
+        font-size: 1.4em;
         font-weight: 300;
     }
 }
@@ -479,10 +480,31 @@ fieldset[disabled] .btn-play.focus {
 }
 
 #intro-video {
-    margin: 2em auto;
+    /*margin: 2em auto;*/
+    margin-top: 0.8em;
 }
 
 #username {
     font-size: 1.2em;
     font-weight: bold;
 }
+
+section.manual {
+    text-align: center;
+    color: white;
+    background: #38c3d1;
+}
+
+.figure-caption-custom {
+    color: white;
+    line-height: 1em;
+    margin: 0;
+    margin-bottom: 1em;
+    font-size: 1.5em;
+}
+
+.h3-custom {
+    margin-top: 0.3em;
+    margin-bottom: 0.7em;
+}
+
