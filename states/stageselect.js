@@ -8,7 +8,7 @@ function StageSelect() {
     let deceleration       = 12;  // ... of the movement animation
     let positionEpsilon    = 1;   // for position comparison
     // primary - button in spotlight, secondary - buttons not in spotlight
-    let buttonAlpha        = { primary : 1, secondary : 0.4 };
+    let buttonAlpha        = { primary : 1, secondary : 0.6 };
     let buttonScale        = { primary : 1, secondary : 0.6 };
     // from pointerup to pointerdown: if moved less than the number of units(x and y)
     // specified by tapSensitivity, consider it a tap/click
@@ -63,9 +63,20 @@ function StageSelect() {
         0, 9*TILES_PX
     );
 
-    // initialized in initButtons because they rely on stageButtons.width
-    let bgRatio; // background width to carousel width ratio
-    let bgXmax;  // maximum background x position
+    // set background width and necessary values to calculate background position
+    background.set = () => {
+        background.width   = Math.max(stageButtons.children.length * bgWidthPerButton, CANVAS_WIDTH);
+        // background width to carousel width ratio
+        background.ratio = (background.width - CANVAS_WIDTH) / (stageButtons.width - buttonDisplayWidth);
+        // maximum background x position
+        background.xMax  = CANVAS_WIDTH - background.width;
+        return background;
+    };
+
+    // update background position; don't use before calling background.set()
+    background.update = () => {
+        background.x = Math.max(Math.min(stageButtons.x - refXLeft, 0) * background.ratio, background.xMax);
+    };
 
     stageButtons.position.set(refXLeft - (buttonDisplayWidth * currentButton),
         CANVAS_HEIGHT / 2 - buttonDisplayHeight / 2);
@@ -75,7 +86,7 @@ function StageSelect() {
     // forceReinit - if true, all buttons will be recreated even if they already exist
     // otherwise initialize any additional buttons; if there aren't any new buttons, do nothing
     this.initButtons = (forceReinit = false) => {
-        if(LEVELS.length === stageButtons.children.length) return;
+        if(LEVELS.length === stageButtons.children.length && !forceReinit) return;
         for(let i = forceReinit ? 0 : stageButtons.children.length; i < LEVELS.length; i++) {
             let wrapper  = new PIXI.Container(),
                 button   = new PIXI.Container(),
@@ -249,10 +260,8 @@ function StageSelect() {
             stageButtons.addChild(wrapper);
         }
 
-        // background variables are based on the number of buttons
-        background.width = Math.max(stageButtons.children.length * bgWidthPerButton, CANVAS_WIDTH);
-        bgRatio          = (background.width - CANVAS_WIDTH) / (stageButtons.width - buttonDisplayWidth);
-        bgXmax           = CANVAS_WIDTH - background.width;
+        // set background variables and update it's position
+        background.set().update();
     }
 
     this.initButtons();
@@ -346,7 +355,7 @@ function StageSelect() {
             }
         }
         // move background
-        background.x = Math.max(Math.min(stageButtons.x - refXLeft, 0) * bgRatio, bgXmax);
+        background.update();
     };
 
     let updateCarousel = () => {

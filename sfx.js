@@ -82,9 +82,14 @@ sounds.onProgress = (percentage) => {
     // vv Required vv
 
     // Resize loading screen
-    sceneResize(STRETCH_THRESHOLD);
-    RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
-
+    sceneResize(STRETCH_THRESHOLD); // -> util.js
+    RENDERER.resize(window.innerWidth, window.innerHeight);
+    
+    frameX = (window.innerWidth - CANVAS_WIDTH * SCENE.scale.x)/2;
+    frameY = (window.innerHeight - CANVAS_HEIGHT * SCENE.scale.y)/2;
+    SCENE.x = frameX;
+    SCENE.y = frameY;
+    
     // Draw loading screen
     RENDERER.render(SCENE);
 };

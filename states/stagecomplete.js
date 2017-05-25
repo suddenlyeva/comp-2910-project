@@ -4,8 +4,9 @@
 function StageComplete(data) { // <- states/levels.js
 
     let levelIndex = findIndexById(LEVELS, data.id);
+    if(levelIndex === -1)            throw new Error("StageComplete: level not found"); // should be impossible
+    if(StageSelect.instance == null) throw new Error("StageComplete: stage select not initialized."); // should also be impossible
     let nextLevelIndex = levelIndex + 1;
-    if(StageSelect.instance == null) throw new Error("Stage select not initialized."); // should be impossible
     // add buttons to the carousel if number of levels increased
     // cheap operation if no changes need to be made
     StageSelect.instance.initButtons();
@@ -36,11 +37,6 @@ function StageComplete(data) { // <- states/levels.js
     let homeButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-home.png"]);
     homeButton.position.set(TILES_PX * 2.25, TILES_PX * 6.5);
     homeButton.interactive =  homeButton.buttonMode  = true;
-
-    // continue button
-    let continueButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-next.png"]);
-    continueButton.position.set(TILES_PX * 4.5, TILES_PX * 6.25);
-    continueButton.interactive = continueButton.buttonMode  = true;
 
     // replay button
     let replayButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-replay.png"]);
@@ -120,12 +116,14 @@ function StageComplete(data) { // <- states/levels.js
         replayButton.x + replayButton.width / 2 - replayTxt.width / 2,
         replayButton.y + replayButton.height - replayTxt.height / txtVAlign);
 
+    let background = new PIXI.Sprite(PIXI.utils.TextureCache["images/background-intro.png"]);
+
     // Add to scene
     this.scene = new PIXI.Container();
+    this.scene.addChild(background);
     this.scene.addChild(starContainer);
     this.scene.addChild(messageContainer);
     this.scene.addChild(homeButton);
-    this.scene.addChild(continueButton);
     this.scene.addChild(replayButton);
     this.scene.addChild(gradeTxt);
     this.scene.addChild(scoreTxt);
@@ -133,18 +131,35 @@ function StageComplete(data) { // <- states/levels.js
     this.scene.addChild(homeTxt);
     this.scene.addChild(replayTxt);
 
-    // Continue button moves to next stage
-    continueButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
-        PlaySound(eSFXList.StageEnter, false); // -> sfx.js
-        PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
-        cleanUp();
-        if (nextLevelIndex >= LEVELS.length) {
-            Credits.open(); // -> states/credits.js
-        } else {
-            Level.open(LEVELS[nextLevelIndex]); // -> states/levels.js
-        }
-    });
+    // if this is the last level, display thank you text, otherwise display continue button
+    if(levelIndex === LEVELS.length - 1) {
+        // Define and style text
+        let txtThankYou = new PIXI.Text("thank you for playing!", {
+            fontFamily: FONT_FAMILY, fontSize: 148, fill: 0x00ad5e,
+            dropShadow: true, dropShadowAngle: 7 * Math.PI / 12, dropShadowDistance: 10,
+            stroke: 0xFFFFFF, strokeThickness: 7
+        });
+
+        txtThankYou.position.set(TILES_PX * 4.5, TILES_PX * 6.4);
+
+        this.scene.addChild(txtThankYou);
+    } else {
+        // continue button
+        let continueButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-next.png"]);
+        continueButton.position.set(TILES_PX * 4.5, TILES_PX * 6.25);
+        continueButton.interactive = continueButton.buttonMode = true;
+
+        // Continue button moves to next stage
+        continueButton.on("pointertap", () => {
+            PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+            PlaySound(eSFXList.StageEnter, false);  // -> sfx.js
+            PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
+            cleanUp();
+            Level.open(LEVELS[nextLevelIndex]);     // -> states/levels.js
+        });
+
+        this.scene.addChild(continueButton);
+    }
 
     // Home button takes you to the main menu
     homeButton.on("pointertap", () => {
