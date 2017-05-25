@@ -94,7 +94,7 @@ let LEVELS = [
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 7,
-        maxScore: 600,
+        maxScore: 900,
 
         conveyorBelt: {
             items: [ORANGE_SLICE, BLANK, ORANGE_SLICE, BLANK, BLANK, KIWI_SLICE, ORANGE_SLICE, BLANK, BLANK, BLANK,
@@ -158,7 +158,7 @@ let LEVELS = [
         maxScore: 800,
     
         conveyorBelt: {
-            items: [MILK, BLANK, COFFEE_BEAN, FLOUR, BLANK, MILK, COFFEE_BEAN, BLANK, FLOUR, MILK, MILK],
+            items: [MILK, BLANK, COFFEE_BEAN, FLOUR, BLANK, BLANK, MILK, COFFEE_BEAN, BLANK, FLOUR, MILK, BLANK, MILK],
             speed: 1.5
         },
     
@@ -177,7 +177,7 @@ let LEVELS = [
         maxScore: 900,
     
         conveyorBelt: {
-            items: [BLANK, WATER, FISH_STEAK, BLANK, BLANK, WATER, BLANK, FISH_STEAK, WATER, BLANK, FISH_STEAK],
+            items: [BLANK, WATER, FISH_STEAK, BLANK, BLANK, WATER, BLANK, FISH_STEAK, BLANK, WATER, BLANK, FISH_STEAK],
             speed: 1.5
         },
     
@@ -196,7 +196,7 @@ let LEVELS = [
         maxScore: 1000,
     
         conveyorBelt: {
-            items: [BLANK, ORANGE, ORANGE, BLANK, ORANGE_SLICE, ORANGE, BLANK, BLANK, ORANGE_SLICE, BLANK, ORANGE],
+            items: [BLANK, ORANGE, BLANK, ORANGE, BLANK, BLANK, ORANGE_SLICE, ORANGE, BLANK, BLANK, ORANGE_SLICE, BLANK, ORANGE],
             speed: 1.5
         },
     
@@ -237,7 +237,7 @@ let LEVELS = [
         maxScore: 1200,
     
         conveyorBelt: {
-            items: [CHEESE_SLICE, BLANK, CHEESE_SLICE, BLANK, MEAT_3, BLANK, ASPARAGUS, BLANK, CHEESE_SLICE, BLANK, CHEESE_SLICE, BLANK, BLANK, MEAT_3, ASPARAGUS], 
+            items: [CHEESE_SLICE, BLANK, CHEESE_SLICE, BLANK, MEAT_3, BLANK, ASPARAGUS, BLANK, BLANK, CHEESE_SLICE, BLANK, CHEESE_SLICE, BLANK, BLANK, MEAT_3, ASPARAGUS], 
             speed: 1.5
         },
     
@@ -452,7 +452,7 @@ let LEVELS = [
 
         clearMessage: "yogurt goes well with all kinds of leftover fruit.",
         wasteLimit: 5,
-        maxScore: 1800,
+        maxScore: 2100,
 
         conveyorBelt: {
             items: [WATER, BLANK, LOBSTER, LOBSTER, BLANK, CUCUMBER, LOBSTER, BLANK, WATER, BLANK,
@@ -464,14 +464,14 @@ let LEVELS = [
             {
                 recipe: [LOBSTER],
                 result: LOBSTER_BOILED,
-                score: 100,
+                score: 150,
                 x: 2*TILES_PX,
                 y: 2*TILES_PX
             },
             {
                 recipe: [CUCUMBER],
                 result: CUCUMBER_SLICE,
-                score: 100,
+                score: 150,
                 x: 7*TILES_PX,
                 y: 2*TILES_PX
             },
@@ -494,20 +494,20 @@ let LEVELS = [
         finalItems: [LOBSTER_SOUP]
     },
     
-    {id: 16, name: " oats and fruits ",
+    {id: 16, name: "oats and fruits",
     
         clearMessage: "nothing new",
         wasteLimit: 4,
         maxScore: 2600,
     
         conveyorBelt: {
-            items:[ BLUEBERRY       , YOGURT    , BLANK       , MILK       , WHEAT        
+            items:[ BLUEBERRY       , YOGURT    , BLANK       , MILK        , WHEAT        
                   , BLANK           , BANANA    , BLANK       , BLANK       , MILK       
                   , BLANK           , WHEAT     , WHEAT       , BLANK       , BLANK       
                   , BLUEBERRY       , BLANK     , YOGURT      , BLANK       , BANANA
                   , WHEAT
                   ], 
-            speed: 2
+            speed: 1.85
         },
     
         processors: [
@@ -528,7 +528,7 @@ let LEVELS = [
     
         conveyorBelt: {
             items:[ BLANK       , MILK        , FLOUR    , BLANK        , BLANK     , PEPPER_SLICE  , BLANK , BLANK, SAUSAGE   
-                  , TOMATO      , BLANK       , BLANK    , SALAD_2      , BLANK     , SAUSAGE       , BLANK , MILK       
+                  , TOMATO      , BLANK       , BLANK    , SALAD        , BLANK     , SAUSAGE       , BLANK , MILK       
                   , BLANK       , FLOUR       , BLANK    , BLANK        , TOMATO    , MILK          , BLANK
                   , FLOUR       , BLANK       , BLANK    , PEPPER_SLICE , BLANK     ,SAUSAGE
                   ], 
@@ -537,8 +537,8 @@ let LEVELS = [
     
         processors: [
             { recipe:[MILK, FLOUR],               result: BREAD,    score: 200, x: 2*TILES_PX, y: 2*TILES_PX },
-            { recipe:[TOMATO, PEPPER_SLICE],      result: SALAD_2,   score: 200, x: 8*TILES_PX, y: 2*TILES_PX },
-            { recipe:[SAUSAGE ,BREAD, SALAD_2],   result: PIZZA,         score: 250, x: 6*TILES_PX, y: 5*TILES_PX }
+            { recipe:[TOMATO, PEPPER_SLICE],      result: SALAD,   score: 200, x: 8*TILES_PX, y: 2*TILES_PX },
+            { recipe:[SAUSAGE ,BREAD, SALAD],   result: PIZZA,         score: 250, x: 6*TILES_PX, y: 5*TILES_PX }
             
         ],
         finalItems: [PIZZA]
@@ -552,11 +552,11 @@ let LEVELS = [
         maxScore: 2300,
     
         conveyorBelt: {
-            items:[ BLANK        , BLANK        , TOMATO        , BLANK     , TOMATO     
-                  , BLANK        , SALAD        , BLANK         , TOMATO    , BLANK       
-                  , TOMATO_SLICE , SALAD        , BLANK         , TOMATO    , SALAD 
-                  , BLANK        , BLANK        , TOMATO        , TOMATO    , TOMATO       
-                  , BLANK        , TOMATO       , TOMATO        , BLANK     , SALAD
+            items:[ BLANK        , BLANK        , TOMATO        , BLANK         , TOMATO     
+                  , BLANK        , SALAD        , BLANK         , TOMATO        , BLANK       
+                  , TOMATO_SLICE , SALAD        , BLANK         , TOMATO        , SALAD 
+                  , BLANK        , BLANK        , TOMATO        , TOMATO        , TOMATO       
+                  , BLANK        , TOMATO       , BLANK         , TOMATO        , BLANK     , SALAD
                   ], 
             speed: 1.75
         },
@@ -572,26 +572,26 @@ let LEVELS = [
     
     },
     
-    {id: 19, name: " loaf of bread",
+    {id: 19, name: "loaf of bread",
     
         clearMessage: "nothing new",
         wasteLimit: 4,
         maxScore: 1600,
     
         conveyorBelt: {
-            items:[ BLANK       , BREAD         , BREAD_2           , BLANK   , BLANK     
-                  , BREAD_2     , BLANK         , CHEESE_SLICE      , BLANK   , BLANK       
-                  , CHEESE_SLICE, BLANK         , BREAD_2           , BLANK   , CHEESE_SLICE 
-                  , BLANK       , BLANK         , MEAT_2            , BREAD_2 , BLANK       
-                  , BLANK       , CHEESE_SLICE  , MEAT_2            , BLANK   , BREAD
+            items:[ BLANK       , BREAD         , BLANK             , BREAD_2           , BLANK         , BLANK     
+                  , BREAD_2     , BLANK         , CHEESE_SLICE      , BLANK             , BLANK       
+                  , CHEESE_SLICE, BLANK         , BREAD_2           , BLANK             , CHEESE_SLICE 
+                  , BLANK       , BLANK         , MEAT_2            , BREAD_2           , BLANK       
+                  , BLANK       , CHEESE_SLICE  , BLANK             , BLANK             , MEAT_2        , BLANK     , BREAD
                   ], 
-            speed: 2
+            speed: 1.85
         },
     
         processors: [
             { recipe:[BREAD_2],             result: BREAD,      score: 100, x: 1*TILES_PX, y: 2*TILES_PX },
             { recipe:[BREAD_2],             result: BREAD,      score: 100, x: 1*TILES_PX, y: 5*TILES_PX },
-            { recipe:[BREAD, CHEESE_SLICE],       result: SANDWICH,   score: 200, x: 5*TILES_PX, y: 2*TILES_PX }, 
+            { recipe:[BREAD, CHEESE_SLICE], result: SANDWICH,   score: 200, x: 5*TILES_PX, y: 2*TILES_PX }, 
             { recipe:[BREAD, MEAT_2],       result: SANDWICH,   score: 200, x: 5*TILES_PX, y: 5*TILES_PX }
         ],
         finalItems: [SANDWICH]
@@ -605,10 +605,11 @@ let LEVELS = [
         maxScore: 1800,
     
         conveyorBelt: {
-            items: [BLANK, FLOUR, APPLE, BLANK, FLOUR     
-                  , APPLE, EGGS, BLANK, BLANK, WHEAT      
-                  , BLANK, APPLE, BREAD,EGGS, BLANK, WHEAT    
-                  , FLOUR   ], 
+            items: [BLANK   , FLOUR     , BLANK     , APPLE     , BLANK     , FLOUR     
+                  , APPLE   , BLANK     , EGGS      , BLANK     , BLANK     , WHEAT      
+                  , BLANK   , BLANK     , APPLE     , BREAD     , EGGS      , BLANK     
+                  , WHEAT   , BLANK     , FLOUR   
+                  ], 
             speed: 2
         },
     
