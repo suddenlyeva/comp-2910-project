@@ -184,6 +184,26 @@ function makeItem(type, level) { // <- states/levels.js
         item.texture = ITEM_TEXTURES[SPLAT];
         item.interactive = false;
         PlaySound(eSFXList.Splat, false); // -> sfx.js
+        
+        if (level.conveyorBelt.collidesWithPoint(item.x, item.y)) {         // -> elements/conveyorbelt.js
+            let fadeTicker = new PIXI.ticker.Ticker();
+            let alphaTimeOut = 30; // half a second
+
+            fadeTicker.add( (delta) => {
+                // Fade Out
+                alphaTimeOut     -= delta;
+                if (alphaTimeOut <= 0) {
+                    item.alpha   -= 0.02 * delta;
+                }
+
+                // Kill after faded out.
+                 if (item.alpha <= 0.02) {
+                     item      .destroy();
+                     fadeTicker.destroy();
+                 }
+            });
+            fadeTicker.start();
+        }
     };
 
     // Item fades into the air

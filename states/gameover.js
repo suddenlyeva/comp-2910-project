@@ -105,6 +105,7 @@ function GameOver() {
 GameOver.open = () => {
     PlaySound(eSFXList.GameOver, false);
     StopSound(eMusicList.Music, true);
+    StopSound(eSFXList.ClockTicking, true);
     if(GameOver.instance == null) {
         GameOver.instance = new GameOver();
     }

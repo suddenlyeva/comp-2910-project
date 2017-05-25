@@ -475,7 +475,7 @@ function StageSelect() {
     };
 
     // Options
-    let optionsButton = new PIXI.Sprite(PIXI.utils.TextureCache["menu-options.png"]);
+    let optionsButton = new PIXI.Sprite(PIXI.loader.resources["images/spritesheet.json"].textures["menu-options.png"]);
     optionsButton.position.set(CANVAS_WIDTH - TILES_PX * 1.5, CANVAS_HEIGHT - TILES_PX * 1.5);
     optionsButton.scale.set(2/3);
     optionsButton.interactive = optionsButton.buttonMode = true;
