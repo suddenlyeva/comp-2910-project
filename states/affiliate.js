@@ -7,7 +7,7 @@ function Affiliate() {
 
     let foodFallUrl    = "http://foodfall.ca/";
     let captainPlanUrl = "http://ec2-34-223-205-71.us-west-2.compute.amazonaws.com/Captain-Plan-It/index.php";
-    let raceToZeroUrl  = "http://racetozero.byethost12.com/";
+    let raceToZeroUrl  = "http://racetozero.byethost12.com/index.php";
 
     //-------- Text Style -------------------------
 
