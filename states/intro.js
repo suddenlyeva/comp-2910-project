@@ -48,7 +48,7 @@ function Intro() {
     // note no padding between lines - because font has spacing already
 
     // FOOD FACTORY
-    contFoodFactory.position.set(TILES_PX * 4, 0);
+    contFoodFactory.position.set(CANVAS_WIDTH / 2 - contFoodFactory.width / 2, 0);
     // ZERO
     txtZero.position.set(CANVAS_WIDTH / 2 - txtZero.width / 2, contFoodFactory.y + contFoodFactory.height);
     // press anywhere to continue...
