@@ -616,7 +616,7 @@ let LEVELS = [
     
         processors: [
             { recipe:[APPLE],                       result: APPLE_SLICE,    score: 100, x: 2*TILES_PX, y: 2*TILES_PX },
-            { recipe:[WHEAT, WHEAT, WHEAT],         result: FLOUR,          score: 100, x: 2*TILES_PX, y: 5*TILES_PX },
+            { recipe:[WHEAT, WHEAT, WHEAT],         result: FLOUR,          score: 300, x: 2*TILES_PX, y: 5*TILES_PX },
             { recipe:[FLOUR, EGGS, WATER],          result: PIE,            score: 300, x: 8*TILES_PX, y: 2*TILES_PX }, 
             { recipe:[APPLE_SLICE, PIE],            result: APPLE_PIE,      score: 200, x: 9*TILES_PX, y: 5*TILES_PX }
         ],
