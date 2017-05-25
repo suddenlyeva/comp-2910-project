@@ -80,7 +80,7 @@ hr.star-primary:after {
 }
 
 section {
-    padding: 100px 0;
+    padding: 50px 0;
 }
 
 section h2 {
@@ -89,17 +89,18 @@ section h2 {
 }
 
 section.about {
-    color: white;
-    background: #38c3d1;
+    /*color: white;*/
+    /*background: #38c3d1;*/
 }
 
 section.about .art-body{
-    margin: 0 1em;
+    /*margin: 0 1em;*/
 }
 
 @media (min-width: 768px) {
     section.about .art-body {
-        font-size: 1.75em;
+        /*font-size: 1.75em;*/
+        font-size: 1.4em;
         font-weight: 300;
     }
 }
@@ -249,13 +250,20 @@ header.masthead .intro-text .summary {
     }
 
     header.masthead .intro-text .name {
-        font-size: 4.75em;
+        font-size: 3.8em;
     }
 
     header.masthead .intro-text .summary {
         font-size: 1.75em;
     }
 }
+
+@media (min-width: 992px) {
+    header.masthead .intro-text .name {
+        font-size: 4.75em;
+    }
+}
+
 
 .floating-label-form-group {
     position: relative;
@@ -479,10 +487,72 @@ fieldset[disabled] .btn-play.focus {
 }
 
 #intro-video {
-    margin: 2em auto;
+    /*margin: 2em auto;*/
+    margin-top: 0.8em;
 }
 
 #username {
     font-size: 1.2em;
     font-weight: bold;
+}
+
+section.manual {
+    text-align: center;
+    color: white;
+    background: #38c3d1;
+}
+
+.section-title {
+    font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 2.5em;
+    font-weight: 700;
+    display: block;
+    text-transform: uppercase;
+}
+
+.section-heading {
+    font-size: 1.75em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.section-heading-sm {
+    font-size: 1.25em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.figure-caption-custom {
+    color: white;
+    line-height: 1em;
+    margin: 0;
+    margin-bottom: 1em;
+    font-size: 1.25em;
+}
+
+@media (min-width: 768px) {
+    .section-title {
+        font-size: 3.8em;
+    }
+    #about .section-title {
+        font-size: 4em;
+    }
+    .section-heading {
+        font-size: 2em;
+    }
+    .section-heading-sm {
+        font-size: 1.5em;
+    }
+    .figure-caption-custom {
+        font-size: 1.5em;
+    }
+}
+
+@media (min-width: 992px) {
+    header.masthead .intro-text .name {
+        font-size: 4.75em;
+    }
+    section#about .art-body {
+        padding-left: 10%;
+    }
 }

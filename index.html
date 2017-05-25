@@ -103,6 +103,9 @@
                     <a class="nav-link" href="#play">Play</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#manual">Manual</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#about">About</a>
                 </li>
                 <!--    <li class="nav-item">
@@ -128,10 +131,9 @@
 <!-- Play Grid Section -->
 <section id="play">
     <div class="container">
-        <h2 class="text-center">Play our game!</h2>
+        <div class="text-center section-title">Play our game!</div>
         <hr class="star-primary">
 
-        <!--<div id="loading"></div>-->
         <div id="loadArea" class="hidden">
             <div id="main">
                 <div id="signedInUI" class="hidden">
@@ -147,7 +149,8 @@
                     <button type="button" class="btn btn-play btn-lg btn-customlg btn-block mx-auto" id="runWithoutId">
                         Play without sign in
                     </button>
-                    <h5 class="text-center">or sign in to save progress:</h5>
+                    <!--<h5 class="text-center">or sign in to save progress:</h5>-->
+                    <div class="text-center section-heading-sm">or sign in to save progress:</div>
                     <div id="authMethods"></div>
                 </div>
             </div>
@@ -157,20 +160,76 @@
     </div>
 </section>
 
+<!-- Manual Section -->
+<section class="manual" id="manual">
+    <div class="container">
+        <!--<h2 class="text-center">How to play</h2>-->
+        <div class="intro-text">
+            <span class="section-title">How to play</span>
+            <hr class="star-light">
+        </div>
+        <div class="section-heading">Drag and drop ingredients to food processor!</div>
+        <div class="row">
+        <div class="col-md-6">
+            <figure class="figure">
+                <img src="./web/images/dragdrop-1.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                <figcaption class="figure-caption figure-caption-custom">Move ingredients to processors</figcaption>
+            </figure>
+        </div>
+        <div class="col-md-6">
+            <figure class="figure">
+                <img src="./web/images/dragdrop-2.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                <figcaption class="figure-caption figure-caption-custom">Processors produce foods after a few seconds!</figcaption>
+            </figure>
+        </div>
+        </div>
+        <div class="section-heading">Organize ingredients to avoid WASTE!</div>
+        <div class="row">
+            <div class="col-md-6">
+                <figure class="figure">
+                    <img src="./web/images/organize-1.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                    <figcaption class="figure-caption figure-caption-custom">Foods are wasted at the end of conveyor</figcaption>
+                </figure>
+            </div>
+            <div class="col-md-6">
+                <figure class="figure">
+                    <img src="./web/images/organize-2.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                    <figcaption class="figure-caption figure-caption-custom">Move them back to save!</figcaption>
+                </figure>
+            </div>
+        </div>
+        <div class="section-heading">Use intermediate outputs!</div>
+        <div class="row">
+            <div class="col-md-6">
+                <figure class="figure">
+                    <img src="./web/images/intermediate-1.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                    <figcaption class="figure-caption figure-caption-custom">Some foods remain on processors after produced</figcaption>
+                </figure>
+            </div>
+            <div class="col-md-6">
+                <figure class="figure">
+                    <img src="./web/images/intermediate-2.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                    <figcaption class="figure-caption figure-caption-custom">Use them as ingredients again!</figcaption>
+                </figure>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- About Section -->
 <section class="about" id="about">
     <div class="container">
-        <h2 class="text-center">About</h2>
-        <hr class="star-light">
-        <div class="row">
-            <p class="art-body">
+        <div class="text-center section-title">About</div>
+        <hr class="star-primary">
+        <div class="row mx-auto">
+            <p class="art-body col-lg-6">
                 Food Factory Zero is a fun and interactive drag-and-drop puzzle game made by BCIT students!
                 Players follow recipes to make food items while producing as little food waste as possible.
                 Along the way, they will learn small tips and tricks for using and storing leftover food.
                 Let's aim for a world with Zero Food Waste!
             </p>
-            <div id="intro-video" class="col-md-8 col-md-offset-2">
-                <div class="embed-responsive embed-responsive-4by3">
+            <div id="intro-video" class="col-lg-5">
+                <div class="embed-responsive embed-responsive-16by9">
                     <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/oa9z1iP0_xQ"></iframe>
                 </div>
             </div>
