@@ -91,8 +91,13 @@ function showLoadingProgress(loader, resource) {
 
     // Resize loading screen
     sceneResize(STRETCH_THRESHOLD); // -> util.js
-    RENDERER.resize(CANVAS_WIDTH * SCENE.scale.x, CANVAS_HEIGHT * SCENE.scale.y);
-
+    RENDERER.resize(window.innerWidth, window.innerHeight);
+    
+    frameX = (window.innerWidth - CANVAS_WIDTH * SCENE.scale.x)/2;
+    frameY = (window.innerHeight - CANVAS_HEIGHT * SCENE.scale.y)/2;
+    SCENE.x = frameX;
+    SCENE.y = frameY;
+    
     // Draw loading screen
     RENDERER.render(SCENE);
 }
