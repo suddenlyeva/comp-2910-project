@@ -59,7 +59,7 @@ let LEVELS = [
     //Stage 2
     {id: 2, name: "fruit slices",
 
-        clearMessage: "store extra fruit slices with a container in your fridge for lasting yumminess",
+        clearMessage: "store extra fruit slices inside a container in your fridge for lasting yumminess.",
         wasteLimit: 5,
         maxScore: 6000,
 
@@ -191,7 +191,7 @@ let LEVELS = [
     
     {id: 7, name: "orange juice",
     
-        clearMessage: "there are never too many oranges for orange juice.",
+        clearMessage: "you can never have too many oranges for orange juice.",
         wasteLimit: 4,
         maxScore: 10000,
     
@@ -232,7 +232,7 @@ let LEVELS = [
     
     {id: 9, name: "steak",
     
-        clearMessage: "old vegetables will still look tasty next to a juicy steak.",
+        clearMessage: "old vegetables still look tasty next to a juicy steak.",
         wasteLimit: 5,
         maxScore: 12000,
     
@@ -292,7 +292,7 @@ let LEVELS = [
     // Normal - Stage 2
     {id: 11, name: "octopus salad",
 
-        clearMessage: "soak wilted lettuce in ice water to turn it crisp again.",
+        clearMessage: "you can soak wilted lettuce in ice water to crisp it up again.",
         wasteLimit: 6,
         maxScore: 18000,
 
