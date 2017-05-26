@@ -208,6 +208,9 @@ function StageSelect() {
                             // no need to do id lookup because buttons should always be in the same order as in LEVELS
                             Level.open(LEVELS[currentButton]); // -> states/levels.js
                         }
+                        else {
+                            PlaySound(eSFXList.Error, false); // -> sfx.js
+                        }
 
                     } else {
                         setManually = true;
