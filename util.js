@@ -333,9 +333,9 @@ function calculateGrade(data) {
     // should this be a global ? ...
     let gradeLists = {
         perfect   : {percentage: 100,  text: "perfect!"    ,  nStars: 5},
-        excellent : {percentage:  80,  text: "excellent!"  ,  nStars: 4},
-        great     : {percentage:  60,  text: "great!"      ,  nStars: 3},
-        nice      : {percentage:  40,  text: "nice!"       ,  nStars: 2},
+        excellent : {percentage:  75,  text: "excellent!"  ,  nStars: 4},
+        great     : {percentage:  50,  text: "great!"      ,  nStars: 3},
+        nice      : {percentage:  25,  text: "nice!"       ,  nStars: 2},
         good      : {percentage:   0,  text: "good enough!",  nStars: 1}
     };
 
