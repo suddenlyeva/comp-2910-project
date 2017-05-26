@@ -125,14 +125,14 @@ let LEVELS = [
         maxScore: 10500,
 
         conveyorBelt: {
-            items: [APPLE_SLICE, BLANK, APPLE_SLICE, KIWI, BLANK, APPLE_SLICE, BLANK, KIWI, FLOUR, BLANK,
-                    KIWI, BLANK, FLOUR, BLANK, BLANK, FLOUR],
+            items: [APPLE_SLICE, BLANK, APPLE_SLICE, KIWI, BLANK, APPLE_SLICE, BLANK, KIWI, PIE, BLANK,
+                    KIWI, BLANK, PIE, BLANK, BLANK, PIE],
             speed: 1.25
         },
 
         processors: [
             {
-                recipe: [APPLE_SLICE, FLOUR],
+                recipe: [APPLE_SLICE, PIE],
                 result: APPLE_PIE,
                 score: 2000,
                 x: 3*TILES_PX,
