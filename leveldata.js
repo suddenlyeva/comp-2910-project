@@ -216,15 +216,15 @@ let LEVELS = [
         maxScore: 13000,
     
         conveyorBelt: {
-            items: [FLOUR, BLANK, CHEESE, BLANK, CHEESE_SLICE, BLANK, STRAWBERRY, BLANK, BREAD, 
+            items: [FLOUR, BLANK, CHEESE, BLANK, CHEESE_SLICE, BLANK, STRAWBERRY, BLANK, BREAD_2, 
                     FLOUR, BLANK, BLANK, STRAWBERRY, CHEESE, BLANK, BLANK, STRAWBERRY],
             speed: 1.5
         },
     
         processors: [
-            { recipe:[FLOUR], result: BREAD, score: 1000, x: 3*TILES_PX, y: 2*TILES_PX },
+            { recipe:[FLOUR], result: BREAD_2, score: 1000, x: 3*TILES_PX, y: 2*TILES_PX },
             { recipe:[CHEESE], result: CHEESE_SLICE, score: 1000, x: 10*TILES_PX, y: 2*TILES_PX },
-            { recipe:[BREAD, CHEESE_SLICE, STRAWBERRY], result: CAKE, score: 3000, x: 3*TILES_PX, y: 5*TILES_PX },
+            { recipe:[BREAD_2, CHEESE_SLICE, STRAWBERRY], result: CAKE, score: 3000, x: 3*TILES_PX, y: 5*TILES_PX },
         ],
         finalItems: [CAKE]
     
