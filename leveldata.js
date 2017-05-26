@@ -253,7 +253,7 @@ let LEVELS = [
     // Normal - Stage 1
     {id: 10, name: "fruit yogurt 2",
 
-        clearMessage: "now with more preparation involved.",
+        clearMessage: "ingredients still taste best while they are fresh.",
         wasteLimit: 5,
         maxScore: 21000,
 
