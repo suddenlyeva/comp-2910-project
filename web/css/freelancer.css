@@ -556,3 +556,16 @@ section.manual {
         padding-left: 10%;
     }
 }
+
+#teamlist {
+    font-size: 1.25em;
+    line-height: 1.25em;
+    list-style: none;
+    text-align: left;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+#teamname {
+    text-transform: lowercase;
+}
