@@ -48,7 +48,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
             }
             // Otherwise just remove from stage entirely.
             else {
-                level.scene.removeChild(this.items[0]);
+                this.items[0].destroy();
                 this.items.shift();
             }
 
@@ -56,7 +56,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
             this.deltaX -= TILES_PX;
 
             // Add a blank to the end
-            this.addItemAtIndex(makeItem(BLANK, level), this.lastIndex);
+            this.addItemAtIndex(makeItem(BLANK, level), this.lastIndex); // -> elements/ingredients.js
         }
     }
 
@@ -65,7 +65,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
 
         // Remove previous blank
         if(this.items[index] != null && this.items[index].type == BLANK) {
-            level.scene.removeChild(this.items[index]);
+            this.items[index].destroy();
         }
 
         // Position
@@ -99,7 +99,7 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
 
     // Point Collision
     this.collidesWithPoint = (x,y) => {
-        return (0 <= x && x <= CANVAS_WIDTH - TILES_PX) && (CANVAS_HEIGHT - TILES_PX <= y && y <= CANVAS_HEIGHT);
+        return (-TILES_PX <= x && x <= CANVAS_WIDTH - TILES_PX) && (CANVAS_HEIGHT - TILES_PX <= y && y <= CANVAS_HEIGHT);
     }
 
     // Finish Constructor
@@ -119,9 +119,9 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
         beltTile.x -= TILES_PX * i;
         this.belt.addChild(beltTile);
     }
-    
-    
-                
+
+
+
     if(!PPAP_UNLOCKED) {
         // PPAP
         let pen = new PIXI.Sprite(ITEM_TEXTURES[PEN]);
@@ -131,15 +131,15 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
         pen.x = CANVAS_WIDTH - 0.5 * TILES_PX;;
         pen.y = CANVAS_HEIGHT - 60;
         level.scene.addChild(pen);
-        
-            
+
+
         pen.onDragStart = (event) => {
             PlaySound(eSFXList.ItemPickUp, false);
             pen.data = event.data;
             pen.alpha = 0.5;
             pen.dragging = true;
         };
-        
+
         pen.onDragMove = () => {
             if(pen.dragging) {
                 // Track x and y
@@ -148,39 +148,40 @@ function ConveyorBelt(itemTypes, speed, level) { // <- elements/ingredient.js, s
                 pen.y = newPosition.y;
             }
         };
-        
+
         pen.onDragEnd = () => {
 
             if(pen.dragging) {
                 if (pen.x < TILES_PX && pen.y < TILES_PX) {
                     PlaySound(eSFXList.IntoProcessor, false);
-                    level.scene.removeChild(pen);
+                    pen.destroy();
                     LEVELS.push(PPAP);
                     LEVEL_PROGRESS.push({
-                        unlocked: true,
-                        highscore: 0
+                        id        : PPAP.id,
+                        unlocked  : true,
+                        highscore : 0
                     });
                     PPAP_UNLOCKED = true;
                 }
-                
+
                 PlaySound(eSFXList.ItemDropped, false);
             }
-        
+
             // Reset visuals and flag
-            pen.alpha = 1;
+            pen.alpha    = 1;
             pen.dragging = false;
-            pen.data = null;
-            
+            pen.data     = null;
+
         };
-        
+
         // Declare event handlers
         pen.on('pointerdown', pen.onDragStart)
             .on('pointerup', pen.onDragEnd)
             .on('pointerupoutside', pen.onDragEnd)
             .on('pointermove', pen.onDragMove);
-    
+
     }
-    
+
     // Trash Pit
     let trashPit = new PIXI.Sprite(
             PIXI.loader.resources["images/spritesheet.json"].textures["trash-pit.png"]

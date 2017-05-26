@@ -81,51 +81,59 @@ function makeProgressBar(width, height, padding, bgColor, fgColor) {
 }
 
 // Builds a Volume Slider
-function makeSlider(width, height, sliderThickness = height / 6, handleWidth = height / 2) {
+function makeSlider(initValue, width, colorSound, sliderThickness = 20) {
 
     // Create Container
     let sliderObj = new PIXI.Container();
 
     // Define Colors
-    let colorSound = 0x77f441,
-        colorMuted = 0xff1a1a,
+    let colorMuted = 0xff3a3a,
         colorDrag  = 0xd7f442;
 
-    // Using handleWidth because handle.width is for some reason inaccurate
-    let endOfSlider = width - handleWidth;
-
     // Style and Draw Handle
+    /*
     let handle = new PIXI.Graphics();
     handle.lineStyle(4, 0x0, 1);
     handle.beginFill(0xFFFFFF);
     handle.drawRect(0, 0, handleWidth, height);
     handle.endFill();
-    handle.x = endOfSlider;
-    handle.tint = colorSound;
+    */
+    let handle = new PIXI.Sprite(
+            PIXI.loader.resources["images/spritesheet.json"].textures["slider-handle.png"]
+    );
     handle.interactive = handle.buttonMode = true;
+        
+    let endOfSlider = width - handle.width;
 
     // Style and draw Slider
     let slider = new PIXI.Graphics();
     slider.beginFill(0x0);
     slider.drawRect(0, 0, width, sliderThickness);
     slider.endFill();
-    slider.y = height / 2 - slider.height / 2;
+    slider.y = handle.height / 2 - slider.height / 2;
 
     // Clicking on the slider brings handle position to that point
     let clickableArea = new PIXI.Graphics();
     clickableArea.beginFill(0, 0);
-    clickableArea.drawRect(0, 0, width, height)
+    clickableArea.drawRect(0, 0, width, handle.height)
     clickableArea.endFill();
     clickableArea.interactive = clickableArea.buttonMode = true;
 
+    // Sets the slider to a given value.
+    sliderObj.setValue = (newValue) => {
+        if(newValue >= 0 && newValue <= 1) {
+            sliderObj.value = newValue;
+            handle.x = slider.x + (endOfSlider - slider.x) * newValue;
+        }
+    };
+    
+    sliderObj.setValue(initValue);
+
     // Functions
-
-    sliderObj.value = 1.0;
-
 
     // Records cursor position inside handle.dragData
     handle.pointerdown = (eventData) => {
-        PlaySound(eSFXList.ButtonClick, false);
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
         handle.dragData = eventData.data.getLocalPosition(handle.parent);
         handle.ptrId = eventData.data.identifier;
         handle.tint = colorDrag;
@@ -136,7 +144,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
     handle.pointerup = handle.pointerupoutside =
         clickableArea.pointerup = clickableArea.pointerupoutside =
         (eventData) => {
-            PlaySound(eSFXList.ButtonClick, false);
+            PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
             sliderObj.cleanUp();
         };
 
@@ -164,9 +172,9 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
                 handle.dragData = newPos;
             }
 
+            // Adjust value based on new positions and request callback
             sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
-
-            sliderObj.onSliderAdjust();
+            sliderObj.onSliderAdjust(sliderObj.value);
         }
     };
 
@@ -185,8 +193,7 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         }
 
         sliderObj.value = (handle.x-slider.x) / (endOfSlider - slider.x);
-
-        sliderObj.onSliderAdjust();
+        sliderObj.onSliderAdjust(sliderObj.value);
     };
 
     // clears handle data
@@ -195,12 +202,14 @@ function makeSlider(width, height, sliderThickness = height / 6, handleWidth = h
         handle.tint = handle.x === slider.x ? colorMuted : colorSound; // IF the handle is on the left edge of slider
     };
 
+    // Function callback for moving the slider bar.
     sliderObj.onSliderAdjust = () => {};
-
+    
     // Add to container
     sliderObj.addChild(slider);
     sliderObj.addChild(clickableArea);
     sliderObj.addChild(handle);
+    sliderObj.cleanUp();
 
     // Return to caller
     return sliderObj;
@@ -213,14 +222,14 @@ function sceneResize(stretchThreshold = 0) {
     let targetAspectRatio  = CANVAS_WIDTH / CANVAS_HEIGHT,
         currentAspectRatio = window.innerWidth / window.innerHeight;
 
-    if(targetAspectRatio < currentAspectRatio) {                         // Preserve Vertical ratio
-        SCENE.scale.y = window.innerHeight / CANVAS_HEIGHT;
-        SCENE.scale.x = Math.min(SCENE.scale.y * (1 + stretchThreshold), // Use aspect ratio if past Stretch Threshold
-            window.innerWidth / CANVAS_WIDTH);                           // Else stretch the screen
+    if(targetAspectRatio < currentAspectRatio) {                         // Wider screen than normal
+        SCENE.scale.y = window.innerHeight / CANVAS_HEIGHT;              // Always stretch height
+        SCENE.scale.x = Math.min(SCENE.scale.y * (1 + stretchThreshold), // Use height ratio if past Stretch Threshold
+            window.innerWidth / CANVAS_WIDTH);                           // Else stretch the width
 
-    } else {                                                             // Preserve Horizontal Ratio
+    } else {                                                             // Taller Screen than normal
         SCENE.scale.x = window.innerWidth / CANVAS_WIDTH;
-        SCENE.scale.y = Math.min(SCENE.scale.x * (1 + stretchThreshold), // Similar Formula as Vertical
+        SCENE.scale.y = Math.min(SCENE.scale.x * (1 + stretchThreshold), // Same as vertical, but inverted x and y
             window.innerHeight / CANVAS_HEIGHT);
     }
 }
@@ -232,27 +241,27 @@ function letterbox(frameX, frameY) {
     frameY /= SCENE.scale.y;
     frameW = window.innerWidth/SCENE.scale.x * (1 + STRETCH_THRESHOLD);
     frameH = window.innerHeight/SCENE.scale.y * (1 + STRETCH_THRESHOLD);
-    
+
     LEFT_MASK.width = frameX;
     LEFT_MASK.height = frameH;
     LEFT_MASK.x = -frameX;
     SCENE.addChild(LEFT_MASK);
-    
+
     RIGHT_MASK.width = frameX;
     RIGHT_MASK.height = frameH;
     RIGHT_MASK.x = CANVAS_WIDTH;
     SCENE.addChild(RIGHT_MASK);
-    
+
     TOP_MASK.height = frameY;
     TOP_MASK.width = frameW
     TOP_MASK.y = -frameY;
     SCENE.addChild(TOP_MASK);
-    
+
     BOT_MASK.height = frameY;
     BOT_MASK.width = frameW;
     BOT_MASK.y = CANVAS_HEIGHT;
     SCENE.addChild(BOT_MASK);
-    
+
 }
 
 // Make a spinning gear
@@ -265,10 +274,19 @@ function makeGear(size, speed) {
 
     // Save textures
     let frames = [];
-    for (let i = 0; i < frameCount; i++) {
-        frames.push(
-            PIXI.loader.resources["images/spritesheet.json"].textures["gear-" + size + "-" + i + ".png"]
-        );
+    if (size == "xl") {
+        for (let i = 0; i < frameCount; i++) {
+            frames.push(
+                PIXI.loader.resources["images/gears-xl.json"].textures["gear-xl-" + i + ".png"]
+            );
+        }
+    }
+    else {
+        for (let i = 0; i < frameCount; i++) {
+            frames.push(
+                PIXI.loader.resources["images/spritesheet.json"].textures["gear-" + size + "-" + i + ".png"]
+            );
+        }
     }
 
     // Make gear
@@ -278,6 +296,7 @@ function makeGear(size, speed) {
     gear.ticker = 0;
     gear.currentFrame = 0;
     gear.isNextFrame = false;
+    gear.speed = speed;
 
     // Functions
 
@@ -285,7 +304,7 @@ function makeGear(size, speed) {
     gear.update = () => {
 
         // Tick up
-        gear.ticker += speed * TICKER.deltaTime;
+        gear.ticker += gear.speed * TICKER.deltaTime;
 
         // Increment frames, iterate if very fast
         while (gear.ticker >= timeOut) {
@@ -309,6 +328,60 @@ function makeGear(size, speed) {
     return gear;
 }
 
+// takes level data and returns earned grade
+function calculateGrade(data) {
+    // should this be a global ? ...
+    let gradeLists = {
+        perfect   : {percentage: 100,  text: "perfect!"    ,  nStars: 5},
+        excellent : {percentage:  75,  text: "excellent!"  ,  nStars: 4},
+        great     : {percentage:  50,  text: "great!"      ,  nStars: 3},
+        nice      : {percentage:  25,  text: "nice!"       ,  nStars: 2},
+        good      : {percentage:   0,  text: "good enough!",  nStars: 1}
+    };
+
+    let result;
+
+    let gradeRate = (data.score / data.maxScore) * 100;
+
+    // Assign grade
+    if (gradeRate >= gradeLists.perfect.percentage) {
+        result = gradeLists.perfect;
+    } else if (gradeRate >= gradeLists.excellent.percentage) {
+        result = gradeLists.excellent;
+    } else if (gradeRate >= gradeLists.great.percentage) {
+        result = gradeLists.great;
+    } else if (gradeRate >= gradeLists.nice.percentage) {
+        result = gradeLists.nice;
+    } else if (gradeRate >= gradeLists.good.percentage) {
+        result = gradeLists.good;
+    }
+
+    return result;
+}
+
+// returns displayable level name in correct format e.g. "level 1 : something"
+// takes level id and name. Can also take level index if it's known at the time
+function levelDisplayName(id, name, index = null) {
+    if(id === PPAP.id)
+        return "secret stage : " + name;
+    if(index === null)
+        index = findIndexById(LEVELS, id);
+    // count levels from 1 so (index + 1)
+    return "stage " + (index + 1) + " : " + name;
+}
+
+// returns an array conataining types to be made into the level preview.
+// get with the level id number.
+function getPreviewFromId(id, index = null) {
+   
+    if (index === null) {
+        index = findIndexById(LEVELS, id);
+    }
+    return LEVELS[index].conveyorBelt.items.filter((v, i, a) => 
+        (v !== BLANK) && (a.indexOf(v) === i)
+    );
+}
+
 // arr - array of object with property 'id'; id - object id whose index we want to find
 // returns -1 if index not found
 function findIndexById(arr, id) {
@@ -320,10 +393,6 @@ function findIndexById(arr, id) {
     return -1;
 }
 
-function OpenLevelById(id) {
-    Level.open(LEVELS[findIndexById(LEVELS, id)]); // -> states/levels.js
-}
-
 // Adds zeros to the beginning of a number as string
 function padZeroForInt(intToPad, digits) {
     let paddedNum = "" + intToPad;
@@ -331,6 +400,123 @@ function padZeroForInt(intToPad, digits) {
         paddedNum = "0" + paddedNum;
     }
     return paddedNum;
+}
+
+// Adds projectile properties to a sprite
+/*
+data = {
+    speed: The speed that the object will move,
+    angle: The direction in radians the object will move - 0 is directly right,
+    acceleration: The amount the object's speed will change each frame, +/- a small decimal
+    limitSpeed: The point at which the object will stop accelerating.
+}
+*/
+function addProjectileProperties(object, data) {
+    
+    // Store parameter data inside the object
+    object.speed = data.speed;
+    object.angle = data.angle;
+    object.acceleration = data.acceleration;
+    object.limitSpeed = data.limitSpeed;
+    object.reflect = data.reflect;
+    
+    // Calculate initial X/Y speeds
+    object.deltaX = Math.cos(object.angle) * object.speed * TICKER.deltaTime;
+    object.deltaY = Math.sin(object.angle) * object.speed * TICKER.deltaTime;
+    
+    // Call to move object one step
+    object.move = () => {
+        
+        // Only do calculations if object is actually moving
+        if(object.speed) {
+            
+            // Do Acceleration calculations if both acceleration and limitSpeed exist
+            if (object.acceleration != null && object.limitSpeed != null) {
+                
+                // Positive accceleration approaches the limit from below.
+                if (object.acceleration > 0 && object.speed < object.limitSpeed) {
+                    object.speed = Math.min(object.speed + object.acceleration * TICKER.deltaTime, object.limitSpeed);
+                    object.deltaX = Math.cos(object.angle) * object.speed;
+                    object.deltaY = Math.sin(object.angle) * object.speed;
+                }
+                // Negative accceleration approaches the limit from above.
+                else if (object.acceleration < 0 && object.speed > object.limitSpeed) {
+                    object.speed = Math.max(object.speed + object.acceleration * TICKER.deltaTime, object.limitSpeed);
+                    object.deltaX = Math.cos(object.angle) * object.speed;
+                    object.deltaY = Math.sin(object.angle) * object.speed;
+                }
+                
+            }
+            // Move the object
+            object.x += object.deltaX * TICKER.deltaTime;
+            object.y += object.deltaY * TICKER.deltaTime;
+        }
+        
+    };
+}
+
+// Creates a burst of every item in the game at desired location.
+// Lots of magic numbers.
+function makeItemBurst(x,y,numberOfItems = Object.keys(ITEM_TEXTURES).length - 2) { // 2 is the number of secret items
+    
+    // Create object
+    let itemBurst = new PIXI.Container();
+    
+    // Load sprites
+    itemBurst.sprites = [];
+    for (let i = APPLE; i < numberOfItems; i++) {
+        itemBurst.sprites.push(new PIXI.Sprite(ITEM_TEXTURES[i]));
+    }
+    
+    // Assign initial properties
+    for (let i in itemBurst.sprites) {
+        
+        itemBurst.sprites[i].x = x;
+        itemBurst.sprites[i].y = y;
+        itemBurst.sprites[i].scale.set(0);
+        itemBurst.sprites[i].anchor.set(0.5);
+        
+        itemBurst.sprites[i].deltaScale = Math.random() * 0.08 + 0.03;
+        itemBurst.sprites[i].deltaRotation = Math.random() * 0.8 - 0.4;
+        
+        itemBurst.addChild(itemBurst.sprites[i]);
+        
+        addProjectileProperties( itemBurst.sprites[i], {
+            speed: Math.random() * 28 + 25,
+            angle: Math.random() * Math.PI * 1.5 - Math.PI * 1.25,
+            acceleration: (Math.random() * -2) - 1,
+            limitSpeed: 0
+        });
+    }
+    
+    // Call update to advance one frame.
+    itemBurst.update = () => {
+        
+        for(let i in itemBurst.sprites) {
+            
+            // Move every item using projectile logic
+            itemBurst.sprites[i].move();
+            
+            // Increase scale while object is movign at a reasonable speed.
+            if(itemBurst.sprites[i].speed > 3) {
+                itemBurst.sprites[i].scale.x += itemBurst.sprites[i].deltaScale * TICKER.deltaTime;
+                itemBurst.sprites[i].scale.y += itemBurst.sprites[i].deltaScale * TICKER.deltaTime;
+            }
+            
+            // Smoothly decrease rotation speed down to a minimum limit
+            if (Math.abs(itemBurst.sprites[i].deltaRotation) > 0.02) {
+                itemBurst.sprites[i].deltaRotation *= 0.97;
+            }
+            
+            // Rotate
+            itemBurst.sprites[i].rotation += itemBurst.sprites[i].deltaRotation * TICKER.deltaTime;
+            
+        }
+        
+    };
+    
+    return itemBurst;
+    
 }
 
 // TODO: Well supported fullscreen functionality

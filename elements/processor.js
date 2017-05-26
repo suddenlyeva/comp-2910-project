@@ -12,9 +12,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     // On create / Init
     // Variable assignment
     this.Spawn = () => {
-        
+
         this.mTimer = new Timer(level);
-        
+
         // Variable Assignments
         //this.mRequiredIngredients = [];
         this.mNumIngredients = recipeOrder.GetListCount();
@@ -74,8 +74,12 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
         this.mHeight = TILES_PX;
 
         // -- Last Tray is the Processor output --
-
-        this.mOutputTexture.push(PIXI.loader.resources["images/spritesheet.json"].textures["output.png"]);
+        if(level.isFinalItem(recipeOrder.GetOutput())) {
+            this.mOutputTexture.push(PIXI.loader.resources["images/spritesheet.json"].textures["output.png"]);
+        }
+        else {
+            this.mOutputTexture.push(PIXI.loader.resources["images/spritesheet.json"].textures["output-chain.png"]);
+        }
         this.mOutputTexture.push(PIXI.loader.resources["images/spritesheet.json"].textures["output-ready.png"]);
 
         this.mOutputSprite = new PIXI.Sprite(this.mOutputTexture[this.mOutputState.Blue]);
@@ -136,7 +140,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
                 this.mTimer.OnKill();
 
                 if(!this.bIsFinishedSpawning) {
-					StopSound(eSFXList.ClockTicking);
+                    StopSound(eSFXList.ClockTicking);
                     this.SpawnOutput();
                     this.mOutputSprite.texture = this.mOutputTexture[this.mOutputState.Yellow];
                     this.bIsFinishedSpawning = true;
@@ -203,10 +207,10 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
 
         // Input Box
         let inputLeft = this.mPosition.x; // x1
-        let inputRight = this.mPosition.x + (this.mWidth - TILES_PX*2);//x2
+        let inputRight = this.mPosition.x + (this.mWidth);//x2
         let inputTop = this.mPosition.y; // y1
         let inputBottom = this.mPosition.y + TILES_PX*2; //y2
-        
+
         return  ( inputLeft < x
         && x < inputRight
         && inputTop < y
@@ -246,11 +250,11 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
                 // ! Change to ====
                 if(droppedIngredient.type == this.mRequiredIngredients[i].type && !this.bRecipeProgress[i])
                 {
-                    this.mRequiredIngredients[i].alpha = this.mAlphaFinished; //TODO: MAGIC NUMBER
+                    this.mRequiredIngredients[i].alpha = this.mAlphaFinished;
                     this.bRecipeProgress[i] = true;
                     this.mSpriteTray[i].texture = PIXI.loader.resources["images/spritesheet.json"].textures["recipe-correct.png"];
 
-                    level.scene.removeChild(droppedIngredient);
+                    droppedIngredient.destroy();
                     return true;
                 }
             }
@@ -268,10 +272,9 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
             this.mOutputItem.x = TILES_PX + this.mOutputSprite.x;
             this.mOutputItem.y = TILES_PX + this.mOutputSprite.y;
 
-			PlaySound(eSFXList.RecipeComplete,false);
-			
+            PlaySound(eSFXList.RecipeComplete,false);
+
             if(level.isFinalItem(this.mOutputItem.type)) {
-                // TODO: level.poof
                 this.mOutputItem.interactive = false;
                 this.mOutputItem.fadeAway();
                 level.completionData.itemsComplete.push(recipeOrder.GetOutput());
@@ -327,7 +330,7 @@ function Processor(recipeOrder, level) //the Recipe this Processor will produce
     this.mHeight;
 
     this.mScore = 0;                    // Game Score
-    this.mAlphaUnfinished = 0.5;        // Item Incompleted Fade
+    this.mAlphaUnfinished = 0.6;        // Item Incompleted Fade
     this.mAlphaFinished = 0.8;          // Item Completed Fade
 
     // Ingredients / Item
@@ -363,7 +366,7 @@ function Timer(level)
     //-------------------------------------------------------------------------------
     // Stuffs to do on Spawn
     this.OnSpawn = () => {
-        level.scene.addChild(this.mCurrentSprite);
+        this.mCurrentSprite.visible = true;
         this.mCurrentSprite.scale.set(0.25);
         this.isEntering = true;
     };  // Play Animation
@@ -401,7 +404,7 @@ function Timer(level)
     //-------------------------------------------------------------------------------
     // Stuffs on kill
     this.OnKill = () => {
-        level.scene.removeChild(this.mCurrentSprite);
+        this.mCurrentSprite.visible = false;
         this.Reset();
         this.jump = 0;
     } ; // Play Animation
@@ -419,7 +422,8 @@ function Timer(level)
         this.mCurrentSprite = new PIXI.Sprite(this.mSpriteList[0]);
         this.mCurrentSprite.position.set(x, y);
         this.mCurrentSprite.anchor.set(0.5);
-
+        level.scene.addChild(this.mCurrentSprite);
+        this.mCurrentSprite.visible = false;
     };
 
     //==========================================================================================

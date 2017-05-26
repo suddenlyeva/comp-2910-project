@@ -5,17 +5,22 @@
         <meta charset="utf-8">
         <!-- <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link rel="manifest" href="manifest.json"> -->
-        
+
+        <!-- Needed for firebase -->
         <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/ui/0.4.0/firebase-ui-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
         <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/0.4.0/firebase-ui-auth.css" />
         <script src="login/config.js"></script>
-        
+
+        <!-- pixi library -->
         <script src="pixi.min.js"></script>
+
+        <!-- Sound Handling-->
         <script src="sound.js"></script>
         <script src="sfx.js"></script>
+
         <style>
             * { padding: 0; margin: 0}
 
@@ -27,28 +32,33 @@
             }
             /* hide scrollbars */
             html, body { overflow: hidden }
-            body { text-align: center }
+            body {
+                text-align: center;
+                width: 1px;
+                min-width: 100%;
+            }
         </style>
     </head>
 
     <body style="font-family:JMH-HarryDicksonOne">
-        <canvas id="display" width="1280" height="720"></canvas>
+        <canvas id="display"></canvas>
         <script src="elements/ingredient.js"></script>
         <script src="elements/conveyorbelt.js"></script>
         <script src="elements/recipe.js"></script>
         <script src="elements/processor.js"></script>
 
         <script src="states/intro.js"></script>
-        <script src="states/mainmenu.js"></script>
         <script src="states/stageselect.js"></script>
         <script src="states/optionsmenu.js"></script>
         <script src="states/pausemenu.js"></script>
         <script src="states/levels.js"></script>
         <script src="states/stagecomplete.js"></script>
         <script src="states/gameover.js"></script>
-        <script src="states/credits.js"></script>
         <script src="states/affiliate.js"></script>
-        
+
+        <script src="globals.js"></script>
+        <script src="leveldata.js"></script>
+        <script src="progress.js"></script>
         <script src="util.js"></script>
         <script src="main.js"></script>
     </body>

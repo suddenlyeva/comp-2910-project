@@ -1,201 +1,6 @@
 "use strict";
 
-// Size of one tile unit
-// TODO: Move to better spot
-let TILES_PX = 80;
-
-// JSON Level Data
-let LEVELS = [
-
-    {id: 0, name: "tutorial",
-    
-        clearMessage: "an apple a day is one less apple in the trash.",
-        wasteLimit: 3,
-        maxScore: 300,
-
-        conveyorBelt: {
-            items: [APPLE,BLANK,BLANK,BLANK,APPLE,BLANK,BLANK,BLANK,APPLE],
-            speed: 1.2
-        },
-
-        processors: [
-            {
-                recipe: [APPLE],
-                result: APPLE_SLICE,
-                score: 100,
-                x: 7*TILES_PX,
-                y: 3*TILES_PX
-            }
-        ],
-
-        finalItems: [APPLE_SLICE]
-    },
-    {id: 1, name: "apple apple banana",
-        
-        clearMessage: "this is a test level. don't try this at home.",
-        wasteLimit: 5,
-        maxScore: 300,
-
-        conveyorBelt: {
-            items: [APPLE, BLANK, APPLE, APPLE, BLANK, APPLE, APPLE, BLANK, BLANK, BLANK, APPLE],
-            speed: 1.2
-        },
-
-        processors: [
-            {
-                recipe: [APPLE, APPLE],
-                result: BANANA,
-                score: 100,
-                x: 7*TILES_PX,
-                y: 4*TILES_PX
-            }
-        ],
-
-        finalItems: [BANANA]
-    },
-    {id: 2, name: "fruit yogurt",
-        
-        clearMessage: "yogurt goes well with all kinds of leftover fruit.",
-        wasteLimit: 5,
-        maxScore: 2100,
-
-        conveyorBelt: {
-            items: [ORANGE, BLANK, KIWI, KIWI, BLANK, ORANGE, YOGURT, ORANGE, BLANK, BLANK, KIWI, YOGURT, BLANK, YOGURT],
-            speed: 1.5
-        },
-
-        processors: [
-            {
-                recipe: [ORANGE],
-                result: ORANGE_SLICE,
-                score: 100,
-                x: 1*TILES_PX,
-                y: 2*TILES_PX
-            },
-            {
-                recipe: [KIWI],
-                result: KIWI_SLICE,
-                score: 100,
-                x: 7*TILES_PX,
-                y: 2*TILES_PX
-            },
-            {
-                recipe: [ORANGE_SLICE, KIWI_SLICE, YOGURT],
-                result: FRUIT_YOGURT,
-                score: 500,
-                x: 1*TILES_PX,
-                y: 5*TILES_PX
-            }
-        ],
-
-        finalItems: [FRUIT_YOGURT]
-    }
-];
-
-let PPAP_UNLOCKED = false;
-let PPAP = {id: LEVELS.length, name: "ppap",
-        
-        clearMessage: "now go play the actual levels",
-        wasteLimit: 5,
-        maxScore: 99999,
-
-        conveyorBelt: {
-            items: [PEN,BLANK,PINEAPPLE,BLANK,APPLE,BLANK,PEN],
-            speed: 1.3
-        },
-
-        processors: [
-            {
-                recipe: [PEN,PINEAPPLE,APPLE,PEN],
-                result: PPAP_ITEM,
-                score: 99999,
-                x: 4*TILES_PX,
-                y: 3*TILES_PX
-            }
-        ],
-
-        finalItems: [PPAP_ITEM]
-};
-
-let LEVEL_PROGRESS = [];
-function loadProgress () {
-    firebase.auth().onAuthStateChanged(function(user) {
-        // check user is signed in or not
-        if (user) {
-            // signed in
-            console.log(user.uid);
-            console.log("Loading progress from database, please wait...");
-            // check the user existence on db
-            DATABASE.ref('users/' + user.uid).once('value').then(function(snapshot){
-                if(snapshot.exists()) {
-                    // the user already exists on db
-                    console.log("Found existing user: " + user.uid);
-                    // get the user object value
-                    let progress = snapshot.val();
-                    // load the user's progress
-                    for (let i = 0; i < LEVELS.length; i++) {
-                        LEVEL_PROGRESS[i] = {
-                            unlocked: progress[i].unlocked,
-                            highscore: progress[i].highscore
-                        };
-                    }
-                } else {
-                    // the user is not existed on db
-                    console.log("New user detected: " + user.uid);
-                    // initialize progress with default values
-                    for (let i = 0; i < LEVELS.length; i++) {
-                        if(i <= 0) {
-                            LEVEL_PROGRESS[i] = {
-                                unlocked: true,
-                                highscore: 0
-                            };
-                        } else {
-                            LEVEL_PROGRESS[i] = {
-                                unlocked: false,
-                                highscore: 0
-                            };
-                        }
-                    }
-                }
-                console.log("Progress loaded.");
-            });
-        } else {
-            // not signed in.
-            console.log("Not logged in");
-            // initialize progress with default values
-            LEVEL_PROGRESS[0] = {
-               unlocked: true,
-               highscore: 0
-            };
-            for (let i = 1; i < LEVELS.length; i++) {
-                LEVEL_PROGRESS[i] = {
-                    unlocked: false,
-                    highscore: 0
-                };
-            }
-        }
-    });
-}
-
-function saveProgress() {
-    // check user login status again before saving
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            // signed in, then save progress
-            console.log("Saving progress...");
-            for (let i = 0; i < LEVELS.length; i++) {
-                DATABASE.ref('users/' + user.uid + '/' + i).set({
-                    unlocked: LEVEL_PROGRESS[i].unlocked,
-                    highscore: LEVEL_PROGRESS[i].highscore
-                });
-            }
-        } else {
-            // not signed in, then nothing.
-            console.log("Failed to save. Please login.");
-        }
-    });
-}
-
+// Level constructor reads from JSON array
 function Level(data) {
 
     // Identifiers
@@ -236,7 +41,7 @@ function Level(data) {
         fontFamily: FONT_FAMILY, fontSize: 96, fill: 0x0
     });
     this.levelTxt = new PIXI.Text(
-        (this.id !== 0 ? "level " + this.id + " :" : "") + " " + this.name,
+        levelDisplayName(this.id, this.name), // -> util.js
         this.txtStyle);
     this.levelTxt.position.set(TILES_PX * 7, 0);
     this.scene.addChild(this.levelTxt);
@@ -263,11 +68,9 @@ function Level(data) {
     this.pauseButton.interactive = true;
     this.pauseButton.buttonMode = true;
     this.pauseButton.on("pointertap", () => {
-        PlaySound(eSFXList.ButtonClick, false);
-        PlaySound(eSFXList.MenuOpen, false);
-        StopSound(eSFXList.ClockTicking, true);
-        //sounds["sounds/menu-open.wav"].play();
-        //sounds["sounds/button-click.wav"].play();
+        PlaySound(eSFXList.ButtonClick, false); // -> sfx.js
+        PlaySound(eSFXList.MenuOpen, false);    // -> sfx.js
+        StopSound(eSFXList.ClockTicking, true); // -> sfx.js
         this.pauseButton.texture = PIXI.loader.resources["images/spritesheet.json"].textures["pause-off.png"];
         this.isPaused = true;
         PauseMenu.open(this); // -> states/pausemenu.js
@@ -275,7 +78,7 @@ function Level(data) {
     this.scene.addChild(this.pauseButton);
 
     // Add HP Bar
-    this.hpBar = makeProgressBar(5*TILES_PX, 60, 10, 0x222222, 0x00d27f);
+    this.hpBar = makeProgressBar(5*TILES_PX, 60, 10, 0x222222, 0x00d27f); // -> util.js
     this.hpBar.xScale(1);
     this.hpBar.x += TILES_PX;
     this.hpBar.y += 10;
@@ -285,7 +88,7 @@ function Level(data) {
     this.hpBar.update = () => {
         // Smoothly Scale HP
         if ( this.hpBar.getScale() > (1 - this.completionData.waste / data.wasteLimit)) {
-            this.hpBar.xScale(this.hpBar.getScale() * 0.975 );
+            this.hpBar.xScale(this.hpBar.getScale() * 0.975 ); // -> util.js
         }
     };
 
@@ -318,6 +121,16 @@ function Level(data) {
         }
     };
 
+    // Check if an item is the level's final item.
+    this.isFinalItem = (itemType) => {
+        for (let i in data.finalItems) {
+            if (itemType == data.finalItems[i]) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     // Load processors
     this.processors = [];
     for (let i in data.processors) {
@@ -336,17 +149,6 @@ function Level(data) {
     this.timeOut = 120;
     this.itemPickedup = false;
 
-    // Check if an item is the level's final item.
-    this.isFinalItem = (itemType) => {
-        for (let i in data.finalItems) {
-            if (itemType == data.finalItems[i]) {
-                return true;
-            }
-        }
-
-        return false;
-    };
-
     // Checks if the level is over
     this.checkForCompletion = () => {
 
@@ -361,7 +163,7 @@ function Level(data) {
                 return false;
             }
         }
-        
+
         // Item Check
         if (this.itemPickedup) {
             return false;
@@ -370,6 +172,7 @@ function Level(data) {
         return true;
     };
 
+    // Called every frame
     this.update = () => {
 
         // Update scene objects
@@ -402,7 +205,7 @@ function Level(data) {
                     StageComplete.open(this.completionData); // -> states/stagecomplete.js
                 }
                 else {
-                    GameOver.open();
+                    GameOver.open(); // -> states/gameover.js
                 }
             }
         }
@@ -414,12 +217,13 @@ function Level(data) {
         }
 
     };
-    
+
+    // PPAP sound
     if(data.id == PPAP.id) {
-        sounds[eMusicList.PPAP].playFrom(0);
-        StopSound(eMusicList.Music, true);
+        sounds[eMusicList.PPAP].playFrom(0); // -> sfx.js
+        StopSound(eMusicList.Music, true);   // -> sfx.js
     }
-    
+
 }
 
 // Function to open. Level recreates itself
@@ -429,4 +233,9 @@ Level.open = (data) => {
 
     SCENE = Level.instance.scene;
     STATE = Level.instance.update;
+};
+
+// Opens a level based on its data id
+Level.openById = (id) => {
+    Level.open(LEVELS[findIndexById(LEVELS, id)]);
 }
