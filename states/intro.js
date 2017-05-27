@@ -60,6 +60,8 @@ function Intro() {
     let team19Coord = { refX: byTeam19.x + byTeam19.width / 2, refY: byTeam19.y + byTeam19.height / 2 };
 
     // Gear ------------------------------------------------------------
+    
+    // For controlling spin speed of gear
     let gearSpin = {
         starting : { val: 1 },
         max      : { val: 5, reached: false },
@@ -67,8 +69,9 @@ function Intro() {
         epsilon  : 0.1,
         decel    : 20 // smooth deceleration
     };
-    let spinningGear = makeGear("l", gearSpin.starting.val);
+    let spinningGear = makeGear("l", gearSpin.starting.val); // -> util.js
     let speedDiff;
+    
     spinningGear.updateSpeed = () => {
         if(!gearSpin.max.reached) {
             speedDiff               = gearSpin.max.val - spinningGear.speed;
@@ -81,6 +84,7 @@ function Intro() {
         }
     };
 
+    // For controlling movement of gear
     let gearMove  = {
         startingY : -spinningGear.height,
         finalY    : { val: CANVAS_HEIGHT / 2 - TILES_PX, reached: false },
@@ -124,7 +128,7 @@ function Intro() {
         StageSelect.open(); // -> states/mainmenu.js
     };
 
-    let foodBurst = makeItemBurst(gearAppleContainer.x + gearAppleContainer.width / 2, gearMove.finalY.val + gearAppleContainer.height / 2);
+    let foodBurst = makeItemBurst(gearAppleContainer.x + gearAppleContainer.width / 2, gearMove.finalY.val + gearAppleContainer.height / 2); // -> util.js
 
     let background = new PIXI.Sprite(PIXI.utils.TextureCache["images/background-intro.png"]);
     
@@ -163,29 +167,39 @@ function Intro() {
     
     // Update the scene
     this.update = () => {
+        
+        // "FOOD FACTORY" Appears.
         if(contFoodFactory.alpha < 1) {
-            contFoodFactory.alpha += appearSpeed * TICKER.deltaTime;
-        } else if(!gearMove.finalY.reached) {
             
+            contFoodFactory.alpha += appearSpeed * TICKER.deltaTime;
+            
+        } else if(!gearMove.finalY.reached) { // Gear dropping down    
+            
+            // SFX
             if (!dropSFXOnce) {
                 PlaySound(eSFXList.IntoProcessor, false);
                 dropSFXOnce = true;
             }
-            
+            // Update
             gearAppleContainer.updatePos();
-        } else {
+          
+        } else { // Gear reaches final position     
             
+            // SFX
             if (!gearSFXOnce) {
                 PlaySound(eSFXList.Processing, false);
                 gearSFXOnce = true;
             }
-            
+            // "ZERO" appears
             if(txtZero.alpha < 1) {
                 txtZero.alpha += appearSpeed * TICKER.deltaTime;
             }
+            // Gear accelerates
             spinningGear.updateSpeed();
-            if(gearSpin.max.reached) {
+            
+            if(gearSpin.max.reached) { // Explosion
                 
+                // SFX
                 if (!burstSFXOnce) {
                     PlaySound(eSFXList.RecipeComplete, false);
                     burstSFXOnce = true;
@@ -194,7 +208,11 @@ function Intro() {
                 // Then the continue text flashes based on a sin function
                 txtPress.alpha = Math.pow(Math.sin(counter), 4);
                 counter        = (counter + flashFreq * TICKER.deltaTime) % Math.PI;
+                
+                // Food Burst
                 foodBurst.update();
+                
+                // team19 text scaleup
                 if(byTeam19.scale.x < 1) {
                     byTeam19.scale.set(byTeam19.scale.x + (1 - byTeam19.scale.x) / scaleDecel * TICKER.deltaTime);
                     byTeam19.position.set(
@@ -203,8 +221,11 @@ function Intro() {
                 }
             }
         }
-        spinningGear.update();
         
+        // Always spin gear
+        spinningGear.update(); // -> util.js
+        
+        // Music timed manually
         if(!musicOnce) {
             musicTicker += TICKER.deltaTime;
             if (musicTicker >= musicStart) {
